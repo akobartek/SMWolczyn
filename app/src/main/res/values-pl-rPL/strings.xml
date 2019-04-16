@@ -1,0 +1,12 @@
+<resources>
+    <!-- BASIC STRINGS -->
+    <string name="try_again">Spróbuj</string>
+    <string name="cancel">Anuluj</string>
+    <string name="no_internet_title">Brak Internetu</string>
+    <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
+
+    <!-- PREFERENCES STRINGS -->
+    <string name="preferences">Ustawienia</string>
+    <string name="night_mode_title">Tryb nocny</string>
+    <string name="night_mode_summary">Włącz tryb nocny w całej aplikacji</string>
+</resources>
