@@ -20,7 +20,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     // endregion General values
 
     // region Zapisy
-    fun loadMainSite(view: View, activity: Activity, fragment: MainFragment) {
+    fun loadMainSite(view: View, activity: Activity, showNoInternetDialog: () -> Unit) {
         Thread(Runnable {
             try {
                 view.loadingIndicator.show()
@@ -39,7 +39,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                     view.webView.animate().alpha(1f).duration = 444L
                 }
             } catch (exc: Exception) {
-                fragment.showNoInternetDialog()
+                showNoInternetDialog()
             }
         }).start()
     }

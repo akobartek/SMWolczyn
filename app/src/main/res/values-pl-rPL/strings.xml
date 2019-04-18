@@ -4,6 +4,7 @@
     <string name="cancel">Anuluj</string>
     <string name="no_internet_title">Brak Internetu</string>
     <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
+    <string name="privacy_policy"><u>Polityka Prywatności</u></string>
 
     <!-- PREFERENCES STRINGS -->
     <string name="preferences">Ustawienia</string>

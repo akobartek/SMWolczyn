@@ -6,6 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="no_internet_title">No internet connection</string>
     <string name="no_internet_reconnect_message">An error with connection occurred, do you want to try again?</string>
+    <string name="privacy_policy"><u>Privacy Policy</u></string>
 
     <!-- PREFERENCES STRINGS -->
     <string name="preferences">Preferences</string>
