@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import pl.kapucyni.wolczyn.app.viewmodel.MainViewModel
-import android.view.MotionEvent
 import androidx.appcompat.app.AlertDialog
 
 class MainFragment : Fragment() {
@@ -32,15 +31,9 @@ class MainFragment : Fragment() {
         activity?.let { mViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java) }
 
         view.webView.settings.javaScriptEnabled = true
-        // disable scroll on touch
-        view.webView.setOnTouchListener { _, event -> event.action == MotionEvent.ACTION_MOVE }
 
         if (savedInstanceState != null) view.webView.restoreState(savedInstanceState)
         else checkNetworkConnection()
-
-        view.privacyPolicyTV.setOnClickListener {
-            showPrivacyPolicy()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
