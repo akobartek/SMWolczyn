@@ -7,10 +7,86 @@
     <string name="no_internet_title">No internet connection</string>
     <string name="no_internet_reconnect_message">An error with connection occurred, do you want to try again?</string>
     <string name="privacy_policy"><u>Privacy Policy</u></string>
+    <string name="press_to_exit">Press once again to exit!</string>
+    <string name="loading">Loading…</string>
+    <string name="hide_bottom_sheet">Hide bottom sheet</string>
+
+    <string name="facebook_app_id" translatable="false">126088801386279</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb126088801386279</string>
 
     <!-- PREFERENCES STRINGS -->
     <string name="preferences">Preferences</string>
     <string name="night_mode_key" translatable="false">night_mode</string>
     <string name="night_mode_title">Night mode</string>
     <string name="night_mode_summary">Turn on night mode in the app</string>
+
+    <!-- NAVIGATION STRINGS -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_schedule">Schedule</string>
+    <string name="menu_weather">Weather</string>
+    <string name="menu_anthem">Anthem</string>
+    <string name="menu_songbook">Song book</string>
+    <string name="menu_group">Group</string>
+    <string name="menu_guests">Guests</string>
+    <string name="menu_signings">Signings</string>
+    <string name="menu_departures">Departures</string>
+    <string name="menu_breviary">Breviary</string>
+    <string name="menu_map">Map</string>
+    <string name="menu_showers">Showers</string>
+
+    <!-- GUESTS STRINGS -->
+    <string name="conferences">Conferences</string>
+    <string name="concerts">Concerts</string>
+    <string name="guest_photo_description">Guest\'s photo</string>
+    <string name="guest_link_description">Link to guest\'s social media</string>
+
+    <!-- BREVIARY STRINGS -->
+    <string name="morning_prayer">Morning</string>
+    <string name="evening_prayer">Evening</string>
+    <string name="night_prayer">Night</string>
+
+    <!-- GROUP STRINGS -->
+    <string name="groups_not_available">Groups are not available yet!</string>
+    <string name="user_photo">Photo of the user</string>
+    <string name="user_group">Group number:\n%s</string>
+
+    <!-- DEPARTURES STRINGS -->
+    <string name="empty_departures_list">There are no departures yet!</string>
+    <string name="transport_type_image_description">Icon that represent transport type</string>
+    <string name="organizer">Organizer: %s</string>
+    <string name="send_mail">Send mail…</string>
+    <string name="send_mail_error">There is no email client installed!</string>
+
+    <!-- ANTHEM STRINGS -->
+    <string name="see_on_youtube">See on YouTube</string>
+
+    <!-- WEATHER STRINGS -->
+    <string name="empty_weather_list">There is a problem with loading weather data!</string>
+    <string name="expand_weather_view">Show weather for this day</string>
+    <string name="celsius" translatable="false">°C</string>
+    <string name="weather_icon">Icon representing current weather</string>
+    <string name="clear_sky">Clear sky</string>
+    <string name="few_clouds">Few clouds</string>
+    <string name="scattered_clouds">Scattered clouds</string>
+    <string name="broken_clouds">Broken clouds</string>
+    <string name="shower_rain">Shower rain</string>
+    <string name="rain">Rain</string>
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="snow">Snow</string>
+    <string name="mist">Mist</string>
+
+    <!-- LOGIN STRINGS -->
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_fb">Sign in with Facebook</string>
+    <string name="sign_out">Sign out</string>
+    <string name="create_account">Create account</string>
+    <string name="login_error_empty">Login cannot be empty!</string>
+    <string name="password_error_empty">Password cannot be empty!</string>
+    <string name="account_not_found_dialog_message">Account not found!</string>
+    <string name="signed_in">Signed in</string>
+
 </resources>

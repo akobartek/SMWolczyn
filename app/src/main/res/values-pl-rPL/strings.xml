@@ -5,9 +5,81 @@
     <string name="no_internet_title">Brak Internetu</string>
     <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
     <string name="privacy_policy"><u>Polityka Prywatności</u></string>
+    <string name="press_to_exit">Naciśnij jeszcze raz aby wyjść z aplikacji!</string>
+    <string name="loading">Ładowanie…</string>
+    <string name="hide_bottom_sheet">Schowaj kartę</string>
 
     <!-- PREFERENCES STRINGS -->
     <string name="preferences">Ustawienia</string>
     <string name="night_mode_title">Tryb nocny</string>
     <string name="night_mode_summary">Włącz tryb nocny w całej aplikacji</string>
+
+    <!-- NAVIGATION STRINGS -->
+    <string name="navigation_drawer_open">Otwórz panel nawigacyjny</string>
+    <string name="navigation_drawer_close">Zamknij panel nawigacyjny</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="menu_schedule">Plan</string>
+    <string name="menu_weather">Pogoda</string>
+    <string name="menu_anthem">Hymn</string>
+    <string name="menu_songbook">Śpiewnik</string>
+    <string name="menu_group">Fraterka</string>
+    <string name="menu_guests">Goście</string>
+    <string name="menu_signings">Zapisy</string>
+    <string name="menu_departures">Wyjazdy</string>
+    <string name="menu_breviary">Brewiarz</string>
+    <string name="menu_map">Mapa</string>
+    <string name="menu_showers">Prysznice</string>
+
+    <!-- GUESTS STRINGS -->
+    <string name="conferences">Konferencje</string>
+    <string name="concerts">Koncerty</string>
+    <string name="guest_photo_description">Zdjęcie gościa Wołczyna</string>
+    <string name="guest_link_description">Link do mediów społecznościowych gościa</string>
+
+    <!-- BREVIARY STRINGS -->
+    <string name="morning_prayer">Jutrznia</string>
+    <string name="evening_prayer">Nieszpory</string>
+    <string name="night_prayer">Kompleta</string>
+
+    <!-- GROUP STRINGS -->
+    <string name="groups_not_available">Fraterki nie są jeszcze dostępne!</string>
+    <string name="user_photo">Zdjęcie użytkownika</string>
+    <string name="user_group">Numer fraterki:\n%s</string>
+
+    <!-- DEPARTURES STRINGS -->
+    <string name="empty_departures_list">W bazie nie ma żadnych wyjazdów organizowanych!</string>
+    <string name="transport_type_image_description">Ikona reprezentująca środek transportu</string>
+    <string name="organizer">Organizator: %s</string>
+    <string name="send_mail">Wyślij maila…</string>
+    <string name="send_mail_error">Nie znaleziono żadnego klienta mailowego!</string>
+
+    <!-- ANTHEM STRINGS -->
+    <string name="see_on_youtube">Zobacz na YouTube</string>
+
+    <!-- WEATHER STRINGS -->
+    <string name="empty_weather_list">Wystąpił problem z ładowaniem danych pogodowych!</string>
+    <string name="expand_weather_view">Pokaż pogodę na ten dzień</string>
+    <string name="weather_icon">Ikona reprezentująca obecną pogodę</string>
+    <string name="clear_sky">Bezchmurne niebo</string>
+    <string name="few_clouds">Liczne przejaśnienia</string>
+    <string name="scattered_clouds">Częściowe zachmurzenie</string>
+    <string name="broken_clouds">Przewaga chmur</string>
+    <string name="shower_rain">Przelotne opady</string>
+    <string name="rain">Deszcz</string>
+    <string name="thunderstorm">Burza</string>
+    <string name="snow">Śnieg</string>
+    <string name="mist">Mgła</string>
+
+    <!-- LOGIN STRINGS -->
+    <string name="login">Login</string>
+    <string name="password">Hasło</string>
+    <string name="sign_in">Zaloguj</string>
+    <string name="sign_in_fb">Zaloguj się przez Facebook</string>
+    <string name="sign_out">Wyloguj</string>
+    <string name="create_account">Utwórz konto</string>
+    <string name="login_error_empty">Login nie może być pusty!</string>
+    <string name="password_error_empty">Hasło nie może być puste!</string>
+    <string name="account_not_found_dialog_message">Nie znaleziono podanego konta!</string>
+    <string name="signed_in">Zalogowano</string>
+
 </resources>

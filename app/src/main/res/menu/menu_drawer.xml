@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_schedule"
+            android:icon="@drawable/ic_menu_schedule"
+            android:title="@string/menu_schedule" />
+        <item
+            android:id="@+id/nav_weather"
+            android:icon="@drawable/ic_menu_weather"
+            android:title="@string/menu_weather" />
+        <item
+            android:id="@+id/nav_anthem"
+            android:icon="@drawable/ic_menu_anthem"
+            android:title="@string/menu_anthem" />
+        <item
+            android:id="@+id/nav_songbook"
+            android:icon="@drawable/ic_menu_songbook"
+            android:title="@string/menu_songbook" />
+        <item
+            android:id="@+id/nav_group"
+            android:icon="@drawable/ic_menu_meeting"
+            android:title="@string/menu_group" />
+        <item
+            android:id="@+id/nav_guests"
+            android:icon="@drawable/ic_menu_guests"
+            android:title="@string/menu_guests" />
+        <item
+            android:id="@+id/nav_signings"
+            android:icon="@drawable/ic_menu_signings"
+            android:title="@string/menu_signings" />
+        <item
+            android:id="@+id/nav_departures"
+            android:icon="@drawable/ic_menu_bus"
+            android:title="@string/menu_departures" />
+        <item
+            android:id="@+id/nav_breviary"
+            android:icon="@drawable/ic_menu_breviary"
+            android:title="@string/menu_breviary" />
+        <!--<item-->
+            <!--android:id="@+id/nav_map"-->
+            <!--android:icon="@drawable/ic_menu_map"-->
+            <!--android:title="@string/menu_map" />-->
+    </group>
+</menu>

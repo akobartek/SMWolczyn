@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBackground">#28292e</color>
+    <color name="colorLineChart">#777777</color>
+    <color name="swipe_refresh_color_1">#fa3647</color>
+    <color name="swipe_refresh_color_2">#ffd200</color>
+    <color name="swipe_refresh_color_3">#00cbff</color>
+    <color name="swipe_refresh_color_4">#00f076</color>
 </resources>

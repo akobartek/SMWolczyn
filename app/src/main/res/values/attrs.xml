@@ -10,5 +10,6 @@
         <attr name="colorMenuIcons" format="color" />
         <attr name="colorBackground" format="color" />
         <attr name="colorListItemBackground" format="color" />
+        <attr name="logoMenu" format="integer" />
     </declare-styleable>
 </resources>
