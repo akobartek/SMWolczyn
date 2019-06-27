@@ -3,11 +3,11 @@ package pl.kapucyni.wolczyn.app.view.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -15,14 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_departures.view.*
 import kotlinx.android.synthetic.main.sheet_fragment_departure_details.view.*
-
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.model.Departure
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
 import pl.kapucyni.wolczyn.app.view.adapters.DeparturesRecyclerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.DeparturesViewModel
-import java.lang.Exception
 
 class DepartureListFragment : Fragment() {
 
@@ -56,7 +54,7 @@ class DepartureListFragment : Fragment() {
             }
         })
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById<View>(R.id.guestSheet))
+        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById<View>(R.id.departureSheet))
         mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SetTextI18n")
             override fun onStateChanged(bottomSheet: View, newState: Int) {

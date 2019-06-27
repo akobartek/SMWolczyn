@@ -58,7 +58,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <fragment
-        android:id="@+id/guestSheet"
+        android:id="@+id/departureSheet"
         android:name="pl.kapucyni.wolczyn.app.view.fragments.DepartureDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
