@@ -19,7 +19,7 @@ interface KapucyniApi {
     fun loginToSystemWithEmailAsync(
         @Field("login") login: String,
         @Field("password") password: String,
-        @Field("appid") appid: String
+        @Field("app_id") app_id: String
     ): Deferred<Response<String>>
 
     @FormUrlEncoded
@@ -28,7 +28,7 @@ interface KapucyniApi {
         @Field("email") email: String,
         @Field("identifier") identifier: String,
         @Field("media") media: String,
-        @Field("appid") appid: String
+        @Field("app_id") app_id: String
     ): Deferred<Response<String>>
 
     @POST("wolczyn/ja")

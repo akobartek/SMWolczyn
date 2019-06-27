@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.facebook.*
@@ -24,13 +24,11 @@ import com.google.android.gms.common.api.GoogleApiClient
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_login.*
 import org.json.JSONException
-import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
 import pl.kapucyni.wolczyn.app.viewmodels.LoginViewModel
-import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
 
@@ -41,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mLoginViewModel: LoginViewModel
     private lateinit var mLoadingDialog: AlertDialog
     private lateinit var mGoogleApiClient: GoogleApiClient
+    private var isTokenLoaded = false
     private val mFacebookCallbackManager = CallbackManager.Factory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,13 +65,24 @@ class LoginActivity : AppCompatActivity() {
 
         mLoginViewModel.tokenLiveData.observe(this@LoginActivity, Observer { token ->
             if (token != null) {
-                if (BuildConfig.DEBUG) Log.d("Bearer token", token.toString())
-                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
                 PreferencesManager.setBearerToken(token)
-                Toast.makeText(this@LoginActivity, R.string.signed_in, Toast.LENGTH_SHORT).show()
-                returnActivity(true)
+                isTokenLoaded = true
+                mLoginViewModel.fetchUser()
             } else {
                 showAccountNotFoundDialog()
+            }
+        })
+
+        mLoginViewModel.userLiveData.observe(this@LoginActivity, Observer { user ->
+            if (isTokenLoaded) {
+                if (user != null) {
+                    if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
+                    Toast.makeText(this@LoginActivity, R.string.signed_in, Toast.LENGTH_SHORT).show()
+                    returnActivity(true)
+                } else {
+                    PreferencesManager.setBearerToken("")
+                    showAccountNotFoundDialog()
+                }
             }
         })
 

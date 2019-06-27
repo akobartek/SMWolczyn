@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.apicalls
 
 import android.util.Log
+import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import retrofit2.Response
 import java.io.IOException
 
@@ -23,6 +24,8 @@ open class BaseRepository {
 
     private suspend fun <T : Any> safeApiResult(call: suspend () -> Response<T>, errorMessage: String): Result<T> {
         val response = call.invoke()
+        val headers = response.headers()
+        if (headers.names().contains("cm3_token")) PreferencesManager.setBearerToken(headers["cm3_token"]!!)
         if (response.isSuccessful) return Result.Success(response.body())
 
         return Result.Error(IOException("Error Occurred during getting safe Api result, Custom ERROR - $errorMessage"))

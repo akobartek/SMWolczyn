@@ -8,5 +8,6 @@ data class User(
     val name: String?,
     val surname: String?,
     val photo_url: String?,
-    val number: Int?
+    val number: Int?,
+    val bears: Int?
 )

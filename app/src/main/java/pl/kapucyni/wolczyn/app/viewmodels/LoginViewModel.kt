@@ -9,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.apicalls.ApiFactory
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
+import pl.kapucyni.wolczyn.app.model.User
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel(val app: Application) : AndroidViewModel(app) {
@@ -21,8 +22,10 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
     private val scope = CoroutineScope(coroutineContext)
 
     private val repository: KapucyniApiRepository = KapucyniApiRepository(ApiFactory.kapucyniApi)
+    private val authorizedRepository: KapucyniApiRepository = KapucyniApiRepository(ApiFactory.authorizedKapucyniApi)
 
     val tokenLiveData = MutableLiveData<String>()
+    val userLiveData = MutableLiveData<User>()
 
     fun signInWithEmail(login: String, password: String) {
         scope.launch {
@@ -33,6 +36,12 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
     fun signInWithSocial(email: String, identifier: String, media: String) {
         scope.launch {
             tokenLiveData.postValue(repository.loginToSystemWithSocial(email, identifier, media))
+        }
+    }
+
+    fun fetchUser() {
+        scope.launch {
+            userLiveData.postValue(authorizedRepository.getUserInfo())
         }
     }
 
