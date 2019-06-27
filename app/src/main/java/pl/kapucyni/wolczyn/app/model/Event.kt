@@ -7,11 +7,12 @@ data class Event(
     val name: String,
     val eventPlace: EventPlace,
     val eventType: EventType,
-    val guestIndex: Int?
+    val guestIndex: Int?,
+    val videoUrl: String? = ""
 )
 
 enum class EventType {
-    CONFERENCE, CONCERT, MASS, DEVOTION, EXTRA, ORGANIZATION, GROUP, MEAL, BREVIARY, PRAYER, OTHER
+    CONFERENCE, CONCERT, MASS, DEVOTION, EXTRA, ORGANIZATION, GROUPS, MEAL, BREVIARY, PRAYER, OTHER
 }
 
 enum class EventPlace {

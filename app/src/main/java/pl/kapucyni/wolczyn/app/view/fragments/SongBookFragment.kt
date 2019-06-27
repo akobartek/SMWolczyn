@@ -1,16 +1,14 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.sheet_fragment_song.view.*
 import kotlinx.android.synthetic.main.fragment_songbook.view.*
-
+import kotlinx.android.synthetic.main.sheet_fragment_song.view.*
 import pl.kapucyni.wolczyn.app.R
 
 class SongBookFragment : Fragment() {
@@ -33,7 +31,6 @@ class SongBookFragment : Fragment() {
                     bottomSheet.songText.text = songTexts[it]
                 }
                 if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    view.songsList.isEnabled = true
                     view.songsList.alpha = 1f
                     mSelectedSong = null
                     bottomSheet.songName.text = ""
@@ -47,15 +44,30 @@ class SongBookFragment : Fragment() {
         //TODO() -> Searching
 
         view.songsList.setOnItemClickListener { _, _, position, _ ->
-            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-            mSelectedSong = position
-            view.songsList.isEnabled = false
-            view.songsList.animate()
-                .alpha(0.15f)
-                .duration = 200
+            if (mSelectedSong == null) {
+                expandBottomSheet(position)
+            } else {
+                hideBottomSheet()
+            }
         }
 
-        view.songsListLayout.setOnClickListener { if (mSelectedSong != null) hideBottomSheet() }
+        if (savedInstanceState != null) {
+            val song = savedInstanceState.getInt("song", -1)
+            if (song != -1) expandBottomSheet(song)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mSelectedSong?.let { outState.putInt("song", it) }
+    }
+
+    private fun expandBottomSheet(position: Int) {
+        mSelectedSong = position
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        view?.songsList?.animate()
+            ?.alpha(0.15f)
+            ?.duration = 200
     }
 
     fun hideBottomSheet() {

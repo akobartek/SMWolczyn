@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.core.view.children
@@ -21,9 +21,10 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_drawer.*
-import pl.kapucyni.wolczyn.app.utils.PreferencesManager
+import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.GlideApp
+import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
 import pl.kapucyni.wolczyn.app.utils.getAttributeDrawable
 import pl.kapucyni.wolczyn.app.view.fragments.*
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .into(headerDrawerImage)
             } else {
                 if (mIsFetched) {
-                    Log.d("Bearer Token", "Token expired")
+                    if (BuildConfig.DEBUG) Log.d("Bearer Token", "Token expired")
                     signOutUser()
                 }
             }
@@ -88,8 +89,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun addViewToAppBar(view: View) = appBarLayout.addView(view)
-
+    fun addViewToToolbar(view: View) = toolbar.addView(view)
     fun removeViewFromAppBar(view: View) = appBarLayout.removeView(view)
+    fun removeViewFromToolbar(view: View) = toolbar.removeView(view)
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -130,6 +132,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         when {
             drawerLayout.isDrawerOpen(GravityCompat.START) -> drawerLayout.closeDrawer(GravityCompat.START)
+            mCurrentFragmentId == R.id.nav_schedule ->
+                if ((supportFragmentManager.fragments.first { it.javaClass == ScheduleFragment::class.java } as ScheduleFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId == R.id.nav_songbook ->
                 if ((supportFragmentManager.fragments.first { it.javaClass == SongBookFragment::class.java } as SongBookFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId == R.id.nav_guests ->
@@ -265,8 +269,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivityForResult(intent, 12)
     }
 
+    fun changeToolbarTitle(newTitle: String) {
+        toolbar.title = newTitle
+    }
+
     fun goBackToSchedule() = onNavigationItemSelected(navView.menu.getItem(0))
 
-    private fun goToSelectedFragment(fragmentId: Int): Boolean =
+    fun goToSelectedFragment(fragmentId: Int): Boolean =
         onNavigationItemSelected(navView.menu.findItem(fragmentId))
 }

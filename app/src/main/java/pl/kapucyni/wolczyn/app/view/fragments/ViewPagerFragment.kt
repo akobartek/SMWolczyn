@@ -1,16 +1,16 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
 
+import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_viewpager.view.*
-
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
@@ -47,7 +47,15 @@ class ViewPagerFragment : Fragment() {
     }
 
     override fun onStop() {
-        (activity as MainActivity).removeViewFromAppBar(mTabLayout)
+        when (mFragmentType) {
+            "guests" -> (activity!! as MainActivity).removeViewFromToolbar(mTabLayout)
+            "breviary" -> {
+                if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+                    (activity as MainActivity).removeViewFromAppBar(mTabLayout)
+                else
+                    (activity as MainActivity).removeViewFromToolbar(mTabLayout)
+            }
+        }
         super.onStop()
     }
 
@@ -70,7 +78,7 @@ class ViewPagerFragment : Fragment() {
             "guests" -> 0
             "breviary" -> {
                 val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
-                if (hour < 17) 0 else if (hour < 21) 1 else 2
+                if (hour in 5..16) 0 else if (hour < 22) 1 else 2
             }
             else -> 0
         }
@@ -81,7 +89,15 @@ class ViewPagerFragment : Fragment() {
         }
         mTabLayout.setupWithViewPager(view?.viewPager)
         view!!.viewPager.removeView(mTabLayout)
-        (activity!! as MainActivity).addViewToAppBar(mTabLayout)
+        when (mFragmentType) {
+            "guests" -> (activity!! as MainActivity).addViewToToolbar(mTabLayout)
+            "breviary" -> {
+                if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+                    (activity as MainActivity).addViewToAppBar(mTabLayout)
+                else
+                    (activity as MainActivity).addViewToToolbar(mTabLayout)
+            }
+        }
     }
 
     private fun loadBreviary() {

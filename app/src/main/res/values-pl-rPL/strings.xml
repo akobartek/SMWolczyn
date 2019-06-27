@@ -41,7 +41,7 @@
     <string name="evening_prayer">Nieszpory</string>
     <string name="night_prayer">Kompleta</string>
 
-    <!-- GROUP STRINGS -->
+    <!-- GROUPS STRINGS -->
     <string name="groups_not_available">Fraterki nie są jeszcze dostępne!</string>
     <string name="user_photo">Zdjęcie użytkownika</string>
     <string name="user_group">Numer fraterki:\n%s</string>
@@ -81,5 +81,29 @@
     <string name="password_error_empty">Hasło nie może być puste!</string>
     <string name="account_not_found_dialog_message">Nie znaleziono podanego konta!</string>
     <string name="signed_in">Zalogowano</string>
+
+    <!-- SCHEDULE STRINGS -->
+    <string name="place_amphitheatre">Amfiteatr</string>
+    <string name="place_white_tent">Biały Namiot</string>
+    <string name="place_garden">Ogród koło Białego Namiotu</string>
+    <string name="place_campsite">Pole namiotowe</string>
+    <string name="place_court">Boisko przy gimnazjum</string>
+    <string name="place_everywhere">Wszędzie</string>
+    <string name="type_conference">Konferencja</string>
+    <string name="type_concert">Koncert</string>
+    <string name="type_mass">Msza</string>
+    <string name="type_devotion">Nabożeństwo</string>
+    <string name="type_prayer">Modlitwa</string>
+    <string name="type_organization">Organizacyjne</string>
+    <string name="type_groups">Fraterki</string>
+    <string name="type_meal">Posiłek</string>
+    <string name="type_breviary">Brewiarz</string>
+    <string name="type_extra">Dodatkowe</string>
+    <string name="type_other">Inne</string>
+    <string name="monday">Poniedziałek</string>
+    <string name="tuesday">Wtorek</string>
+    <string name="wednesday">Środa</string>
+    <string name="thursday">Czwartek</string>
+    <string name="friday">Piątek</string>
 
 </resources>

@@ -5,7 +5,6 @@ import android.app.Application
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import kotlinx.android.synthetic.main.fragment_signings.view.*
@@ -18,9 +17,9 @@ import pl.kapucyni.wolczyn.app.apicalls.ApiFactory
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
 import pl.kapucyni.wolczyn.app.model.User
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
+import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
 import pl.kapucyni.wolczyn.app.view.fragments.ViewPagerFragment
-import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
 class MainViewModel(val app: Application) : AndroidViewModel(app) {
@@ -120,7 +119,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     private fun checkBreviaryNightMode(type: Int): String? {
-        return if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+        return if (PreferencesManager.getNightMode()) {
             val result = "<html><head>" +
                     "<style type=\"text/css\">body{color: #fff; background-color: #28292e;}" +
                     "</style></head>" +

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorLineChart">#777777</color>
-    <color name="swipe_refresh_color_1">#fa3647</color>
-    <color name="swipe_refresh_color_2">#ffd200</color>
-    <color name="swipe_refresh_color_3">#00cbff</color>
-    <color name="swipe_refresh_color_4">#00f076</color>
+    <color name="swipe_refresh_color_1">#FA3647</color>
+    <color name="swipe_refresh_color_2">#FFD200</color>
+    <color name="swipe_refresh_color_3">#00CBFF</color>
+    <color name="swipe_refresh_color_4">#00F076</color>
+
+    <color name="colorEventType1">#3C54FE</color>
+    <color name="colorEventType2">#FA3647</color>
+    <color name="colorEventType3">#FFD200</color>
+    <color name="colorEventType4">#00F076</color>
+    <color name="colorEventType5">#777777</color>
 </resources>

@@ -10,6 +10,14 @@
         <attr name="colorMenuIcons" format="color" />
         <attr name="colorBackground" format="color" />
         <attr name="colorListItemBackground" format="color" />
+        <attr name="colorDaySelected" format="color" />
         <attr name="logoMenu" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="TimeHeader">
+        <attr name="android:width" />
+        <attr name="android:paddingTop" />
+        <attr name="android:textColor" />
+        <attr name="hourMinTextSize" format="dimension" />
     </declare-styleable>
 </resources>
