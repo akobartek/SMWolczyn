@@ -19,6 +19,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
+import retrofit2.Response
 
 
 fun Context.isChromeCustomTabsSupported(): Boolean {
@@ -145,4 +146,10 @@ fun Context.getAttributeDrawable(@AttrRes attributeId: Int): Drawable? {
     val typedValue = TypedValue()
     theme.resolveAttribute(attributeId, typedValue, true)
     return ContextCompat.getDrawable(this, typedValue.resourceId)
+}
+
+fun <T> Response<T>.saveTokenAndReturnBody(): T? {
+    if (headers().names().contains("cm3_token"))
+        PreferencesManager.setBearerToken(headers().get("cm3_token") ?: "")
+    return body()
 }

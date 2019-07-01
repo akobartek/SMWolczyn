@@ -18,6 +18,7 @@ import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
 import pl.kapucyni.wolczyn.app.model.User
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
+import pl.kapucyni.wolczyn.app.utils.saveTokenAndReturnBody
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
 import pl.kapucyni.wolczyn.app.view.fragments.ViewPagerFragment
 import kotlin.coroutines.CoroutineContext
@@ -31,7 +32,8 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Default
     private val scope = CoroutineScope(coroutineContext)
-    private val repository: KapucyniApiRepository = KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
+    private val authorizedRepository: KapucyniApiRepository =
+        KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
 
     val currentUser = MutableLiveData<User>()
 
@@ -41,7 +43,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun fetchUser() {
         scope.launch {
-            currentUser.postValue(repository.getUserInfo())
+            currentUser.postValue(authorizedRepository.getUserInfo().saveTokenAndReturnBody())
         }
     }
     // endregion User
@@ -102,7 +104,13 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                 Log.e("loadBreviary", exc.toString())
                 activity.runOnUiThread {
                     loadingDialog.dismiss()
-                    activity.showNoInternetDialogWithTryAgain { loadBreviaryHtml(loadingDialog, viewPagerFragment, activity) }
+                    activity.showNoInternetDialogWithTryAgain {
+                        loadBreviaryHtml(
+                            loadingDialog,
+                            viewPagerFragment,
+                            activity
+                        )
+                    }
                 }
             }
         }).start()

@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.apicalls.wolczyn
 
-import kotlinx.coroutines.Deferred
 import pl.kapucyni.wolczyn.app.model.Departure
 import pl.kapucyni.wolczyn.app.model.User
 import retrofit2.Response
@@ -32,5 +31,5 @@ interface KapucyniApi {
     ): String
 
     @POST("wolczyn/ja")
-    suspend fun getUserInfoAsync(): Deferred<Response<User>>
+    suspend fun getUserInfoAsync(): Response<User>
 }

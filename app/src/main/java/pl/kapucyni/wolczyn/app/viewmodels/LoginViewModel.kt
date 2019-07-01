@@ -7,6 +7,7 @@ import kotlinx.coroutines.*
 import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
 import pl.kapucyni.wolczyn.app.model.User
+import pl.kapucyni.wolczyn.app.utils.saveTokenAndReturnBody
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel(val app: Application) : AndroidViewModel(app) {
@@ -19,7 +20,8 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
     private val scope = CoroutineScope(coroutineContext)
 
     private val repository: KapucyniApiRepository = KapucyniApiRepository(RetrofitClient.kapucyniApi)
-    private val authorizedRepository: KapucyniApiRepository = KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
+    private val authorizedRepository: KapucyniApiRepository =
+        KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
 
     val bearerToken = MutableLiveData<String>()
     val loggedUser = MutableLiveData<User>()
@@ -38,7 +40,7 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun fetchUser() {
         scope.launch {
-            loggedUser.postValue(authorizedRepository.getUserInfo())
+            loggedUser.postValue(authorizedRepository.getUserInfo().saveTokenAndReturnBody())
         }
     }
 

@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.apicalls
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.kapucyni.wolczyn.app.apicalls.weather.WeatherApi
@@ -23,7 +22,6 @@ object RetrofitClient {
             kapucyniApiClient = Retrofit.Builder()
                 .baseUrl(BASE_URL_KAPUCYNI_API)
                 .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .client(getOkHttpClient())
                 .build()
         }
@@ -38,7 +36,6 @@ object RetrofitClient {
             weatherClient = Retrofit.Builder()
                 .baseUrl(BASE_URL_WEATHER)
                 .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .client(getOkHttpClient())
                 .build()
         }
@@ -51,7 +48,6 @@ object RetrofitClient {
         return Retrofit.Builder()
             .baseUrl(BASE_URL_KAPUCYNI_API)
             .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(getAuthorizationOkHttpClient())
             .build()
     }
