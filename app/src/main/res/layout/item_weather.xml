@@ -42,6 +42,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/expand_weather_view"
                 android:padding="8dp"
+                android:rotation="180"
                 android:src="@drawable/ic_arrow_down" />
         </RelativeLayout>
 
@@ -51,8 +52,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:visibility="gone">
+            android:paddingBottom="8dp">
 
             <TextView
                 android:id="@+id/weatherTemperature"

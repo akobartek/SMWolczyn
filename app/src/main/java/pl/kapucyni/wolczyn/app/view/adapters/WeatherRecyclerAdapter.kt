@@ -1,7 +1,6 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +43,7 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
             val date = weatherRecords[0].dt_txt.split(" ")[0].split("-")
             itemView.weatherDayText.text = "${date[2]}.${date[1]}.${date[0]}"
             val index = if (position == 0) 0 else weatherRecords.indexOf(weatherRecords.maxBy { it.main.temp })
-            if (position == 0 && itemView.weatherCardToExpand.visibility == View.GONE) expandClick()
+            if (position != 0 && itemView.weatherCardToExpand.visibility == View.VISIBLE) expandClick()
             val weatherPair = weatherValues[weatherRecords[index].weather[0].icon.substring(0, 2)]
                 ?: Pair(R.drawable.ic_weather_clear_sky, R.string.clear_sky)
             loadChart(weatherRecords)
@@ -68,7 +67,6 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
 
         private fun loadChart(weatherRecords: List<WeatherRecord>) {
             val hours = weatherRecords.map { it.dt_txt.split(" ")[1].substring(0, 5) }
-            Log.d("xDDD", hours.toString())
 
             itemView.weatherChart.apply {
                 isDragEnabled = false
@@ -83,6 +81,7 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
                     position = XAxis.XAxisPosition.BOTTOM
                     setDrawGridLines(false)
                     setDrawLabels(true)
+                    granularity = 1f
                     textColor = itemView.context.getAttributeColor(R.attr.colorText)
                     valueFormatter = IndexAxisValueFormatter(hours)
                 }

@@ -47,13 +47,14 @@ class WeatherFragment : Fragment() {
             var weatherDays = arrayListOf<List<WeatherRecord>>()
             days.forEach { day ->
                 weatherDays.add(weatherList.filter {
+                    val dayOfMonth = day.split("-").last().toInt() + 1
                     val nextDayMidnight =
-                        day.replaceRange(8, 10, (day.split("-").last().toInt() + 1).toString()) + " 00:00:00"
+                        day.replaceRange(8, 10, if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth") + " 00:00:00"
                     it.dt_txt.split(" ")[0] == day || it.dt_txt == nextDayMidnight
                 })
             }
             weatherDays = weatherDays.filter { weatherDay ->
-                weatherDay.any { record -> record.dt_txt.split(" ")[1] == "21:00:00" }
+                weatherDay[weatherDay.size - 1].dt_txt.split(" ")[1] == "00:00:00"
             } as ArrayList<List<WeatherRecord>>
             mAdapter.setWeatherList(weatherDays)
             mMainViewModel.weatherList = weatherList
