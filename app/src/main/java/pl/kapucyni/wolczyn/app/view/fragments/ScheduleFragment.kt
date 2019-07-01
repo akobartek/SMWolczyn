@@ -35,6 +35,7 @@ class ScheduleFragment : Fragment() {
     private lateinit var mAdapter: ScheduleRecyclerAdapter
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var mDayViews: Array<TextView>
+    private lateinit var mDaysBarLayout: View
     private var mSelectedDay = 0
     var selectedGuest: Guest? = null
 
@@ -118,6 +119,9 @@ class ScheduleFragment : Fragment() {
                 )
             }
         }
+        mDaysBarLayout = view.daysBarLayout
+        view.scheduleListLayout.removeView(mDaysBarLayout)
+        (activity as MainActivity).addViewToAppBar(mDaysBarLayout)
 
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -157,6 +161,7 @@ class ScheduleFragment : Fragment() {
     }
 
     override fun onStop() {
+        (activity as MainActivity).removeViewFromAppBar(mDaysBarLayout)
         mScheduleViewModel.cancelAllRequests()
         super.onStop()
     }

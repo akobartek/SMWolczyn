@@ -90,7 +90,7 @@ class ViewPagerFragment : Fragment() {
         mTabLayout.setupWithViewPager(view?.viewPager)
         view!!.viewPager.removeView(mTabLayout)
         when (mFragmentType) {
-            "guests" -> (activity!! as MainActivity).addViewToToolbar(mTabLayout)
+            "guests" -> (activity as MainActivity).addViewToToolbar(mTabLayout)
             "breviary" -> {
                 if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                     (activity as MainActivity).addViewToAppBar(mTabLayout)
