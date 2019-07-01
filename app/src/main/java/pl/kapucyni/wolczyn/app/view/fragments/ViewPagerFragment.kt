@@ -107,7 +107,7 @@ class ViewPagerFragment : Fragment() {
         }
         val loadingDialog = AlertDialog.Builder(activity!!)
             .setView(R.layout.dialog_loading)
-            .setOnCancelListener { (activity as MainActivity).goBackToSchedule() }
+            .setOnCancelListener { (activity as MainActivity).goBackToHome() }
             .create()
         loadingDialog.show()
         mViewModel.loadBreviaryHtml(

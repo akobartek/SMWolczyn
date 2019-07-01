@@ -156,8 +156,8 @@ class DepartureListFragment : Fragment() {
 
     fun getDepartureTransportTypeImageResource(transportType: String?) = when {
         transportType == null -> R.drawable.ic_foot
-        transportType.contains("bus") -> R.drawable.ic_menu_bus
-        transportType.contains("PKS") -> R.drawable.ic_menu_bus
+        transportType.contains("bus") -> R.drawable.ic_bus
+        transportType.contains("PKS") -> R.drawable.ic_bus
         transportType.contains("pociąg") -> R.drawable.ic_train
         transportType.contains("PKP") -> R.drawable.ic_train
         transportType.contains("auto") -> R.drawable.ic_car

@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 12 && resultCode == Activity.RESULT_OK) {
             if (!data!!.getBooleanExtra("loginSuccess", false) && data.getIntExtra("fragment", 0) == R.id.nav_group)
-                goBackToSchedule()
+                goBackToHome()
             else
                 goToSelectedFragment(data.getIntExtra("fragment", 0))
         }
@@ -195,6 +195,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mCurrentFragmentId = item.itemId
         navView.setCheckedItem(mCurrentFragmentId!!)
         val fragment = when (item.itemId) {
+            R.id.nav_home -> {
+                toolbar.title = getString(R.string.menu_home)
+                HomeFragment()
+            }
             R.id.nav_schedule -> {
                 toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()
@@ -240,9 +244,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                toolbar.title = getString(R.string.menu_map)
 //                MapFragment()
 //            }
-//            R.id.nav_showers -> {
-//                toolbar.title = getString(R.string.menu_showers)
-//            }
             else -> {
                 toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()
@@ -260,7 +261,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         PreferencesManager.setBearerToken("")
         headerDrawerImage?.setImageDrawable(getAttributeDrawable(R.attr.logoMenu))
         invalidateOptionsMenu()
-        if (mCurrentFragmentId == R.id.nav_group) goBackToSchedule()
+        if (mCurrentFragmentId == R.id.nav_group) goBackToHome()
     }
 
     private fun openLoginActivity() {
@@ -273,7 +274,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toolbar.title = newTitle
     }
 
-    fun goBackToSchedule() = onNavigationItemSelected(navView.menu.getItem(0))
+    fun goBackToHome() = onNavigationItemSelected(navView.menu.getItem(0))
 
     fun goToSelectedFragment(fragmentId: Int): Boolean =
         onNavigationItemSelected(navView.menu.findItem(fragmentId))

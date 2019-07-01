@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/menu_home" />
+        <item
             android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_menu_schedule"
             android:title="@string/menu_schedule" />
@@ -22,7 +26,7 @@
             android:title="@string/menu_songbook" />
         <item
             android:id="@+id/nav_group"
-            android:icon="@drawable/ic_menu_meeting"
+            android:icon="@drawable/ic_menu_group"
             android:title="@string/menu_group" />
         <item
             android:id="@+id/nav_guests"
@@ -34,7 +38,7 @@
             android:title="@string/menu_signings" />
         <item
             android:id="@+id/nav_departures"
-            android:icon="@drawable/ic_menu_bus"
+            android:icon="@drawable/ic_menu_departure"
             android:title="@string/menu_departures" />
         <item
             android:id="@+id/nav_breviary"

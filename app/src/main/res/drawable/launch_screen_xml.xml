@@ -2,12 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
 
-    <item android:drawable="?attr/colorBackground" />
+    <item android:drawable="?colorBackground" />
 
     <item>
         <bitmap
             android:gravity="center"
             android:src="@drawable/launch_screen" />
     </item>
-
 </layer-list>

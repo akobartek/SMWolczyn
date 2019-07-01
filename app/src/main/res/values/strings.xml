@@ -21,10 +21,23 @@
     <string name="night_mode_title">Night mode</string>
     <string name="night_mode_summary">Turn on night mode in the app</string>
 
+    <!-- LOGIN STRINGS -->
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_fb">Sign in with Facebook</string>
+    <string name="sign_out">Sign out</string>
+    <string name="create_account">Create account</string>
+    <string name="login_error_empty">Login cannot be empty!</string>
+    <string name="password_error_empty">Password cannot be empty!</string>
+    <string name="account_not_found_dialog_message">Account not found!</string>
+    <string name="signed_in">Signed in</string>
+
     <!-- NAVIGATION STRINGS -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_home">Home</string>
     <string name="menu_schedule">Schedule</string>
     <string name="menu_weather">Weather</string>
     <string name="menu_anthem">Anthem</string>
@@ -37,59 +50,19 @@
     <string name="menu_map">Map</string>
     <string name="menu_showers">Showers</string>
 
-    <!-- GUESTS STRINGS -->
-    <string name="conferences">Conferences</string>
-    <string name="concerts">Concerts</string>
-    <string name="guest_photo_description">Guest\'s photo</string>
-    <string name="guest_link_description">Link to guest\'s social media</string>
-
-    <!-- BREVIARY STRINGS -->
-    <string name="morning_prayer">Morning</string>
-    <string name="evening_prayer">Evening</string>
-    <string name="night_prayer">Night</string>
-
-    <!-- GROUPS STRINGS -->
-    <string name="groups_not_available">Groups are not available yet!</string>
-    <string name="user_photo">Photo of the user</string>
-    <string name="user_group">Group number:\n%s</string>
-
-    <!-- DEPARTURES STRINGS -->
-    <string name="empty_departures_list">There are no departures yet!</string>
-    <string name="transport_type_image_description">Icon that represent transport type</string>
-    <string name="organizer">Organizer: %s</string>
-    <string name="send_mail">Send mail…</string>
-    <string name="send_mail_error">There is no email client installed!</string>
-
-    <!-- ANTHEM STRINGS -->
-    <string name="see_on_youtube">See on YouTube</string>
-
-    <!-- WEATHER STRINGS -->
-    <string name="weather_title">Weather - %s</string>
-    <string name="empty_weather_list">There is a problem with loading weather data!</string>
-    <string name="expand_weather_view">Show weather for this day</string>
-    <string name="celsius" translatable="false">°C</string>
-    <string name="weather_icon">Icon representing current weather</string>
-    <string name="clear_sky">Clear sky</string>
-    <string name="few_clouds">Few clouds</string>
-    <string name="scattered_clouds">Scattered clouds</string>
-    <string name="broken_clouds">Broken clouds</string>
-    <string name="shower_rain">Shower rain</string>
-    <string name="rain">Rain</string>
-    <string name="thunderstorm">Thunderstorm</string>
-    <string name="snow">Snow</string>
-    <string name="mist">Mist</string>
-
-    <!-- LOGIN STRINGS -->
-    <string name="login">Login</string>
-    <string name="password">Password</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_in_fb">Sign in with Facebook</string>
-    <string name="sign_out">Sign out</string>
-    <string name="create_account">Create account</string>
-    <string name="login_error_empty">Login cannot be empty!</string>
-    <string name="password_error_empty">Password cannot be empty!</string>
-    <string name="account_not_found_dialog_message">Account not found!</string>
-    <string name="signed_in">Signed in</string>
+    <!-- HOME STRINGS -->
+    <string name="poster_description">SM Wołczyn 2019 poster</string>
+    <string name="decalogue_title">Decalogue of the Meeting</string>
+    <string name="decalogue_1">I create a community with all participants of the Meeting.</string>
+    <string name="decalogue_2">I smile as often as possible, show kindness to other participants, as well as the inhabitants of Wołczyn.</string>
+    <string name="decalogue_3">I try to share with the other what I have and what I can share.</string>
+    <string name="decalogue_4">I participate in all points of the program. During their duration I am staying in the closed area of ​​the Meeting. The organizers do not take responsibility for participants outside the Meeting area.</string>
+    <string name="decalogue_5">I take care of cleanliness in the city and on the camping site. I throw rubbish into baskets and sacks, segregate waste.</string>
+    <string name="decalogue_6">No co-educational night meetings. Girls and boys sleep in separate tents.</string>
+    <string name="decalogue_7">No cigarettes, no alcohol, no drugs.</string>
+    <string name="decalogue_8">I adhere to the night silence, which is valid from the time indicated by the organizers.</string>
+    <string name="decalogue_9">Failure to observe points 6–8 results in the exclusion from the group of participants of the Meeting.</string>
+    <string name="decalogue_10">I accept other provisions of the full statute.</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link to record of this event</string>
@@ -116,8 +89,50 @@
     <string name="thursday">Thursday</string>
     <string name="friday">Friday</string>
 
+    <!-- WEATHER STRINGS -->
+    <string name="weather_title">Weather - %s</string>
+    <string name="empty_weather_list">There is a problem with loading weather data!</string>
+    <string name="expand_weather_view">Show weather for this day</string>
+    <string name="celsius" translatable="false">°C</string>
+    <string name="weather_icon">Icon representing current weather</string>
+    <string name="clear_sky">Clear sky</string>
+    <string name="few_clouds">Few clouds</string>
+    <string name="scattered_clouds">Scattered clouds</string>
+    <string name="broken_clouds">Broken clouds</string>
+    <string name="shower_rain">Shower rain</string>
+    <string name="rain">Rain</string>
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="snow">Snow</string>
+    <string name="mist">Mist</string>
+
+    <!-- ANTHEM STRINGS -->
+    <string name="see_on_youtube">See on YouTube</string>
+
     <!-- SONGBOOK STRINGS -->
     <string name="search">Search</string>
     <string name="song_search_hint">Type title or text…</string>
+
+    <!-- GROUP STRINGS -->
+    <string name="groups_not_available">Groups are not available yet!</string>
+    <string name="user_photo">Photo of the user</string>
+    <string name="user_group">Group number:\n%s</string>
+
+    <!-- GUESTS STRINGS -->
+    <string name="conferences">Conferences</string>
+    <string name="concerts">Concerts</string>
+    <string name="guest_photo_description">Guest\'s photo</string>
+    <string name="guest_link_description">Link to guest\'s social media</string>
+
+    <!-- DEPARTURES STRINGS -->
+    <string name="empty_departures_list">There are no departures yet!</string>
+    <string name="transport_type_image_description">Icon that represent transport type</string>
+    <string name="organizer">Organizer: %s</string>
+    <string name="send_mail">Send mail…</string>
+    <string name="send_mail_error">There is no email client installed!</string>
+
+    <!-- BREVIARY STRINGS -->
+    <string name="morning_prayer">Morning</string>
+    <string name="evening_prayer">Evening</string>
+    <string name="night_prayer">Night</string>
 
 </resources>

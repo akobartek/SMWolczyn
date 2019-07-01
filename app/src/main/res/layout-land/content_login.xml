@@ -14,11 +14,12 @@
         android:id="@+id/logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="Logo"
         android:src="?attr/logoMenu"
+        app:layout_constraintBottom_toTopOf="@+id/loginInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent=".75"
@@ -28,13 +29,13 @@
         android:id="@+id/loginInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="4dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         android:textColorHint="?attr/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/passwordInputLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo">
+        app:layout_constraintWidth_percent="0.5">
 
         <pl.kapucyni.wolczyn.app.view.ui.MyTextInputEditText
             android:id="@+id/loginET"
@@ -50,11 +51,13 @@
         android:id="@+id/passwordInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         android:textColorHint="?attr/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/emailSignInBtn"
         app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/loginInputLayout">
+        app:layout_constraintStart_toStartOf="@+id/loginInputLayout">
 
         <pl.kapucyni.wolczyn.app.view.ui.MyTextInputEditText
             android:id="@+id/passwordET"
@@ -70,34 +73,42 @@
         android:id="@+id/emailSignInBtn"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="?attr/colorAccent"
         android:text="@string/sign_in"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:textColor="?attr/colorBackground"
         app:cornerRadius="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
-        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout" />
+        app:layout_constraintStart_toStartOf="@+id/loginInputLayout" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleSignInBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         app:buttonSize="wide"
-        app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/emailSignInBtn" />
+        app:layout_constraintBottom_toTopOf="@+id/facebookSignInBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/loginInputLayout"
+        app:layout_constraintWidth_percent="0.5" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebookSignInBtn"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="20dp"
         app:com_facebook_login_text="@string/sign_in_fb"
-        app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/emailSignInBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/googleSignInBtn"
         app:layout_constraintTop_toBottomOf="@+id/googleSignInBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

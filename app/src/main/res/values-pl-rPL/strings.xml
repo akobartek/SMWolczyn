@@ -15,10 +15,23 @@
     <string name="night_mode_title">Tryb nocny</string>
     <string name="night_mode_summary">Włącz tryb nocny w całej aplikacji</string>
 
+    <!-- LOGIN STRINGS -->
+    <string name="login">Login</string>
+    <string name="password">Hasło</string>
+    <string name="sign_in">Zaloguj</string>
+    <string name="sign_in_fb">Zaloguj się przez Facebook</string>
+    <string name="sign_out">Wyloguj</string>
+    <string name="create_account">Utwórz konto</string>
+    <string name="login_error_empty">Login nie może być pusty!</string>
+    <string name="password_error_empty">Hasło nie może być puste!</string>
+    <string name="account_not_found_dialog_message">Nie znaleziono podanego konta!</string>
+    <string name="signed_in">Zalogowano</string>
+
     <!-- NAVIGATION STRINGS -->
     <string name="navigation_drawer_open">Otwórz panel nawigacyjny</string>
     <string name="navigation_drawer_close">Zamknij panel nawigacyjny</string>
     <string name="action_settings">Ustawienia</string>
+    <string name="menu_home">Strona Główna</string>
     <string name="menu_schedule">Plan</string>
     <string name="menu_weather">Pogoda</string>
     <string name="menu_anthem">Hymn</string>
@@ -31,58 +44,19 @@
     <string name="menu_map">Mapa</string>
     <string name="menu_showers">Prysznice</string>
 
-    <!-- GUESTS STRINGS -->
-    <string name="conferences">Konferencje</string>
-    <string name="concerts">Koncerty</string>
-    <string name="guest_photo_description">Zdjęcie gościa Wołczyna</string>
-    <string name="guest_link_description">Link do mediów społecznościowych gościa</string>
-
-    <!-- BREVIARY STRINGS -->
-    <string name="morning_prayer">Jutrznia</string>
-    <string name="evening_prayer">Nieszpory</string>
-    <string name="night_prayer">Kompleta</string>
-
-    <!-- GROUPS STRINGS -->
-    <string name="groups_not_available">Fraterki nie są jeszcze dostępne!</string>
-    <string name="user_photo">Zdjęcie użytkownika</string>
-    <string name="user_group">Numer fraterki:\n%s</string>
-
-    <!-- DEPARTURES STRINGS -->
-    <string name="empty_departures_list">W bazie nie ma żadnych wyjazdów organizowanych!</string>
-    <string name="transport_type_image_description">Ikona reprezentująca środek transportu</string>
-    <string name="organizer">Organizator: %s</string>
-    <string name="send_mail">Wyślij maila…</string>
-    <string name="send_mail_error">Nie znaleziono żadnego klienta mailowego!</string>
-
-    <!-- ANTHEM STRINGS -->
-    <string name="see_on_youtube">Zobacz na YouTube</string>
-
-    <!-- WEATHER STRINGS -->
-    <string name="weather_title">Pogoda - %s</string>
-    <string name="empty_weather_list">Wystąpił problem z ładowaniem danych pogodowych!</string>
-    <string name="expand_weather_view">Pokaż pogodę na ten dzień</string>
-    <string name="weather_icon">Ikona reprezentująca obecną pogodę</string>
-    <string name="clear_sky">Bezchmurne niebo</string>
-    <string name="few_clouds">Liczne przejaśnienia</string>
-    <string name="scattered_clouds">Częściowe zachmurzenie</string>
-    <string name="broken_clouds">Przewaga chmur</string>
-    <string name="shower_rain">Przelotne opady</string>
-    <string name="rain">Deszcz</string>
-    <string name="thunderstorm">Burza</string>
-    <string name="snow">Śnieg</string>
-    <string name="mist">Mgła</string>
-
-    <!-- LOGIN STRINGS -->
-    <string name="login">Login</string>
-    <string name="password">Hasło</string>
-    <string name="sign_in">Zaloguj</string>
-    <string name="sign_in_fb">Zaloguj się przez Facebook</string>
-    <string name="sign_out">Wyloguj</string>
-    <string name="create_account">Utwórz konto</string>
-    <string name="login_error_empty">Login nie może być pusty!</string>
-    <string name="password_error_empty">Hasło nie może być puste!</string>
-    <string name="account_not_found_dialog_message">Nie znaleziono podanego konta!</string>
-    <string name="signed_in">Zalogowano</string>
+    <!-- HOME STRINGS -->
+    <string name="poster_description">Plakat Spotkania Młodych w Wołczynie 2019</string>
+    <string name="decalogue_title">Dekalog Spotkania</string>
+    <string name="decalogue_1">Tworzę wspólnotę ze wszystkimi uczestnikami Spotkania.</string>
+    <string name="decalogue_2">Uśmiecham się jak najczęściej, okazuję życzliwość innym uczestnikom, a także mieszkańcom Wołczyna.</string>
+    <string name="decalogue_3">Staram się dzielić z drugim tym, co mam i czym dzielić się mogę.</string>
+    <string name="decalogue_4">Biorę udział we wszystkich punktach programu. W czasie ich trwania przebywam na zamkniętym terenie Spotkania. Organizatorzy nie biorą odpowiedzialności za uczestników poza terenem Spotkania.</string>
+    <string name="decalogue_5">Dbam o czystość w mieście i na polu namiotowym. Śmieci wyrzucam do koszy i worków, segreguję odpady.</string>
+    <string name="decalogue_6">Żadnych koedukacyjnych spotkań nocnych. Dziewczęta i chłopcy śpią w oddzielnych namiotach. </string>
+    <string name="decalogue_7">Żadnych papierosów, alkoholu, narkotyków.</string>
+    <string name="decalogue_8">Przestrzegam ciszy nocnej, która obowiązuje od godziny wskazanej przez organizatorów.</string>
+    <string name="decalogue_9">Niezachowanie punktów 6–8 skutkuje wykluczeniem z grona uczestników Spotkania.</string>
+    <string name="decalogue_10">Akceptuję inne postanowienia pełnego regulaminu. </string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania tego wydarzenia</string>
@@ -109,8 +83,49 @@
     <string name="thursday">Czwartek</string>
     <string name="friday">Piątek</string>
 
+    <!-- WEATHER STRINGS -->
+    <string name="weather_title">Pogoda - %s</string>
+    <string name="empty_weather_list">Wystąpił problem z ładowaniem danych pogodowych!</string>
+    <string name="expand_weather_view">Pokaż pogodę na ten dzień</string>
+    <string name="weather_icon">Ikona reprezentująca obecną pogodę</string>
+    <string name="clear_sky">Bezchmurne niebo</string>
+    <string name="few_clouds">Liczne przejaśnienia</string>
+    <string name="scattered_clouds">Częściowe zachmurzenie</string>
+    <string name="broken_clouds">Przewaga chmur</string>
+    <string name="shower_rain">Przelotne opady</string>
+    <string name="rain">Deszcz</string>
+    <string name="thunderstorm">Burza</string>
+    <string name="snow">Śnieg</string>
+    <string name="mist">Mgła</string>
+
+    <!-- ANTHEM STRINGS -->
+    <string name="see_on_youtube">Zobacz na YouTube</string>
+
     <!-- SONGBOOK STRINGS -->
     <string name="search">Search</string>
     <string name="song_search_hint">Tytuł lub treść piosenki…</string>
+
+    <!-- GROUP STRINGS -->
+    <string name="groups_not_available">Fraterki nie są jeszcze dostępne!</string>
+    <string name="user_photo">Zdjęcie użytkownika</string>
+    <string name="user_group">Numer fraterki:\n%s</string>
+
+    <!-- GUESTS STRINGS -->
+    <string name="conferences">Konferencje</string>
+    <string name="concerts">Koncerty</string>
+    <string name="guest_photo_description">Zdjęcie gościa Wołczyna</string>
+    <string name="guest_link_description">Link do mediów społecznościowych gościa</string>
+
+    <!-- DEPARTURES STRINGS -->
+    <string name="empty_departures_list">W bazie nie ma żadnych wyjazdów organizowanych!</string>
+    <string name="transport_type_image_description">Ikona reprezentująca środek transportu</string>
+    <string name="organizer">Organizator: %s</string>
+    <string name="send_mail">Wyślij maila…</string>
+    <string name="send_mail_error">Nie znaleziono żadnego klienta mailowego!</string>
+
+    <!-- BREVIARY STRINGS -->
+    <string name="morning_prayer">Jutrznia</string>
+    <string name="evening_prayer">Nieszpory</string>
+    <string name="night_prayer">Kompleta</string>
 
 </resources>

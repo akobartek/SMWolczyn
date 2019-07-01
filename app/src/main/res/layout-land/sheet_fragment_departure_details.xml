@@ -35,7 +35,7 @@
             android:contentDescription="@string/transport_type_image_description"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/hideBottomSheet"
-            tools:src="@drawable/ic_menu_bus" />
+            tools:src="@drawable/ic_bus" />
 
         <TextView
             android:id="@+id/departureCity"

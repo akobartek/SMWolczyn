@@ -55,7 +55,7 @@ fun Activity.showNoInternetDialogWithTryAgain(function: () -> Unit): Unit =
         }
         .setNegativeButton(R.string.cancel) { dialog, _ ->
             dialog.dismiss()
-            if (this is MainActivity) goBackToSchedule()
+            if (this is MainActivity) goBackToHome()
         }
         .create()
         .show()
