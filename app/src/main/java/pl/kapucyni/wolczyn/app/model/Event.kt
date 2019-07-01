@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.model
 
 data class Event(
+    val id: String,
     val day: String,
     val date: String,
     val hour: String,
@@ -8,7 +9,12 @@ data class Event(
     val eventPlace: EventPlace,
     val eventType: EventType,
     val guestIndex: Int?,
-    val videoUrl: String? = ""
+    var videoUrl: String? = ""
+)
+
+data class EventFirestore(
+    val id: String = "",
+    val videoUrl: String = ""
 )
 
 enum class EventType {

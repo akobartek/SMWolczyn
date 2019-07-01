@@ -6,6 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="no_internet_title">No internet connection</string>
     <string name="no_internet_reconnect_message">An error with connection occurred, do you want to try again?</string>
+    <string name="no_internet_data_message">No network access, the displayed data may be out of date!</string>
     <string name="privacy_policy"><u>Privacy Policy</u></string>
     <string name="press_to_exit">Press once again to exit!</string>
     <string name="loading">Loading…</string>
@@ -63,6 +64,7 @@
     <string name="see_on_youtube">See on YouTube</string>
 
     <!-- WEATHER STRINGS -->
+    <string name="weather_title">Weather - %s</string>
     <string name="empty_weather_list">There is a problem with loading weather data!</string>
     <string name="expand_weather_view">Show weather for this day</string>
     <string name="celsius" translatable="false">°C</string>
@@ -90,6 +92,7 @@
     <string name="signed_in">Signed in</string>
 
     <!-- SCHEDULE STRINGS -->
+    <string name="video_image_description">Link to record of this event</string>
     <string name="place_amphitheatre">Amphitheatre</string>
     <string name="place_white_tent">White Tent</string>
     <string name="place_garden">Garden near the White Tent</string>
@@ -112,5 +115,9 @@
     <string name="wednesday">Wednesday</string>
     <string name="thursday">Thursday</string>
     <string name="friday">Friday</string>
+
+    <!-- SONGBOOK STRINGS -->
+    <string name="search">Search</string>
+    <string name="song_search_hint">Type title or text…</string>
 
 </resources>

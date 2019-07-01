@@ -12,6 +12,7 @@ import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.model.Event
 import pl.kapucyni.wolczyn.app.model.EventPlace
 import pl.kapucyni.wolczyn.app.model.EventType
+import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 import pl.kapucyni.wolczyn.app.view.fragments.ScheduleFragment
 
 class ScheduleRecyclerAdapter(private var mEventsList: ArrayList<Any>, private val mFragment: ScheduleFragment) :
@@ -24,8 +25,20 @@ class ScheduleRecyclerAdapter(private var mEventsList: ArrayList<Any>, private v
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            TYPE_HEADER -> ScheduleHeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_event_header, parent, false))
-            TYPE_ITEM ->ScheduleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_event, parent, false))
+            TYPE_HEADER -> ScheduleHeaderViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_event_header,
+                    parent,
+                    false
+                )
+            )
+            TYPE_ITEM -> ScheduleViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_event,
+                    parent,
+                    false
+                )
+            )
             else -> throw IllegalStateException("There is no type like this!")
         }
     }
@@ -80,7 +93,11 @@ class ScheduleRecyclerAdapter(private var mEventsList: ArrayList<Any>, private v
                 DrawableCompat.wrap(itemView.eventTypeColor.drawable),
                 ContextCompat.getColor(itemView.context, color)
             )
-            itemView.videoImage.visibility = if (event.videoUrl.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+
+            itemView.videoImage.visibility = if (event.videoUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+            itemView.videoImage.setOnClickListener {
+                itemView.context.openWebsiteInCustomTabsService(event.videoUrl!!)
+            }
 
             itemView.setOnClickListener { mFragment.onItemClick(event) }
         }

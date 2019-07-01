@@ -1,18 +1,12 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
-
-import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_anthem.view.*
 
 import pl.kapucyni.wolczyn.app.R
-import pl.kapucyni.wolczyn.app.utils.PreferencesManager
-import pl.kapucyni.wolczyn.app.utils.isChromeCustomTabsSupported
+import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 
 class AnthemFragment : Fragment() {
 
@@ -30,24 +24,10 @@ class AnthemFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_yt_anthem -> {
-            openAnthemOnYoutube()
+            context?.openWebsiteInCustomTabsService(YOUTUBE_URL)
             true
         }
         else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun openAnthemOnYoutube() {
-        if (view!!.context.isChromeCustomTabsSupported()) {
-            CustomTabsIntent.Builder().apply {
-                val color = if (PreferencesManager.getNightMode()) Color.parseColor("#28292e") else Color.WHITE
-                setToolbarColor(color)
-                setSecondaryToolbarColor(color)
-            }.build().launchUrl(context, Uri.parse(YOUTUBE_URL))
-        } else {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(YOUTUBE_URL)
-            startActivity(intent)
-        }
     }
 
     companion object {

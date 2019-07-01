@@ -17,8 +17,7 @@ import kotlinx.android.synthetic.main.fragment_departures.view.*
 import kotlinx.android.synthetic.main.sheet_fragment_departure_details.view.*
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.model.Departure
-import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
-import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
+import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.view.adapters.DeparturesRecyclerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.DeparturesViewModel
 
@@ -42,9 +41,10 @@ class DepartureListFragment : Fragment() {
 
         mDeparturesViewModel = ViewModelProviders.of(this@DepartureListFragment).get(DeparturesViewModel::class.java)
         fetchDepartures()
-        mDeparturesViewModel.departuresLiveData.observe(this@DepartureListFragment, Observer { departures ->
+        mDeparturesViewModel.departures.observe(this@DepartureListFragment, Observer { departures ->
             departures.sortBy { it.city }
             mAdapter.setDeparturesList(departures)
+            view.departuresRecyclerView.scheduleLayoutAnimation()
             view.loadingIndicator.hide()
             view.departuresSwipeToRefresh.isRefreshing = false
             if (departures.isEmpty()) {
@@ -95,6 +95,7 @@ class DepartureListFragment : Fragment() {
                 }
                 if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     view.departuresRecyclerView.alpha = 1f
+                    view.departuresRecyclerView.isEnabled = true
                     selectedDeparture = null
                     bottomSheet.departureTransportType.setImageResource(android.R.color.transparent)
                     bottomSheet.departureCity.text = ""
@@ -122,18 +123,13 @@ class DepartureListFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        mDeparturesViewModel.cancelAllRequests()
+        super.onStop()
+    }
+
     private fun fetchDepartures() {
-        activity?.let {
-            if (it.checkNetworkConnection()) {
-                try {
-                    mDeparturesViewModel.fetchDepartures()
-                } catch (exc: Exception) {
-                    it.showNoInternetDialog { mDeparturesViewModel.fetchDepartures() }
-                }
-            } else {
-                it.showNoInternetDialog { mDeparturesViewModel.fetchDepartures() }
-            }
-        }
+        activity?.tryToRunFunctionOnInternet { mDeparturesViewModel.fetchDepartures() }
     }
 
     fun expandBottomSheet(departure: Departure) {
@@ -158,16 +154,14 @@ class DepartureListFragment : Fragment() {
         }
     }
 
-
     fun getDepartureTransportTypeImageResource(transportType: String?) = when {
         transportType == null -> R.drawable.ic_foot
         transportType.contains("bus") -> R.drawable.ic_menu_bus
+        transportType.contains("PKS") -> R.drawable.ic_menu_bus
         transportType.contains("pociąg") -> R.drawable.ic_train
+        transportType.contains("PKP") -> R.drawable.ic_train
         transportType.contains("auto") -> R.drawable.ic_car
-        transportType.contains("samochód") -> R.drawable.ic_car
-        transportType.contains("pieszo") -> R.drawable.ic_foot
-        transportType.contains("piech") -> R.drawable.ic_foot
-        transportType.contains("but") -> R.drawable.ic_foot
+        transportType.contains("samoch") -> R.drawable.ic_car
         else -> R.drawable.ic_foot
     }
 }

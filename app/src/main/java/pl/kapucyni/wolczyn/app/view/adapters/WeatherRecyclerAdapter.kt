@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +53,7 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
             itemView.weatherDescription.text = itemView.context.getString(weatherPair.second)
 
             itemView.weatherHeader.setOnClickListener { expandClick() }
+            itemView.expandViewBtn.setOnClickListener { expandClick() }
         }
 
         private fun expandClick() {
@@ -66,6 +68,7 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
 
         private fun loadChart(weatherRecords: List<WeatherRecord>) {
             val hours = weatherRecords.map { it.dt_txt.split(" ")[1].substring(0, 5) }
+            Log.d("xDDD", hours.toString())
 
             itemView.weatherChart.apply {
                 isDragEnabled = false

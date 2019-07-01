@@ -9,7 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import pl.kapucyni.wolczyn.app.apicalls.ApiFactory
+import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.weather.WeatherRepository
 import pl.kapucyni.wolczyn.app.model.Weather
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
@@ -24,9 +24,9 @@ class WeatherViewModel(val app: Application) : AndroidViewModel(app) {
 
     private val scope = CoroutineScope(coroutineContext)
 
-    private val repository: WeatherRepository = WeatherRepository(ApiFactory.weatherApi)
+    private val repository: WeatherRepository = WeatherRepository(RetrofitClient.weatherApi)
 
-    val weatherLiveData = MutableLiveData<List<WeatherRecord>>()
+    val weatherRecords = MutableLiveData<List<WeatherRecord>>()
 
     fun fetchWeather() {
         scope.launch {
@@ -37,14 +37,14 @@ class WeatherViewModel(val app: Application) : AndroidViewModel(app) {
                 val weatherData = snapshot.toObjects<Weather>()
                 if (weatherData.isNotEmpty() && snapshot.documents[0].id.toLong() > now - 5400000) {
                     Log.i("WeatherViewModel", "Data loaded from firebase!")
-                    weatherLiveData.postValue(weatherData[0].list)
+                    weatherRecords.postValue(weatherData[0].list)
                 } else {
                     val weather = repository.getWeatherFromApi()
                     if (weather != null) {
                         if (weatherData.isNotEmpty()) weatherRef.document(snapshot.documents[0].id).delete()
                         weatherRef.document(now.toString()).set(Weather(weather.list))
                     }
-                    weatherLiveData.postValue(weather?.list)
+                    weatherRecords.postValue(weather?.list)
                 }
             } catch (exc: FirebaseFirestoreException) {
                 Log.e("Error catched", exc.toString())
@@ -52,10 +52,10 @@ class WeatherViewModel(val app: Application) : AndroidViewModel(app) {
                 if (weather != null) {
                     weatherRef.document(now.toString()).set(Weather(weather.list))
                 }
-                weatherLiveData.postValue(weather?.list)
+                weatherRecords.postValue(weather?.list)
             }
         }
     }
 
-//    fun cancelAllRequests() = coroutineContext.cancel()
+    fun cancelAllRequests() = coroutineContext.cancel()
 }

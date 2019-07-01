@@ -12,25 +12,25 @@ import retrofit2.http.POST
 interface KapucyniApi {
 
     @GET("wolczyn/wyjazdy")
-    fun getDeparturesAsync(): Deferred<Response<List<Departure>>>
+    suspend fun getDeparturesAsync(): MutableList<Departure>
 
     @FormUrlEncoded
     @POST("auth/login")
-    fun loginToSystemWithEmailAsync(
+    suspend fun loginToSystemWithEmailAsync(
         @Field("login") login: String,
         @Field("password") password: String,
         @Field("app_id") app_id: String
-    ): Deferred<Response<String>>
+    ): String
 
     @FormUrlEncoded
     @POST("auth/social")
-    fun loginToSystemWithSocialAsync(
+    suspend fun loginToSystemWithSocialAsync(
         @Field("email") email: String,
         @Field("identifier") identifier: String,
         @Field("media") media: String,
         @Field("app_id") app_id: String
-    ): Deferred<Response<String>>
+    ): String
 
     @POST("wolczyn/ja")
-    fun getUserInfoAsync(): Deferred<Response<User>>
+    suspend fun getUserInfoAsync(): Deferred<Response<User>>
 }

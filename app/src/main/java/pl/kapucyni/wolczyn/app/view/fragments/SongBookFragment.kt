@@ -1,38 +1,52 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_songbook.view.*
 import kotlinx.android.synthetic.main.sheet_fragment_song.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.view.adapters.SongsRecyclerAdapter
 
 class SongBookFragment : Fragment() {
 
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
-    private var mSelectedSong: Int? = null
+    private lateinit var mAdapter: SongsRecyclerAdapter
+    private lateinit var mSearchView: SearchView
+    var selectedSong: Int? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_songbook, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
+        return inflater.inflate(R.layout.fragment_songbook, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.let { view.songsList.adapter = ArrayAdapter<String>(it, R.layout.item_listview, songNames) }
+
+        mAdapter = SongsRecyclerAdapter(this@SongBookFragment, songTitles)
+        view.songsRecyclerView.layoutManager = LinearLayoutManager(view.context)
+        view.songsRecyclerView.itemAnimator = DefaultItemAnimator()
+        view.songsRecyclerView.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
+        view.songsRecyclerView.adapter = mAdapter
+        view.songsRecyclerView.scheduleLayoutAnimation()
 
         mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById<View>(R.id.songTextSheet))
         mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                mSelectedSong?.let {
-                    bottomSheet.songName.text = songNames[it]
+                selectedSong?.let {
+                    bottomSheet.songName.text = songTitles[it]
                     bottomSheet.songText.text = songTexts[it]
                 }
                 if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    view.songsList.alpha = 1f
-                    mSelectedSong = null
+                    view.songsRecyclerView.alpha = 1f
+                    selectedSong = null
                     bottomSheet.songName.text = ""
                     bottomSheet.songText.text = ""
                 }
@@ -41,31 +55,47 @@ class SongBookFragment : Fragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-        //TODO() -> Searching
-
-        view.songsList.setOnItemClickListener { _, _, position, _ ->
-            if (mSelectedSong == null) {
-                expandBottomSheet(position)
-            } else {
-                hideBottomSheet()
-            }
-        }
-
         if (savedInstanceState != null) {
             val song = savedInstanceState.getInt("song", -1)
             if (song != -1) expandBottomSheet(song)
         }
+
+        view.songsListLayout.setOnClickListener { if (selectedSong != null) hideBottomSheet() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        mSelectedSong?.let { outState.putInt("song", it) }
+        selectedSong?.let { outState.putInt("song", it) }
     }
 
-    private fun expandBottomSheet(position: Int) {
-        mSelectedSong = position
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_songbook, menu)
+        val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        mSearchView = menu.findItem(R.id.action_search).actionView as SearchView
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+        mSearchView.maxWidth = Integer.MAX_VALUE
+
+        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                mAdapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                mAdapter.filter.filter(newText)
+                return false
+            }
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_search) true else super.onOptionsItemSelected(item)
+    }
+
+    fun expandBottomSheet(position: Int) {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        view?.songsList?.animate()
+        selectedSong = position
+        view?.songsRecyclerView?.animate()
             ?.alpha(0.15f)
             ?.duration = 200
     }
@@ -75,7 +105,10 @@ class SongBookFragment : Fragment() {
     }
 
     fun onBackPressed(): Boolean {
-        return if (mBottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN || mBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+        return if (!mSearchView.isIconified) {
+            mSearchView.isIconified = true
+            false
+        } else if (mBottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN || mBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
             true
         } else {
             hideBottomSheet()
@@ -84,7 +117,7 @@ class SongBookFragment : Fragment() {
     }
 
     companion object {
-        val songNames = arrayOf(
+        val songTitles = arrayOf(
             "Hosanna (mam moc)",
             "Jesteśmy piękni",
             "Jezu ufam Tobie",

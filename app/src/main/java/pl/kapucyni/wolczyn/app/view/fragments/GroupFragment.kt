@@ -3,14 +3,13 @@ package pl.kapucyni.wolczyn.app.view.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_group.view.*
-
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.utils.getAttributeDrawable
@@ -27,9 +26,11 @@ class GroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // TODO() -> Different layouts for different user types
+
         activity?.let {
             mMainViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
-            mMainViewModel.userLiveData.observe(this@GroupFragment, Observer { user ->
+            mMainViewModel.currentUser.observe(this@GroupFragment, Observer { user ->
                 if (user?.group != null) {
                     view.groupsEmptyView.visibility = View.INVISIBLE
                     GlideApp.with(this@GroupFragment)

@@ -1,25 +1,22 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_weather.view.*
-
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
-import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
-import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
+import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.view.adapters.WeatherRecyclerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 import pl.kapucyni.wolczyn.app.viewmodels.WeatherViewModel
-import java.lang.Exception
 
 class WeatherFragment : Fragment() {
 
@@ -42,10 +39,10 @@ class WeatherFragment : Fragment() {
         activity?.let {
             mMainViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
             if (mMainViewModel.weatherList == null) fetchWeather()
-            else mWeatherViewModel.weatherLiveData.postValue(mMainViewModel.weatherList)
+            else mWeatherViewModel.weatherRecords.postValue(mMainViewModel.weatherList)
         }
 
-        mWeatherViewModel.weatherLiveData.observe(this@WeatherFragment, Observer { weatherList ->
+        mWeatherViewModel.weatherRecords.observe(this@WeatherFragment, Observer { weatherList ->
             val days = weatherList.map { it.dt_txt.split(" ")[0] }.distinct()
             var weatherDays = arrayListOf<List<WeatherRecord>>()
             days.forEach { day ->
@@ -75,18 +72,13 @@ class WeatherFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        mWeatherViewModel.cancelAllRequests()
+        super.onStop()
+    }
+
     private fun fetchWeather() {
-        activity?.let {
-            if (it.checkNetworkConnection()) {
-                try {
-                    mWeatherViewModel.fetchWeather()
-                } catch (exc: Exception) {
-                    it.showNoInternetDialog { mWeatherViewModel.fetchWeather() }
-                }
-            } else {
-                it.showNoInternetDialog { mWeatherViewModel.fetchWeather() }
-            }
-        }
+        activity?.tryToRunFunctionOnInternet { mWeatherViewModel.fetchWeather() }
     }
 
 }

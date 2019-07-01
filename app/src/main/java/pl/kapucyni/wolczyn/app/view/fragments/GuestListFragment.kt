@@ -1,13 +1,10 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
-import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.browser.customtabs.CustomTabsIntent
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,15 +13,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_guest_list.view.*
 import kotlinx.android.synthetic.main.layout_links_bar.view.*
 import kotlinx.android.synthetic.main.sheet_fragment_guest_details.view.*
-
+import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.model.Guest
 import pl.kapucyni.wolczyn.app.utils.GlideApp
-import pl.kapucyni.wolczyn.app.utils.isChromeCustomTabsSupported
+import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 import pl.kapucyni.wolczyn.app.view.adapters.GuestsRecyclerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
-import android.content.Intent
-import pl.kapucyni.wolczyn.app.R
-import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 
 class GuestListFragment : Fragment() {
 
@@ -47,6 +41,7 @@ class GuestListFragment : Fragment() {
         view.guestsRecyclerView.layoutManager = LinearLayoutManager(view.context)
         view.guestsRecyclerView.itemAnimator = DefaultItemAnimator()
         view.guestsRecyclerView.adapter = mAdapter
+        view.guestsRecyclerView.scheduleLayoutAnimation()
 
         activity?.let {
             mViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
@@ -109,19 +104,7 @@ class GuestListFragment : Fragment() {
 
     fun onIconClick(iconNumber: Int) {
         selectedGuest?.let {
-            if (it.sites[iconNumber] != "") {
-                if (view!!.context.isChromeCustomTabsSupported()) {
-                    CustomTabsIntent.Builder().apply {
-                        val color = if (PreferencesManager.getNightMode()) Color.parseColor("#28292e") else Color.WHITE
-                        setToolbarColor(color)
-                        setSecondaryToolbarColor(color)
-                    }.build().launchUrl(context, Uri.parse(it.sites[iconNumber]))
-                } else {
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(it.sites[iconNumber])
-                    startActivity(intent)
-                }
-            }
+            if (it.sites[iconNumber] != "") context?.openWebsiteInCustomTabsService(it.sites[iconNumber])
         }
     }
 

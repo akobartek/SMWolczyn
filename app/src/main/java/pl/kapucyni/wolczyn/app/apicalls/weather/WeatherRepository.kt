@@ -5,6 +5,5 @@ import pl.kapucyni.wolczyn.app.model.Weather
 
 class WeatherRepository(private val api: WeatherApi) : BaseRepository() {
 
-    suspend fun getWeatherFromApi(): Weather? =
-        safeApiCall({ api.getWeatherForecastFromApiAsync().await() }, "Error fetching weather from API")
+    suspend fun getWeatherFromApi(): Weather? = api.getWeatherForecastFromApiAsync()
 }

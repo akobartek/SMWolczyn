@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
-import pl.kapucyni.wolczyn.app.apicalls.ApiFactory
+import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
 import pl.kapucyni.wolczyn.app.model.Departure
 import kotlin.coroutines.CoroutineContext
@@ -18,15 +18,15 @@ class DeparturesViewModel(val app: Application) : AndroidViewModel(app) {
 
     private val scope = CoroutineScope(coroutineContext)
 
-    private val repository: KapucyniApiRepository = KapucyniApiRepository(ApiFactory.kapucyniApi)
+    private val repository: KapucyniApiRepository = KapucyniApiRepository(RetrofitClient.kapucyniApi)
 
-    val departuresLiveData = MutableLiveData<MutableList<Departure>>()
+    val departures = MutableLiveData<MutableList<Departure>>()
 
     fun fetchDepartures() {
         scope.launch {
-            departuresLiveData.postValue(repository.getDepartures())
+            departures.postValue(repository.getDepartures())
         }
     }
 
-//    fun cancelAllRequests() = coroutineContext.cancel()
+    fun cancelAllRequests() = coroutineContext.cancel()
 }

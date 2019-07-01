@@ -13,12 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
-import pl.kapucyni.wolczyn.app.apicalls.ApiFactory
+import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
 import pl.kapucyni.wolczyn.app.model.User
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
-import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
+import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
 import pl.kapucyni.wolczyn.app.view.fragments.ViewPagerFragment
 import kotlin.coroutines.CoroutineContext
 
@@ -28,23 +28,20 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
     // region User
     private val parentJob = Job()
-
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Default
-
     private val scope = CoroutineScope(coroutineContext)
+    private val repository: KapucyniApiRepository = KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
 
-    private val repository: KapucyniApiRepository = KapucyniApiRepository(ApiFactory.authorizedKapucyniApi)
-
-    val userLiveData = MutableLiveData<User>()
+    val currentUser = MutableLiveData<User>()
 
     init {
-        userLiveData.postValue(null)
+        currentUser.postValue(null)
     }
 
     fun fetchUser() {
         scope.launch {
-            userLiveData.postValue(repository.getUserInfo())
+            currentUser.postValue(repository.getUserInfo())
         }
     }
     // endregion User
@@ -69,7 +66,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                     view.webView.animate().alpha(1f).duration = 444L
                 }
             } catch (exc: Exception) {
-                activity.showNoInternetDialog { loadMainSite(view, activity) }
+                activity.showNoInternetDialogWithTryAgain { loadMainSite(view, activity) }
             }
         }).start()
     }
@@ -105,7 +102,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                 Log.e("loadBreviary", exc.toString())
                 activity.runOnUiThread {
                     loadingDialog.dismiss()
-                    activity.showNoInternetDialog { loadBreviaryHtml(loadingDialog, viewPagerFragment, activity) }
+                    activity.showNoInternetDialogWithTryAgain { loadBreviaryHtml(loadingDialog, viewPagerFragment, activity) }
                 }
             }
         }).start()

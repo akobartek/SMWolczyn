@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         onNavigationItemSelected(savedInstanceState?.let { navView.menu.findItem(it.getInt("selectedItem")) }
             ?: navView.menu.getItem(0))
 
-        mViewModel.userLiveData.observe(this@MainActivity, Observer { user ->
+        mViewModel.currentUser.observe(this@MainActivity, Observer { user ->
             if (user != null && headerDrawerImage != null) {
                 GlideApp.with(this@MainActivity)
                     .load(user.photo_url)
@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ScheduleFragment()
             }
             R.id.nav_weather -> {
-                toolbar.title = getString(R.string.menu_weather)
+                toolbar.title = getString(R.string.weather_title, "Wołczyn")
                 WeatherFragment()
             }
             R.id.nav_anthem -> {

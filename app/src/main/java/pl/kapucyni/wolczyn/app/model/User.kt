@@ -7,6 +7,7 @@ data class User(
     val group: Int?,
     val name: String?,
     val surname: String?,
+    val prefix: String?,
     val photo_url: String?,
     val number: Int?,
     val bears: Int?

@@ -1,16 +1,13 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
-import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,17 +22,16 @@ import pl.kapucyni.wolczyn.app.model.Event
 import pl.kapucyni.wolczyn.app.model.EventPlace
 import pl.kapucyni.wolczyn.app.model.EventType
 import pl.kapucyni.wolczyn.app.model.Guest
-import pl.kapucyni.wolczyn.app.utils.GlideApp
-import pl.kapucyni.wolczyn.app.utils.PreferencesManager
-import pl.kapucyni.wolczyn.app.utils.getAttributeColor
-import pl.kapucyni.wolczyn.app.utils.isChromeCustomTabsSupported
+import pl.kapucyni.wolczyn.app.utils.*
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import pl.kapucyni.wolczyn.app.view.adapters.ScheduleRecyclerAdapter
 import pl.kapucyni.wolczyn.app.view.ui.ScheduleTimeHeadersDecoration
+import pl.kapucyni.wolczyn.app.viewmodels.ScheduleViewModel
 import java.util.*
 
 class ScheduleFragment : Fragment() {
 
+    private lateinit var mScheduleViewModel: ScheduleViewModel
     private lateinit var mAdapter: ScheduleRecyclerAdapter
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var mDayViews: Array<TextView>
@@ -65,6 +61,22 @@ class ScheduleFragment : Fragment() {
                 addItemDecoration(ScheduleTimeHeadersDecoration(it.context, schedule))
             }
         }
+
+        mScheduleViewModel = ViewModelProviders.of(this@ScheduleFragment).get(ScheduleViewModel::class.java)
+        activity?.let {
+            if (it.checkNetworkConnection()) mScheduleViewModel.fetchSchedule()
+            else it.showNoInternetDialogDataOutOfDate()
+        }
+        mScheduleViewModel.eventsFromFirestore.observe(this@ScheduleFragment, androidx.lifecycle.Observer {
+            it.forEach { firestoreEvent ->
+                if (firestoreEvent.id.isNotEmpty()) {
+                    val index = events.indexOfFirst { event -> event.id == firestoreEvent.id }
+                    events[index].videoUrl = firestoreEvent.videoUrl
+                    mAdapter.notifyItemChanged(index + 1)
+                }
+            }
+        })
+
         view.scheduleRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -144,6 +156,11 @@ class ScheduleFragment : Fragment() {
         })
     }
 
+    override fun onStop() {
+        mScheduleViewModel.cancelAllRequests()
+        super.onStop()
+    }
+
     fun onItemClick(event: Event) {
         if (selectedGuest == null) when (event.eventType) {
             EventType.BREVIARY -> (requireActivity() as MainActivity).goToSelectedFragment(R.id.nav_breviary)
@@ -200,288 +217,277 @@ class ScheduleFragment : Fragment() {
 
     fun onIconClick(iconNumber: Int) {
         selectedGuest?.let {
-            if (it.sites[iconNumber] != "") {
-                if (view!!.context.isChromeCustomTabsSupported()) {
-                    CustomTabsIntent.Builder().apply {
-                        val color = if (PreferencesManager.getNightMode()) Color.parseColor("#28292e") else Color.WHITE
-                        setToolbarColor(color)
-                        setSecondaryToolbarColor(color)
-                    }.build().launchUrl(context, Uri.parse(it.sites[iconNumber]))
-                } else {
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(it.sites[iconNumber])
-                    startActivity(intent)
-                }
-            }
+            if (it.sites[iconNumber] != "") context?.openWebsiteInCustomTabsService(it.sites[iconNumber])
         }
     }
-
 
     companion object {
         val events = listOf(
             Event(
-                "Poniedziałek", "8 Lipca", "8:30", "Rejestracja Uczestników",
+                "2019-07-08-01", "Poniedziałek", "8 Lipca", "8:30", "Rejestracja Uczestników",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "14:00", "Taniec z gwiazdami",
+                "2019-07-08-02", "Poniedziałek", "8 Lipca", "14:00", "Taniec z gwiazdami",
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "17:30", "Rozpoczęcie XXV Spotkania Młodych w Wołczynie",
+                "2019-07-08-03", "Poniedziałek", "8 Lipca", "17:30", "Rozpoczęcie XXV Spotkania Młodych w Wołczynie",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "18:15", "Kolacja",
+                "2019-07-08-04", "Poniedziałek", "8 Lipca", "18:15", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "19:00", "Nieszpory",
+                "2019-07-08-05", "Poniedziałek", "8 Lipca", "19:00", "Nieszpory",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "20:00", "Koncert: Wyrwani z Niewoli",
+                "2019-07-08-06", "Poniedziałek", "8 Lipca", "20:00", "Koncert: Wyrwani z Niewoli",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 2
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "20:00", "Tajemnica powołania - Q&A",
+                "2019-07-08-07", "Poniedziałek", "8 Lipca", "20:00", "Tajemnica powołania - Q&A",
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "21:30", "Nabożeństwo rozpoczęcia: \"RATUNKU!\"",
+                "2019-07-08-08", "Poniedziałek", "8 Lipca", "21:30", "Nabożeństwo rozpoczęcia: \"RATUNKU!\"",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "Poniedziałek", "8 Lipca", "22:30", "Podsumowanie dnia",
+                "2019-07-08-09", "Poniedziałek", "8 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "7:30", "Jutrznia",
+                "2019-07-09-01", "Wtorek", "9 Lipca", "7:30", "Jutrznia",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "8:15", "Śniadanie",
+                "2019-07-09-02", "Wtorek", "9 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "9:30", "Modlitwa poranna/rozgrzewka",
+                "2019-07-09-03", "Wtorek", "9 Lipca", "9:30", "Modlitwa poranna/rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "10:00", "\"Mój kościół zraniony\"\n- bp Edward Kawa OFMConv",
+                "2019-07-09-04", "Wtorek", "9 Lipca", "10:00", "\"Mój kościół zraniony\"\n- bp Edward Kawa OFMConv",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 1
             ),
             Event(
-                "Wtorek", "9 Lipca", "11:00", "Przygotowanie do Eucharystii",
+                "2019-07-09-05", "Wtorek", "9 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "11:30", "Eucharystia (bp Edward Kawa OFMConv)",
+                "2019-07-09-06", "Wtorek", "9 Lipca", "11:30", "Eucharystia (bp Edward Kawa OFMConv)",
                 EventPlace.AMPHITHEATRE, EventType.MASS, 1
             ),
             Event(
-                "Wtorek", "9 Lipca", "13:00", "Obiad",
+                "2019-07-09-07", "Wtorek", "9 Lipca", "13:00", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "14:00", "Mecz: Kapucyni vs. reszta świata",
+                "2019-07-09-08", "Wtorek", "9 Lipca", "14:00", "Mecz: Kapucyni vs. reszta świata",
                 EventPlace.COURT, EventType.EXTRA, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "15:45", "Rozesłanie do fraterek",
+                "2019-07-09-09", "Wtorek", "9 Lipca", "15:45", "Rozesłanie do fraterek",
                 EventPlace.AMPHITHEATRE, EventType.GROUPS, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "16:00", "Spotkanie we fraterkach",
+                "2019-07-09-10", "Wtorek", "9 Lipca", "16:00", "Spotkanie we fraterkach",
                 EventPlace.EVERYWHERE, EventType.GROUPS, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "17:45", "Kolacja",
+                "2019-07-09-11", "Wtorek", "9 Lipca", "17:45", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "18:45", "Koncert: TATO",
+                "2019-07-09-12", "Wtorek", "9 Lipca", "18:45", "Koncert: TATO",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 3
             ),
             Event(
-                "Wtorek", "9 Lipca", "19:00", "Nieszpory",
+                "2019-07-09-13", "Wtorek", "9 Lipca", "19:00", "Nieszpory",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "19:30", "Koncert: KapEl'a",
+                "2019-07-09-14", "Wtorek", "9 Lipca", "19:30", "Koncert: KapEl'a",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 0
             ),
             Event(
-                "Wtorek", "9 Lipca", "21:00", "Urodziny",
+                "2019-07-09-15", "Wtorek", "9 Lipca", "21:00", "Urodziny",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "21:40", "Nabożeństwo: \"ODKRYJ JEGO OBLICZE!\"",
+                "2019-07-09-16", "Wtorek", "9 Lipca", "21:40", "Nabożeństwo: \"ODKRYJ JEGO OBLICZE!\"",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "Wtorek", "9 Lipca", "22:40", "Podsumowanie dnia",
+                "2019-07-09-17", "Wtorek", "9 Lipca", "22:40", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "Środa", "10 Lipca", "7:30", "Jutrznia",
+                "2019-07-10-01", "Środa", "10 Lipca", "7:30", "Jutrznia",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Środa", "10 Lipca", "8:15", "Śniadanie",
+                "2019-07-10-02", "Środa", "10 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Środa", "10 Lipca", "9:30", "Modlitwa poranna/rozgrzewka",
+                "2019-07-10-03", "Środa", "10 Lipca", "9:30", "Modlitwa poranna/rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "Środa", "10 Lipca", "10:00", "\"Gdzie szukać cegieł i zaprawy\"\n- o. Antonello Cadeddu",
+                "2019-07-10-04", "Środa", "10 Lipca", "10:00",
+                "\"Gdzie szukać cegieł i zaprawy\"\n- o. Antonello Cadeddu",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 4
             ),
             Event(
-                "Środa", "10 Lipca", "11:00", "Przygotowanie do Eucharystii",
+                "2019-07-10-05", "Środa", "10 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "Środa", "10 Lipca", "11:30", "Eucharystia (br. Tomasz Protasiewicz / o. Antonello Cadeddu)",
+                "2019-07-10-06", "Środa", "10 Lipca", "11:30",
+                "Eucharystia (br. Tomasz Protasiewicz / o. Antonello Cadeddu)",
                 EventPlace.AMPHITHEATRE, EventType.MASS, 4
             ),
             Event(
-                "Środa", "10 Lipca", "13:00", "Obiad",
+                "2019-07-10-07", "Środa", "10 Lipca", "13:00", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Środa", "10 Lipca", "14:00", "Taniec z gwiazdami",
+                "2019-07-10-08", "Środa", "10 Lipca", "14:00", "Taniec z gwiazdami",
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "Środa",
-                "10 Lipca",
-                "15:15",
+                "2019-07-10-09", "Środa", "10 Lipca", "15:15",
                 "\"Kawalerka do wynajęcia czy dom na całe życie?\"\n- Michał \"PAX\" Bukowski",
-                EventPlace.AMPHITHEATRE,
-                EventType.CONFERENCE,
-                2
+                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 2
             ),
             Event(
-                "Środa", "10 Lipca", "16:15", "Rozesłanie do fraterek",
+                "2019-07-10-10", "Środa", "10 Lipca", "16:15", "Rozesłanie do fraterek",
                 EventPlace.AMPHITHEATRE, EventType.GROUPS, null
             ),
             Event(
-                "Środa", "10 Lipca", "16:30", "Spotkanie we fraterkach",
+                "2019-07-10-11", "Środa", "10 Lipca", "16:30", "Spotkanie we fraterkach",
                 EventPlace.EVERYWHERE, EventType.GROUPS, null
             ),
             Event(
-                "Środa", "10 Lipca", "18:00", "Kolacja",
+                "2019-07-10-12", "Środa", "10 Lipca", "18:00", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Środa", "10 Lipca", "19:00", "Nieszpory",
+                "2019-07-10-13", "Środa", "10 Lipca", "19:00", "Nieszpory",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Środa", "10 Lipca", "19:30", "Nabożeństwo pokutne: \"ODBUDUJ MÓJ KOŚCIÓŁ!\"",
+                "2019-07-10-14", "Środa", "10 Lipca", "19:30", "Nabożeństwo pokutne: \"ODBUDUJ MÓJ KOŚCIÓŁ!\"",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "Środa", "10 Lipca", "22:30", "Podsumowanie dnia",
+                "2019-07-10-15", "Środa", "10 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "7:30", "Jutrznia",
+                "2019-07-11-01", "Czwartek", "11 Lipca", "7:30", "Jutrznia",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "8:00", "Śniadanie",
+                "2019-07-11-02", "Czwartek", "11 Lipca", "8:00", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "9:00", "Modlitwa poranna/rozgrzewka",
+                "2019-07-11-03", "Czwartek", "11 Lipca", "9:00", "Modlitwa poranna/rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "10:00", "\"Czym umeblować żeby było ładnie?\"\n- br. Paweł Teperski",
+                "2019-07-11-04", "Czwartek", "11 Lipca", "10:00",
+                "\"Czym umeblować żeby było ładnie?\"\n- br. Paweł Teperski",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 3
             ),
             Event(
-                "Czwartek", "11 Lipca", "11:00", "Przygotowanie do Eucharystii",
+                "2019-07-11-05", "Czwartek", "11 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "11:15", "Eucharystia (Bracia neoprezbiterzy / br. Paweł Teperski)",
+                "2019-07-11-06", "Czwartek", "11 Lipca", "11:15",
+                "Eucharystia (Bracia neoprezbiterzy / br. Paweł Teperski)",
                 EventPlace.AMPHITHEATRE, EventType.MASS, 3
             ),
             Event(
-                "Czwartek", "11 Lipca", "13:00", "Obiad",
+                "2019-07-11-07", "Czwartek", "11 Lipca", "13:00", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "13:30", "Taniec z gwiazdami",
+                "2019-07-11-08", "Czwartek", "11 Lipca", "13:30", "Taniec z gwiazdami",
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "15:00", "KORONKA",
+                "2019-07-11-09", "Czwartek", "11 Lipca", "15:00", "KORONKA",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "15:20", "\"Kiedy będzie doskonale\"\n- ks. Maciej Sarbinowski SDB",
+                "2019-07-11-10", "Czwartek", "11 Lipca", "15:20",
+                "\"Kiedy będzie doskonale\"\n- ks. Maciej Sarbinowski SDB",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 5
             ),
             Event(
-                "Czwartek", "11 Lipca", "16:15", "Spotkanie we fraterkach",
+                "2019-07-11-11", "Czwartek", "11 Lipca", "16:15", "Spotkanie we fraterkach",
                 EventPlace.EVERYWHERE, EventType.GROUPS, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "18:00", "Kolacja",
+                "2019-07-11-12", "Czwartek", "11 Lipca", "18:00", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "18:00", "Grill MF Tau",
+                "2019-07-11-13", "Czwartek", "11 Lipca", "18:00", "Grill MF Tau",
                 EventPlace.GARDEN, EventType.MEAL, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "19:00", "Nieszpory",
+                "2019-07-11-14", "Czwartek", "11 Lipca", "19:00", "Nieszpory",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "19:30", "Koncert: niemaGOtu",
+                "2019-07-11-15", "Czwartek", "11 Lipca", "19:30", "Koncert: niemaGOtu",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 1
             ),
             Event(
-                "Czwartek", "11 Lipca", "19:30", "\"Klucz do ikony\"\n- br. Marcin Świąder",
+                "2019-07-11-16", "Czwartek", "11 Lipca", "19:30", "\"Klucz do ikony\"\n- br. Marcin Świąder",
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "21:30", "Nabożeństwo: \"DAJ SIĘ POKOCHAĆ!\"",
+                "2019-07-11-17", "Czwartek", "11 Lipca", "21:30", "Nabożeństwo: \"DAJ SIĘ POKOCHAĆ!\"",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "Czwartek", "11 Lipca", "22:30", "Podsumowanie dnia",
+                "2019-07-11-18", "Czwartek", "11 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "Piątek", "12 Lipca", "7:30", "Jutrznia",
+                "2019-07-12-01", "Piątek", "12 Lipca", "7:30", "Jutrznia",
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "Piątek", "12 Lipca", "8:00", "Śniadanie",
+                "2019-07-12-02", "Piątek", "12 Lipca", "8:00", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "Piątek", "12 Lipca", "9:30", "Modlitwa poranna/rozgrzewka",
+                "2019-07-12-03", "Piątek", "12 Lipca", "9:30", "Modlitwa poranna/rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "Piątek", "12 Lipca", "9:45", "\"Popatrzcie jak oni się miłują\"\n- Monika i Marcin Gomułkowie",
+                "2019-07-12-04", "Piątek", "12 Lipca", "9:45",
+                "\"Popatrzcie jak oni się miłują\"\n- Monika i Marcin Gomułkowie",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 0
             ),
             Event(
-                "Piątek", "12 Lipca", "10:45", "Eucharystia (br. Tomasz Żak / br. Piotr Kowalski)",
+                "2019-07-12-05", "Piątek", "12 Lipca", "10:45", "Eucharystia (br. Tomasz Żak / br. Piotr Kowalski)",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "Piątek", "12 Lipca", "12:00", "Rozesłanie",
+                "2019-07-12-06", "Piątek", "12 Lipca", "12:00", "Rozesłanie",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             )
         )

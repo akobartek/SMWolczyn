@@ -9,7 +9,7 @@ import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object ApiFactory {
+object RetrofitClient {
 
     private const val BASE_URL_KAPUCYNI_API = "https://api.kapucyni.pl/"
     private var kapucyniApiClient: Retrofit? = null

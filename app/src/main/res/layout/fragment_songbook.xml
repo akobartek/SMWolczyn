@@ -12,11 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/songsList"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/songsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false" />
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_song" />
     </FrameLayout>
 
     <fragment

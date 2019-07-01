@@ -26,8 +26,8 @@ import kotlinx.android.synthetic.main.content_login.*
 import org.json.JSONException
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
-import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
-import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
+import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
+import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.viewmodels.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
         mLoginViewModel = ViewModelProviders.of(this@LoginActivity).get(LoginViewModel::class.java)
         setOnClickListeners()
 
-        mLoginViewModel.tokenLiveData.observe(this@LoginActivity, Observer { token ->
+        mLoginViewModel.bearerToken.observe(this@LoginActivity, Observer { token ->
             if (token != null) {
                 PreferencesManager.setBearerToken(token)
                 isTokenLoaded = true
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        mLoginViewModel.userLiveData.observe(this@LoginActivity, Observer { user ->
+        mLoginViewModel.loggedUser.observe(this@LoginActivity, Observer { user ->
             if (isTokenLoaded) {
                 if (user != null) {
                     if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
@@ -128,6 +128,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onStop() {
         if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
         if (mGoogleApiClient.isConnected) mGoogleApiClient.disconnect()
+        mLoginViewModel.cancelAllRequests()
         super.onStop()
     }
 
@@ -141,23 +142,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setOnClickListeners() {
         emailSignInBtn?.setOnClickListener {
-            if (checkNetworkConnection()) {
-                signInWithLogin()
-            } else {
-                showNoInternetDialog { signInWithLogin() }
-            }
+            tryToRunFunctionOnInternet { signInWithLogin() }
         }
 
         googleSignInBtn?.setOnClickListener {
-            if (checkNetworkConnection()) {
+            tryToRunFunctionOnInternet {
                 startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), RC_GOOGLE_SIGN_IN)
-            } else {
-                showNoInternetDialog {
-                    startActivityForResult(
-                        Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient),
-                        RC_GOOGLE_SIGN_IN
-                    )
-                }
             }
         }
 
@@ -195,7 +185,7 @@ class LoginActivity : AppCompatActivity() {
         mGoogleApiClient = GoogleApiClient.Builder(this@LoginActivity)
             .enableAutoManage(this@LoginActivity) {
                 if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-                showNoInternetDialog {
+                showNoInternetDialogWithTryAgain {
                     if (mGoogleApiClient.isConnected) mGoogleApiClient.disconnect()
                     mGoogleApiClient.connect()
                 }

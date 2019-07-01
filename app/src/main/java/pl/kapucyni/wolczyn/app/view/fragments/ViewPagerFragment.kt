@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_viewpager.view.*
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
-import pl.kapucyni.wolczyn.app.utils.showNoInternetDialog
+import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import pl.kapucyni.wolczyn.app.view.adapters.ViewPagerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
@@ -102,7 +102,7 @@ class ViewPagerFragment : Fragment() {
 
     private fun loadBreviary() {
         if (!activity!!.checkNetworkConnection()) {
-            activity!!.showNoInternetDialog { loadBreviary() }
+            activity!!.showNoInternetDialogWithTryAgain { loadBreviary() }
             return
         }
         val loadingDialog = AlertDialog.Builder(activity!!)

@@ -3,28 +3,46 @@ package pl.kapucyni.wolczyn.app.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
+import android.net.Uri
+import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import android.view.animation.Animation
 import android.view.animation.Transformation
-import pl.kapucyni.wolczyn.app.R
 import androidx.annotation.AttrRes
+import androidx.appcompat.app.AlertDialog
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 
 
 fun Context.isChromeCustomTabsSupported(): Boolean {
     val serviceIntent = Intent("android.support.customtabs.action.CustomTabsService")
     serviceIntent.setPackage("com.android.chrome")
     val resolveInfos = packageManager.queryIntentServices(serviceIntent, 0)
-    return !(resolveInfos == null || resolveInfos.isEmpty())
+    return resolveInfos.isNotEmpty()
 }
 
-fun Activity.showNoInternetDialog(function: () -> Unit): Unit =
+fun Context.openWebsiteInCustomTabsService(url: String) {
+    if (isChromeCustomTabsSupported()) {
+        CustomTabsIntent.Builder().apply {
+            val color = if (PreferencesManager.getNightMode()) Color.parseColor("#28292e") else Color.WHITE
+            setToolbarColor(color)
+            setSecondaryToolbarColor(color)
+        }.build().launchUrl(this, Uri.parse(url))
+    } else {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
+    }
+}
+
+fun Activity.showNoInternetDialogWithTryAgain(function: () -> Unit): Unit =
     AlertDialog.Builder(this)
         .setTitle(R.string.no_internet_title)
         .setMessage(R.string.no_internet_reconnect_message)
@@ -32,7 +50,7 @@ fun Activity.showNoInternetDialog(function: () -> Unit): Unit =
         .setPositiveButton(R.string.try_again) { dialog, _ ->
             dialog.dismiss()
             if (checkNetworkConnection()) function()
-            else showNoInternetDialog(function)
+            else showNoInternetDialogWithTryAgain(function)
         }
         .setNegativeButton(R.string.cancel) { dialog, _ ->
             dialog.dismiss()
@@ -41,10 +59,36 @@ fun Activity.showNoInternetDialog(function: () -> Unit): Unit =
         .create()
         .show()
 
+fun Activity.showNoInternetDialogDataOutOfDate(): Unit =
+    AlertDialog.Builder(this)
+        .setTitle(R.string.no_internet_title)
+        .setMessage(R.string.no_internet_data_message)
+        .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+        .create()
+        .show()
+
+@Suppress("DEPRECATION")
 fun Activity.checkNetworkConnection(): Boolean {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    val activeNetworkInfo = connectivityManager?.activeNetworkInfo
-    return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val capabilities = connectivityManager?.getNetworkCapabilities(connectivityManager.activeNetwork)
+        capabilities != null
+    } else {
+        val activeNetworkInfo = connectivityManager?.activeNetworkInfo
+        activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+}
+
+fun Activity.tryToRunFunctionOnInternet(function: () -> Unit) {
+    if (checkNetworkConnection()) {
+        try {
+            function()
+        } catch (exc: Exception) {
+            showNoInternetDialogWithTryAgain { function() }
+        }
+    } else {
+        showNoInternetDialogWithTryAgain { function() }
+    }
 }
 
 fun View.expand() {
