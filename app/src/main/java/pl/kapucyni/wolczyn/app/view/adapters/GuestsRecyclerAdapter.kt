@@ -29,6 +29,7 @@ class GuestsRecyclerAdapter(private var mGuestsList: Array<Guest>, private val m
             GlideApp.with(itemView.context)
                 .load(guest.photoUrl)
                 .circleCrop()
+                .placeholder(R.drawable.ic_menu_guests)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(itemView.guestPhoto)
 

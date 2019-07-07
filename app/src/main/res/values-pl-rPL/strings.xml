@@ -109,6 +109,8 @@
     <string name="groups_not_available">Fraterki nie są jeszcze dostępne!</string>
     <string name="user_photo">Zdjęcie użytkownika</string>
     <string name="user_group">Numer fraterki:\n%s</string>
+    <string name="bears_dialog_title">Nabroiłeś!</string>
+    <string name="bears_dialog_message">Nieładnie, dostałeś karnego miśka! Uważaj na siebie! :D</string>
 
     <!-- GUESTS STRINGS -->
     <string name="conferences">Konferencje</string>

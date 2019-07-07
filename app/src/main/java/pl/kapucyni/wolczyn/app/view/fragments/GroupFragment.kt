@@ -2,10 +2,12 @@ package pl.kapucyni.wolczyn.app.view.fragments
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -41,10 +43,20 @@ class GroupFragment : Fragment() {
                     view.userId.text = user.number.toString()
                     view.userName.text = "${user.name} ${user.surname}"
                     view.userGroup.text = getString(R.string.user_group, user.group.toString())
+
+                    if (user.bears != null && user.bears > 0) showBearsDialog(it)
                 } else {
                     view.groupsEmptyView.visibility = View.VISIBLE
                 }
             })
         }
     }
+
+    private fun showBearsDialog(activity: Activity) =
+        AlertDialog.Builder(activity)
+            .setTitle(R.string.bears_dialog_title)
+            .setMessage(R.string.bears_dialog_message)
+            .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
 }

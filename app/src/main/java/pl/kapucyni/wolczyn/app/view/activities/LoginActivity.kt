@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -23,7 +22,6 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.GoogleApiClient
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_login.*
-import org.json.JSONException
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
@@ -67,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
             if (token != null) {
                 PreferencesManager.setBearerToken(token)
                 isTokenLoaded = true
-                mLoginViewModel.fetchUser()
+                tryToRunFunctionOnInternet { mLoginViewModel.fetchUser() }
             } else {
                 showAccountNotFoundDialog()
             }
@@ -109,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
             if (result.isSuccess) {
                 mLoadingDialog.show()
                 val account = result.signInAccount!!
-                mLoginViewModel.signInWithSocial(account.email!!, account.id!!, "google")
+                tryToRunFunctionOnInternet { mLoginViewModel.signInWithSocial(account.email!!, account.id!!, "google") }
                 if (mGoogleApiClient.isConnected) {
                     Auth.GoogleSignInApi.signOut(mGoogleApiClient)
                     mGoogleApiClient.disconnect()
@@ -170,7 +168,7 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         try {
-            mLoginViewModel.signInWithEmail(login, password)
+            tryToRunFunctionOnInternet { mLoginViewModel.signInWithEmail(login, password) }
         } catch (exc: Exception) {
             showAccountNotFoundDialog()
         }
@@ -210,12 +208,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun useFacebookLoginInformation(accessToken: AccessToken) {
         val request = GraphRequest.newMeRequest(accessToken) { obj, _ ->
-            try {
+            tryToRunFunctionOnInternet {
                 mLoginViewModel.signInWithSocial(obj.getString("email"), accessToken.userId, "facebook")
-                LoginManager.getInstance().logOut()
-            } catch (exc: JSONException) {
-                Log.e("Facebook log error", exc.toString())
             }
+            LoginManager.getInstance().logOut()
         }
         val parameters = Bundle()
         parameters.putString("fields", "id,email")

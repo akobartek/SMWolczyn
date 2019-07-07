@@ -27,7 +27,7 @@ class SigningsFragment : Fragment() {
         activity?.let { mViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java) }
         view.webView.settings.javaScriptEnabled = true
         if (savedInstanceState != null) view.webView.restoreState(savedInstanceState)
-        else activity?.tryToRunFunctionOnInternet { mViewModel.loadMainSite(view, (activity as MainActivity)) }
+        else activity?.tryToRunFunctionOnInternet { mViewModel.loadSignings(view, (activity as MainActivity)) }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

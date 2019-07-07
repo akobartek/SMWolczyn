@@ -116,6 +116,8 @@
     <string name="groups_not_available">Groups are not available yet!</string>
     <string name="user_photo">Photo of the user</string>
     <string name="user_group">Group number:\n%s</string>
+    <string name="bears_dialog_title">You made mischief!</string>
+    <string name="bears_dialog_message">It\'s not nice, you got a teddy bear! Be careful! :D</string>
 
     <!-- GUESTS STRINGS -->
     <string name="conferences">Conferences</string>

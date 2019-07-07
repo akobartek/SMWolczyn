@@ -49,7 +49,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     // endregion User
 
     // region Signings
-    fun loadMainSite(view: View, activity: Activity) {
+    fun loadSignings(view: View, activity: Activity) {
         Thread(Runnable {
             try {
                 view.loadingIndicator.show()
@@ -68,7 +68,9 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                     view.webView.animate().alpha(1f).duration = 444L
                 }
             } catch (exc: Exception) {
-                activity.showNoInternetDialogWithTryAgain { loadMainSite(view, activity) }
+                activity.runOnUiThread {
+                    activity.showNoInternetDialogWithTryAgain { loadSignings(view, activity) }
+                }
             }
         }).start()
     }

@@ -191,7 +191,7 @@ class SongBookFragment : Fragment() {
                     "grzechem skażone każde jest.\n" +
                     "Jeśli w sercu Twym cierpienie,\n" +
                     "Jezus jego ukojeniem.\n" +
-                    "Poproś Go, by wziął co trudne,\n" +
+                    "Pozwól Mu, by wziął co trudne,\n" +
                     "każdy grzech i to co brudne jest.\n" +
                     "On jedynym Zbawicielem jest!\n\n" +
                     "Jezus podniesie Cię,\n" +
