@@ -12,3 +12,10 @@ data class User(
     val number: Int?,
     val bears: Int?
 )
+
+data class UserGroup(
+    val name: String?,
+    val age: Int?,
+    val city: String?,
+    val bears: Int?
+)

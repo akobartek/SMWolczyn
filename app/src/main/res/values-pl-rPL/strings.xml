@@ -111,6 +111,7 @@
     <string name="user_group">Numer fraterki:\n%s</string>
     <string name="bears_dialog_title">Nabroiłeś!</string>
     <string name="bears_dialog_message">Nieładnie, dostałeś karnego miśka! Uważaj na siebie! :D</string>
+    <string name="group_members">Członkowie grupy:\n%s</string>
 
     <!-- GUESTS STRINGS -->
     <string name="conferences">Konferencje</string>

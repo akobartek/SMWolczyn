@@ -28,8 +28,6 @@ class GroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO() -> Different layouts for different user types
-
         activity?.let {
             mMainViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
             mMainViewModel.currentUser.observe(this@GroupFragment, Observer { user ->
@@ -41,12 +39,25 @@ class GroupFragment : Fragment() {
                         .placeholder(it.getAttributeDrawable(R.attr.logoMenu))
                         .into(view.userPhoto)
                     view.userId.text = user.number.toString()
-                    view.userName.text = "${user.name} ${user.surname}"
+                    view.userName.text =
+                        "${if (user.prefix != null) user.prefix + " " else ""}${user.name} ${user.surname}"
                     view.userGroup.text = getString(R.string.user_group, user.group.toString())
+
+                    if (user.type != null && user.type == 2) mMainViewModel.fetchGroup()
 
                     if (user.bears != null && user.bears > 0) showBearsDialog(it)
                 } else {
                     view.groupsEmptyView.visibility = View.VISIBLE
+                }
+            })
+
+            mMainViewModel.userGroup.observe(this@GroupFragment, Observer { group ->
+                if (group?.persons != null) {
+                    val groupMembers = StringBuilder()
+                    group.persons.forEach { person ->
+                        groupMembers.append("${person.name}, ${person.age} - ${person.city}\n")
+                    }
+                    view.groupMembers.text = getString(R.string.group_members, groupMembers.toString())
                 }
             })
         }

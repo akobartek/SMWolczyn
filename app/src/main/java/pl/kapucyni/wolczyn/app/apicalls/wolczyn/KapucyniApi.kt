@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.apicalls.wolczyn
 
 import pl.kapucyni.wolczyn.app.model.Departure
+import pl.kapucyni.wolczyn.app.model.Group
 import pl.kapucyni.wolczyn.app.model.User
 import retrofit2.Response
 import retrofit2.http.Field
@@ -32,4 +33,7 @@ interface KapucyniApi {
 
     @POST("wolczyn/ja")
     suspend fun getUserInfoAsync(): Response<User>
+
+    @POST("wolczyn/grupa")
+    suspend fun getGroupInfoAsync(): Response<Group>
 }

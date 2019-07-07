@@ -118,6 +118,7 @@
     <string name="user_group">Group number:\n%s</string>
     <string name="bears_dialog_title">You made mischief!</string>
     <string name="bears_dialog_message">It\'s not nice, you got a teddy bear! Be careful! :D</string>
+    <string name="group_members">Group members:\n%s</string>
 
     <!-- GUESTS STRINGS -->
     <string name="conferences">Conferences</string>

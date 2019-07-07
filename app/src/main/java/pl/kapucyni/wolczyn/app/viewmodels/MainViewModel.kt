@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
+import pl.kapucyni.wolczyn.app.model.Group
 import pl.kapucyni.wolczyn.app.model.User
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
@@ -36,6 +37,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
         KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
 
     val currentUser = MutableLiveData<User>()
+    val userGroup = MutableLiveData<Group>()
 
     init {
         currentUser.postValue(null)
@@ -44,6 +46,12 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     fun fetchUser() {
         scope.launch {
             currentUser.postValue(authorizedRepository.getUserInfo().saveTokenAndReturnBody())
+        }
+    }
+
+    fun fetchGroup() {
+        scope.launch {
+            userGroup.postValue(authorizedRepository.getGroupInfo().saveTokenAndReturnBody())
         }
     }
     // endregion User
