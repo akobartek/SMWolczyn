@@ -8,6 +8,7 @@ import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
 import pl.kapucyni.wolczyn.app.model.User
 import pl.kapucyni.wolczyn.app.utils.saveTokenAndReturnBody
+import pl.kapucyni.wolczyn.app.view.activities.LoginActivity
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel(val app: Application) : AndroidViewModel(app) {
@@ -26,15 +27,23 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
     val bearerToken = MutableLiveData<String>()
     val loggedUser = MutableLiveData<User>()
 
-    fun signInWithEmail(login: String, password: String) {
+    fun signInWithEmail(login: String, password: String, activity: LoginActivity) {
         scope.launch {
-            bearerToken.postValue(repository.loginToSystemWithEmail(login, password))
+            try {
+                bearerToken.postValue(repository.loginToSystemWithEmail(login, password))
+            } catch (exc: IllegalStateException) {
+                activity.runOnUiThread { activity.showAccountNotFoundDialog() }
+            }
         }
     }
 
-    fun signInWithSocial(email: String, identifier: String, media: String) {
+    fun signInWithSocial(email: String, identifier: String, media: String, activity: LoginActivity) {
         scope.launch {
-            bearerToken.postValue(repository.loginToSystemWithSocial(email, identifier, media))
+            try {
+                bearerToken.postValue(repository.loginToSystemWithSocial(email, identifier, media))
+            } catch (exc: IllegalStateException) {
+                activity.runOnUiThread { activity.showAccountNotFoundDialog() }
+            }
         }
     }
 

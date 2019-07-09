@@ -84,7 +84,7 @@ fun Activity.tryToRunFunctionOnInternet(function: () -> Unit) {
     if (checkNetworkConnection()) {
         try {
             function()
-        } catch (exc: Exception) {
+        } catch (exc: Throwable) {
             showNoInternetDialogWithTryAgain { function() }
         }
     } else {

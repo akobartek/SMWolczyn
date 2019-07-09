@@ -20,7 +20,7 @@ interface KapucyniApi {
         @Field("login") login: String,
         @Field("password") password: String,
         @Field("app_id") app_id: String
-    ): String
+    ): Response<String>
 
     @FormUrlEncoded
     @POST("auth/social")
@@ -29,7 +29,7 @@ interface KapucyniApi {
         @Field("identifier") identifier: String,
         @Field("media") media: String,
         @Field("app_id") app_id: String
-    ): String
+    ): Response<String>
 
     @POST("wolczyn/ja")
     suspend fun getUserInfoAsync(): Response<User>

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -107,7 +108,14 @@ class LoginActivity : AppCompatActivity() {
             if (result.isSuccess) {
                 mLoadingDialog.show()
                 val account = result.signInAccount!!
-                tryToRunFunctionOnInternet { mLoginViewModel.signInWithSocial(account.email!!, account.id!!, "google") }
+                tryToRunFunctionOnInternet {
+                    mLoginViewModel.signInWithSocial(
+                        account.email!!,
+                        account.id!!,
+                        "google",
+                        this@LoginActivity
+                    )
+                }
                 if (mGoogleApiClient.isConnected) {
                     Auth.GoogleSignInApi.signOut(mGoogleApiClient)
                     mGoogleApiClient.disconnect()
@@ -168,8 +176,10 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         try {
-            tryToRunFunctionOnInternet { mLoginViewModel.signInWithEmail(login, password) }
-        } catch (exc: Exception) {
+            tryToRunFunctionOnInternet {
+                mLoginViewModel.signInWithEmail(login, password, this@LoginActivity)
+            }
+        } catch (exc: Throwable) {
             showAccountNotFoundDialog()
         }
     }
@@ -209,7 +219,13 @@ class LoginActivity : AppCompatActivity() {
     private fun useFacebookLoginInformation(accessToken: AccessToken) {
         val request = GraphRequest.newMeRequest(accessToken) { obj, _ ->
             tryToRunFunctionOnInternet {
-                mLoginViewModel.signInWithSocial(obj.getString("email"), accessToken.userId, "facebook")
+                Log.d("xDD", "${obj.getString("email")}   ${accessToken.userId}")
+                mLoginViewModel.signInWithSocial(
+                    obj.getString("email"),
+                    accessToken.userId,
+                    "facebook",
+                    this@LoginActivity
+                )
             }
             LoginManager.getInstance().logOut()
         }
@@ -233,7 +249,7 @@ class LoginActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun showAccountNotFoundDialog() =
+    fun showAccountNotFoundDialog() =
         AlertDialog.Builder(this@LoginActivity)
             .setMessage(R.string.account_not_found_dialog_message)
             .setCancelable(true)
@@ -256,7 +272,7 @@ class LoginActivity : AppCompatActivity() {
 //            Log.e("name not found", e1.toString())
 //        } catch (e2: NoSuchAlgorithmException) {
 //            Log.e("no such an algorithm", e2.toString())
-//        } catch (e3: Exception) {
+//        } catch (e3: Throwable) {
 //            Log.e("exception", e3.toString())
 //        }
 //    }
