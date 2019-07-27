@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_drawer.*
 import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        onNavigationItemSelected(savedInstanceState?.let { navView.menu.findItem(it.getInt("selectedItem")) }
+        onNavigationItemSelected(savedInstanceState?.let { navView.menu.findItem(it.getInt("selectedItem", 0)) }
             ?: navView.menu.getItem(0))
 
         mViewModel.currentUser.observe(this@MainActivity, Observer { user ->
@@ -199,6 +200,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 toolbar.title = getString(R.string.menu_home)
                 HomeFragment()
             }
+            R.id.nav_archive -> {
+                toolbar.title = getString(R.string.menu_archive)
+                ArchiveFragment()
+            }
             R.id.nav_schedule -> {
                 toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()
@@ -268,6 +273,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val intent =
             Intent(this@MainActivity, LoginActivity::class.java).putExtra("fragment", mCurrentFragmentId)
         startActivityForResult(intent, 12)
+    }
+
+    fun openArchiveDetailsActivity(meeting: ArchiveMeeting) {
+        val intent = Intent(this@MainActivity, ArchiveMeetingDetailsActivity::class.java)
+        intent.putExtra("title", meeting.name.split(" - ")[1])
+        intent.putParcelableArrayListExtra("records", meeting.records)
+        startActivityForResult(intent, 21)
     }
 
     fun changeToolbarTitle(newTitle: String) {

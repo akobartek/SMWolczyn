@@ -26,12 +26,14 @@
     <string name="password_error_empty">Hasło nie może być puste!</string>
     <string name="account_not_found_dialog_message">Nie znaleziono podanego konta!</string>
     <string name="signed_in">Zalogowano</string>
+    <string name="forgot_password">Nie pamiętasz hasła?</string>
 
     <!-- NAVIGATION STRINGS -->
     <string name="navigation_drawer_open">Otwórz panel nawigacyjny</string>
     <string name="navigation_drawer_close">Zamknij panel nawigacyjny</string>
     <string name="action_settings">Ustawienia</string>
     <string name="menu_home">Strona Główna</string>
+    <string name="menu_archive">Archiwum</string>
     <string name="menu_schedule">Plan</string>
     <string name="menu_weather">Pogoda</string>
     <string name="menu_anthem">Hymn</string>
@@ -57,6 +59,12 @@
     <string name="decalogue_8">Przestrzegam ciszy nocnej, która obowiązuje od godziny wskazanej przez organizatorów.</string>
     <string name="decalogue_9">Niezachowanie punktów 6–8 skutkuje wykluczeniem z grona uczestników Spotkania.</string>
     <string name="decalogue_10">Akceptuję inne postanowienia pełnego regulaminu. </string>
+
+    <!-- ARCHIVE STRINGS -->
+    <string name="empty_archive">Archiwum jest na razie puste!</string>
+    <string name="meeting_cover_description">Obraz poszczególnego Spotkania Młodych</string>
+    <string name="no_records_dialog_title">Brak nagrań</string>
+    <string name="no_records_dialog_message">Nagrania z tego Spotkania nie są jeszcze dostępne!</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania tego wydarzenia</string>

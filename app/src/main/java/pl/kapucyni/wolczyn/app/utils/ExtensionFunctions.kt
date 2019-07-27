@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,12 @@ import androidx.core.content.ContextCompat
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import retrofit2.Response
+
+fun String.createUnderlinedString(): SpannableString {
+    val spannable = SpannableString(this)
+    spannable.setSpan(UnderlineSpan(), 0, this.length, 0)
+    return spannable
+}
 
 
 fun Context.isChromeCustomTabsSupported(): Boolean {
@@ -51,7 +59,7 @@ fun Activity.showNoInternetDialogWithTryAgain(function: () -> Unit): Unit =
         .setPositiveButton(R.string.try_again) { dialog, _ ->
             dialog.dismiss()
             if (checkNetworkConnection()) function()
-            else showNoInternetDialogWithTryAgain(function)
+            else if (!isFinishing && !isDestroyed) showNoInternetDialogWithTryAgain(function)
         }
         .setNegativeButton(R.string.cancel) { dialog, _ ->
             dialog.dismiss()

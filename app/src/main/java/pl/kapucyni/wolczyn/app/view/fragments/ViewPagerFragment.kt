@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_viewpager.view.*
@@ -25,9 +26,12 @@ class ViewPagerFragment : Fragment() {
     private lateinit var mAdapter: ViewPagerAdapter
     private lateinit var mFragmentType: String
     private lateinit var mTabLayout: TabLayout
+    private lateinit var mChildFragmentManager: FragmentManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_viewpager, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mChildFragmentManager = childFragmentManager
+        return inflater.inflate(R.layout.fragment_viewpager, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,8 +64,9 @@ class ViewPagerFragment : Fragment() {
     }
 
     fun setupViewPager() {
+        if (!isAdded) return
         mAdapter = ViewPagerAdapter(
-            childFragmentManager,
+            mChildFragmentManager,
             when (mFragmentType) {
                 "guests" -> arrayOf(getString(R.string.conferences), getString(R.string.concerts))
                 "breviary" -> arrayOf(
@@ -101,24 +106,22 @@ class ViewPagerFragment : Fragment() {
     }
 
     private fun loadBreviary() {
-        if (!activity!!.checkNetworkConnection()) {
-            activity!!.showNoInternetDialogWithTryAgain { loadBreviary() }
-            return
+        activity?.let {
+            if (!it.checkNetworkConnection()) {
+                it.showNoInternetDialogWithTryAgain { loadBreviary() }
+                return
+            }
+            val loadingDialog = AlertDialog.Builder(activity!!)
+                .setView(R.layout.dialog_loading)
+                .setCancelable(false)
+                .create()
+            loadingDialog.show()
+            mViewModel.loadBreviaryHtml(loadingDialog, this@ViewPagerFragment, it)
         }
-        val loadingDialog = AlertDialog.Builder(activity!!)
-            .setView(R.layout.dialog_loading)
-            .setCancelable(false)
-            .create()
-        loadingDialog.show()
-        mViewModel.loadBreviaryHtml(
-            loadingDialog,
-            this@ViewPagerFragment,
-            activity!!
-        )
     }
 
     fun onBackPressed(): Boolean =
-        (childFragmentManager.fragments[view!!.viewPager.currentItem] as GuestListFragment).onBackPressed()
+        (mChildFragmentManager.fragments[view!!.viewPager.currentItem] as GuestListFragment).onBackPressed()
 
     companion object {
         fun newInstance(fragmentType: String): ViewPagerFragment {

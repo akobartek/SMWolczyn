@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.squareup.moshi.JsonEncodingException
 import kotlinx.coroutines.*
 import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
@@ -24,7 +25,11 @@ class DeparturesViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun fetchDepartures() {
         scope.launch {
-            departures.postValue(repository.getDepartures())
+            try {
+                departures.postValue(repository.getDepartures())
+            } catch (exc: JsonEncodingException) {
+                departures.postValue(mutableListOf())
+            }
         }
     }
 

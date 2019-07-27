@@ -150,7 +150,7 @@ class GuestListFragment : Fragment() {
                 arrayOf("", "", "https://www.youtube.com/user/KapucyniPR")
             ),
             Guest(
-                "Pe Antonello Cadeddu",
+                "o. Antonello Cadeddu",
                 "Nasze Spotkanie z roku na rok nabiera międzynarodowego charakteru. \uD83C\uDDEE\uD83C\uDDF9 Specjalnie dla nas wygłosi konferencję w Wołczynie.",
                 "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/61357616_10156011304755706_6392214090223190016_n-225x300.jpg",
                 arrayOf("https://www.facebook.com/padreantonello/", "", "")

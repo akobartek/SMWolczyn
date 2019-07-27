@@ -41,7 +41,7 @@ class WeatherViewModel(val app: Application) : AndroidViewModel(app) {
                 } else {
                     val weather = repository.getWeatherFromApi()
                     if (weather != null) {
-                        if (weatherData.isNotEmpty()) weatherRef.document(snapshot.documents[0].id).delete()
+                        snapshot.documents.forEach { document -> weatherRef.document(document.id).delete() }
                         weatherRef.document(now.toString()).set(Weather(weather.list))
                     }
                     weatherRecords.postValue(weather?.list)

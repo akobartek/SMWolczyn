@@ -75,12 +75,24 @@
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="?attr/colorAccent"
         android:text="@string/sign_in"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:textColor="?attr/colorBackground"
         app:cornerRadius="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/forgotPasswordTV"
+        app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
+        app:layout_constraintStart_toStartOf="@+id/loginInputLayout" />
+
+    <TextView
+        android:id="@+id/forgotPasswordTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/forgot_password"
+        android:textColor="?attr/colorAccent"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
         app:layout_constraintStart_toStartOf="@+id/loginInputLayout" />

@@ -115,11 +115,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                 activity.runOnUiThread {
                     loadingDialog.dismiss()
                     activity.showNoInternetDialogWithTryAgain {
-                        loadBreviaryHtml(
-                            loadingDialog,
-                            viewPagerFragment,
-                            activity
-                        )
+                        loadBreviaryHtml(loadingDialog, viewPagerFragment, activity)
                     }
                 }
             }

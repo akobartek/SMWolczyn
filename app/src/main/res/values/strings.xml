@@ -32,12 +32,14 @@
     <string name="password_error_empty">Password cannot be empty!</string>
     <string name="account_not_found_dialog_message">Account not found!</string>
     <string name="signed_in">Signed in</string>
+    <string name="forgot_password">Forgot your password?</string>
 
     <!-- NAVIGATION STRINGS -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
     <string name="menu_home">Home</string>
+    <string name="menu_archive">Archive</string>
     <string name="menu_schedule">Schedule</string>
     <string name="menu_weather">Weather</string>
     <string name="menu_anthem">Anthem</string>
@@ -63,6 +65,12 @@
     <string name="decalogue_8">I adhere to the night silence, which is valid from the time indicated by the organizers.</string>
     <string name="decalogue_9">Failure to observe points 6–8 results in the exclusion from the group of participants of the Meeting.</string>
     <string name="decalogue_10">I accept other provisions of the full statute.</string>
+
+    <!-- ARCHIVE STRINGS -->
+    <string name="empty_archive">Archive is empty for now!</string>
+    <string name="meeting_cover_description">Image of the Meeting</string>
+    <string name="no_records_dialog_title">No records yet</string>
+    <string name="no_records_dialog_message">No records from this Meeting available yet!</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link to record of this event</string>

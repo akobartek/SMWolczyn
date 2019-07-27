@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -24,9 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.content_login.*
 import pl.kapucyni.wolczyn.app.R
-import pl.kapucyni.wolczyn.app.utils.PreferencesManager
-import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
-import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
+import pl.kapucyni.wolczyn.app.utils.*
 import pl.kapucyni.wolczyn.app.viewmodels.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -90,6 +87,9 @@ class LoginActivity : AppCompatActivity() {
             .setCancelable(false)
             .create()
 
+        forgotPasswordTV.text = forgotPasswordTV.text.toString().createUnderlinedString()
+        forgotPasswordTV.setOnClickListener { openWebsiteInCustomTabsService("https://konto.kapucyni.pl/remind") }
+
 //        generateKeyHash()
     }
 
@@ -109,12 +109,7 @@ class LoginActivity : AppCompatActivity() {
                 mLoadingDialog.show()
                 val account = result.signInAccount!!
                 tryToRunFunctionOnInternet {
-                    mLoginViewModel.signInWithSocial(
-                        account.email!!,
-                        account.id!!,
-                        "google",
-                        this@LoginActivity
-                    )
+                    mLoginViewModel.signInWithSocial(account.email!!, account.id!!, "google", this@LoginActivity)
                 }
                 if (mGoogleApiClient.isConnected) {
                     Auth.GoogleSignInApi.signOut(mGoogleApiClient)
@@ -147,9 +142,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setOnClickListeners() {
-        emailSignInBtn?.setOnClickListener {
-            tryToRunFunctionOnInternet { signInWithLogin() }
-        }
+        emailSignInBtn?.setOnClickListener { tryToRunFunctionOnInternet { signInWithLogin() } }
 
         googleSignInBtn?.setOnClickListener {
             tryToRunFunctionOnInternet {
@@ -193,10 +186,8 @@ class LoginActivity : AppCompatActivity() {
         mGoogleApiClient = GoogleApiClient.Builder(this@LoginActivity)
             .enableAutoManage(this@LoginActivity) {
                 if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-                showNoInternetDialogWithTryAgain {
-                    if (mGoogleApiClient.isConnected) mGoogleApiClient.disconnect()
-                    mGoogleApiClient.connect()
-                }
+                if (mGoogleApiClient.isConnected) mGoogleApiClient.disconnect()
+                showNoInternetDialogWithTryAgain { mGoogleApiClient.connect() }
             }
             .addApi(Auth.GOOGLE_SIGN_IN_API, options)
             .build()
@@ -218,8 +209,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun useFacebookLoginInformation(accessToken: AccessToken) {
         val request = GraphRequest.newMeRequest(accessToken) { obj, _ ->
-            tryToRunFunctionOnInternet {
-                Log.d("xDD", "${obj.getString("email")}   ${accessToken.userId}")
+            if (obj.getString("email").isNullOrEmpty()) showAccountNotFoundDialog()
+            else tryToRunFunctionOnInternet {
                 mLoginViewModel.signInWithSocial(
                     obj.getString("email"),
                     accessToken.userId,
