@@ -3,22 +3,16 @@ package pl.kapucyni.wolczyn.app.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
 import pl.kapucyni.wolczyn.app.model.User
 import pl.kapucyni.wolczyn.app.utils.saveTokenAndReturnBody
 import pl.kapucyni.wolczyn.app.view.activities.LoginActivity
-import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel(val app: Application) : AndroidViewModel(app) {
-
-    private val parentJob = Job()
-
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Default
-
-    private val scope = CoroutineScope(coroutineContext)
 
     private val repository: KapucyniApiRepository = KapucyniApiRepository(RetrofitClient.kapucyniApi)
     private val authorizedRepository: KapucyniApiRepository =
@@ -28,7 +22,7 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
     val loggedUser = MutableLiveData<User>()
 
     fun signInWithEmail(login: String, password: String, activity: LoginActivity) {
-        scope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 bearerToken.postValue(repository.loginToSystemWithEmail(login, password))
             } catch (exc: IllegalStateException) {
@@ -38,7 +32,7 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     fun signInWithSocial(email: String, identifier: String, media: String, activity: LoginActivity) {
-        scope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 bearerToken.postValue(repository.loginToSystemWithSocial(email, identifier, media))
             } catch (exc: IllegalStateException) {
@@ -48,10 +42,8 @@ class LoginViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     fun fetchUser() {
-        scope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             loggedUser.postValue(authorizedRepository.getUserInfo().saveTokenAndReturnBody())
         }
     }
-
-    fun cancelAllRequests() = coroutineContext.cancel()
 }

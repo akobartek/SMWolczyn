@@ -7,10 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.android.synthetic.main.fragment_signings.view.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
@@ -22,17 +21,12 @@ import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.utils.saveTokenAndReturnBody
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
 import pl.kapucyni.wolczyn.app.view.fragments.ViewPagerFragment
-import kotlin.coroutines.CoroutineContext
 
 class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
     var weatherList: List<WeatherRecord>? = null
 
     // region User
-    private val parentJob = Job()
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Default
-    private val scope = CoroutineScope(coroutineContext)
     private val authorizedRepository: KapucyniApiRepository =
         KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
 
@@ -44,13 +38,13 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     fun fetchUser() {
-        scope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             currentUser.postValue(authorizedRepository.getUserInfo().saveTokenAndReturnBody())
         }
     }
 
     fun fetchGroup() {
-        scope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             userGroup.postValue(authorizedRepository.getGroupInfo().saveTokenAndReturnBody())
         }
     }

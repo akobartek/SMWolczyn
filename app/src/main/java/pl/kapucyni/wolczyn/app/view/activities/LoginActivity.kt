@@ -129,7 +129,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onStop() {
         if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
         if (mGoogleApiClient.isConnected) mGoogleApiClient.disconnect()
-        mLoginViewModel.cancelAllRequests()
         super.onStop()
     }
 

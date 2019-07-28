@@ -160,12 +160,6 @@ class ScheduleFragment : Fragment() {
         })
     }
 
-    override fun onStop() {
-        (activity as MainActivity).removeViewFromAppBar(mDaysBarLayout)
-        mScheduleViewModel.cancelAllRequests()
-        super.onStop()
-    }
-
     fun onItemClick(event: Event) {
         if (selectedGuest == null) when (event.eventType) {
             EventType.BREVIARY -> (requireActivity() as MainActivity).goToSelectedFragment(R.id.nav_breviary)

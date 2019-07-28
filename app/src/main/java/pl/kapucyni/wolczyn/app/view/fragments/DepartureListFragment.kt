@@ -123,11 +123,6 @@ class DepartureListFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        mDeparturesViewModel.cancelAllRequests()
-        super.onStop()
-    }
-
     private fun fetchDepartures() {
         activity?.tryToRunFunctionOnInternet { mDeparturesViewModel.fetchDepartures() }
     }

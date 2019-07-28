@@ -73,11 +73,6 @@ class WeatherFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
-        mWeatherViewModel.cancelAllRequests()
-        super.onStop()
-    }
-
     private fun fetchWeather() {
         activity?.tryToRunFunctionOnInternet { mWeatherViewModel.fetchWeather() }
     }

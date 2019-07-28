@@ -47,9 +47,4 @@ class ArchiveFragment : Fragment() {
             }
         })
     }
-
-    override fun onStop() {
-        mArchiveViewModel.cancelAllRequests()
-        super.onStop()
-    }
 }
