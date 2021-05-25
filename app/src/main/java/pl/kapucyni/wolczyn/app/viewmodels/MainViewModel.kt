@@ -8,12 +8,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.android.synthetic.main.fragment_signings.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import pl.kapucyni.wolczyn.app.apicalls.RetrofitClient
 import pl.kapucyni.wolczyn.app.apicalls.wolczyn.KapucyniApiRepository
+import pl.kapucyni.wolczyn.app.databinding.FragmentSigningsBinding
 import pl.kapucyni.wolczyn.app.model.Group
 import pl.kapucyni.wolczyn.app.model.User
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
@@ -51,10 +51,10 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     // endregion User
 
     // region Signings
-    fun loadSignings(view: View, activity: Activity) {
+    fun loadSignings(binding: FragmentSigningsBinding, activity: Activity) {
         Thread {
             try {
-                view.loadingIndicator.show()
+                binding.loadingIndicator.show()
                 val jsoup = Jsoup.connect("https://wolczyn.kapucyni.pl/zapisy/")
                     .timeout(30000)
                     .get()
@@ -63,21 +63,21 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                     .replaceWith(jsoup.selectFirst("main"))
 
                 activity.runOnUiThread {
-                    view.loadingIndicator.hide()
-                    view.webView.loadDataWithBaseURL(
+                    binding.loadingIndicator.hide()
+                    binding.webView.loadDataWithBaseURL(
                         null,
                         jsoup.outerHtml(),
                         "text/html",
                         "UTF-8",
                         null
                     )
-                    view.webView.visibility = View.VISIBLE
-                    view.webView.scrollTo(0, 0)
-                    view.webView.animate().alpha(1f).duration = 444L
+                    binding.webView.visibility = View.VISIBLE
+                    binding.webView.scrollTo(0, 0)
+                    binding.webView.animate().alpha(1f).duration = 444L
                 }
             } catch (exc: Exception) {
                 activity.runOnUiThread {
-                    activity.showNoInternetDialogWithTryAgain { loadSignings(view, activity) }
+                    activity.showNoInternetDialogWithTryAgain { loadSignings(binding, activity) }
                 }
             }
         }.start()
@@ -89,7 +89,9 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun wasBreviaryLoaded(): Boolean = !breviaryHtml.contains(null)
 
-    fun loadBreviaryHtml(loadingDialog: AlertDialog, viewPagerFragment: ViewPagerFragment, activity: Activity) {
+    fun loadBreviaryHtml(
+        loadingDialog: AlertDialog, viewPagerFragment: ViewPagerFragment, activity: Activity
+    ) {
         Thread {
             try {
                 if (!wasBreviaryLoaded()) {
@@ -129,8 +131,10 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     fun getBreviaryHtml(type: Int): String? = checkBreviaryNightMode(type)
 
     private fun updateBreviaryHtml() {
-        breviaryHtml = breviaryHtml.map { it?.replace("color=\"#e88b40\"", "color=\"brown\"") }.toTypedArray()
-        breviaryHtml = breviaryHtml.map { it?.replace("color=\"#1982d1\"", "color=\"black\"") }.toTypedArray()
+        breviaryHtml =
+            breviaryHtml.map { it?.replace("color=\"#e88b40\"", "color=\"brown\"") }.toTypedArray()
+        breviaryHtml =
+            breviaryHtml.map { it?.replace("color=\"#1982d1\"", "color=\"black\"") }.toTypedArray()
     }
 
     private fun checkBreviaryNightMode(type: Int): String? {

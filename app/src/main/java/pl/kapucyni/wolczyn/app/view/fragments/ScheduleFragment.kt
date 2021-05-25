@@ -12,13 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_schedule.view.*
-import kotlinx.android.synthetic.main.layout_days_bar.view.*
-import kotlinx.android.synthetic.main.layout_links_bar.view.*
-import kotlinx.android.synthetic.main.sheet_fragment_guest_details.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.FragmentScheduleBinding
 import pl.kapucyni.wolczyn.app.model.Event
 import pl.kapucyni.wolczyn.app.model.EventPlace
 import pl.kapucyni.wolczyn.app.model.EventType
@@ -32,17 +28,22 @@ import java.util.*
 
 class ScheduleFragment : Fragment() {
 
+    private var _binding: FragmentScheduleBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mScheduleViewModel: ScheduleViewModel
     private lateinit var mAdapter: ScheduleRecyclerAdapter
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var mDayViews: Array<TextView>
-    private lateinit var mDaysBarLayout: View
     private var mSelectedDay = 0
     var selectedGuest: Guest? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_schedule, container, false)
+    ): View {
+        _binding = FragmentScheduleBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,10 +52,10 @@ class ScheduleFragment : Fragment() {
 
         mAdapter = ScheduleRecyclerAdapter(schedule, this@ScheduleFragment)
         val layoutManager = LinearLayoutManager(view.context)
-        view.scheduleRecyclerView.layoutManager = layoutManager
-        view.scheduleRecyclerView.itemAnimator = DefaultItemAnimator()
-        view.scheduleRecyclerView.adapter = mAdapter
-        view.scheduleRecyclerView.run {
+        binding.scheduleRecyclerView.layoutManager = layoutManager
+        binding.scheduleRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.scheduleRecyclerView.adapter = mAdapter
+        binding.scheduleRecyclerView.run {
             doOnNextLayout {
                 if (itemDecorationCount > 0) {
                     for (i in itemDecorationCount - 1 downTo 0) {
@@ -81,7 +82,7 @@ class ScheduleFragment : Fragment() {
             }
         })
 
-        view.scheduleRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.scheduleRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val visibleItemPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
@@ -113,16 +114,20 @@ class ScheduleFragment : Fragment() {
             }
         })
 
-        mDayViews =
-            arrayOf(view.firstDay, view.secondDay, view.thirdDay, view.fourthDay, view.fifthDay)
+        mDayViews = arrayOf(
+            binding.daysBarLayout.firstDay,
+            binding.daysBarLayout.secondDay,
+            binding.daysBarLayout.thirdDay,
+            binding.daysBarLayout.fourthDay,
+            binding.daysBarLayout.fifthDay
+        )
         mDayViews.forEachIndexed { i, v ->
             v.setOnClickListener {
                 layoutManager.scrollToPositionWithOffset(positions[i], 10)
             }
         }
-        mDaysBarLayout = view.daysBarLayout
-        view.scheduleListLayout.removeView(mDaysBarLayout)
-        (activity as MainActivity).addViewToAppBar(mDaysBarLayout)
+        binding.scheduleListLayout.removeView(binding.daysBarLayout.root)
+        (activity as MainActivity).addViewToAppBar(binding.daysBarLayout.root)
 
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -134,32 +139,25 @@ class ScheduleFragment : Fragment() {
         mBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val guestDetailsFragment =
+                    childFragmentManager.findFragmentById(R.id.guestSheet) as GuestDetailsFragment
                 selectedGuest?.let {
-                    GlideApp.with(this@ScheduleFragment)
-                        .load(it.photoUrl)
-                        .circleCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(bottomSheet.guestPhoto)
-                    bottomSheet.guestName.text = it.name
-                    bottomSheet.guestDescription.text = it.description
-                    bottomSheet.linksBarLayout.visibility = View.VISIBLE
-
-                    bottomSheet.facebookImage.setImageResource(if (it.sites[0] != "") R.drawable.ic_facebook_color else R.drawable.ic_facebook_mono)
-                    bottomSheet.instagramImage.setImageResource(if (it.sites[1] != "") R.drawable.ic_instagram_color else R.drawable.ic_instagram_mono)
-                    bottomSheet.youtubeImage.setImageResource(if (it.sites[2] != "") R.drawable.ic_youtube_color else R.drawable.ic_youtube_mono)
+                    guestDetailsFragment.setViewsValues(it)
                 }
                 if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    view.scheduleRecyclerView.alpha = 1f
+                    binding.scheduleRecyclerView.alpha = 1f
                     selectedGuest = null
-                    bottomSheet.guestPhoto.setImageResource(android.R.color.transparent)
-                    bottomSheet.guestName.text = ""
-                    bottomSheet.guestDescription.text = ""
-                    bottomSheet.linksBarLayout.visibility = View.INVISIBLE
+                    guestDetailsFragment.hideViews()
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     fun onItemClick(event: Event) {
@@ -198,10 +196,8 @@ class ScheduleFragment : Fragment() {
     private fun expandBottomSheet(guest: Guest) {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         selectedGuest = guest
-        view?.scheduleRecyclerView?.isEnabled = false
-        view?.scheduleRecyclerView?.animate()
-            ?.alpha(0.15f)
-            ?.duration = 200
+        binding.scheduleRecyclerView.isEnabled = false
+        binding.scheduleRecyclerView.animate().alpha(0.15f).duration = 200
     }
 
     fun hideBottomSheet() {

@@ -5,17 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.sheet_fragment_song.view.*
-import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.SheetFragmentSongBinding
 
 class SongFragment : Fragment() {
 
+    private var _binding: SheetFragmentSongBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.sheet_fragment_song, container, false)
+    ): View {
+        _binding = SheetFragmentSongBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.hideBottomSheet.setOnClickListener { (parentFragment as SongBookFragment).hideBottomSheet() }
+        binding.hideBottomSheet.setOnClickListener { (parentFragment as SongBookFragment).hideBottomSheet() }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    fun setSongViews(title: String, text: String) {
+        binding.songName.text = title
+        binding.songText.text = text
     }
 }

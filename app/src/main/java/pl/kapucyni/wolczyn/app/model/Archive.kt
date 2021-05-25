@@ -1,7 +1,7 @@
 package pl.kapucyni.wolczyn.app.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 data class ArchiveMeeting(
     val name: String = "",

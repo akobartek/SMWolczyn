@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsetsController
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -19,11 +20,9 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.nav_header_drawer.*
 import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.ActivityMainBinding
 import pl.kapucyni.wolczyn.app.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
@@ -34,6 +33,7 @@ import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var mViewModel: MainViewModel
     private var mCurrentFragmentId: Int? = null
     private var mBackPressed = 0L
@@ -49,8 +49,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.mainAppBar.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         if (!PreferencesManager.getNightMode()) {
@@ -69,31 +70,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mViewModel = ViewModelProvider(this@MainActivity).get(MainViewModel::class.java)
 
         val toggle = ActionBarDrawerToggle(
-            this@MainActivity, drawerLayout, toolbar,
+            this@MainActivity, binding.drawerLayout, binding.mainAppBar.toolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        drawerLayout.addDrawerListener(toggle)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navView.setNavigationItemSelectedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
         onNavigationItemSelected(savedInstanceState?.let {
-            navView.menu.findItem(
-                it.getInt(
-                    "selectedItem",
-                    0
-                )
-            )
-        }
-            ?: navView.menu.getItem(0))
+            binding.navView.menu.findItem(it.getInt("selectedItem", 0))
+        } ?: binding.navView.menu.getItem(0))
 
         mViewModel.currentUser.observe(this@MainActivity, { user ->
-            if (user != null && headerDrawerImage != null) {
+            if (user != null && binding.navView.getHeaderView(0) != null) {
                 GlideApp.with(this@MainActivity)
                     .load(user.photo_url)
                     .circleCrop()
                     .placeholder(getAttributeDrawable(R.attr.logoMenu))
-                    .into(headerDrawerImage)
+                    .into(binding.navView.getHeaderView(0) as ImageView)
             } else {
                 if (mIsFetched) {
                     if (BuildConfig.DEBUG) Log.d("Bearer Token", "Token expired")
@@ -103,14 +98,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
     }
 
-    fun addViewToAppBar(view: View) = appBarLayout.addView(view)
-    fun addViewToToolbar(view: View) = toolbar.addView(view)
-    fun removeViewFromAppBar(view: View) = appBarLayout.removeView(view)
-    fun removeViewFromToolbar(view: View) = toolbar.removeView(view)
+    fun addViewToAppBar(view: View) = binding.mainAppBar.appBarLayout.addView(view)
+    fun addViewToToolbar(view: View) = binding.mainAppBar.toolbar.addView(view)
+    fun removeViewFromAppBar(view: View) = binding.mainAppBar.appBarLayout.removeView(view)
+    fun removeViewFromToolbar(view: View) = binding.mainAppBar.toolbar.removeView(view)
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        navView.checkedItem?.let { outState.putInt("selectedItem", it.itemId) }
+        binding.navView.checkedItem?.let { outState.putInt("selectedItem", it.itemId) }
     }
 
     override fun onPause() {
@@ -136,7 +131,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onBackPressed() {
         when {
-            drawerLayout.isDrawerOpen(GravityCompat.START) -> drawerLayout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.isDrawerOpen(GravityCompat.START) ->
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
             mCurrentFragmentId == R.id.nav_schedule ->
                 if ((supportFragmentManager.fragments.first { it.javaClass == ScheduleFragment::class.java } as ScheduleFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId == R.id.nav_songbook ->
@@ -145,7 +141,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if ((supportFragmentManager.fragments.first { it.javaClass == ViewPagerFragment::class.java } as ViewPagerFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId == R.id.nav_departures ->
                 if ((supportFragmentManager.fragments.first { it.javaClass == DepartureListFragment::class.java } as DepartureListFragment).onBackPressed()) doubleBackPressToExit()
-            mCurrentFragmentId!! < 0 -> onNavigationItemSelected(navView.menu.getItem(-1 * mCurrentFragmentId!! - 1))
+            mCurrentFragmentId!! < 0 ->
+                onNavigationItemSelected(binding.navView.menu.getItem(-1 * mCurrentFragmentId!! - 1))
             else -> doubleBackPressToExit()
         }
     }
@@ -187,10 +184,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 true
             }
             R.id.action_settings -> {
-                toolbar.title = getString(R.string.preferences)
+                binding.mainAppBar.toolbar.title = getString(R.string.preferences)
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.container, PreferenceFragment()).commit()
-                mCurrentFragmentId = -1 * navView.menu.children.indexOfFirst { it.isChecked } - 1
+                mCurrentFragmentId =
+                    -1 * binding.navView.menu.children.indexOfFirst { it.isChecked } - 1
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -198,32 +196,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        drawerLayout.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         mCurrentFragmentId = item.itemId
-        navView.setCheckedItem(mCurrentFragmentId!!)
+        binding.navView.setCheckedItem(mCurrentFragmentId!!)
         val fragment = when (item.itemId) {
             R.id.nav_home -> {
-                toolbar.title = getString(R.string.menu_home)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_home)
                 HomeFragment()
             }
             R.id.nav_archive -> {
-                toolbar.title = getString(R.string.menu_archive)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_archive)
                 ArchiveFragment()
             }
             R.id.nav_schedule -> {
-                toolbar.title = getString(R.string.menu_schedule)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()
             }
             R.id.nav_weather -> {
-                toolbar.title = getString(R.string.weather_title, "Wołczyn")
+                binding.mainAppBar.toolbar.title = getString(R.string.weather_title, "Wołczyn")
                 WeatherFragment()
             }
             R.id.nav_anthem -> {
-                toolbar.title = getString(R.string.menu_anthem)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_anthem)
                 AnthemFragment()
             }
             R.id.nav_songbook -> {
-                toolbar.title = getString(R.string.menu_songbook)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_songbook)
                 SongBookFragment()
             }
             R.id.nav_group -> {
@@ -231,24 +229,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     openLoginActivity()
                     null
                 } else {
-                    toolbar.title = getString(R.string.menu_group)
+                    binding.mainAppBar.toolbar.title = getString(R.string.menu_group)
                     GroupFragment()
                 }
             }
             R.id.nav_guests -> {
-                toolbar.title = getString(R.string.menu_guests)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_guests)
                 ViewPagerFragment.newInstance("guests")
             }
             R.id.nav_signings -> {
-                toolbar.title = getString(R.string.menu_signings)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_signings)
                 SigningsFragment()
             }
             R.id.nav_departures -> {
-                toolbar.title = getString(R.string.menu_departures)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_departures)
                 DepartureListFragment()
             }
             R.id.nav_breviary -> {
-                toolbar.title = getString(R.string.menu_breviary)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_breviary)
                 ViewPagerFragment.newInstance("breviary")
             }
 //            R.id.nav_map -> {
@@ -256,7 +254,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                MapFragment()
 //            }
             else -> {
-                toolbar.title = getString(R.string.menu_schedule)
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()
             }
         }
@@ -271,7 +269,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun signOutUser() {
         PreferencesManager.setBearerToken("")
-        headerDrawerImage?.setImageDrawable(getAttributeDrawable(R.attr.logoMenu))
+        (binding.navView.getHeaderView(0) as ImageView?)?.setImageDrawable(getAttributeDrawable(R.attr.logoMenu))
         invalidateOptionsMenu()
         if (mCurrentFragmentId == R.id.nav_group) goBackToHome()
     }
@@ -298,11 +296,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun changeToolbarTitle(newTitle: String) {
-        toolbar.title = newTitle
+        binding.mainAppBar.toolbar.title = newTitle
     }
 
-    fun goBackToHome() = onNavigationItemSelected(navView.menu.getItem(0))
+    fun goBackToHome() = onNavigationItemSelected(binding.navView.menu.getItem(0))
 
     fun goToSelectedFragment(fragmentId: Int): Boolean =
-        onNavigationItemSelected(navView.menu.findItem(fragmentId))
+        onNavigationItemSelected(binding.navView.menu.findItem(fragmentId))
 }

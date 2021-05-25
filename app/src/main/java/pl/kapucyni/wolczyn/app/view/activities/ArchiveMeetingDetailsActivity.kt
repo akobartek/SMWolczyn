@@ -11,20 +11,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_archive_meeting_details.*
-import kotlinx.android.synthetic.main.content_archive_meeting_details.*
-import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.ActivityArchiveMeetingDetailsBinding
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.view.adapters.ArchiveMeetingsRecyclerAdapter
 
 class ArchiveMeetingDetailsActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityArchiveMeetingDetailsBinding
     private lateinit var mAdapter: ArchiveMeetingsRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_archive_meeting_details)
-        setSupportActionBar(meetingToolbar)
+        binding = ActivityArchiveMeetingDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.meetingToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         title = intent.getStringExtra("title")
@@ -42,16 +42,17 @@ class ArchiveMeetingDetailsActivity : AppCompatActivity() {
         }
 
         mAdapter = ArchiveMeetingsRecyclerAdapter(intent.getParcelableArrayListExtra("records"))
-        recordsRecyclerView.layoutManager = LinearLayoutManager(this@ArchiveMeetingDetailsActivity)
-        recordsRecyclerView.itemAnimator = DefaultItemAnimator()
-        recordsRecyclerView.addItemDecoration(
+        binding.archiveLayout.recordsRecyclerView.layoutManager =
+            LinearLayoutManager(this@ArchiveMeetingDetailsActivity)
+        binding.archiveLayout.recordsRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.archiveLayout.recordsRecyclerView.addItemDecoration(
             DividerItemDecoration(
                 this@ArchiveMeetingDetailsActivity,
                 DividerItemDecoration.VERTICAL
             )
         )
-        recordsRecyclerView.adapter = mAdapter
-        recordsRecyclerView.scheduleLayoutAnimation()
+        binding.archiveLayout.recordsRecyclerView.adapter = mAdapter
+        binding.archiveLayout.recordsRecyclerView.scheduleLayoutAnimation()
     }
 
     override fun onBackPressed() {

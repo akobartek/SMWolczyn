@@ -21,6 +21,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_archive_meeting_details" />
+    <include
+        android:id="@+id/archiveLayout"
+        layout="@layout/content_archive_meeting_details" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

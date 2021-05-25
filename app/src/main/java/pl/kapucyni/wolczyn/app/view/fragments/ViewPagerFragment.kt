@@ -9,9 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_viewpager.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.FragmentViewpagerBinding
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
@@ -21,24 +20,26 @@ import java.util.*
 
 class ViewPagerFragment : Fragment() {
 
+    private var _binding: FragmentViewpagerBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mViewModel: MainViewModel
     private lateinit var mAdapter: ViewPagerAdapter
     private lateinit var mFragmentType: String
-    private lateinit var mTabLayout: TabLayout
     private lateinit var mChildFragmentManager: FragmentManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mChildFragmentManager = childFragmentManager
-        return inflater.inflate(R.layout.fragment_viewpager, container, false)
+        _binding = FragmentViewpagerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mFragmentType = requireArguments().getString("fragmentType", "")
-        mTabLayout = view.tabLayout
         activity?.let {
             mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             when (mFragmentType) {
@@ -53,15 +54,20 @@ class ViewPagerFragment : Fragment() {
 
     override fun onStop() {
         when (mFragmentType) {
-            "guests" -> (requireActivity() as MainActivity).removeViewFromToolbar(mTabLayout)
+            "guests" -> (requireActivity() as MainActivity).removeViewFromToolbar(binding.tabLayout)
             "breviary" -> {
                 if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                    (activity as MainActivity).removeViewFromAppBar(mTabLayout)
+                    (activity as MainActivity).removeViewFromAppBar(binding.tabLayout)
                 else
-                    (activity as MainActivity).removeViewFromToolbar(mTabLayout)
+                    (activity as MainActivity).removeViewFromToolbar(binding.tabLayout)
             }
         }
         super.onStop()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     fun setupViewPager() {
@@ -79,8 +85,8 @@ class ViewPagerFragment : Fragment() {
             },
             mFragmentType
         )
-        view?.viewPager?.adapter = mAdapter
-        view?.viewPager?.currentItem = when (mFragmentType) {
+        binding.viewPager.adapter = mAdapter
+        binding.viewPager.currentItem = when (mFragmentType) {
             "guests" -> 0
             "breviary" -> {
                 val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
@@ -88,20 +94,20 @@ class ViewPagerFragment : Fragment() {
             }
             else -> 0
         }
-        view?.viewPager?.offscreenPageLimit = when (mFragmentType) {
+        binding.viewPager.offscreenPageLimit = when (mFragmentType) {
             "guests" -> 2
             "breviary" -> 3
             else -> 2
         }
-        mTabLayout.setupWithViewPager(view?.viewPager)
-        requireView().viewPager.removeView(mTabLayout)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
+        binding.viewPager.removeView(binding.tabLayout)
         when (mFragmentType) {
-            "guests" -> (activity as MainActivity).addViewToToolbar(mTabLayout)
+            "guests" -> (activity as MainActivity).addViewToToolbar(binding.tabLayout)
             "breviary" -> {
                 if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                    (activity as MainActivity).addViewToAppBar(mTabLayout)
+                    (activity as MainActivity).addViewToAppBar(binding.tabLayout)
                 else
-                    (activity as MainActivity).addViewToToolbar(mTabLayout)
+                    (activity as MainActivity).addViewToToolbar(binding.tabLayout)
             }
         }
     }
@@ -122,7 +128,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     fun onBackPressed(): Boolean =
-        (mChildFragmentManager.fragments[requireView().viewPager.currentItem] as GuestListFragment).onBackPressed()
+        (mChildFragmentManager.fragments[binding.viewPager.currentItem] as GuestListFragment).onBackPressed()
 
     companion object {
         fun newInstance(fragmentType: String): ViewPagerFragment {

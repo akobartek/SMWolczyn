@@ -9,18 +9,25 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_group.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.FragmentGroupBinding
 import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.utils.getAttributeDrawable
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
 class GroupFragment : Fragment() {
 
+    private var _binding: FragmentGroupBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mMainViewModel: MainViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_group, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentGroupBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,22 +37,22 @@ class GroupFragment : Fragment() {
             mMainViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             mMainViewModel.currentUser.observe(viewLifecycleOwner, { user ->
                 if (user?.group != null) {
-                    view.groupsEmptyView.visibility = View.INVISIBLE
+                    binding.groupsEmptyView.visibility = View.INVISIBLE
                     GlideApp.with(this@GroupFragment)
                         .load(user.photo_url)
                         .circleCrop()
                         .placeholder(it.getAttributeDrawable(R.attr.logoMenu))
-                        .into(view.userPhoto)
-                    view.userId.text = user.number.toString()
-                    view.userName.text =
+                        .into(binding.userPhoto)
+                    binding.userId.text = user.number.toString()
+                    binding.userName.text =
                         "${if (user.prefix != null) user.prefix + " " else ""}${user.name} ${user.surname}"
-                    view.userGroup.text = getString(R.string.user_group, user.group.toString())
+                    binding.userGroup.text = getString(R.string.user_group, user.group.toString())
 
                     if (user.type != null && user.type == 2) mMainViewModel.fetchGroup()
 
                     if (user.bears != null && user.bears > 0) showBearsDialog(it)
                 } else {
-                    view.groupsEmptyView.visibility = View.VISIBLE
+                    binding.groupsEmptyView.visibility = View.VISIBLE
                 }
             })
 
@@ -55,10 +62,16 @@ class GroupFragment : Fragment() {
                     group.persons.forEach { person ->
                         groupMembers.append("${person.name}, ${person.age} - ${person.city}\n")
                     }
-                    view.groupMembers.text = getString(R.string.group_members, groupMembers.toString())
+                    binding.groupMembers.text =
+                        getString(R.string.group_members, groupMembers.toString())
                 }
             })
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showBearsDialog(activity: Activity) =

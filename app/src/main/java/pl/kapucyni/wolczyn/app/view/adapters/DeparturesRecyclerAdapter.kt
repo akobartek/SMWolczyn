@@ -1,11 +1,9 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_departure.view.*
-import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.ItemDepartureBinding
 import pl.kapucyni.wolczyn.app.model.Departure
 import pl.kapucyni.wolczyn.app.view.fragments.DepartureListFragment
 
@@ -16,7 +14,7 @@ class DeparturesRecyclerAdapter(private val mFragment: DepartureListFragment) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DepartureViewHolder =
         DepartureViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_departure, parent, false)
+            ItemDepartureBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
     override fun onBindViewHolder(holder: DepartureViewHolder, position: Int) =
@@ -29,17 +27,19 @@ class DeparturesRecyclerAdapter(private val mFragment: DepartureListFragment) :
         notifyDataSetChanged()
     }
 
-    inner class DepartureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DepartureViewHolder(private val binding: ItemDepartureBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindView(departure: Departure) {
-            itemView.departureCity.text = departure.city
-            itemView.departurePatron.text = departure.patron
-            itemView.departureTransportType.setImageResource(
-                mFragment.getDepartureTransportTypeImageResource(departure.transport_type)
-            )
-
-            itemView.setOnClickListener {
-                if (mFragment.selectedDeparture == null) mFragment.expandBottomSheet(departure)
-                else mFragment.hideBottomSheet()
+            with(binding) {
+                departureCity.text = departure.city
+                departurePatron.text = departure.patron
+                departureTransportType.setImageResource(
+                    mFragment.getDepartureTransportTypeImageResource(departure.transport_type)
+                )
+                root.setOnClickListener {
+                    if (mFragment.selectedDeparture == null) mFragment.expandBottomSheet(departure)
+                    else mFragment.hideBottomSheet()
+                }
             }
         }
     }

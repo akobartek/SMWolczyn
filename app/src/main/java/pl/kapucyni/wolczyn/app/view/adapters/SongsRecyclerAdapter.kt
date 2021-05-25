@@ -1,13 +1,11 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_song.view.*
-import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.ItemSongBinding
 import pl.kapucyni.wolczyn.app.view.fragments.SongBookFragment
 import java.util.*
 import kotlin.collections.ArrayList
@@ -26,7 +24,7 @@ class SongsRecyclerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder =
         SongViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false)
+            ItemSongBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) =
@@ -65,14 +63,16 @@ class SongsRecyclerAdapter(
         }
     }
 
-    inner class SongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class SongViewHolder(private val binding: ItemSongBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindView(songTitle: String) {
-            itemView.songTitle.text = songTitle
-
-            itemView.setOnClickListener {
-                if (mFragment.selectedSong == null)
-                    mFragment.expandBottomSheet(mSongTitles.indexOf(songTitle))
-                else mFragment.hideBottomSheet()
+            with(binding) {
+                this.songTitle.text = songTitle
+                root.setOnClickListener {
+                    if (mFragment.selectedSong == null)
+                        mFragment.expandBottomSheet(mSongTitles.indexOf(songTitle))
+                    else mFragment.hideBottomSheet()
+                }
             }
         }
     }

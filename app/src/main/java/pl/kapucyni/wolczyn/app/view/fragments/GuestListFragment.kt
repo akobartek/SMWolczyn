@@ -8,19 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_guest_list.view.*
-import kotlinx.android.synthetic.main.layout_links_bar.view.*
-import kotlinx.android.synthetic.main.sheet_fragment_guest_details.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.FragmentGuestListBinding
 import pl.kapucyni.wolczyn.app.model.Guest
-import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 import pl.kapucyni.wolczyn.app.view.adapters.GuestsRecyclerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
 class GuestListFragment : Fragment() {
+
+    private var _binding: FragmentGuestListBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var mViewModel: MainViewModel
     private lateinit var mAdapter: GuestsRecyclerAdapter
@@ -29,7 +28,10 @@ class GuestListFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_guest_list, container, false)
+    ): View {
+        _binding = FragmentGuestListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,10 +41,10 @@ class GuestListFragment : Fragment() {
             if (guestType == 0) conferenceGuests else concertGuests,
             this@GuestListFragment
         )
-        view.guestsRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        view.guestsRecyclerView.itemAnimator = DefaultItemAnimator()
-        view.guestsRecyclerView.adapter = mAdapter
-        view.guestsRecyclerView.scheduleLayoutAnimation()
+        binding.guestsRecyclerView.layoutManager = LinearLayoutManager(view.context)
+        binding.guestsRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.guestsRecyclerView.adapter = mAdapter
+        binding.guestsRecyclerView.scheduleLayoutAnimation()
 
         activity?.let {
             mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
@@ -52,43 +54,34 @@ class GuestListFragment : Fragment() {
         mBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val guestDetailsFragment =
+                    childFragmentManager.findFragmentById(R.id.guestSheet) as GuestDetailsFragment
                 selectedGuest?.let {
-                    GlideApp.with(this@GuestListFragment)
-                        .load(it.photoUrl)
-                        .circleCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(bottomSheet.guestPhoto)
-                    bottomSheet.guestName.text = it.name
-                    bottomSheet.guestDescription.text = it.description
-                    bottomSheet.linksBarLayout.visibility = View.VISIBLE
-
-                    bottomSheet.facebookImage.setImageResource(if (it.sites[0] != "") R.drawable.ic_facebook_color else R.drawable.ic_facebook_mono)
-                    bottomSheet.instagramImage.setImageResource(if (it.sites[1] != "") R.drawable.ic_instagram_color else R.drawable.ic_instagram_mono)
-                    bottomSheet.youtubeImage.setImageResource(if (it.sites[2] != "") R.drawable.ic_youtube_color else R.drawable.ic_youtube_mono)
+                    guestDetailsFragment.setViewsValues(it)
                 }
                 if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    view.guestsRecyclerView.alpha = 1f
+                    binding.guestsRecyclerView.alpha = 1f
                     selectedGuest = null
-                    bottomSheet.guestPhoto.setImageResource(android.R.color.transparent)
-                    bottomSheet.guestName.text = ""
-                    bottomSheet.guestDescription.text = ""
-                    bottomSheet.linksBarLayout.visibility = View.INVISIBLE
+                    guestDetailsFragment.hideViews()
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-        view.guestsListLayout.setOnClickListener { if (selectedGuest != null) hideBottomSheet() }
+        binding.guestsListLayout.setOnClickListener { if (selectedGuest != null) hideBottomSheet() }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     fun expandBottomSheet(guest: Guest) {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         selectedGuest = guest
-        view?.guestsRecyclerView?.isEnabled = false
-        view?.guestsRecyclerView?.animate()
-            ?.alpha(0.15f)
-            ?.duration = 200
+        binding.guestsRecyclerView.isEnabled = false
+        binding.guestsRecyclerView.animate().alpha(0.15f).duration = 200
     }
 
     fun hideBottomSheet() {

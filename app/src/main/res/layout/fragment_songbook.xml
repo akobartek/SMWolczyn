@@ -20,7 +20,7 @@
             tools:listitem="@layout/item_song" />
     </FrameLayout>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/songTextSheet"
         android:name="pl.kapucyni.wolczyn.app.view.fragments.SongFragment"
         android:layout_width="match_parent"

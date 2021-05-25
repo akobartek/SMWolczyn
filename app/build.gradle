@@ -1,7 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-kapt"
-apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-parcelize"
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: "com.google.firebase.crashlytics"
 
@@ -35,13 +35,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    androidExtensions {
-        experimental = true
-    }
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
-
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {

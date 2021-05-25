@@ -20,7 +20,7 @@
             tools:listitem="@layout/item_guest" />
     </FrameLayout>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/guestSheet"
         android:name="pl.kapucyni.wolczyn.app.view.fragments.GuestDetailsFragment"
         android:layout_width="match_parent"

@@ -21,14 +21,14 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.GoogleApiClient
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.content_login.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.ActivityLoginBinding
 import pl.kapucyni.wolczyn.app.utils.*
 import pl.kapucyni.wolczyn.app.viewmodels.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var mLoginViewModel: LoginViewModel
     private lateinit var mLoadingDialog: AlertDialog
     private lateinit var mGoogleApiClient: GoogleApiClient
@@ -37,8 +37,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        setSupportActionBar(loginToolbar)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.loginToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
@@ -53,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 window.statusBarColor = Color.WHITE
             }
-            googleSignInBtn.setColorScheme(SignInButton.COLOR_DARK)
+            binding.contentLogin.googleSignInBtn.setColorScheme(SignInButton.COLOR_DARK)
         }
 
         configureGoogleSignIn()
@@ -91,8 +92,11 @@ class LoginActivity : AppCompatActivity() {
             .setCancelable(false)
             .create()
 
-        forgotPasswordTV.text = forgotPasswordTV.text.toString().createUnderlinedString()
-        forgotPasswordTV.setOnClickListener { openWebsiteInCustomTabsService("https://konto.kapucyni.pl/remind") }
+        binding.contentLogin.forgotPasswordTV.text =
+            binding.contentLogin.forgotPasswordTV.text.toString().createUnderlinedString()
+        binding.contentLogin.forgotPasswordTV.setOnClickListener {
+            openWebsiteInCustomTabsService("https://konto.kapucyni.pl/remind")
+        }
 
 //        generateKeyHash()
     }
@@ -127,9 +131,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setOnClickListeners() {
-        emailSignInBtn?.setOnClickListener { tryToRunFunctionOnInternet { signInWithLogin() } }
+        binding.contentLogin.emailSignInBtn.setOnClickListener {
+            tryToRunFunctionOnInternet { signInWithLogin() }
+        }
 
-        googleSignInBtn?.setOnClickListener {
+        binding.contentLogin.googleSignInBtn.setOnClickListener {
             tryToRunFunctionOnInternet {
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                     if (it.resultCode == Activity.RESULT_OK) {
@@ -153,11 +159,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        loginLayout.setOnClickListener {
+        binding.contentLogin.loginLayout.setOnClickListener {
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
-        logo.setOnClickListener {
+        binding.contentLogin.logo.setOnClickListener {
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
@@ -165,8 +171,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun signInWithLogin() {
         mLoadingDialog.show()
-        val login = loginET.text.toString().trim()
-        val password = passwordET.text.toString().trim()
+        val login = binding.contentLogin.loginET.text.toString().trim()
+        val password = binding.contentLogin.passwordET.text.toString().trim()
         if (!areLoginAndPasswordValid(login, password)) {
             mLoadingDialog.dismiss()
             return
@@ -198,8 +204,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun configureFacebookSignIn() {
-        facebookSignInBtn?.setPermissions("email")
-        facebookSignInBtn?.registerCallback(
+        binding.contentLogin.facebookSignInBtn.setPermissions("email")
+        binding.contentLogin.facebookSignInBtn.registerCallback(
             mFacebookCallbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) =
@@ -236,11 +242,11 @@ class LoginActivity : AppCompatActivity() {
         var isValid = true
 
         if (login.isEmpty()) {
-            loginET.error = getString(R.string.login_error_empty)
+            binding.contentLogin.loginET.error = getString(R.string.login_error_empty)
             isValid = false
         }
         if (password.isEmpty()) {
-            passwordET.error = getString(R.string.password_error_empty)
+            binding.contentLogin.passwordET.error = getString(R.string.password_error_empty)
             isValid = false
         }
         return isValid

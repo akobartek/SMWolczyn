@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toStartOf="@+id/videoImage"
         app:layout_constraintStart_toEndOf="@id/keyline"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="What's new in Android" />
+        tools:text="Event name" />
 
     <ImageButton
         android:id="@+id/videoImage"
@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="@id/eventName"
         app:layout_constraintStart_toStartOf="@+id/eventName"
         app:layout_constraintTop_toBottomOf="@id/eventName"
-        tools:text="1 hour / Amphitheatre" />
+        tools:text="Event location" />
 
     <ImageView
         android:id="@+id/eventTypeColor"
@@ -72,6 +72,6 @@
         app:layout_constraintEnd_toEndOf="@id/eventName"
         app:layout_constraintStart_toEndOf="@+id/eventTypeColor"
         app:layout_constraintTop_toBottomOf="@id/eventLocation"
-        tools:text="Android" />
+        tools:text="Event type" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

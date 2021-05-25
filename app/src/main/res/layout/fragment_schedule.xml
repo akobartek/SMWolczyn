@@ -34,7 +34,7 @@
             tools:listitem="@layout/item_event" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/scheduleGuestSheet"
         android:name="pl.kapucyni.wolczyn.app.view.fragments.GuestDetailsFragment"
         android:layout_width="match_parent"

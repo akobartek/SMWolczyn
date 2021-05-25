@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_songbook.view.*
-import kotlinx.android.synthetic.main.sheet_fragment_song.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.FragmentSongbookBinding
 import pl.kapucyni.wolczyn.app.view.adapters.SongsRecyclerAdapter
 
 class SongBookFragment : Fragment() {
+
+    private var _binding: FragmentSongbookBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var mAdapter: SongsRecyclerAdapter
@@ -24,39 +26,40 @@ class SongBookFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_songbook, container, false)
+        _binding = FragmentSongbookBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mAdapter = SongsRecyclerAdapter(this@SongBookFragment, songTitles)
-        view.songsRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        view.songsRecyclerView.itemAnimator = DefaultItemAnimator()
-        view.songsRecyclerView.addItemDecoration(
+        binding.songsRecyclerView.layoutManager = LinearLayoutManager(view.context)
+        binding.songsRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.songsRecyclerView.addItemDecoration(
             DividerItemDecoration(
                 view.context,
                 DividerItemDecoration.VERTICAL
             )
         )
-        view.songsRecyclerView.adapter = mAdapter
-        view.songsRecyclerView.scheduleLayoutAnimation()
+        binding.songsRecyclerView.adapter = mAdapter
+        binding.songsRecyclerView.scheduleLayoutAnimation()
 
         mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.songTextSheet))
         mBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val songFragment =
+                    childFragmentManager.findFragmentById(R.id.songTextSheet) as SongFragment
                 selectedSong?.let {
-                    bottomSheet.songName.text = songTitles[it]
-                    bottomSheet.songText.text = songTexts[it]
+                    songFragment.setSongViews(songTitles[it], songTexts[it])
                 }
                 if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    view.songsRecyclerView.alpha = 1f
+                    binding.songsRecyclerView.alpha = 1f
                     selectedSong = null
-                    bottomSheet.songName.text = ""
-                    bottomSheet.songText.text = ""
+                    songFragment.setSongViews("", "")
                 }
             }
 
@@ -68,12 +71,17 @@ class SongBookFragment : Fragment() {
             if (song != -1) expandBottomSheet(song)
         }
 
-        view.songsListLayout.setOnClickListener { if (selectedSong != null) hideBottomSheet() }
+        binding.songsListLayout.setOnClickListener { if (selectedSong != null) hideBottomSheet() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         selectedSong?.let { outState.putInt("song", it) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -104,9 +112,7 @@ class SongBookFragment : Fragment() {
     fun expandBottomSheet(position: Int) {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         selectedSong = position
-        view?.songsRecyclerView?.animate()
-            ?.alpha(0.15f)
-            ?.duration = 200
+        binding.songsRecyclerView.animate().alpha(0.15f).duration = 200
     }
 
     fun hideBottomSheet() {

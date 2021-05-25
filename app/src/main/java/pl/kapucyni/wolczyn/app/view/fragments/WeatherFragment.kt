@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_weather.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.FragmentWeatherBinding
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
 import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.view.adapters.WeatherRecyclerAdapter
@@ -19,21 +19,27 @@ import pl.kapucyni.wolczyn.app.viewmodels.WeatherViewModel
 
 class WeatherFragment : Fragment() {
 
+    private var _binding: FragmentWeatherBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mWeatherViewModel: WeatherViewModel
     private lateinit var mMainViewModel: MainViewModel
     private lateinit var mAdapter: WeatherRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_weather, container, false)
+    ): View {
+        _binding = FragmentWeatherBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mAdapter = WeatherRecyclerAdapter()
-        view.weatherRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        view.weatherRecyclerView.itemAnimator = DefaultItemAnimator()
-        view.weatherRecyclerView.adapter = mAdapter
+        binding.weatherRecyclerView.layoutManager = LinearLayoutManager(view.context)
+        binding.weatherRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.weatherRecyclerView.adapter = mAdapter
 
         mWeatherViewModel =
             ViewModelProvider(this@WeatherFragment).get(WeatherViewModel::class.java)
@@ -63,11 +69,11 @@ class WeatherFragment : Fragment() {
             } as ArrayList<List<WeatherRecord>>
             mAdapter.setWeatherList(weatherDays)
             mMainViewModel.weatherList = weatherList
-            view.loadingIndicator.hide()
-            view.weatherSwipeToRefresh.isRefreshing = false
+            binding.loadingIndicator.hide()
+            binding.weatherSwipeToRefresh.isRefreshing = false
         })
 
-        view.weatherSwipeToRefresh.apply {
+        binding.weatherSwipeToRefresh.apply {
             setOnRefreshListener { fetchWeather() }
             setColorSchemeColors(
                 ContextCompat.getColor(context, R.color.swipe_refresh_color_1),
@@ -76,6 +82,11 @@ class WeatherFragment : Fragment() {
                 ContextCompat.getColor(context, R.color.swipe_refresh_color_4)
             )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun fetchWeather() {

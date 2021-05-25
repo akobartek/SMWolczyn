@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_event.view.*
-import kotlinx.android.synthetic.main.item_event_header.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.ItemEventBinding
+import pl.kapucyni.wolczyn.app.databinding.ItemEventHeaderBinding
 import pl.kapucyni.wolczyn.app.model.Event
 import pl.kapucyni.wolczyn.app.model.EventPlace
 import pl.kapucyni.wolczyn.app.model.EventType
@@ -29,18 +29,10 @@ class ScheduleRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> ScheduleHeaderViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_event_header,
-                    parent,
-                    false
-                )
+                ItemEventHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
             TYPE_ITEM -> ScheduleViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_event,
-                    parent,
-                    false
-                )
+                ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
             else -> throw IllegalStateException("There is no type like this!")
         }
@@ -56,55 +48,63 @@ class ScheduleRecyclerAdapter(
 
     override fun getItemCount(): Int = mEventsList.size
 
-    inner class ScheduleHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ScheduleHeaderViewHolder(private val binding: ItemEventHeaderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindView(header: String) {
-            itemView.eventHeader.text = header
+            binding.eventHeader.text = header
         }
     }
 
-    inner class ScheduleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ScheduleViewHolder(private val binding: ItemEventBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindView(event: Event) {
-            itemView.eventName.text = event.name
-            itemView.eventLocation.text = when (event.eventPlace) {
-                EventPlace.AMPHITHEATRE -> itemView.context.getString(R.string.place_amphitheatre)
-                EventPlace.WHITE_TENT -> itemView.context.getString(R.string.place_white_tent)
-                EventPlace.GARDEN -> itemView.context.getString(R.string.place_garden)
-                EventPlace.CAMPSITE -> itemView.context.getString(R.string.place_campsite)
-                EventPlace.COURT -> itemView.context.getString(R.string.place_court)
-                EventPlace.EVERYWHERE -> itemView.context.getString(R.string.place_everywhere)
-            }
-            itemView.eventType.text = when (event.eventType) {
-                EventType.CONFERENCE -> itemView.context.getString(R.string.type_conference)
-                EventType.CONCERT -> itemView.context.getString(R.string.type_concert)
-                EventType.MASS -> itemView.context.getString(R.string.type_mass)
-                EventType.DEVOTION -> itemView.context.getString(R.string.type_devotion)
-                EventType.PRAYER -> itemView.context.getString(R.string.type_prayer)
-                EventType.ORGANIZATION -> itemView.context.getString(R.string.type_organization)
-                EventType.MEAL -> itemView.context.getString(R.string.type_meal)
-                EventType.OTHER -> itemView.context.getString(R.string.type_other)
-                EventType.GROUPS -> itemView.context.getString(R.string.type_groups)
-                EventType.BREVIARY -> itemView.context.getString(R.string.type_breviary)
-                EventType.EXTRA -> itemView.context.getString(R.string.type_extra)
-            }
-            val color = when (event.eventType) {
-                EventType.CONFERENCE, EventType.CONCERT -> R.color.colorEventType1
-                EventType.MASS, EventType.DEVOTION, EventType.PRAYER -> R.color.colorEventType2
-                EventType.ORGANIZATION, EventType.MEAL, EventType.OTHER -> R.color.colorEventType3
-                EventType.GROUPS -> R.color.colorEventType4
-                EventType.BREVIARY, EventType.EXTRA -> R.color.colorEventType5
-            }
-            DrawableCompat.setTint(
-                DrawableCompat.wrap(itemView.eventTypeColor.drawable),
-                ContextCompat.getColor(itemView.context, color)
-            )
+            with(binding) {
+                eventName.text = event.name
+                eventLocation.text = root.context.getString(
+                    when (event.eventPlace) {
+                        EventPlace.AMPHITHEATRE -> R.string.place_amphitheatre
+                        EventPlace.WHITE_TENT -> R.string.place_white_tent
+                        EventPlace.GARDEN -> R.string.place_garden
+                        EventPlace.CAMPSITE -> R.string.place_campsite
+                        EventPlace.COURT -> R.string.place_court
+                        EventPlace.EVERYWHERE -> R.string.place_everywhere
+                    }
+                )
+                eventType.text = root.context.getString(
+                    when (event.eventType) {
+                        EventType.CONFERENCE -> R.string.type_conference
+                        EventType.CONCERT -> R.string.type_concert
+                        EventType.MASS -> R.string.type_mass
+                        EventType.DEVOTION -> R.string.type_devotion
+                        EventType.PRAYER -> R.string.type_prayer
+                        EventType.ORGANIZATION -> R.string.type_organization
+                        EventType.MEAL -> R.string.type_meal
+                        EventType.OTHER -> R.string.type_other
+                        EventType.GROUPS -> R.string.type_groups
+                        EventType.BREVIARY -> R.string.type_breviary
+                        EventType.EXTRA -> R.string.type_extra
+                    }
+                )
+                val color = when (event.eventType) {
+                    EventType.CONFERENCE, EventType.CONCERT -> R.color.colorEventType1
+                    EventType.MASS, EventType.DEVOTION, EventType.PRAYER -> R.color.colorEventType2
+                    EventType.ORGANIZATION, EventType.MEAL, EventType.OTHER -> R.color.colorEventType3
+                    EventType.GROUPS -> R.color.colorEventType4
+                    EventType.BREVIARY, EventType.EXTRA -> R.color.colorEventType5
+                }
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(eventTypeColor.drawable),
+                    ContextCompat.getColor(root.context, color)
+                )
 
-            itemView.videoImage.visibility =
-                if (event.videoUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
-            itemView.videoImage.setOnClickListener {
-                itemView.context.openWebsiteInCustomTabsService(event.videoUrl!!)
-            }
+                videoImage.visibility =
+                    if (event.videoUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+                videoImage.setOnClickListener {
+                    itemView.context.openWebsiteInCustomTabsService(event.videoUrl!!)
+                }
 
-            itemView.setOnClickListener { mFragment.onItemClick(event) }
+                root.setOnClickListener { mFragment.onItemClick(event) }
+            }
         }
     }
 }

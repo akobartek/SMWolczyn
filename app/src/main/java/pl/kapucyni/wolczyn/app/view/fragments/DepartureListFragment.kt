@@ -11,9 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_departures.view.*
-import kotlinx.android.synthetic.main.sheet_fragment_departure_details.view.*
 import pl.kapucyni.wolczyn.app.R
+import pl.kapucyni.wolczyn.app.databinding.FragmentDeparturesBinding
 import pl.kapucyni.wolczyn.app.model.Departure
 import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.view.adapters.DeparturesRecyclerAdapter
@@ -21,95 +20,66 @@ import pl.kapucyni.wolczyn.app.viewmodels.DeparturesViewModel
 
 class DepartureListFragment : Fragment() {
 
+    private var _binding: FragmentDeparturesBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mDeparturesViewModel: DeparturesViewModel
     private lateinit var mAdapter: DeparturesRecyclerAdapter
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     var selectedDeparture: Departure? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_departures, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentDeparturesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mAdapter = DeparturesRecyclerAdapter(this@DepartureListFragment)
-        view.departuresRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        view.departuresRecyclerView.itemAnimator = DefaultItemAnimator()
-        view.departuresRecyclerView.adapter = mAdapter
+        binding.departuresRecyclerView.layoutManager = LinearLayoutManager(view.context)
+        binding.departuresRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.departuresRecyclerView.adapter = mAdapter
 
-        mDeparturesViewModel = ViewModelProvider(this@DepartureListFragment).get(DeparturesViewModel::class.java)
+        mDeparturesViewModel =
+            ViewModelProvider(this@DepartureListFragment).get(DeparturesViewModel::class.java)
         fetchDepartures()
         mDeparturesViewModel.departures.observe(viewLifecycleOwner, { departures ->
             departures.sortBy { it.city }
             mAdapter.setDeparturesList(departures)
-            view.departuresRecyclerView.scheduleLayoutAnimation()
-            view.loadingIndicator.hide()
-            view.departuresSwipeToRefresh.isRefreshing = false
-            if (departures.isEmpty()) {
-                view.emptyView.visibility = View.VISIBLE
-            } else {
-                view.emptyView.visibility = View.INVISIBLE
-            }
+            binding.departuresRecyclerView.scheduleLayoutAnimation()
+            binding.loadingIndicator.hide()
+            binding.departuresSwipeToRefresh.isRefreshing = false
+            binding.emptyView.visibility =
+                if (departures.isEmpty()) View.VISIBLE else View.INVISIBLE
         })
 
         mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.departureSheet))
-        mBottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        mBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SetTextI18n")
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val departureFragment =
+                    childFragmentManager.findFragmentById(R.id.departureSheet) as DepartureDetailsFragment
                 selectedDeparture?.let {
-                    bottomSheet.departureTransportType.setImageResource(getDepartureTransportTypeImageResource(it.transport_type))
-                    bottomSheet.departureCity.text = it.city
-                    bottomSheet.departurePatron.text = getString(R.string.organizer, it.patron)
-                    it.direction?.let { direction ->
-                        if (direction.isNotEmpty()) {
-                            bottomSheet.departureDirection.text = "($direction)"
-                            bottomSheet.departureDirection.visibility = View.VISIBLE
-                        }
-                    }
-                    it.notes?.let { notes ->
-                        if (notes.isNotEmpty()) {
-                            bottomSheet.departureNotes.text = notes
-                            bottomSheet.departureNotes.visibility = View.VISIBLE
-                        }
-                    }
-                    it.contact_phone?.let { phone ->
-                        if (phone.isNotEmpty()) {
-                            bottomSheet.departurePhone.text = phone
-                            bottomSheet.departurePhone.visibility = View.VISIBLE
-                        }
-                    }
-                    it.contact_email?.let { email ->
-                        if (email.isNotEmpty()) {
-                            bottomSheet.departureEmail.text = email
-                            bottomSheet.departureEmail.visibility = View.VISIBLE
-                        }
-                    }
-                    it.signin_url?.let { url ->
-                        if (url.isNotEmpty()) {
-                            bottomSheet.departureSigningUrl.text = url
-                            bottomSheet.departureSigningUrl.visibility = View.VISIBLE
-                        }
-                    }
+                    departureFragment.setViewsValues(
+                        it, getDepartureTransportTypeImageResource(it.transport_type)
+                    )
                 }
                 if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    view.departuresRecyclerView.alpha = 1f
-                    view.departuresRecyclerView.isEnabled = true
+                    binding.departuresRecyclerView.alpha = 1f
+                    binding.departuresRecyclerView.isEnabled = true
                     selectedDeparture = null
-                    bottomSheet.departureTransportType.setImageResource(android.R.color.transparent)
-                    bottomSheet.departureCity.text = ""
-                    bottomSheet.departurePatron.text = ""
-                    bottomSheet.departureDirection.visibility = View.GONE
-                    bottomSheet.departureNotes.visibility = View.GONE
-                    bottomSheet.departurePhone.visibility = View.GONE
-                    bottomSheet.departureEmail.visibility = View.GONE
-                    bottomSheet.departureSigningUrl.visibility = View.GONE
+                    departureFragment.hideViews()
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-        view.departuresSwipeToRefresh.apply {
+        binding.departuresSwipeToRefresh.apply {
             setOnRefreshListener { fetchDepartures() }
             setOnClickListener { if (selectedDeparture != null) hideBottomSheet() }
             setColorSchemeColors(
@@ -121,6 +91,11 @@ class DepartureListFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun fetchDepartures() {
         activity?.tryToRunFunctionOnInternet { mDeparturesViewModel.fetchDepartures() }
     }
@@ -128,24 +103,22 @@ class DepartureListFragment : Fragment() {
     fun expandBottomSheet(departure: Departure) {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         selectedDeparture = departure
-        view?.departuresRecyclerView?.isEnabled = false
-        view?.departuresRecyclerView?.animate()
-            ?.alpha(0.15f)
-            ?.duration = 200
+        binding.departuresRecyclerView.isEnabled = false
+        binding.departuresRecyclerView.animate().alpha(0.15f).duration = 200
     }
 
     fun hideBottomSheet() {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    fun onBackPressed(): Boolean {
-        return if (mBottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN || mBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-            true
-        } else {
+    fun onBackPressed(): Boolean =
+        if (mBottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN
+            || mBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED
+        ) true
+        else {
             hideBottomSheet()
             false
         }
-    }
 
     fun getDepartureTransportTypeImageResource(transportType: String?) = when {
         transportType == null -> R.drawable.ic_foot
