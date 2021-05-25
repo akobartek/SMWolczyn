@@ -22,7 +22,9 @@ class SongBookFragment : Fragment() {
     private lateinit var mSearchView: SearchView
     var selectedSong: Int? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_songbook, container, false)
     }
@@ -33,12 +35,18 @@ class SongBookFragment : Fragment() {
         mAdapter = SongsRecyclerAdapter(this@SongBookFragment, songTitles)
         view.songsRecyclerView.layoutManager = LinearLayoutManager(view.context)
         view.songsRecyclerView.itemAnimator = DefaultItemAnimator()
-        view.songsRecyclerView.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
+        view.songsRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                view.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         view.songsRecyclerView.adapter = mAdapter
         view.songsRecyclerView.scheduleLayoutAnimation()
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById<View>(R.id.songTextSheet))
-        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.songTextSheet))
+        mBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 selectedSong?.let {
                     bottomSheet.songName.text = songTitles[it]
@@ -70,9 +78,10 @@ class SongBookFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_songbook, menu)
-        val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager =
+            requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
         mSearchView = menu.findItem(R.id.action_search).actionView as SearchView
-        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
         mSearchView.maxWidth = Integer.MAX_VALUE
 
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

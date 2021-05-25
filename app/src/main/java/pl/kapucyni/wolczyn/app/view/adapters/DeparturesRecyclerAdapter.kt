@@ -15,7 +15,9 @@ class DeparturesRecyclerAdapter(private val mFragment: DepartureListFragment) :
     private var mDeparturesList = listOf<Departure>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DepartureViewHolder =
-        DepartureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_departure, parent, false))
+        DepartureViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_departure, parent, false)
+        )
 
     override fun onBindViewHolder(holder: DepartureViewHolder, position: Int) =
         holder.bindView(mDeparturesList[position])
@@ -31,7 +33,9 @@ class DeparturesRecyclerAdapter(private val mFragment: DepartureListFragment) :
         fun bindView(departure: Departure) {
             itemView.departureCity.text = departure.city
             itemView.departurePatron.text = departure.patron
-            itemView.departureTransportType.setImageResource(mFragment.getDepartureTransportTypeImageResource(departure.transport_type))
+            itemView.departureTransportType.setImageResource(
+                mFragment.getDepartureTransportTypeImageResource(departure.transport_type)
+            )
 
             itemView.setOnClickListener {
                 if (mFragment.selectedDeparture == null) mFragment.expandBottomSheet(departure)

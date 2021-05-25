@@ -6,12 +6,12 @@ import androidx.fragment.app.FragmentPagerAdapter
 import pl.kapucyni.wolczyn.app.view.fragments.BreviaryFragment
 import pl.kapucyni.wolczyn.app.view.fragments.GuestListFragment
 
+// TODO() switch ViewPager to ViewPager2
 class ViewPagerAdapter(
     supportFragmentManager: FragmentManager,
     private val names: Array<String>,
     private val mFragmentType: String
-) :
-    FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+) : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment = when (mFragmentType) {
         "guests" -> GuestListFragment.newInstance(position)
@@ -19,7 +19,7 @@ class ViewPagerAdapter(
         else -> Fragment()
     }
 
-    override fun getPageTitle(position: Int): CharSequence? = names[position]
+    override fun getPageTitle(position: Int): CharSequence = names[position]
 
     override fun getCount(): Int = when (mFragmentType) {
         "guests" -> 2

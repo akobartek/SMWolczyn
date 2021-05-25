@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
-
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
@@ -9,8 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_group.view.*
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.utils.GlideApp
@@ -29,8 +27,8 @@ class GroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.let {
-            mMainViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
-            mMainViewModel.currentUser.observe(this@GroupFragment, Observer { user ->
+            mMainViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
+            mMainViewModel.currentUser.observe(viewLifecycleOwner, { user ->
                 if (user?.group != null) {
                     view.groupsEmptyView.visibility = View.INVISIBLE
                     GlideApp.with(this@GroupFragment)
@@ -51,7 +49,7 @@ class GroupFragment : Fragment() {
                 }
             })
 
-            mMainViewModel.userGroup.observe(this@GroupFragment, Observer { group ->
+            mMainViewModel.userGroup.observe(viewLifecycleOwner, { group ->
                 if (group?.persons != null) {
                     val groupMembers = StringBuilder()
                     group.persons.forEach { person ->

@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -39,9 +37,9 @@ class DepartureListFragment : Fragment() {
         view.departuresRecyclerView.itemAnimator = DefaultItemAnimator()
         view.departuresRecyclerView.adapter = mAdapter
 
-        mDeparturesViewModel = ViewModelProviders.of(this@DepartureListFragment).get(DeparturesViewModel::class.java)
+        mDeparturesViewModel = ViewModelProvider(this@DepartureListFragment).get(DeparturesViewModel::class.java)
         fetchDepartures()
-        mDeparturesViewModel.departures.observe(this@DepartureListFragment, Observer { departures ->
+        mDeparturesViewModel.departures.observe(viewLifecycleOwner, { departures ->
             departures.sortBy { it.city }
             mAdapter.setDeparturesList(departures)
             view.departuresRecyclerView.scheduleLayoutAnimation()
@@ -54,8 +52,8 @@ class DepartureListFragment : Fragment() {
             }
         })
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById<View>(R.id.departureSheet))
-        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.departureSheet))
+        mBottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SetTextI18n")
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 selectedDeparture?.let {

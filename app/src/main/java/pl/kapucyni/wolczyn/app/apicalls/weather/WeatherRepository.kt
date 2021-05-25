@@ -4,5 +4,5 @@ import pl.kapucyni.wolczyn.app.model.Weather
 
 class WeatherRepository(private val api: WeatherApi) {
 
-    suspend fun getWeatherFromApi(): Weather? = api.getWeatherForecastFromApiAsync()
+    suspend fun getWeatherFromApi(): Weather = api.getWeatherForecastFromApiAsync()
 }

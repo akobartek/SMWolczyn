@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -27,13 +27,14 @@ class GuestListFragment : Fragment() {
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     var selectedGuest: Guest? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_guest_list, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_guest_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val guestType = arguments!!.getInt("guestType")
+        val guestType = requireArguments().getInt("guestType")
         mAdapter = GuestsRecyclerAdapter(
             if (guestType == 0) conferenceGuests else concertGuests,
             this@GuestListFragment
@@ -44,11 +45,12 @@ class GuestListFragment : Fragment() {
         view.guestsRecyclerView.scheduleLayoutAnimation()
 
         activity?.let {
-            mViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
+            mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
         }
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById<View>(R.id.guestSheet))
-        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.guestSheet))
+        mBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 selectedGuest?.let {
                     GlideApp.with(this@GuestListFragment)

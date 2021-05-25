@@ -9,8 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_song.view.*
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.view.fragments.SongBookFragment
+import java.util.*
+import kotlin.collections.ArrayList
 
-class SongsRecyclerAdapter(private val mFragment: SongBookFragment, private val mSongTitles: Array<String>) :
+class SongsRecyclerAdapter(
+    private val mFragment: SongBookFragment,
+    private val mSongTitles: Array<String>
+) :
     RecyclerView.Adapter<SongsRecyclerAdapter.SongViewHolder>(), Filterable {
 
     private var mSongTitlesFiltered = arrayOf<String>()
@@ -20,7 +25,9 @@ class SongsRecyclerAdapter(private val mFragment: SongBookFragment, private val 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder =
-        SongViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false))
+        SongViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false)
+        )
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) =
         holder.bindView(mSongTitlesFiltered[position])
@@ -31,19 +38,19 @@ class SongsRecyclerAdapter(private val mFragment: SongBookFragment, private val 
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
-                mSongTitlesFiltered = if (charString.isEmpty()) {
-                    mSongTitles
-                } else {
-                    val filteredList = ArrayList<String>()
-                    for (songIndex in mSongTitles.indices) {
-                        if (mSongTitles[songIndex].toLowerCase().contains(charString.toLowerCase()) ||
-                            SongBookFragment.songTexts[songIndex].toLowerCase().contains(charString.toLowerCase())
-                        )
-                            filteredList.add(mSongTitles[songIndex])
+                mSongTitlesFiltered =
+                    if (charString.isEmpty()) mSongTitles
+                    else {
+                        val filteredList = ArrayList<String>()
+                        for (songIndex in mSongTitles.indices) {
+                            if (mSongTitles[songIndex].lowercase(Locale.getDefault())
+                                    .contains(charString.lowercase(Locale.getDefault()))
+                                || SongBookFragment.songTexts[songIndex].lowercase(Locale.getDefault())
+                                    .contains(charString.lowercase(Locale.getDefault()))
+                            ) filteredList.add(mSongTitles[songIndex])
+                        }
+                        filteredList.toTypedArray()
                     }
-
-                    filteredList.toTypedArray()
-                }
 
                 val filterResults = FilterResults()
                 filterResults.values = mSongTitlesFiltered
@@ -63,7 +70,8 @@ class SongsRecyclerAdapter(private val mFragment: SongBookFragment, private val 
             itemView.songTitle.text = songTitle
 
             itemView.setOnClickListener {
-                if (mFragment.selectedSong == null) mFragment.expandBottomSheet(mSongTitles.indexOf(songTitle))
+                if (mFragment.selectedSong == null)
+                    mFragment.expandBottomSheet(mSongTitles.indexOf(songTitle))
                 else mFragment.hideBottomSheet()
             }
         }

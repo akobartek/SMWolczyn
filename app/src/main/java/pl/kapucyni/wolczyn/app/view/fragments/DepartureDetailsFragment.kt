@@ -14,8 +14,9 @@ import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 
 class DepartureDetailsFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.sheet_fragment_departure_details, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.sheet_fragment_departure_details, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,7 +24,9 @@ class DepartureDetailsFragment : Fragment() {
         view.hideBottomSheet.setOnClickListener { (parentFragment as DepartureListFragment).hideBottomSheet() }
         view.departurePhone.setOnClickListener { makeCall(view.departurePhone.text.toString()) }
         view.departureEmail.setOnClickListener { sendMail(view.departureEmail.text.toString()) }
-        view.departureSigningUrl.setOnClickListener { context?.openWebsiteInCustomTabsService(view.departureSigningUrl.text.toString()) }
+        view.departureSigningUrl.setOnClickListener {
+            context?.openWebsiteInCustomTabsService(view.departureSigningUrl.text.toString())
+        }
     }
 
     private fun makeCall(phoneNumber: String) {

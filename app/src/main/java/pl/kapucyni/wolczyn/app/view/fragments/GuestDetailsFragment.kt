@@ -12,8 +12,9 @@ import pl.kapucyni.wolczyn.app.R
 
 class GuestDetailsFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.sheet_fragment_guest_details, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.sheet_fragment_guest_details, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,15 +24,18 @@ class GuestDetailsFragment : Fragment() {
             else (parentFragment as ScheduleFragment).hideBottomSheet()
         }
         view.facebookImage.setOnClickListener {
-            if (parentFragment is GuestListFragment) (parentFragment as GuestListFragment).onIconClick(0)
+            if (parentFragment is GuestListFragment)
+                (parentFragment as GuestListFragment).onIconClick(0)
             else (parentFragment as ScheduleFragment).onIconClick(0)
         }
         view.instagramImage.setOnClickListener {
-            if (parentFragment is GuestListFragment) (parentFragment as GuestListFragment).onIconClick(1)
+            if (parentFragment is GuestListFragment)
+                (parentFragment as GuestListFragment).onIconClick(1)
             else (parentFragment as ScheduleFragment).onIconClick(1)
         }
         view.youtubeImage.setOnClickListener {
-            if (parentFragment is GuestListFragment) (parentFragment as GuestListFragment).onIconClick(2)
+            if (parentFragment is GuestListFragment)
+                (parentFragment as GuestListFragment).onIconClick(2)
             else (parentFragment as ScheduleFragment).onIconClick(2)
         }
     }

@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
-
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_viewpager.view.*
 import pl.kapucyni.wolczyn.app.R
@@ -28,7 +27,9 @@ class ViewPagerFragment : Fragment() {
     private lateinit var mTabLayout: TabLayout
     private lateinit var mChildFragmentManager: FragmentManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         mChildFragmentManager = childFragmentManager
         return inflater.inflate(R.layout.fragment_viewpager, container, false)
     }
@@ -36,10 +37,10 @@ class ViewPagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mFragmentType = arguments!!.getString("fragmentType", "")
+        mFragmentType = requireArguments().getString("fragmentType", "")
         mTabLayout = view.tabLayout
         activity?.let {
-            mViewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
+            mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             when (mFragmentType) {
                 "breviary" -> when {
                     mViewModel.wasBreviaryLoaded() -> setupViewPager()
@@ -52,9 +53,9 @@ class ViewPagerFragment : Fragment() {
 
     override fun onStop() {
         when (mFragmentType) {
-            "guests" -> (activity!! as MainActivity).removeViewFromToolbar(mTabLayout)
+            "guests" -> (requireActivity() as MainActivity).removeViewFromToolbar(mTabLayout)
             "breviary" -> {
-                if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+                if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                     (activity as MainActivity).removeViewFromAppBar(mTabLayout)
                 else
                     (activity as MainActivity).removeViewFromToolbar(mTabLayout)
@@ -93,11 +94,11 @@ class ViewPagerFragment : Fragment() {
             else -> 2
         }
         mTabLayout.setupWithViewPager(view?.viewPager)
-        view!!.viewPager.removeView(mTabLayout)
+        requireView().viewPager.removeView(mTabLayout)
         when (mFragmentType) {
             "guests" -> (activity as MainActivity).addViewToToolbar(mTabLayout)
             "breviary" -> {
-                if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+                if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                     (activity as MainActivity).addViewToAppBar(mTabLayout)
                 else
                     (activity as MainActivity).addViewToToolbar(mTabLayout)
@@ -111,7 +112,7 @@ class ViewPagerFragment : Fragment() {
                 it.showNoInternetDialogWithTryAgain { loadBreviary() }
                 return
             }
-            val loadingDialog = AlertDialog.Builder(activity!!)
+            val loadingDialog = AlertDialog.Builder(it)
                 .setView(R.layout.dialog_loading)
                 .setCancelable(false)
                 .create()
@@ -121,7 +122,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     fun onBackPressed(): Boolean =
-        (mChildFragmentManager.fragments[view!!.viewPager.currentItem] as GuestListFragment).onBackPressed()
+        (mChildFragmentManager.fragments[requireView().viewPager.currentItem] as GuestListFragment).onBackPressed()
 
     companion object {
         fun newInstance(fragmentType: String): ViewPagerFragment {

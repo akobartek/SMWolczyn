@@ -39,11 +39,10 @@ class ArchiveRecyclerAdapter(val activity: MainActivity) :
             itemView.meetingName.text = meeting.name
 
             itemView.setOnClickListener {
-                if (meeting.records.isNotEmpty()) {
+                if (meeting.records.isNotEmpty())
                     activity.openArchiveDetailsActivity(meeting)
-                } else {
+                else
                     showEmptyRecordsListDialog()
-                }
             }
         }
 

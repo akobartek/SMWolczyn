@@ -1,14 +1,15 @@
 package pl.kapucyni.wolczyn.app.utils
 
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import pl.kapucyni.wolczyn.app.SMWolczynApp
 
 object PreferencesManager {
 
     private const val BEARER_TOKEN = "bearer_token"
     private const val NIGHT_MODE = "night_mode"
-    private val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(SMWolczynApp.instance)
+    private val sharedPref: SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(SMWolczynApp.instance)
 
     fun setBearerToken(bearerToken: String) {
         sharedPref.edit()

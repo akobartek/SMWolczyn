@@ -34,19 +34,17 @@ class WeatherViewModel(val app: Application) : AndroidViewModel(app) {
                     weatherRecords.postValue(weatherData[0].list)
                 } else {
                     val weather = repository.getWeatherFromApi()
-                    if (weather != null) {
-                        snapshot.documents.forEach { document -> weatherRef.document(document.id).delete() }
-                        weatherRef.document(now.toString()).set(Weather(weather.list))
+                    snapshot.documents.forEach { document ->
+                        weatherRef.document(document.id).delete()
                     }
-                    weatherRecords.postValue(weather?.list)
+                    weatherRef.document(now.toString()).set(Weather(weather.list))
+                    weatherRecords.postValue(weather.list)
                 }
             } catch (exc: FirebaseFirestoreException) {
                 Log.e("Error catched", exc.toString())
                 val weather = repository.getWeatherFromApi()
-                if (weather != null) {
-                    weatherRef.document(now.toString()).set(Weather(weather.list))
-                }
-                weatherRecords.postValue(weather?.list)
+                weatherRef.document(now.toString()).set(Weather(weather.list))
+                weatherRecords.postValue(weather.list)
             }
         }
     }

@@ -7,12 +7,13 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
@@ -28,10 +29,6 @@ import pl.kapucyni.wolczyn.app.viewmodels.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
 
-    companion object {
-        const val RC_GOOGLE_SIGN_IN = 2137
-    }
-
     private lateinit var mLoginViewModel: LoginViewModel
     private lateinit var mLoadingDialog: AlertDialog
     private lateinit var mGoogleApiClient: GoogleApiClient
@@ -46,7 +43,13 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
 
         if (!PreferencesManager.getNightMode()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                window.decorView.windowInsetsController?.setSystemBarsAppearance(
+                    APPEARANCE_LIGHT_STATUS_BARS,
+                    APPEARANCE_LIGHT_STATUS_BARS
+                )
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                @Suppress("DEPRECATION")
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 window.statusBarColor = Color.WHITE
             }
@@ -56,10 +59,10 @@ class LoginActivity : AppCompatActivity() {
         configureGoogleSignIn()
         configureFacebookSignIn()
 
-        mLoginViewModel = ViewModelProviders.of(this@LoginActivity).get(LoginViewModel::class.java)
+        mLoginViewModel = ViewModelProvider(this@LoginActivity).get(LoginViewModel::class.java)
         setOnClickListeners()
 
-        mLoginViewModel.bearerToken.observe(this@LoginActivity, Observer { token ->
+        mLoginViewModel.bearerToken.observe(this@LoginActivity, { token ->
             if (token != null) {
                 PreferencesManager.setBearerToken(token)
                 isTokenLoaded = true
@@ -69,11 +72,12 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        mLoginViewModel.loggedUser.observe(this@LoginActivity, Observer { user ->
+        mLoginViewModel.loggedUser.observe(this@LoginActivity, { user ->
             if (isTokenLoaded) {
                 if (user != null) {
                     if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-                    Toast.makeText(this@LoginActivity, R.string.signed_in, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, R.string.signed_in, Toast.LENGTH_SHORT)
+                        .show()
                     returnActivity(true)
                 } else {
                     PreferencesManager.setBearerToken("")
@@ -103,26 +107,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_GOOGLE_SIGN_IN) {
-            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (result.isSuccess) {
-                mLoadingDialog.show()
-                val account = result.signInAccount!!
-                tryToRunFunctionOnInternet {
-                    mLoginViewModel.signInWithSocial(account.email!!, account.id!!, "google", this@LoginActivity)
-                }
-                if (mGoogleApiClient.isConnected) {
-                    Auth.GoogleSignInApi.signOut(mGoogleApiClient)
-                    mGoogleApiClient.disconnect()
-                    mGoogleApiClient.connect()
-                }
-            } else {
-                showAccountNotFoundDialog()
-            }
-        } else {
-            mLoadingDialog.show()
-            mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data)
-        }
+        mLoadingDialog.show()
+        mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -145,7 +131,25 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInBtn?.setOnClickListener {
             tryToRunFunctionOnInternet {
-                startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), RC_GOOGLE_SIGN_IN)
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    if (it.resultCode == Activity.RESULT_OK) {
+                        val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
+                        if (result.isSuccess) {
+                            mLoadingDialog.show()
+                            val account = result.signInAccount!!
+                            tryToRunFunctionOnInternet {
+                                mLoginViewModel.signInWithSocial(
+                                    account.email!!, account.id!!, "google", this@LoginActivity
+                                )
+                            }
+                            if (mGoogleApiClient.isConnected) {
+                                Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+                                mGoogleApiClient.disconnect()
+                                mGoogleApiClient.connect()
+                            }
+                        } else showAccountNotFoundDialog()
+                    }
+                }.launch(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient))
             }
         }
 
@@ -195,15 +199,18 @@ class LoginActivity : AppCompatActivity() {
 
     private fun configureFacebookSignIn() {
         facebookSignInBtn?.setPermissions("email")
-        facebookSignInBtn?.registerCallback(mFacebookCallbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) = useFacebookLoginInformation(loginResult.accessToken)
+        facebookSignInBtn?.registerCallback(
+            mFacebookCallbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) =
+                    useFacebookLoginInformation(loginResult.accessToken)
 
-            override fun onCancel() {
-                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-            }
+                override fun onCancel() {
+                    if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
+                }
 
-            override fun onError(exception: FacebookException) = showAccountNotFoundDialog()
-        })
+                override fun onError(exception: FacebookException) = showAccountNotFoundDialog()
+            })
     }
 
     private fun useFacebookLoginInformation(accessToken: AccessToken) {

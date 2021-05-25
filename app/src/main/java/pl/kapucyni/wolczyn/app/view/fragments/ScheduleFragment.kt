@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,8 +40,9 @@ class ScheduleFragment : Fragment() {
     private var mSelectedDay = 0
     var selectedGuest: Guest? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_schedule, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_schedule, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,12 +65,13 @@ class ScheduleFragment : Fragment() {
             }
         }
 
-        mScheduleViewModel = ViewModelProviders.of(this@ScheduleFragment).get(ScheduleViewModel::class.java)
+        mScheduleViewModel =
+            ViewModelProvider(this@ScheduleFragment).get(ScheduleViewModel::class.java)
         activity?.let {
             if (it.checkNetworkConnection()) mScheduleViewModel.fetchSchedule()
             else it.showNoInternetDialogDataOutOfDate()
         }
-        mScheduleViewModel.eventsFromFirestore.observe(this@ScheduleFragment, androidx.lifecycle.Observer {
+        mScheduleViewModel.eventsFromFirestore.observe(viewLifecycleOwner, {
             it.forEach { firestoreEvent ->
                 if (firestoreEvent.id.isNotEmpty()) {
                     val index = events.indexOfFirst { event -> event.id == firestoreEvent.id }
@@ -110,13 +113,11 @@ class ScheduleFragment : Fragment() {
             }
         })
 
-        mDayViews = arrayOf(view.firstDay, view.secondDay, view.thirdDay, view.fourthDay, view.fifthDay)
+        mDayViews =
+            arrayOf(view.firstDay, view.secondDay, view.thirdDay, view.fourthDay, view.fifthDay)
         mDayViews.forEachIndexed { i, v ->
             v.setOnClickListener {
-                layoutManager.scrollToPositionWithOffset(
-                    positions[i],
-                    10
-                )
+                layoutManager.scrollToPositionWithOffset(positions[i], 10)
             }
         }
         mDaysBarLayout = view.daysBarLayout
@@ -129,8 +130,9 @@ class ScheduleFragment : Fragment() {
         if (day in 8..12 && month == 7)
             mDayViews[day - 8].performClick()
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById<View>(R.id.scheduleGuestSheet))
-        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.scheduleGuestSheet))
+        mBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 selectedGuest?.let {
                     GlideApp.with(this@ScheduleFragment)
@@ -171,13 +173,14 @@ class ScheduleFragment : Fragment() {
     }
 
     private fun invalidateDayViews() {
-        val daySelectedDrawable = view!!.context.getDrawable(R.drawable.day_selected)
+        val daySelectedDrawable =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.day_selected)
         mDayViews.forEach {
             it.background = null
-            it.setTextColor(view!!.context.getAttributeColor(R.attr.colorText))
+            it.setTextColor(requireView().context.getAttributeColor(R.attr.colorText))
         }
         mDayViews[mSelectedDay].background = daySelectedDrawable
-        mDayViews[mSelectedDay].setTextColor(view!!.context.getAttributeColor(R.attr.colorBackground))
+        mDayViews[mSelectedDay].setTextColor(requireView().context.getAttributeColor(R.attr.colorBackground))
     }
 
     private fun createList(): Pair<ArrayList<Any>, ArrayList<Int>> {
@@ -231,8 +234,14 @@ class ScheduleFragment : Fragment() {
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "2019-07-08-03", "Poniedziałek", "8 Lipca", "17:30", "Rozpoczęcie XXV Spotkania Młodych w Wołczynie",
-                EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
+                "2019-07-08-03",
+                "Poniedziałek",
+                "8 Lipca",
+                "17:30",
+                "Rozpoczęcie XXV Spotkania Młodych w Wołczynie",
+                EventPlace.AMPHITHEATRE,
+                EventType.ORGANIZATION,
+                null
             ),
             Event(
                 "2019-07-08-04", "Poniedziałek", "8 Lipca", "18:15", "Kolacja",
@@ -251,8 +260,14 @@ class ScheduleFragment : Fragment() {
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "2019-07-08-08", "Poniedziałek", "8 Lipca", "21:30", "Nabożeństwo rozpoczęcia: \"RATUNKU!\"",
-                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
+                "2019-07-08-08",
+                "Poniedziałek",
+                "8 Lipca",
+                "21:30",
+                "Nabożeństwo rozpoczęcia: \"RATUNKU!\"",
+                EventPlace.AMPHITHEATRE,
+                EventType.DEVOTION,
+                null
             ),
             Event(
                 "2019-07-08-09", "Poniedziałek", "8 Lipca", "22:30", "Podsumowanie dnia",
@@ -271,16 +286,28 @@ class ScheduleFragment : Fragment() {
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2019-07-09-04", "Wtorek", "9 Lipca", "10:00", "\"Mój kościół zraniony\"\n- bp Edward Kawa OFMConv",
-                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 1
+                "2019-07-09-04",
+                "Wtorek",
+                "9 Lipca",
+                "10:00",
+                "\"Mój kościół zraniony\"\n- bp Edward Kawa OFMConv",
+                EventPlace.AMPHITHEATRE,
+                EventType.CONFERENCE,
+                1
             ),
             Event(
                 "2019-07-09-05", "Wtorek", "9 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2019-07-09-06", "Wtorek", "9 Lipca", "11:30", "Eucharystia (bp Edward Kawa OFMConv)",
-                EventPlace.AMPHITHEATRE, EventType.MASS, 1
+                "2019-07-09-06",
+                "Wtorek",
+                "9 Lipca",
+                "11:30",
+                "Eucharystia (bp Edward Kawa OFMConv)",
+                EventPlace.AMPHITHEATRE,
+                EventType.MASS,
+                1
             ),
             Event(
                 "2019-07-09-07", "Wtorek", "9 Lipca", "13:00", "Obiad",
@@ -319,8 +346,14 @@ class ScheduleFragment : Fragment() {
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "2019-07-09-16", "Wtorek", "9 Lipca", "21:40", "Nabożeństwo: \"ODKRYJ JEGO OBLICZE!\"",
-                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
+                "2019-07-09-16",
+                "Wtorek",
+                "9 Lipca",
+                "21:40",
+                "Nabożeństwo: \"ODKRYJ JEGO OBLICZE!\"",
+                EventPlace.AMPHITHEATRE,
+                EventType.DEVOTION,
+                null
             ),
             Event(
                 "2019-07-09-17", "Wtorek", "9 Lipca", "22:40", "Podsumowanie dnia",
@@ -382,8 +415,14 @@ class ScheduleFragment : Fragment() {
                 EventPlace.WHITE_TENT, EventType.BREVIARY, null
             ),
             Event(
-                "2019-07-10-14", "Środa", "10 Lipca", "19:30", "Nabożeństwo pokutne: \"ODBUDUJ MÓJ KOŚCIÓŁ!\"",
-                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
+                "2019-07-10-14",
+                "Środa",
+                "10 Lipca",
+                "19:30",
+                "Nabożeństwo pokutne: \"ODBUDUJ MÓJ KOŚCIÓŁ!\"",
+                EventPlace.AMPHITHEATRE,
+                EventType.DEVOTION,
+                null
             ),
             Event(
                 "2019-07-10-15", "Środa", "10 Lipca", "22:30", "Podsumowanie dnia",
@@ -453,12 +492,24 @@ class ScheduleFragment : Fragment() {
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 1
             ),
             Event(
-                "2019-07-11-16", "Czwartek", "11 Lipca", "19:30", "\"Klucz do ikony\"\n- br. Marcin Świąder",
-                EventPlace.WHITE_TENT, EventType.EXTRA, null
+                "2019-07-11-16",
+                "Czwartek",
+                "11 Lipca",
+                "19:30",
+                "\"Klucz do ikony\"\n- br. Marcin Świąder",
+                EventPlace.WHITE_TENT,
+                EventType.EXTRA,
+                null
             ),
             Event(
-                "2019-07-11-17", "Czwartek", "11 Lipca", "21:30", "Nabożeństwo: \"DAJ SIĘ POKOCHAĆ!\"",
-                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
+                "2019-07-11-17",
+                "Czwartek",
+                "11 Lipca",
+                "21:30",
+                "Nabożeństwo: \"DAJ SIĘ POKOCHAĆ!\"",
+                EventPlace.AMPHITHEATRE,
+                EventType.DEVOTION,
+                null
             ),
             Event(
                 "2019-07-11-18", "Czwartek", "11 Lipca", "22:30", "Podsumowanie dnia",
@@ -482,8 +533,14 @@ class ScheduleFragment : Fragment() {
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 0
             ),
             Event(
-                "2019-07-12-05", "Piątek", "12 Lipca", "10:45", "Eucharystia (br. Tomasz Żak / br. Piotr Kowalski)",
-                EventPlace.AMPHITHEATRE, EventType.MASS, null
+                "2019-07-12-05",
+                "Piątek",
+                "12 Lipca",
+                "10:45",
+                "Eucharystia (br. Tomasz Żak / br. Piotr Kowalski)",
+                EventPlace.AMPHITHEATRE,
+                EventType.MASS,
+                null
             ),
             Event(
                 "2019-07-12-06", "Piątek", "12 Lipca", "12:00", "Rozesłanie",

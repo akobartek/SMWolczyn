@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_archive.view.*
@@ -33,10 +32,10 @@ class ArchiveFragment : Fragment() {
         view.archiveRecyclerView.itemAnimator = DefaultItemAnimator()
         view.archiveRecyclerView.adapter = mAdapter
 
-        mArchiveViewModel = ViewModelProviders.of(this@ArchiveFragment).get(ArchiveViewModel::class.java)
+        mArchiveViewModel = ViewModelProvider(this@ArchiveFragment).get(ArchiveViewModel::class.java)
         activity?.let { if (!it.checkNetworkConnection()) it.showNoInternetDialogDataOutOfDate() }
         mArchiveViewModel.fetchMeetings()
-        mArchiveViewModel.meetings.observe(this@ArchiveFragment, Observer { meetings ->
+        mArchiveViewModel.meetings.observe(viewLifecycleOwner, { meetings ->
             mAdapter.setWeatherList(meetings.sortedByDescending { it.number })
             view.archiveRecyclerView.scheduleLayoutAnimation()
             view.loadingIndicator.hide()

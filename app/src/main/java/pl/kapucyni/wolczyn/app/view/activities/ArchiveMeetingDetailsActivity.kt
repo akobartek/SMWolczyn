@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -28,16 +29,26 @@ class ArchiveMeetingDetailsActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         title = intent.getStringExtra("title")
 
-        if (!PreferencesManager.getNightMode() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            window.statusBarColor = Color.WHITE
+        if (!PreferencesManager.getNightMode()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                window.decorView.windowInsetsController?.setSystemBarsAppearance(
+                    APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS
+                )
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                window.statusBarColor = Color.WHITE
+            }
         }
 
         mAdapter = ArchiveMeetingsRecyclerAdapter(intent.getParcelableArrayListExtra("records"))
         recordsRecyclerView.layoutManager = LinearLayoutManager(this@ArchiveMeetingDetailsActivity)
         recordsRecyclerView.itemAnimator = DefaultItemAnimator()
         recordsRecyclerView.addItemDecoration(
-            DividerItemDecoration(this@ArchiveMeetingDetailsActivity, DividerItemDecoration.VERTICAL)
+            DividerItemDecoration(
+                this@ArchiveMeetingDetailsActivity,
+                DividerItemDecoration.VERTICAL
+            )
         )
         recordsRecyclerView.adapter = mAdapter
         recordsRecyclerView.scheduleLayoutAnimation()

@@ -25,7 +25,9 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
     private var mWeatherList = arrayListOf<List<WeatherRecord>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder =
-        WeatherViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_weather, parent, false))
+        WeatherViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_weather, parent, false)
+        )
 
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) =
         holder.bindView(mWeatherList[position], position)
@@ -42,7 +44,9 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
         fun bindView(weatherRecords: List<WeatherRecord>, position: Int) {
             val date = weatherRecords[0].dt_txt.split(" ")[0].split("-")
             itemView.weatherDayText.text = "${date[2]}.${date[1]}.${date[0]}"
-            val index = if (position == 0) 0 else weatherRecords.indexOf(weatherRecords.maxBy { it.main.temp })
+            val index =
+                if (position == 0) 0
+                else weatherRecords.indexOf(weatherRecords.maxByOrNull { it.main.temp })
             if (position != 0 && itemView.weatherCardToExpand.visibility == View.VISIBLE) expandClick()
             val weatherPair = weatherValues[weatherRecords[index].weather[0].icon.substring(0, 2)]
                 ?: Pair(R.drawable.ic_weather_clear_sky, R.string.clear_sky)
@@ -75,8 +79,10 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
                 setPinchZoom(false)
                 axisLeft.isEnabled = false
                 axisRight.isEnabled = false
-                axisLeft.axisMinimum = (weatherRecords.minBy { it.main.temp }!!.main.temp - 4).toFloat()
-                axisRight.axisMinimum = (weatherRecords.minBy { it.main.temp }!!.main.temp - 4).toFloat()
+                axisLeft.axisMinimum =
+                    (weatherRecords.minByOrNull { it.main.temp }!!.main.temp - 4).toFloat()
+                axisRight.axisMinimum =
+                    (weatherRecords.minByOrNull { it.main.temp }!!.main.temp - 4).toFloat()
                 xAxis.apply {
                     position = XAxis.XAxisPosition.BOTTOM
                     setDrawGridLines(false)
@@ -96,18 +102,21 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
                     record.main.temp.toFloat(),
                     ResourcesCompat.getDrawable(
                         itemView.context.resources,
-                        weatherValues[record.weather[0].icon.substring(0, 2)]?.first ?: R.drawable.ic_weather_clear_sky,
+                        weatherValues[record.weather[0].icon.substring(0, 2)]?.first
+                            ?: R.drawable.ic_weather_clear_sky,
                         null
                     )
                 )
             }
-            val lineDataSet = LineDataSet(chartValues, itemView.context.getString(R.string.menu_weather))
+            val lineDataSet =
+                LineDataSet(chartValues, itemView.context.getString(R.string.menu_weather))
             lineDataSet.apply {
                 setDrawIcons(true)
                 iconsOffset.y = 16f
                 lineWidth = 0.1f
                 setDrawFilled(true)
-                fillColor = ResourcesCompat.getColor(itemView.resources, R.color.colorLineChart, null)
+                fillColor =
+                    ResourcesCompat.getColor(itemView.resources, R.color.colorLineChart, null)
                 setDrawCircles(false)
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String = value.toInt().toString()

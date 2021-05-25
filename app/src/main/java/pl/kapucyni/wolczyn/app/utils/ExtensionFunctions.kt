@@ -17,6 +17,7 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AlertDialog
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import pl.kapucyni.wolczyn.app.R
@@ -29,7 +30,6 @@ fun String.createUnderlinedString(): SpannableString {
     return spannable
 }
 
-
 fun Context.isChromeCustomTabsSupported(): Boolean {
     val serviceIntent = Intent("android.support.customtabs.action.CustomTabsService")
     serviceIntent.setPackage("com.android.chrome")
@@ -41,8 +41,11 @@ fun Context.openWebsiteInCustomTabsService(url: String) {
     if (isChromeCustomTabsSupported()) {
         CustomTabsIntent.Builder().apply {
             val color = if (PreferencesManager.getNightMode()) Color.parseColor("#28292e") else Color.WHITE
-            setToolbarColor(color)
-            setSecondaryToolbarColor(color)
+            val params = CustomTabColorSchemeParams.Builder()
+                .setToolbarColor(color)
+                .setSecondaryToolbarColor(color)
+                .build()
+            setDefaultColorSchemeParams(params)
         }.build().launchUrl(this, Uri.parse(url))
     } else {
         val intent = Intent(Intent.ACTION_VIEW)

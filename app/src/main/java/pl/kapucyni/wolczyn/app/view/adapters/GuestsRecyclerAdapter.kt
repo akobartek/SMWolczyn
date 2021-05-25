@@ -11,11 +11,16 @@ import pl.kapucyni.wolczyn.app.model.Guest
 import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.view.fragments.GuestListFragment
 
-class GuestsRecyclerAdapter(private var mGuestsList: Array<Guest>, private val mFragment: GuestListFragment) :
+class GuestsRecyclerAdapter(
+    private var mGuestsList: Array<Guest>,
+    private val mFragment: GuestListFragment
+) :
     RecyclerView.Adapter<GuestsRecyclerAdapter.GuestViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestViewHolder =
-        GuestViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_guest, parent, false))
+        GuestViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_guest, parent, false)
+        )
 
     override fun onBindViewHolder(holder: GuestViewHolder, position: Int) =
         holder.bindView(mGuestsList[position])

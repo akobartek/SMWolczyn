@@ -15,7 +15,10 @@ import pl.kapucyni.wolczyn.app.model.EventType
 import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 import pl.kapucyni.wolczyn.app.view.fragments.ScheduleFragment
 
-class ScheduleRecyclerAdapter(private var mEventsList: ArrayList<Any>, private val mFragment: ScheduleFragment) :
+class ScheduleRecyclerAdapter(
+    private var mEventsList: ArrayList<Any>,
+    private val mFragment: ScheduleFragment
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -48,7 +51,8 @@ class ScheduleRecyclerAdapter(private var mEventsList: ArrayList<Any>, private v
         else (holder as ScheduleHeaderViewHolder).bindView(mEventsList[position] as String)
     }
 
-    override fun getItemViewType(position: Int): Int = if (mEventsList[position] is Event) TYPE_ITEM else TYPE_HEADER
+    override fun getItemViewType(position: Int): Int =
+        if (mEventsList[position] is Event) TYPE_ITEM else TYPE_HEADER
 
     override fun getItemCount(): Int = mEventsList.size
 
@@ -94,7 +98,8 @@ class ScheduleRecyclerAdapter(private var mEventsList: ArrayList<Any>, private v
                 ContextCompat.getColor(itemView.context, color)
             )
 
-            itemView.videoImage.visibility = if (event.videoUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+            itemView.videoImage.visibility =
+                if (event.videoUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
             itemView.videoImage.setOnClickListener {
                 itemView.context.openWebsiteInCustomTabsService(event.videoUrl!!)
             }

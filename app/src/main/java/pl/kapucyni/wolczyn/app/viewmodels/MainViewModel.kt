@@ -52,7 +52,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
     // region Signings
     fun loadSignings(view: View, activity: Activity) {
-        Thread(Runnable {
+        Thread {
             try {
                 view.loadingIndicator.show()
                 val jsoup = Jsoup.connect("https://wolczyn.kapucyni.pl/zapisy/")
@@ -64,7 +64,13 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
                 activity.runOnUiThread {
                     view.loadingIndicator.hide()
-                    view.webView.loadDataWithBaseURL(null, jsoup.outerHtml(), "text/html", "UTF-8", null)
+                    view.webView.loadDataWithBaseURL(
+                        null,
+                        jsoup.outerHtml(),
+                        "text/html",
+                        "UTF-8",
+                        null
+                    )
                     view.webView.visibility = View.VISIBLE
                     view.webView.scrollTo(0, 0)
                     view.webView.animate().alpha(1f).duration = 444L
@@ -74,7 +80,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                     activity.showNoInternetDialogWithTryAgain { loadSignings(view, activity) }
                 }
             }
-        }).start()
+        }.start()
     }
     // endregion Signings
 
@@ -84,17 +90,21 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     fun wasBreviaryLoaded(): Boolean = !breviaryHtml.contains(null)
 
     fun loadBreviaryHtml(loadingDialog: AlertDialog, viewPagerFragment: ViewPagerFragment, activity: Activity) {
-        Thread(Runnable {
+        Thread {
             try {
                 if (!wasBreviaryLoaded()) {
-                    val document = Jsoup.connect("http://skrzynkaintencji.pl/brewiarz/").timeout(30000).get()
-                    breviaryHtml[0] = document.select("h2").first { it.outerHtml().contains("<a name=\"jutrznia\">") }
+                    val document =
+                        Jsoup.connect("http://skrzynkaintencji.pl/brewiarz/").timeout(30000).get()
+                    breviaryHtml[0] = document.select("h2")
+                        .first { it.outerHtml().contains("<a name=\"jutrznia\">") }
                         .nextElementSibling()
                         .outerHtml()
-                    breviaryHtml[1] = document.select("h2").first { it.outerHtml().contains("<a name=\"nieszpory\">") }
+                    breviaryHtml[1] = document.select("h2")
+                        .first { it.outerHtml().contains("<a name=\"nieszpory\">") }
                         .nextElementSibling()
                         .outerHtml()
-                    breviaryHtml[2] = document.select("h2").first { it.outerHtml().contains("<a name=\"kompleta\">") }
+                    breviaryHtml[2] = document.select("h2")
+                        .first { it.outerHtml().contains("<a name=\"kompleta\">") }
                         .nextElementSibling()
                         .outerHtml()
                     updateBreviaryHtml()
@@ -113,7 +123,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                     }
                 }
             }
-        }).start()
+        }.start()
     }
 
     fun getBreviaryHtml(type: Int): String? = checkBreviaryNightMode(type)

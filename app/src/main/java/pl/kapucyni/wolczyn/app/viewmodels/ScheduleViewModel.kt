@@ -20,7 +20,8 @@ class ScheduleViewModel(val app: Application) : AndroidViewModel(app) {
     fun fetchSchedule() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val snapshot = FirebaseFirestore.getInstance().collection("schedule2019").get().await()
+                val snapshot =
+                    FirebaseFirestore.getInstance().collection("schedule2019").get().await()
                 val events = snapshot.toObjects<EventFirestore>()
                 eventsFromFirestore.postValue(events)
             } catch (exc: FirebaseFirestoreException) {
