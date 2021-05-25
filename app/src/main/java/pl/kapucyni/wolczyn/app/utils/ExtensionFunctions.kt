@@ -58,7 +58,6 @@ fun Activity.showNoInternetDialogWithTryAgain(function: () -> Unit): Unit =
     AlertDialog.Builder(this)
         .setTitle(R.string.no_internet_title)
         .setMessage(R.string.no_internet_reconnect_message)
-        .setCancelable(false)
         .setPositiveButton(R.string.try_again) { dialog, _ ->
             dialog.dismiss()
             if (checkNetworkConnection()) function()

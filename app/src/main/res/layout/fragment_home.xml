@@ -20,9 +20,9 @@
             android:layout_marginTop="8dp"
             android:contentDescription="@string/poster_description"
             android:padding="4dp"
-            android:src="@drawable/launch_screen"
+            android:src="@drawable/meeting_poster"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintHeight_percent="0.25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

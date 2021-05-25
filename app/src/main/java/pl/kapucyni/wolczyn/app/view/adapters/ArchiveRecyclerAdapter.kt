@@ -26,7 +26,7 @@ class ArchiveRecyclerAdapter(val activity: MainActivity) :
 
     override fun getItemCount(): Int = mMeetings.size
 
-    fun setWeatherList(list: List<ArchiveMeeting>) {
+    fun setMeetingsList(list: List<ArchiveMeeting>) {
         mMeetings = list
         notifyDataSetChanged()
     }

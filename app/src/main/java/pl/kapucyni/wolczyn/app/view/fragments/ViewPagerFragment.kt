@@ -13,6 +13,7 @@ import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.FragmentViewpagerBinding
 import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
 import pl.kapucyni.wolczyn.app.utils.showNoInternetDialogWithTryAgain
+import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import pl.kapucyni.wolczyn.app.view.adapters.ViewPagerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
@@ -123,7 +124,9 @@ class ViewPagerFragment : Fragment() {
                 .setCancelable(false)
                 .create()
             loadingDialog.show()
-            mViewModel.loadBreviaryHtml(loadingDialog, this@ViewPagerFragment, it)
+            it.tryToRunFunctionOnInternet {
+                mViewModel.loadBreviaryHtml(loadingDialog, this@ViewPagerFragment, it)
+            }
         }
     }
 

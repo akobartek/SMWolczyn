@@ -17,10 +17,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
-import com.google.android.gms.common.api.GoogleApiClient
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ActivityLoginBinding
 import pl.kapucyni.wolczyn.app.utils.*
@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var mLoginViewModel: LoginViewModel
     private lateinit var mLoadingDialog: AlertDialog
-    private lateinit var mGoogleApiClient: GoogleApiClient
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
     private var isTokenLoaded = false
     private val mFacebookCallbackManager = CallbackManager.Factory.create()
 
@@ -118,7 +118,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStop() {
         if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-        if (mGoogleApiClient.isConnected) mGoogleApiClient.disconnect()
         super.onStop()
     }
 
@@ -130,6 +129,21 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
+    private val googleSignIn =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val account = GoogleSignIn.getSignedInAccountFromIntent(it.data).result
+                if (account == null) showAccountNotFoundDialog()
+                tryToRunFunctionOnInternet {
+                    mLoginViewModel.signInWithSocial(
+                        account!!.email!!, account.id!!, "google", this@LoginActivity
+                    )
+                }
+                mGoogleSignInClient.signOut()
+            }
+            mLoadingDialog.show()
+        }
+
     private fun setOnClickListeners() {
         binding.contentLogin.emailSignInBtn.setOnClickListener {
             tryToRunFunctionOnInternet { signInWithLogin() }
@@ -137,25 +151,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.contentLogin.googleSignInBtn.setOnClickListener {
             tryToRunFunctionOnInternet {
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    if (it.resultCode == Activity.RESULT_OK) {
-                        val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
-                        if (result.isSuccess) {
-                            mLoadingDialog.show()
-                            val account = result.signInAccount!!
-                            tryToRunFunctionOnInternet {
-                                mLoginViewModel.signInWithSocial(
-                                    account.email!!, account.id!!, "google", this@LoginActivity
-                                )
-                            }
-                            if (mGoogleApiClient.isConnected) {
-                                Auth.GoogleSignInApi.signOut(mGoogleApiClient)
-                                mGoogleApiClient.disconnect()
-                                mGoogleApiClient.connect()
-                            }
-                        } else showAccountNotFoundDialog()
-                    }
-                }.launch(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient))
+                googleSignIn.launch(mGoogleSignInClient.signInIntent)
             }
         }
 
@@ -192,22 +188,13 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
 
-        mGoogleApiClient = GoogleApiClient.Builder(this@LoginActivity)
-            .enableAutoManage(this@LoginActivity) {
-                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-                if (mGoogleApiClient.isConnected) mGoogleApiClient.disconnect()
-                showNoInternetDialogWithTryAgain { mGoogleApiClient.connect() }
-            }
-            .addApi(Auth.GOOGLE_SIGN_IN_API, options)
-            .build()
-        mGoogleApiClient.connect()
+        mGoogleSignInClient = GoogleSignIn.getClient(this@LoginActivity, options)
     }
 
     private fun configureFacebookSignIn() {
         binding.contentLogin.facebookSignInBtn.setPermissions("email")
         binding.contentLogin.facebookSignInBtn.registerCallback(
-            mFacebookCallbackManager,
-            object : FacebookCallback<LoginResult> {
+            mFacebookCallbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) =
                     useFacebookLoginInformation(loginResult.accessToken)
 

@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (mCurrentFragmentId == R.id.nav_group) goBackToHome()
     }
 
-    private fun openLoginActivity() {
+    private val openLoginActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 if (!it.data!!.getBooleanExtra("loginSuccess", false)
@@ -282,17 +282,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 ) goBackToHome()
                 else goToSelectedFragment(it.data!!.getIntExtra("fragment", 0))
             }
-        }.launch(
+        }
+    private fun openLoginActivity() {
+        openLoginActivity.launch(
             Intent(this@MainActivity, LoginActivity::class.java)
                 .putExtra("fragment", mCurrentFragmentId)
         )
     }
 
+    private val openArchiveDetails =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
     fun openArchiveDetailsActivity(meeting: ArchiveMeeting) {
         val intent = Intent(this@MainActivity, ArchiveMeetingDetailsActivity::class.java)
         intent.putExtra("title", meeting.name.split(" - ")[1])
         intent.putParcelableArrayListExtra("records", meeting.records)
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}.launch(intent)
+        openArchiveDetails.launch(intent)
     }
 
     fun changeToolbarTitle(newTitle: String) {

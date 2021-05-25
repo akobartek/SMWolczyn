@@ -43,7 +43,7 @@ class ArchiveFragment : Fragment() {
         activity?.let { if (!it.checkNetworkConnection()) it.showNoInternetDialogDataOutOfDate() }
         mArchiveViewModel.fetchMeetings()
         mArchiveViewModel.meetings.observe(viewLifecycleOwner, { meetings ->
-            mAdapter.setWeatherList(meetings.sortedByDescending { it.number })
+            mAdapter.setMeetingsList(meetings.sortedByDescending { it.number })
             binding.archiveRecyclerView.scheduleLayoutAnimation()
             binding.loadingIndicator.hide()
             binding.emptyView.visibility =
