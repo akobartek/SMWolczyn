@@ -29,6 +29,10 @@
             android:icon="@drawable/ic_menu_songbook"
             android:title="@string/menu_songbook" />
         <item
+            android:id="@+id/nav_breviary"
+            android:icon="@drawable/ic_menu_breviary"
+            android:title="@string/menu_breviary" />
+        <item
             android:id="@+id/nav_group"
             android:icon="@drawable/ic_menu_group"
             android:title="@string/menu_group" />
@@ -40,17 +44,13 @@
             android:id="@+id/nav_signings"
             android:icon="@drawable/ic_menu_signings"
             android:title="@string/menu_signings" />
-        <item
-            android:id="@+id/nav_departures"
-            android:icon="@drawable/ic_menu_departure"
-            android:title="@string/menu_departures" />
-        <item
-            android:id="@+id/nav_breviary"
-            android:icon="@drawable/ic_menu_breviary"
-            android:title="@string/menu_breviary" />
-        <item
-            android:id="@+id/nav_map"
-            android:icon="@drawable/ic_menu_map"
-            android:title="@string/menu_map" />
+<!--        <item-->
+<!--            android:id="@+id/nav_departures"-->
+<!--            android:icon="@drawable/ic_menu_departure"-->
+<!--            android:title="@string/menu_departures" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_map"-->
+<!--            android:icon="@drawable/ic_menu_map"-->
+<!--            android:title="@string/menu_map" />-->
     </group>
 </menu>

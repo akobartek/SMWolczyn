@@ -68,6 +68,7 @@ class ScheduleRecyclerAdapter(
                         EventPlace.CAMPSITE -> R.string.place_campsite
                         EventPlace.COURT -> R.string.place_court
                         EventPlace.EVERYWHERE -> R.string.place_everywhere
+                        EventPlace.CHURCH -> R.string.place_church
                     }
                 )
                 eventType.text = root.context.getString(

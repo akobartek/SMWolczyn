@@ -15,6 +15,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabColorSchemeParams
@@ -52,6 +54,19 @@ fun Context.openWebsiteInCustomTabsService(url: String) {
         intent.data = Uri.parse(url)
         startActivity(intent)
     }
+}
+
+fun Activity.openMFTauDialog() {
+    val dialogLayout = layoutInflater.inflate(R.layout.dialog_mftau, null)
+    val alertDialog = AlertDialog.Builder(this).setView(dialogLayout).create()
+
+    dialogLayout.findViewById<ImageView>(R.id.spoletoPoster).setOnClickListener {
+        openWebsiteInCustomTabsService("https://mftau.pl/wydarzenie/spoleto-2-2021/")
+    }
+    dialogLayout.findViewById<ImageButton>(R.id.closeDialogBtn).setOnClickListener {
+        alertDialog.dismiss()
+    }
+    alertDialog.show()
 }
 
 fun Activity.showNoInternetDialogWithTryAgain(function: () -> Unit): Unit =

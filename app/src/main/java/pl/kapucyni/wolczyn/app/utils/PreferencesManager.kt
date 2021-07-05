@@ -8,6 +8,9 @@ object PreferencesManager {
 
     private const val BEARER_TOKEN = "bearer_token"
     private const val NIGHT_MODE = "night_mode"
+    private const val MF_TAU = "mf_tau"
+
+
     private val sharedPref: SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(SMWolczynApp.instance)
 
@@ -25,5 +28,11 @@ object PreferencesManager {
         sharedPref.edit()
             .putBoolean(NIGHT_MODE, newValue)
             .apply()
+    }
+
+    fun wasMFTauAdShowed() = sharedPref.getBoolean(MF_TAU, false)
+
+    fun markAdAsShowed() {
+        sharedPref.edit().putBoolean(MF_TAU, true).apply()
     }
 }

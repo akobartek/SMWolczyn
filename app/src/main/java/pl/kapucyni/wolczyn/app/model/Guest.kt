@@ -4,7 +4,7 @@ data class Guest(
     var name: String = "",
     var description: String = "",
     var photoUrl: String = "",
-    var sites: Array<String> = arrayOf("", "", "")
+    var sites: Array<String> = arrayOf("", "", "", "")
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

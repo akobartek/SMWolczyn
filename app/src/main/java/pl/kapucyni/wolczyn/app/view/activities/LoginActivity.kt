@@ -49,11 +49,10 @@ class LoginActivity : AppCompatActivity() {
                     APPEARANCE_LIGHT_STATUS_BARS,
                     APPEARANCE_LIGHT_STATUS_BARS
                 )
-            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 @Suppress("DEPRECATION")
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.statusBarColor = Color.WHITE
-            }
+            window.statusBarColor = Color.WHITE
             binding.contentLogin.googleSignInBtn.setColorScheme(SignInButton.COLOR_DARK)
         }
 

@@ -18,7 +18,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="8.07"
+        android:text="12.07"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?colorText"
         tools:ignore="HardcodedText" />
@@ -32,7 +32,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="9.07"
+        android:text="13.07"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?colorText"
         tools:ignore="HardcodedText" />
@@ -46,7 +46,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="10.07"
+        android:text="14.07"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?colorText"
         tools:ignore="HardcodedText" />
@@ -60,7 +60,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="11.07"
+        android:text="15.07"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?colorText"
         tools:background="@drawable/day_selected"
@@ -75,7 +75,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="12.07"
+        android:text="16.07"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:textColor="?colorText"
         tools:ignore="HardcodedText" />

@@ -16,5 +16,4 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:textColor="?attr/colorText"
         tools:text="XDDDDDDDDDDDDDDDDDD" />
-
 </ScrollView>

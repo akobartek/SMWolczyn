@@ -10,6 +10,11 @@
     <string name="loading">Ładowanie…</string>
     <string name="hide_bottom_sheet">Schowaj kartę</string>
 
+    <!-- MF TAU -->
+    <string name="cd_spoleto_poster">Plakat rekolekcji Spoleto</string>
+    <string name="cd_close_btn">Kliknij tutaj aby zamknąć okienko</string>
+    <string name="spoleto">Spoleto</string>
+
     <!-- PREFERENCES STRINGS -->
     <string name="preferences">Ustawienia</string>
     <string name="night_mode_title">Tryb nocny</string>
@@ -72,8 +77,9 @@
     <string name="place_white_tent">Biały Namiot</string>
     <string name="place_garden">Ogród koło Białego Namiotu</string>
     <string name="place_campsite">Pole namiotowe</string>
-    <string name="place_court">Boisko przy gimnazjum</string>
+    <string name="place_court">Orlik</string>
     <string name="place_everywhere">Wszędzie</string>
+    <string name="place_church">Czerwony kościół</string>
     <string name="type_conference">Konferencja</string>
     <string name="type_concert">Koncert</string>
     <string name="type_mass">Msza</string>

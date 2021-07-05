@@ -42,29 +42,36 @@ class AnthemFragment : Fragment() {
     }
 
     companion object {
-        const val YOUTUBE_URL = "https://www.youtube.com/watch?v=WuTZBX8pbSs"
+        const val YOUTUBE_URL = "https://www.youtube.com/watch?v=9NnGOWZyQoE"
 
-        const val ANTHEM = "\t\tRef. Dajesz ciało żeby służyć,\n" +
-                "\t\tPieniądz żeby służyć,\n" +
-                "\t\tWładzę aby sługą być.\n" +
-                "\t\tDaj mi nie żyć już dla siebie,\n" +
-                "\t\tW drugim widzieć ciebie,\n" +
-                "\t\tCzystym wolnym być.\n" +
-                "\t\t(W Tobie żyć)\n\n" +
-                "Sprzedaj co masz i rozdaj ubogim,\n" +
-                "Daj ciało na ofiarę Bogu przyjemną.\n" +
-                "Pierwszy jest sługą, bierze miejsce ostatnie.\n" +
-                "Ta brama, ta ścieżka wiedzie tam gdzie Ojciec mieszka.\n\n" +
-                "\t\tRef. Dajesz ciało żeby...\n\n" +
-                "Gromadzenie, pożądanie, nad bliźnim panowanie \n" +
-                "Nie tak będzie wśród was, tak czynią poganie\n" +
-                "Czystość, posłuszeństwo, Bogu pierwszeństwo\n" +
-                "Franciszek, nasz brat, budował Boży ład.\n\n" +
-                "\t\tRef. Dajesz ciało żeby...\n\n" +
-                "Zbuduj mnie na nowo przez Twoje słowo\n" +
-                "Bym ja, by moje ciało, świątynią Twą się stało.\n" +
-                "Daj mi serce nowe, daj serce gotowe,\n" +
-                "Odważnie i z radością budować święty Kościół\n\n" +
-                "\t\tRef. Dajesz ciało żeby...\n\n"
+        const val ANTHEM = "1. Utkałeś mnie w łonie mej matki,\n" +
+                "pod jej sercem cudownie złożyłeś.\n" +
+                "Tchnąłeś Ducha, więc żyję i kocham\n" +
+                "chcę być taki jak, jak mnie stworzyłeś.\n" +
+                "chcę być taki jak, jak mnie stworzyłeś.\n\n" +
+                "2. Stworzyłeś nas mężczyzną i kobietą,\n" +
+                "nasze święte życie, twoje od poczęcia,\n" +
+                "ciało nasze jest twoją świątynią,\n" +
+                "gdzie dusza spotyka swego Oblubieńca\n" +
+                "gdzie dusza spotyka swego Oblubieńca\n\n" +
+                "\t\tRef. Kto ma Ducha, słów tych słucha\n" +
+                "\t\tsercem dziecka je przyjmuje.\n" +
+                "\t\tKto bez Ducha, nie chce słuchać,\n" +
+                "\t\tplanu Boga nie pojmuje. x2,\n\n" +
+                "3. On i ona, ciał i dusz przymierze,\n" +
+                "tu rodzi się życie i karmi się wiarą.\n" +
+                "Dom ich kościołem, Kościół ich domem,\n" +
+                "tu miłość dojrzewa, stając się ofiarą.\n" +
+                "tu miłość dojrzewa, stając się ofiarą.\n\n" +
+                "\t\tRef. Kto ma Ducha...\n\n" +
+                "BRIDGE:\n" +
+                "Nie chcę wymyślać świata bez Ciebie,\n" +
+                "tego kim jestem, tego jak żyć,\n" +
+                "lecz Ciebie słuchać, aby zrozumieć\n" +
+                "jak Ty mnie widzisz, jaki mam być.\n\n" +
+                "\t\tRef. Kto ma Ducha... X2\n\n" +
+                "OUTRO:\n" +
+                "Ooo Ooo Ooo\n" +
+                "Słucham, by zrozumieć!\n\n"
     }
 }

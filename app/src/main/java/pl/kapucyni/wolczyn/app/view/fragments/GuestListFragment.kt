@@ -114,50 +114,51 @@ class GuestListFragment : Fragment() {
 
         val conferenceGuests = arrayOf(
             Guest(
-                "Monika i Marcin Gomułkowie",
-                "Niesamowite małżeństwo, które swoim przykładem pokazuje jak budować rodzinę opartą na Panu Bogu. Ich radość oraz szczery uśmiech potrafią nakłonić nie jedno ucho do słuchania.",
-                "https://www.solideo.pl/Strona/2017/%5B2017.10.19%5D%20Wiara%20jak%20Ziarnko%20Gorczycy%20Gomu%C5%82kowie/monika-marcin-gomulkowie.jpg",
+                "ks. Jakub Bartczak",
+                "Duszpasterz parafii Sulistrowice  (Święcenia kapłańskie 2007r.). Niegdyś znany również jako „Mane\", członek hip-hopowych ekip z Wrocławia (Drugi komplet, Drutz). W czasie kapłaństwa autor czterech albumów: \"Powołanie\", \"Po prostu wierze\", \"Bóg jest działa\", \"#Siemodle\".",
+                "https://scontent.fktw1-1.fna.fbcdn.net/v/t1.6435-9/123202305_203818537767453_8630926816107749231_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=1qy8CrXDXKIAX_xnIRC&_nc_ht=scontent.fktw1-1.fna&oh=9fb70c0d0dfd4d840391d22f5a30e822&oe=60E6ED25",
                 arrayOf(
-                    "https://www.facebook.com/malzenstwojestboskie/",
-                    "https://www.instagram.com/poczatekwiecznosci.pl/?hl=pl",
-                    "https://www.youtube.com/channel/UC6t3U_MVHFvHHMLmwHXfYow"
+                    "https://www.facebook.com/KsiadzJakubBartczak",
+                    "https://www.instagram.com/ksjakubbartczak/",
+                    "https://kskubabartczak.pl/",
+                    "https://www.youtube.com/user/ksjakubbartczak"
                 )
             ),
             Guest(
-                "bp Edward Kawa",
-                "Najmłodszy biskup rzymskokatolicki w Europie, biskup pomocniczy archidiecezji lwowskiej.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/bp-kawa-285x300.jpg"
+                "bp Damian Dryl",
+                "Doktor nauk teologicznych, biskup pomocniczy poznański w latach 2013–2021, biskup diecezjalny kaliski od 2021.",
+                "https://wiez.pl/wp-content/uploads/2021/01/Bp-Damian-Bryl-1408x1000.jpg"
             ),
             Guest(
-                "Michał PAX Bukowski",
-                "Swoim bezpośrednim i stanowczym przekazem skierowanym do młodzieży, inspiruje oraz wskazuje drogę nie tylko przez słowo, ale także muzykę.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/michal-bukowski-300x200.jpg",
+                "Maja i Krzysztof Sowińscy",
+                "Należą do wspólnoty uwielbienia „Głos Pana”, są założycielami fundacji SOWINSKY, której celami jest ewangelizacja, działalność profilaktyczna oraz twórczorść i jej promowanie.",
+                "https://www.sowinsky.pl/wp-content/uploads/2019/12/razem1-600x400.png",
                 arrayOf(
-                    "https://www.facebook.com/PAXVOBISCUM777/",
-                    "",
-                    "https://www.youtube.com/channel/UCSXsUhLnX-Eev4iW0EH_Y8Q"
+                    "https://www.facebook.com/sowinsky7/",
+                    "https://www.instagram.com/so.win.sky/",
+                    "https://www.sowinsky.pl/",
+                    "https://www.youtube.com/channel/UCuRLbbAPGvPMR2OJYDmgJjg"
                 )
             ),
             Guest(
-                "br. Paweł Teperski",
-                "Wśród prelegentów nie może zabraknąć “jednego z naszych”. Przyleci do nas prosto z Rzymu, aby głosić Słowo Boże.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/brat-pawel-teperski-300x300.jpg",
-                arrayOf("", "", "https://www.youtube.com/user/KapucyniPR")
-            ),
-            Guest(
-                "o. Antonello Cadeddu",
-                "Nasze Spotkanie z roku na rok nabiera międzynarodowego charakteru. \uD83C\uDDEE\uD83C\uDDF9 Specjalnie dla nas wygłosi konferencję w Wołczynie.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/61357616_10156011304755706_6392214090223190016_n-225x300.jpg",
-                arrayOf("https://www.facebook.com/padreantonello/", "", "")
-            ),
-            Guest(
-                "ks. Maciej Sarbinowski",
-                "Salezjanin, rekolekcjonista, prowadzący stronę\nhttp://e-rekolekcje.pl/\nKapłan który poprzez proste tłumaczenie dociera do młodzieży, aby ta mogła zrozumieć i pójść za przykładem Chrystusa.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/ksi%C4%85d%C5%BA-Maciej-sarbinowski-300x300.jpg",
+                "ks. Grzegorz Szczygieł MS",
+                "Saletyn, redaktor naczelny „La Salette” Posłaniec Matki Bożej Saletyńskiej.",
+                "https://saletyni.pl/wp-content/uploads/2018/09/szcz-150x150.jpg",
                 arrayOf(
-                    "https://www.facebook.com/sarbinowskimaciej",
-                    "",
-                    "https://www.youtube.com/channel/UCztHzRRchTbb6vYQUahfGLw"
+                    "", "",
+                    "https://saletyni.pl/author/g-szczygiel/",
+                    "https://www.youtube.com/channel/UCEAr1mHybyZb4-QvlX108Sw"
+                )
+            ),
+            Guest(
+                "ks. Michał Olszewki SCJ",
+                "Sercanin, rekolekcjonista, dyrektor Grupy Profeto, rzecznik Zespołu KEP ds. Nowej Ewangelizacji.",
+                "https://www.niedziela.pl/gifs/portaln/624x400/1454942603.jpg",
+                arrayOf(
+                    "https://www.facebook.com/KsMichalOlszewski",
+                    "https://www.instagram.com/profeto_pl",
+                    "https://profeto.pl/",
+                    "https://www.youtube.com/channel/UCCNzrPbGCa252PGRsRwnmOA"
                 )
             )
         )
@@ -167,36 +168,27 @@ class GuestListFragment : Fragment() {
                 "KapEl'a",
                 "Bez nich nie byłoby Wołczyna. Oczywiście w tym roku też ich nie zabraknie. Wszyscy ich znają i kochają. W jakim składzie zagrają w tym roku?  Niespodzianka! Przyjedź i przekonaj się sam!",
                 "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/P7110796-768x512.jpg",
-                arrayOf("", "", "https://www.youtube.com/user/WolczynSpotkanie")
+                arrayOf("", "", "", "https://www.youtube.com/user/WolczynSpotkanie")
             ),
             Guest(
-                "niemaGOtu",
-                "Twórcy hymnu ŚDM Kraków 2016 Błogosławieni miłosierni. Zespół, który powstał w 2015r.  i zdobył już tysiące fanów. Ich hitem okazała się piosenka Nie mądrość świata tego [Marana tha!]. Swoim talentem głoszą radość płynącą z Ewangelii.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/nmgt.png",
+                "ks. Jakub Bartczak",
+                "Duszpasterz parafii Sulistrowice  (Święcenia kapłańskie 2007r.). Niegdyś znany również jako „Mane”, członek hip-hopowych ekip z Wrocławia (Drugi komplet, Drutz). W czasie kapłaństwa autor czterech albumów: \"Powołanie\", \"Po prostu wierze\", \"Bóg jest działa\", \"#Siemodle\".",
+                "https://scontent.fktw1-1.fna.fbcdn.net/v/t1.6435-9/123202305_203818537767453_8630926816107749231_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=1qy8CrXDXKIAX_xnIRC&_nc_ht=scontent.fktw1-1.fna&oh=9fb70c0d0dfd4d840391d22f5a30e822&oe=60E6ED25",
                 arrayOf(
-                    "https://www.facebook.com/niemaGOtu/",
-                    "https://www.instagram.com/niemagotu/?hl=pl",
-                    "https://www.youtube.com/channel/UCECTIQn6hrLymIrLcCnIRVg"
+                    "https://www.facebook.com/KsiadzJakubBartczak",
+                    "https://www.instagram.com/ksjakubbartczak/",
+                    "https://kskubabartczak.pl/",
+                    "https://www.youtube.com/user/ksjakubbartczak"
                 )
             ),
             Guest(
-                "Wyrwani z niewoli",
-                "Zachwycają oraz inspirują młodych ludzi swoim nowatorskim podejściem do ewangelizacji. Ich przekaz dociera do wielu serc. Najważniejsze dla nich jest głoszenie dobrej nowiny i żywego świadectwa, które niosą do młodzieży z całej Polski.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/wznw-768x740.png",
+                "LUXTORPEDA",
+                "Polska grupa wykonująca szeroko pojętą muzykę rockową. Powstała w 2010 roku z inicjatywy gitarzysty i wokalisty Roberta Friedricha, znanego z zespołów: Acid Drinkers, Arka Noego, Kazik na Żywo i 2Tm2,3. Muzyk do współpracy zaprosił związanych z zespołem 2Tm2,3 gitarzystę Roberta Drężka i basistę Krzysztofa Kmiecika oraz ówczesnego perkusistę Turbo i zespołu Armia Tomasza Krzyżaniaka. W 2011 roku w trakcie nagrywania albumu skład uzupełnił wokalista Przemysław „Hans” Frencel, raper znany z duetu Pięć Dwa.",
+                "https://staryklasztor.com.pl/wp-content/uploads/2018/12/lux-900x804.jpg",
                 arrayOf(
-                    "https://www.facebook.com/wyrwanizniewoli/",
-                    "https://www.instagram.com/hereswzn/?hl=pl",
-                    "https://www.youtube.com/channel/UCdYVlDLZEAMpLGnRbCoAt5w"
-                )
-            ),
-            Guest(
-                "tato",
-                "Duet grający muzykę około elektroniczną tworzony przez młodych mężczyzn. Mają wspólny cel – dostać się do Nieba i wciągnąć tam jak najwięcej osób. Ich złotym środkiem jest pasja do muzyki, którą pragną się dzielić.",
-                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/logo-TATO--768x768.jpg",
-                arrayOf(
-                    "https://www.facebook.com/TATO-123488635158999/",
-                    "",
-                    "https://www.youtube.com/channel/UCppDQpN_zoqZATwPT5YBSlA"
+                    "https://www.facebook.com/LUXTORPEDA",
+                    "", "https://www.luxtorpeda.eu/",
+                    "https://www.youtube.com/user/OFFICIALLUXTORPEDA/"
                 )
             )
         )

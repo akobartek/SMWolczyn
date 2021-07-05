@@ -17,7 +17,7 @@
         android:contentDescription="@string/hide_bottom_sheet"
         android:src="@drawable/ic_arrow_down" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/songScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,6 +51,6 @@
                 android:textColor="?attr/colorText"
                 tools:text="XDDDDDDDDDDDDDDDDDD" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

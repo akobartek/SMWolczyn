@@ -24,12 +24,10 @@ import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ActivityMainBinding
 import pl.kapucyni.wolczyn.app.model.ArchiveMeeting
-import pl.kapucyni.wolczyn.app.utils.GlideApp
-import pl.kapucyni.wolczyn.app.utils.PreferencesManager
-import pl.kapucyni.wolczyn.app.utils.checkNetworkConnection
-import pl.kapucyni.wolczyn.app.utils.getAttributeDrawable
+import pl.kapucyni.wolczyn.app.utils.*
 import pl.kapucyni.wolczyn.app.view.fragments.*
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,11 +58,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
                     WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
                 )
-            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 @Suppress("DEPRECATION")
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                window.statusBarColor = Color.WHITE
-            }
+            window.statusBarColor = Color.WHITE
         }
 
         mViewModel = ViewModelProvider(this@MainActivity).get(MainViewModel::class.java)
@@ -96,6 +93,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         })
+
+        if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 12 && !PreferencesManager.wasMFTauAdShowed()) {
+            openMFTauDialog()
+            PreferencesManager.markAdAsShowed()
+        }
     }
 
     fun addViewToAppBar(view: View) = binding.mainAppBar.appBarLayout.addView(view)
@@ -139,8 +141,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if ((supportFragmentManager.fragments.first { it.javaClass == SongBookFragment::class.java } as SongBookFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId == R.id.nav_guests ->
                 if ((supportFragmentManager.fragments.first { it.javaClass == ViewPagerFragment::class.java } as ViewPagerFragment).onBackPressed()) doubleBackPressToExit()
-            mCurrentFragmentId == R.id.nav_departures ->
-                if ((supportFragmentManager.fragments.first { it.javaClass == DepartureListFragment::class.java } as DepartureListFragment).onBackPressed()) doubleBackPressToExit()
+//            mCurrentFragmentId == R.id.nav_departures ->
+//                if ((supportFragmentManager.fragments.first { it.javaClass == DepartureListFragment::class.java } as DepartureListFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId!! < 0 ->
                 onNavigationItemSelected(binding.navView.menu.getItem(-1 * mCurrentFragmentId!! - 1))
             else -> doubleBackPressToExit()
@@ -224,6 +226,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.mainAppBar.toolbar.title = getString(R.string.menu_songbook)
                 SongBookFragment()
             }
+            R.id.nav_breviary -> {
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_breviary)
+                ViewPagerFragment.newInstance("breviary")
+            }
             R.id.nav_group -> {
                 if (PreferencesManager.getBearerToken().isNullOrEmpty()) {
                     openLoginActivity()
@@ -241,14 +247,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.mainAppBar.toolbar.title = getString(R.string.menu_signings)
                 SigningsFragment()
             }
-            R.id.nav_departures -> {
-                binding.mainAppBar.toolbar.title = getString(R.string.menu_departures)
-                DepartureListFragment()
-            }
-            R.id.nav_breviary -> {
-                binding.mainAppBar.toolbar.title = getString(R.string.menu_breviary)
-                ViewPagerFragment.newInstance("breviary")
-            }
+//            R.id.nav_departures -> {
+//                binding.mainAppBar.toolbar.title = getString(R.string.menu_departures)
+//                DepartureListFragment()
+//            }
 //            R.id.nav_map -> {
 //                toolbar.title = getString(R.string.menu_map)
 //                MapFragment()
@@ -283,6 +285,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 else goToSelectedFragment(it.data!!.getIntExtra("fragment", 0))
             }
         }
+
     private fun openLoginActivity() {
         openLoginActivity.launch(
             Intent(this@MainActivity, LoginActivity::class.java)
@@ -292,6 +295,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val openArchiveDetails =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+
     fun openArchiveDetailsActivity(meeting: ArchiveMeeting) {
         val intent = Intent(this@MainActivity, ArchiveMeetingDetailsActivity::class.java)
         intent.putExtra("title", meeting.name.split(" - ")[1])

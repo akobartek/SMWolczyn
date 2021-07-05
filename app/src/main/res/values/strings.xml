@@ -12,6 +12,11 @@
     <string name="loading">Loading…</string>
     <string name="hide_bottom_sheet">Hide bottom sheet</string>
 
+    <!-- MF TAU -->
+    <string name="cd_spoleto_poster">Spoleto retreat poster</string>
+    <string name="cd_close_btn">Click here to close this window</string>
+    <string name="spoleto">Spoleto</string>
+
     <string name="facebook_app_id" translatable="false">126088801386279</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb126088801386279</string>
 
@@ -78,8 +83,9 @@
     <string name="place_white_tent">White Tent</string>
     <string name="place_garden">Garden near the White Tent</string>
     <string name="place_campsite">Campsite</string>
-    <string name="place_court">Court at the gymnasium</string>
+    <string name="place_court">Court at the school</string>
     <string name="place_everywhere">Everywhere</string>
+    <string name="place_church">Red church</string>
     <string name="type_conference">Conference</string>
     <string name="type_concert">Concert</string>
     <string name="type_mass">Mass</string>

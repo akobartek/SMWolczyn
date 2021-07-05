@@ -42,10 +42,15 @@ class GuestDetailsFragment : Fragment() {
                 (parentFragment as GuestListFragment).onIconClick(1)
             else (parentFragment as ScheduleFragment).onIconClick(1)
         }
-        binding.linksBarLayout.youtubeImage.setOnClickListener {
+        binding.linksBarLayout.websiteImage.setOnClickListener {
             if (parentFragment is GuestListFragment)
                 (parentFragment as GuestListFragment).onIconClick(2)
             else (parentFragment as ScheduleFragment).onIconClick(2)
+        }
+        binding.linksBarLayout.youtubeImage.setOnClickListener {
+            if (parentFragment is GuestListFragment)
+                (parentFragment as GuestListFragment).onIconClick(3)
+            else (parentFragment as ScheduleFragment).onIconClick(3)
         }
     }
 
@@ -71,8 +76,11 @@ class GuestDetailsFragment : Fragment() {
             binding.linksBarLayout.instagramImage.setImageResource(
                 if (it.sites[1] != "") R.drawable.ic_instagram_color else R.drawable.ic_instagram_mono
             )
+            binding.linksBarLayout.websiteImage.setImageResource(
+                if (it.sites[2] != "") R.drawable.ic_website_color else R.drawable.ic_website_mono
+            )
             binding.linksBarLayout.youtubeImage.setImageResource(
-                if (it.sites[2] != "") R.drawable.ic_youtube_color else R.drawable.ic_youtube_mono
+                if (it.sites[3] != "") R.drawable.ic_youtube_color else R.drawable.ic_youtube_mono
             )
         }
     }

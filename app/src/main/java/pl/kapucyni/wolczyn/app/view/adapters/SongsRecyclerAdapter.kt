@@ -70,7 +70,7 @@ class SongsRecyclerAdapter(
                 this.songTitle.text = songTitle
                 root.setOnClickListener {
                     if (mFragment.selectedSong == null)
-                        mFragment.expandBottomSheet(mSongTitles.indexOf(songTitle))
+                        mFragment.onSongSelected(mSongTitles.indexOf(songTitle))
                     else mFragment.hideBottomSheet()
                 }
             }
