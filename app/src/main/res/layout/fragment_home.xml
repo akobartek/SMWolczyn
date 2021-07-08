@@ -17,12 +17,11 @@
             android:id="@+id/poster"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/poster_description"
-            android:padding="4dp"
+            android:scaleType="fitStart"
             android:src="@drawable/meeting_poster"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.20"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,14 +29,14 @@
             android:id="@+id/decalogueTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="@string/decalogue_title"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="?colorText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/poster" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_marginTop="640dp" />
 
         <TextView
             android:id="@+id/number1"

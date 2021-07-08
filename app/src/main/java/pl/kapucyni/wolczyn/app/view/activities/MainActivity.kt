@@ -141,8 +141,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if ((supportFragmentManager.fragments.first { it.javaClass == SongBookFragment::class.java } as SongBookFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId == R.id.nav_guests ->
                 if ((supportFragmentManager.fragments.first { it.javaClass == ViewPagerFragment::class.java } as ViewPagerFragment).onBackPressed()) doubleBackPressToExit()
-//            mCurrentFragmentId == R.id.nav_departures ->
-//                if ((supportFragmentManager.fragments.first { it.javaClass == DepartureListFragment::class.java } as DepartureListFragment).onBackPressed()) doubleBackPressToExit()
+            mCurrentFragmentId == R.id.nav_departures ->
+                if ((supportFragmentManager.fragments.first { it.javaClass == DepartureListFragment::class.java } as DepartureListFragment).onBackPressed()) doubleBackPressToExit()
             mCurrentFragmentId!! < 0 ->
                 onNavigationItemSelected(binding.navView.menu.getItem(-1 * mCurrentFragmentId!! - 1))
             else -> doubleBackPressToExit()
@@ -151,8 +151,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun doubleBackPressToExit() {
         if (mBackPressed + 2000 > System.currentTimeMillis()) super.onBackPressed()
-        else Toast.makeText(baseContext, getString(R.string.press_to_exit), Toast.LENGTH_SHORT)
-            .show()
+        else Toast.makeText(baseContext, getString(R.string.press_to_exit), Toast.LENGTH_SHORT).show()
         mBackPressed = System.currentTimeMillis()
     }
 
@@ -164,7 +163,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         when {
             PreferencesManager.getBearerToken().isNullOrEmpty() -> {
-                menu?.findItem(R.id.action_sign_in)?.isVisible = true
+                menu?.findItem(R.id.action_sign_in)?.isVisible = false
                 menu?.findItem(R.id.action_sign_out)?.isVisible = false
             }
             else -> {
@@ -247,14 +246,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.mainAppBar.toolbar.title = getString(R.string.menu_signings)
                 SigningsFragment()
             }
-//            R.id.nav_departures -> {
-//                binding.mainAppBar.toolbar.title = getString(R.string.menu_departures)
-//                DepartureListFragment()
-//            }
-//            R.id.nav_map -> {
-//                toolbar.title = getString(R.string.menu_map)
-//                MapFragment()
-//            }
+            R.id.nav_departures -> {
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_departures)
+                DepartureListFragment()
+            }
+            R.id.nav_map -> {
+                binding.mainAppBar.toolbar.title = getString(R.string.menu_map)
+                MapFragment()
+            }
             else -> {
                 binding.mainAppBar.toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()
