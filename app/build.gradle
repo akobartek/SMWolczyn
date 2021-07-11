@@ -11,8 +11,8 @@ android {
         applicationId "pl.kapucyni.wolczyn.app"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 14
-        versionName "2021.1.1"
+        versionCode 15
+        versionName "2021.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -71,8 +71,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics:18.1.0"
     implementation "com.google.firebase:firebase-analytics:19.0.0"
 
-    // Facebook and Google auth
-    implementation "com.facebook.android:facebook-android-sdk:5.0.3"
+    // Google auth
     implementation "com.google.android.gms:play-services-auth:19.0.0"
 
     // Glide

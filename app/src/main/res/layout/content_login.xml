@@ -5,80 +5,27 @@
     android:id="@+id/loginLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackground"
+    android:background="?colorBackground"
+    android:focusable="true"
     android:focusableInTouchMode="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".view.activities.LoginActivity">
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
         android:contentDescription="Logo"
-        android:src="?attr/logoMenu"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:src="?logoMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent=".12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent=".75"
         tools:ignore="HardcodedText" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/loginInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="48dp"
-        android:textColorHint="?attr/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo">
-
-        <pl.kapucyni.wolczyn.app.view.ui.MyTextInputEditText
-            android:id="@+id/loginET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorBackground"
-            android:hint="@string/login"
-            android:inputType="textEmailAddress"
-            android:textColor="?attr/colorAccent" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColorHint="?attr/colorAccent"
-        app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/loginInputLayout">
-
-        <pl.kapucyni.wolczyn.app.view.ui.MyTextInputEditText
-            android:id="@+id/passwordET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorBackground"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:textColor="?attr/colorAccent" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/emailSignInBtn"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="?attr/colorAccent"
-        android:text="@string/sign_in"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-        android:textColor="?attr/colorBackground"
-        app:cornerRadius="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
-        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout" />
 
     <TextView
         android:id="@+id/forgotPasswordTV"
@@ -86,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/forgot_password"
-        android:textColor="?attr/colorAccent"
+        android:textColor="?colorAccent"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
         app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
@@ -102,14 +49,56 @@
         app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
         app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTV" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebookSignInBtn"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/emailSignInBtn"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        app:com_facebook_login_text="@string/sign_in_fb"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="?colorAccent"
+        android:text="@string/sign_in"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="?attr/colorBackground"
+        app:cornerRadius="4dp"
         app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
         app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/googleSignInBtn" />
+        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:hint="@string/password"
+        app:layout_constraintEnd_toEndOf="@+id/loginInputLayout"
+        app:layout_constraintStart_toStartOf="@+id/loginInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/loginInputLayout">
+
+        <pl.kapucyni.wolczyn.app.view.ui.MyTextInputEditText
+            android:id="@+id/passwordET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?colorAccent"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="48dp"
+        android:hint="@string/login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo">
+
+        <pl.kapucyni.wolczyn.app.view.ui.MyTextInputEditText
+            android:id="@+id/loginET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?colorAccent"
+            android:inputType="textEmailAddress"
+            tools:text="xD" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

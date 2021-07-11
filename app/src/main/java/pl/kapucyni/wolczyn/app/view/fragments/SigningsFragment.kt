@@ -30,10 +30,10 @@ class SigningsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.loadingIndicator.hide()
-        activity?.let { mViewModel = ViewModelProvider(it).get(MainViewModel::class.java) }
+        requireActivity().let { mViewModel = ViewModelProvider(it).get(MainViewModel::class.java) }
         binding.webView.settings.javaScriptEnabled = true
         if (savedInstanceState != null) binding.webView.restoreState(savedInstanceState)
-        else activity?.tryToRunFunctionOnInternet {
+        else requireActivity().tryToRunFunctionOnInternet {
             mViewModel.loadSignings(binding, (activity as MainActivity))
         }
     }

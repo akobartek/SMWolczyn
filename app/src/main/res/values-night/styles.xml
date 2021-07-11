@@ -13,7 +13,9 @@
         <item name="colorBackground">#28292e</item>
         <item name="colorListItemBackground">#232428</item>
         <item name="colorDaySelected">#00CBFF</item>
+        <item name="colorControlActivated">#FFFFFF</item>
         <item name="logoMenu">@drawable/ic_logo_white</item>
+        <item name="textInputStyle">@style/Widget.SMWolczyn.TextInputLayout</item>
     </style>
 
     <style name="AppTheme.Launcher" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -33,7 +35,23 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight" />
 
+    <style name="AppTheme.TextInputLayoutOverlay" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">#FFFFFF</item>
+    </style>
+
     <style name="Widget.SMWolczyn" parent="@android:style/Widget" />
+
+    <style name="Widget.SMWolczyn.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">#FFFFFF</item>
+        <item name="boxStrokeColor">#FFFFFF</item>
+        <item name="hintTextAppearance">@style/HintText</item>
+        <item name="hintTextColor">#FFFFFF</item>
+        <item name="android:theme">@style/AppTheme.TextInputLayoutOverlay</item>
+    </style>
+
+    <style name="HintText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 
     <style name="Widget.SMWolczyn.TimeHeaders">
         <item name="android:width">64dp</item>

@@ -43,7 +43,7 @@ class WeatherFragment : Fragment() {
 
         mWeatherViewModel =
             ViewModelProvider(this@WeatherFragment).get(WeatherViewModel::class.java)
-        activity?.let {
+        requireActivity().let {
             mMainViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             if (mMainViewModel.weatherList == null) fetchWeather()
             else mWeatherViewModel.weatherRecords.postValue(mMainViewModel.weatherList)
@@ -90,7 +90,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun fetchWeather() {
-        activity?.tryToRunFunctionOnInternet { mWeatherViewModel.fetchWeather() }
+        requireActivity().tryToRunFunctionOnInternet { mWeatherViewModel.fetchWeather() }
     }
 
 }

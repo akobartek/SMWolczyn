@@ -28,7 +28,7 @@ interface KapucyniApi {
         @Field("email") email: String,
         @Field("identifier") identifier: String,
         @Field("media") media: String,
-        @Field("app_id") app_id: String
+        @Field("app_id") appId: String
     ): Response<String>
 
     @POST("wolczyn/ja")

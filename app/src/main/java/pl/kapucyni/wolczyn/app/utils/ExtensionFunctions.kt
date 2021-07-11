@@ -56,7 +56,7 @@ fun Context.openWebsiteInCustomTabsService(url: String) {
     }
 }
 
-fun Activity.openMFTauDialog() {
+fun Activity.showMFTauDialog() {
     val dialogLayout = layoutInflater.inflate(R.layout.dialog_mftau, null)
     val alertDialog = AlertDialog.Builder(this).setView(dialogLayout).create()
 
@@ -68,6 +68,14 @@ fun Activity.openMFTauDialog() {
     }
     alertDialog.show()
 }
+
+fun Activity.showBearsDialog() =
+    AlertDialog.Builder(this)
+        .setTitle(R.string.bears_dialog_title)
+        .setMessage(R.string.bears_dialog_message)
+        .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+        .create()
+        .show()
 
 fun Activity.showNoInternetDialogWithTryAgain(function: () -> Unit): Unit =
     AlertDialog.Builder(this)
@@ -174,7 +182,7 @@ fun Context.getAttributeDrawable(@AttrRes attributeId: Int): Drawable? {
 }
 
 fun <T> Response<T>.saveTokenAndReturnBody(): T? {
-    if (headers().names().contains("cm3_token"))
-        PreferencesManager.setBearerToken(headers().get("cm3_token") ?: "")
+    if (headers().names().contains("token"))
+        PreferencesManager.setBearerToken(headers().get("token") ?: "")
     return body()
 }

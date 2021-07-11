@@ -41,7 +41,7 @@ class ViewPagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mFragmentType = requireArguments().getString("fragmentType", "")
-        activity?.let {
+        requireActivity().let {
             mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             when (mFragmentType) {
                 "breviary" -> when {
@@ -114,7 +114,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     private fun loadBreviary() {
-        activity?.let {
+        requireActivity().let {
             if (!it.checkNetworkConnection()) {
                 it.showNoInternetDialogWithTryAgain { loadBreviary() }
                 return

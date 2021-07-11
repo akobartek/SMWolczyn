@@ -10,7 +10,9 @@ data class User(
     val prefix: String?,
     val photo_url: String?,
     val number: Int?,
-    val bears: Int?
+    val bears: Int?,
+    val showers: String?,
+    val global_showers: Map<String, List<Shower>>?
 )
 
 data class UserGroup(

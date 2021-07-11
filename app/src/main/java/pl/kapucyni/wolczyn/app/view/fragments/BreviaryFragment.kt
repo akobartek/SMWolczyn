@@ -26,7 +26,7 @@ class BreviaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.let {
+        requireActivity().let {
             mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             loadBreviary()
         }

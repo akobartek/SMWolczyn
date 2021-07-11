@@ -31,15 +31,18 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
         KapucyniApiRepository(RetrofitClient.authorizedKapucyniApi)
 
     val currentUser = MutableLiveData<User>()
+    val isUserFetched = MutableLiveData<Boolean>()
     val userGroup = MutableLiveData<Group>()
 
     init {
         currentUser.postValue(null)
+        isUserFetched.postValue(false)
     }
 
     fun fetchUser() {
         viewModelScope.launch(Dispatchers.IO) {
             currentUser.postValue(authorizedRepository.getUserInfo().saveTokenAndReturnBody())
+            isUserFetched.postValue(true)
         }
     }
 
@@ -52,7 +55,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
     // region Signings
     fun loadSignings(binding: FragmentSigningsBinding, activity: Activity) {
-        Thread {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 binding.loadingIndicator.show()
                 val jsoup = Jsoup.connect("https://wolczyn.kapucyni.pl/zapisy/")
@@ -80,7 +83,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
                     activity.showNoInternetDialogWithTryAgain { loadSignings(binding, activity) }
                 }
             }
-        }.start()
+        }
     }
     // endregion Signings
 

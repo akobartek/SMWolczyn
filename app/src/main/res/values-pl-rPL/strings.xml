@@ -29,9 +29,11 @@
     <string name="create_account">Utwórz konto</string>
     <string name="login_error_empty">Login nie może być pusty!</string>
     <string name="password_error_empty">Hasło nie może być puste!</string>
-    <string name="account_not_found_dialog_message">Nie znaleziono podanego konta!</string>
+    <string name="account_not_found_dialog_message">Nieprawidłowy login lub hasło!</string>
+    <string name="account_not_signed_for_event_dialog_message">Nie jesteś zapisany na Wołczyn! Logowanie w aplikacji dostępne jest tylko dla uczestników spotkania!</string>
     <string name="signed_in">Zalogowano</string>
     <string name="forgot_password">Nie pamiętasz hasła?</string>
+    <string name="token_expired">Twoja sesja wygasła, musisz zalogować się ponownie!</string>
 
     <!-- NAVIGATION STRINGS -->
     <string name="navigation_drawer_open">Otwórz panel nawigacyjny</string>
@@ -40,16 +42,16 @@
     <string name="menu_home">Strona Główna</string>
     <string name="menu_archive">Archiwum</string>
     <string name="menu_schedule">Plan</string>
-    <string name="menu_weather">Pogoda</string>
     <string name="menu_anthem">Hymn</string>
     <string name="menu_songbook">Śpiewnik</string>
     <string name="menu_group">Fraterka</string>
+    <string name="menu_showers">Prysznice</string>
     <string name="menu_guests">Goście</string>
+    <string name="menu_breviary">Brewiarz</string>
+    <string name="menu_weather">Pogoda</string>
     <string name="menu_signings">Zapisy</string>
     <string name="menu_departures">Wyjazdy</string>
-    <string name="menu_breviary">Brewiarz</string>
     <string name="menu_map">Mapa</string>
-    <string name="menu_showers">Prysznice</string>
 
     <!-- HOME STRINGS -->
     <string name="poster_description">Plakat Spotkania Młodych w Wołczynie 2021</string>
@@ -125,7 +127,11 @@
     <string name="user_group">Numer fraterki:\n%s</string>
     <string name="bears_dialog_title">Nabroiłeś!</string>
     <string name="bears_dialog_message">Nieładnie, dostałeś karnego miśka! Uważaj na siebie! :D</string>
-    <string name="group_members">Członkowie grupy:\n%s</string>
+    <string name="group_members_title">Członkowie grupy:\n%s</string>
+
+    <!-- SHOWERS STRINGS -->
+    <string name="empty_showers_list">Do Twojego konta nie przypisano jeszcze pryszniców!</string>
+    <string name="showers_title">Twoje godziny pryszniców:</string>
 
     <!-- GUESTS STRINGS -->
     <string name="conferences">Konferencje</string>

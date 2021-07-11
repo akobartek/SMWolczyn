@@ -35,9 +35,11 @@
     <string name="create_account">Create account</string>
     <string name="login_error_empty">Login cannot be empty!</string>
     <string name="password_error_empty">Password cannot be empty!</string>
-    <string name="account_not_found_dialog_message">Account not found!</string>
+    <string name="account_not_found_dialog_message">Incorrect login or password!</string>
+    <string name="account_not_signed_for_event_dialog_message">You are not signed up for the Wołczyn! Logging in to the application is available only to meeting participants!</string>
     <string name="signed_in">Signed in</string>
     <string name="forgot_password">Forgot your password?</string>
+    <string name="token_expired">Your session expired, you have to sign in again!</string>
 
     <!-- NAVIGATION STRINGS -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -46,16 +48,16 @@
     <string name="menu_home">Home</string>
     <string name="menu_archive">Archive</string>
     <string name="menu_schedule">Schedule</string>
-    <string name="menu_weather">Weather</string>
     <string name="menu_anthem">Anthem</string>
     <string name="menu_songbook">Song book</string>
     <string name="menu_group">Group</string>
+    <string name="menu_showers">Showers</string>
     <string name="menu_guests">Guests</string>
+    <string name="menu_breviary">Breviary</string>
+    <string name="menu_weather">Weather</string>
     <string name="menu_signings">Signings</string>
     <string name="menu_departures">Departures</string>
-    <string name="menu_breviary">Breviary</string>
     <string name="menu_map">Map</string>
-    <string name="menu_showers">Showers</string>
 
     <!-- HOME STRINGS -->
     <string name="poster_description">SM Wołczyn 2021 poster</string>
@@ -129,10 +131,15 @@
     <!-- GROUP STRINGS -->
     <string name="groups_not_available">Groups are not available yet!</string>
     <string name="user_photo">Photo of the user</string>
+    <string name="user_id" translatable="false">ID: %s</string>
     <string name="user_group">Group number:\n%s</string>
     <string name="bears_dialog_title">You made mischief!</string>
     <string name="bears_dialog_message">It\'s not nice, you got a teddy bear! Be careful! :D</string>
-    <string name="group_members">Group members:\n%s</string>
+    <string name="group_members_title">Group members:</string>
+
+    <!-- SHOWERS STRINGS -->
+    <string name="empty_showers_list">There are no showers assigned to your account yet!</string>
+    <string name="showers_title">Your showers hours:</string>
 
     <!-- GUESTS STRINGS -->
     <string name="conferences">Conferences</string>
@@ -151,5 +158,4 @@
     <string name="morning_prayer">Morning</string>
     <string name="evening_prayer">Evening</string>
     <string name="night_prayer">Night</string>
-
 </resources>

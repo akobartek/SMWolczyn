@@ -66,7 +66,7 @@ class ScheduleFragment : Fragment() {
 
         mScheduleViewModel =
             ViewModelProvider(this@ScheduleFragment).get(ScheduleViewModel::class.java)
-        activity?.let {
+        requireActivity().let {
             if (it.checkNetworkConnection()) mScheduleViewModel.fetchSchedule()
             else it.showNoInternetDialogDataOutOfDate()
         }
@@ -170,7 +170,7 @@ class ScheduleFragment : Fragment() {
             EventType.CONFERENCE -> expandBottomSheet(GuestListFragment.conferenceGuests[event.guestIndex!!])
             EventType.MASS -> if (event.guestIndex != null) expandBottomSheet(GuestListFragment.conferenceGuests[event.guestIndex])
             else -> when (event.id) {
-                "2019-07-15-09", "2019-07-15-12" -> requireActivity().openMFTauDialog()
+                "2019-07-15-09", "2019-07-15-12" -> requireActivity().showMFTauDialog()
                 else -> return
             }
         } else hideBottomSheet()

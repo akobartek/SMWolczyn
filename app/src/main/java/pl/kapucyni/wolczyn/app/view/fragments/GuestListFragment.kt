@@ -46,7 +46,7 @@ class GuestListFragment : Fragment() {
         binding.guestsRecyclerView.adapter = mAdapter
         binding.guestsRecyclerView.scheduleLayoutAnimation()
 
-        activity?.let {
+        requireActivity().let {
             mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
         }
 
@@ -173,7 +173,7 @@ class GuestListFragment : Fragment() {
             Guest(
                 "ks. Jakub Bartczak",
                 "Duszpasterz parafii Sulistrowice  (Święcenia kapłańskie 2007r.). Niegdyś znany również jako „Mane”, członek hip-hopowych ekip z Wrocławia (Drugi komplet, Drutz). W czasie kapłaństwa autor czterech albumów: \"Powołanie\", \"Po prostu wierze\", \"Bóg jest działa\", \"#Siemodle\".",
-                "https://scontent.fktw1-1.fna.fbcdn.net/v/t1.6435-9/123202305_203818537767453_8630926816107749231_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=1qy8CrXDXKIAX_xnIRC&_nc_ht=scontent.fktw1-1.fna&oh=9fb70c0d0dfd4d840391d22f5a30e822&oe=60E6ED25",
+                "https://www.niedziela.pl/gifs/portaln/624x400/1602229833.jpg",
                 arrayOf(
                     "https://www.facebook.com/KsiadzJakubBartczak",
                     "https://www.instagram.com/ksjakubbartczak/",

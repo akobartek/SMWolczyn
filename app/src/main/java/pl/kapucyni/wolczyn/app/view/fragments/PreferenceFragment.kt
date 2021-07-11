@@ -14,7 +14,7 @@ class PreferenceFragment : PreferenceFragmentCompat() {
         addPreferencesFromResource(R.xml.preferences)
         preferenceManager.findPreference<SwitchPreference>(getString(R.string.night_mode_key))?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                activity?.let {
+                requireActivity().let {
                     AppCompatDelegate.setDefaultNightMode(
                         if (newValue as Boolean) AppCompatDelegate.MODE_NIGHT_YES
                         else AppCompatDelegate.MODE_NIGHT_NO

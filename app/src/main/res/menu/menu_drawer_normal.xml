@@ -17,10 +17,6 @@
             android:icon="@drawable/ic_menu_schedule"
             android:title="@string/menu_schedule" />
         <item
-            android:id="@+id/nav_weather"
-            android:icon="@drawable/ic_menu_weather"
-            android:title="@string/menu_weather" />
-        <item
             android:id="@+id/nav_anthem"
             android:icon="@drawable/ic_menu_anthem"
             android:title="@string/menu_anthem" />
@@ -29,18 +25,25 @@
             android:icon="@drawable/ic_menu_songbook"
             android:title="@string/menu_songbook" />
         <item
-            android:id="@+id/nav_breviary"
-            android:icon="@drawable/ic_menu_breviary"
-            android:title="@string/menu_breviary" />
-        <item
             android:id="@+id/nav_group"
             android:icon="@drawable/ic_menu_group"
-            android:title="@string/menu_group"
-            android:visible="false" />
+            android:title="@string/menu_group" />
+        <item
+            android:id="@+id/nav_showers"
+            android:icon="@drawable/ic_menu_showers"
+            android:title="@string/menu_showers" />
         <item
             android:id="@+id/nav_guests"
             android:icon="@drawable/ic_menu_guests"
             android:title="@string/menu_guests" />
+        <item
+            android:id="@+id/nav_breviary"
+            android:icon="@drawable/ic_menu_breviary"
+            android:title="@string/menu_breviary" />
+        <item
+            android:id="@+id/nav_weather"
+            android:icon="@drawable/ic_menu_weather"
+            android:title="@string/menu_weather" />
         <item
             android:id="@+id/nav_signings"
             android:icon="@drawable/ic_menu_signings"

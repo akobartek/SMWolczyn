@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import pl.kapucyni.wolczyn.app.R
-import pl.kapucyni.wolczyn.app.databinding.FragmentGroupBinding
+import pl.kapucyni.wolczyn.app.databinding.FragmentShowersBinding
 import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.utils.getAttributeDrawable
 import pl.kapucyni.wolczyn.app.utils.showBearsDialog
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
-class GroupFragment : Fragment() {
+class ShowersFragment : Fragment() {
 
-    private var _binding: FragmentGroupBinding? = null
+    private var _binding: FragmentShowersBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var mMainViewModel: MainViewModel
@@ -24,7 +24,7 @@ class GroupFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGroupBinding.inflate(inflater, container, false)
+        _binding = FragmentShowersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -35,9 +35,10 @@ class GroupFragment : Fragment() {
         requireActivity().let {
             mMainViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             mMainViewModel.currentUser.observe(viewLifecycleOwner, { user ->
-                if (user?.group != null) {
-                    binding.groupsEmptyView.visibility = View.INVISIBLE
-                    GlideApp.with(this@GroupFragment)
+                if (user?.showers != null && user.global_showers != null) {
+                    binding.showersEmptyView.visibility = View.GONE
+                    binding.showersLayout.visibility = View.VISIBLE
+                    GlideApp.with(this@ShowersFragment)
                         .load(user.photo_url)
                         .circleCrop()
                         .placeholder(it.getAttributeDrawable(R.attr.logoMenu))
@@ -45,24 +46,21 @@ class GroupFragment : Fragment() {
                     binding.userName.text =
                         "${if (user.prefix != null) user.prefix + " " else ""}${user.name} ${user.surname}"
                     binding.userId.text = getString(R.string.user_id, user.number.toString())
-                    binding.userGroup.text = getString(R.string.user_group, user.group.toString())
 
-                    if (user.type != null && user.type == 2) mMainViewModel.fetchGroup()
-                    else binding.groupMembersTitle.visibility = View.GONE
+                    val showerNames = hashMapOf<Int, String>()
+                    for ((day, list) in user.global_showers)
+                        list.forEach { shower -> showerNames[shower.id!!] = "$day: ${shower.hour}" }
+                    binding.showersList.text =
+                        user.showers.substring(1, user.showers.length - 1)
+                            .split(", ")
+                            .map { stringId -> stringId.toInt() }
+                            .map { id -> showerNames[id] }
+                            .joinToString(",\n")
 
                     if (user.bears != null && user.bears > 0) it.showBearsDialog()
                 } else {
-                    binding.groupsEmptyView.visibility = View.VISIBLE
-                }
-            })
-
-            mMainViewModel.userGroup.observe(viewLifecycleOwner, { group ->
-                if (group?.persons != null) {
-                    val groupMembers = StringBuilder()
-                    group.persons.forEach { person ->
-                        groupMembers.append("${person.name}, ${person.age} - ${person.city}\n")
-                    }
-                    binding.groupMembers.text = groupMembers.toString()
+                    binding.showersEmptyView.visibility = View.VISIBLE
+                    binding.showersLayout.visibility = View.GONE
                 }
             })
         }

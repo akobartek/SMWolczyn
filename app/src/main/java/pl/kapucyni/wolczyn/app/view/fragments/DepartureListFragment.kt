@@ -97,7 +97,7 @@ class DepartureListFragment : Fragment() {
     }
 
     private fun fetchDepartures() {
-        activity?.tryToRunFunctionOnInternet { mDeparturesViewModel.fetchDepartures() }
+        requireActivity().tryToRunFunctionOnInternet { mDeparturesViewModel.fetchDepartures() }
     }
 
     fun expandBottomSheet(departure: Departure) {

@@ -1,11 +1,13 @@
 package pl.kapucyni.wolczyn.app.view.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.view.inputmethod.InputMethodManager
@@ -14,9 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.facebook.*
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -33,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mLoadingDialog: AlertDialog
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private var isTokenLoaded = false
-    private val mFacebookCallbackManager = CallbackManager.Factory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         configureGoogleSignIn()
-        configureFacebookSignIn()
 
         mLoginViewModel = ViewModelProvider(this@LoginActivity).get(LoginViewModel::class.java)
         setOnClickListeners()
@@ -76,12 +73,11 @@ class LoginActivity : AppCompatActivity() {
             if (isTokenLoaded) {
                 if (user != null) {
                     if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-                    Toast.makeText(this@LoginActivity, R.string.signed_in, Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this, R.string.signed_in, Toast.LENGTH_SHORT).show()
                     returnActivity(true)
                 } else {
                     PreferencesManager.setBearerToken("")
-                    showAccountNotFoundDialog()
+                    showAccountNotSignedForEventDialog()
                 }
             }
         })
@@ -107,12 +103,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        mLoadingDialog.show()
-        mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onStop() {
@@ -143,25 +133,28 @@ class LoginActivity : AppCompatActivity() {
             mLoadingDialog.show()
         }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setOnClickListeners() {
+        val hideKeyboard: () -> Boolean = {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        }
+
         binding.contentLogin.emailSignInBtn.setOnClickListener {
+            hideKeyboard()
             tryToRunFunctionOnInternet { signInWithLogin() }
         }
-
         binding.contentLogin.googleSignInBtn.setOnClickListener {
-            tryToRunFunctionOnInternet {
-                googleSignIn.launch(mGoogleSignInClient.signInIntent)
-            }
+            hideKeyboard()
+            tryToRunFunctionOnInternet { googleSignIn.launch(mGoogleSignInClient.signInIntent) }
         }
 
-        binding.contentLogin.loginLayout.setOnClickListener {
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        val onTouchListener: (v: View, event: MotionEvent) -> Boolean = { v, _ ->
+            v.requestFocus()
+            hideKeyboard()
         }
-        binding.contentLogin.logo.setOnClickListener {
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        }
+        binding.contentLogin.loginLayout.setOnTouchListener(onTouchListener)
+        binding.contentLogin.logo.setOnTouchListener(onTouchListener)
     }
 
     private fun signInWithLogin() {
@@ -186,42 +179,7 @@ class LoginActivity : AppCompatActivity() {
             .requestId()
             .requestEmail()
             .build()
-
         mGoogleSignInClient = GoogleSignIn.getClient(this@LoginActivity, options)
-    }
-
-    private fun configureFacebookSignIn() {
-        binding.contentLogin.facebookSignInBtn.setPermissions("email")
-        binding.contentLogin.facebookSignInBtn.registerCallback(
-            mFacebookCallbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(loginResult: LoginResult) =
-                    useFacebookLoginInformation(loginResult.accessToken)
-
-                override fun onCancel() {
-                    if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
-                }
-
-                override fun onError(exception: FacebookException) = showAccountNotFoundDialog()
-            })
-    }
-
-    private fun useFacebookLoginInformation(accessToken: AccessToken) {
-        val request = GraphRequest.newMeRequest(accessToken) { obj, _ ->
-            if (obj.getString("email").isNullOrEmpty()) showAccountNotFoundDialog()
-            else tryToRunFunctionOnInternet {
-                mLoginViewModel.signInWithSocial(
-                    obj.getString("email"),
-                    accessToken.userId,
-                    "facebook",
-                    this@LoginActivity
-                )
-            }
-            LoginManager.getInstance().logOut()
-        }
-        val parameters = Bundle()
-        parameters.putString("fields", "id,email")
-        request.parameters = parameters
-        request.executeAsync()
     }
 
     private fun areLoginAndPasswordValid(login: String, password: String): Boolean {
@@ -245,6 +203,22 @@ class LoginActivity : AppCompatActivity() {
             .setPositiveButton(R.string.ok) { dialog, _ ->
                 if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
                 dialog.dismiss()
+            }
+            .create()
+            .show()
+
+    private fun showAccountNotSignedForEventDialog() =
+        AlertDialog.Builder(this@LoginActivity)
+            .setMessage(R.string.account_not_signed_for_event_dialog_message)
+            .setCancelable(true)
+            .setPositiveButton(R.string.ok) { dialog, _ ->
+                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
+                dialog.dismiss()
+            }
+            .setNeutralButton(R.string.menu_signings) { dialog, _ ->
+                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
+                dialog.dismiss()
+                openWebsiteInCustomTabsService("https://wolczyn.kapucyni.pl/zapisy/")
             }
             .create()
             .show()

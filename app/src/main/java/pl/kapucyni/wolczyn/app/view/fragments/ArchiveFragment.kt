@@ -40,7 +40,7 @@ class ArchiveFragment : Fragment() {
 
         mArchiveViewModel =
             ViewModelProvider(this@ArchiveFragment).get(ArchiveViewModel::class.java)
-        activity?.let { if (!it.checkNetworkConnection()) it.showNoInternetDialogDataOutOfDate() }
+        requireActivity().let { if (!it.checkNetworkConnection()) it.showNoInternetDialogDataOutOfDate() }
         mArchiveViewModel.fetchMeetings()
         mArchiveViewModel.meetings.observe(viewLifecycleOwner, { meetings ->
             mAdapter.setMeetingsList(meetings.sortedByDescending { it.number })
