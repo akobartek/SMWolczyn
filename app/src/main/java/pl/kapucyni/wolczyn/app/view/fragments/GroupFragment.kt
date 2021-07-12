@@ -52,6 +52,7 @@ class GroupFragment : Fragment() {
 
                     if (user.bears != null && user.bears > 0) it.showBearsDialog()
                 } else {
+                    binding.groupMembers.visibility = View.GONE
                     binding.groupsEmptyView.visibility = View.VISIBLE
                 }
             })
@@ -62,6 +63,7 @@ class GroupFragment : Fragment() {
                     group.persons.forEach { person ->
                         groupMembers.append("${person.name}, ${person.age} - ${person.city}\n")
                     }
+                    binding.groupMembers.visibility = View.VISIBLE
                     binding.groupMembers.text = groupMembers.toString()
                 }
             })

@@ -48,12 +48,17 @@ class ShowersFragment : Fragment() {
                     binding.userId.text = getString(R.string.user_id, user.number.toString())
 
                     val showerNames = hashMapOf<Int, String>()
+//                    user.global_showers.returnAllShowers().forEach { showerWithDay ->
+//                        showerNames[showerWithDay.shower.id!!] =
+//                            "${showerWithDay.day}: ${showerWithDay.shower.hour}"
+//                    }
                     for ((day, list) in user.global_showers)
                         list.forEach { shower -> showerNames[shower.id!!] = "$day: ${shower.hour}" }
                     binding.showersList.text =
                         user.showers.substring(1, user.showers.length - 1)
                             .split(", ")
                             .map { stringId -> stringId.toInt() }
+                            .sortedBy { id -> id }
                             .map { id -> showerNames[id] }
                             .joinToString(",\n")
 

@@ -11,8 +11,8 @@ android {
         applicationId "pl.kapucyni.wolczyn.app"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 15
-        versionName "2021.2.0"
+        versionCode 16
+        versionName "2021.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -66,8 +66,8 @@ dependencies {
     // Firebase
     implementation "com.google.firebase:firebase-core:19.0.0"
     implementation "com.google.firebase:firebase-common-ktx:20.0.0"
-    implementation "com.google.firebase:firebase-firestore:23.0.1"
-    implementation "com.google.firebase:firebase-firestore-ktx:23.0.1"
+    implementation "com.google.firebase:firebase-firestore:23.0.2"
+    implementation "com.google.firebase:firebase-firestore-ktx:23.0.2"
     implementation "com.google.firebase:firebase-crashlytics:18.1.0"
     implementation "com.google.firebase:firebase-analytics:19.0.0"
 
