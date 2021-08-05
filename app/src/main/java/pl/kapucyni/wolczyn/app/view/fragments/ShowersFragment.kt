@@ -56,6 +56,9 @@ class ShowersFragment : Fragment() {
                         list.forEach { shower -> showerNames[shower.id!!] = "$day: ${shower.hour}" }
                     binding.showersList.text =
                         user.showers.substring(1, user.showers.length - 1)
+                            .replace("\\", "")
+                            .replace("/", "")
+                            .replace("\"", "")
                             .split(", ")
                             .map { stringId -> stringId.toInt() }
                             .sortedBy { id -> id }
