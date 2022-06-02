@@ -2,10 +2,9 @@ package pl.kapucyni.wolczyn.app.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,39 +16,31 @@ import pl.kapucyni.wolczyn.app.view.adapters.WeatherRecyclerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 import pl.kapucyni.wolczyn.app.viewmodels.WeatherViewModel
 
-class WeatherFragment : Fragment() {
+class WeatherFragment : BindingFragment<FragmentWeatherBinding>() {
 
-    private var _binding: FragmentWeatherBinding? = null
-    private val binding get() = _binding!!
-
+    private val mMainViewModel: MainViewModel by activityViewModels()
     private lateinit var mWeatherViewModel: WeatherViewModel
-    private lateinit var mMainViewModel: MainViewModel
     private lateinit var mAdapter: WeatherRecyclerAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentWeatherBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentWeatherBinding.inflate(inflater, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         mAdapter = WeatherRecyclerAdapter()
-        binding.weatherRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        binding.weatherRecyclerView.itemAnimator = DefaultItemAnimator()
-        binding.weatherRecyclerView.adapter = mAdapter
+        binding.weatherRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = DefaultItemAnimator()
+            adapter = mAdapter
+        }
 
         mWeatherViewModel =
-            ViewModelProvider(this@WeatherFragment).get(WeatherViewModel::class.java)
+            ViewModelProvider(this@WeatherFragment)[WeatherViewModel::class.java]
         requireActivity().let {
-            mMainViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
             if (mMainViewModel.weatherList == null) fetchWeather()
             else mWeatherViewModel.weatherRecords.postValue(mMainViewModel.weatherList)
         }
 
-        mWeatherViewModel.weatherRecords.observe(viewLifecycleOwner, { weatherList ->
+        mWeatherViewModel.weatherRecords.observe(viewLifecycleOwner) { weatherList ->
             val days = weatherList.map { it.dt_txt.split(" ")[0] }.distinct()
             var weatherDays = arrayListOf<List<WeatherRecord>>()
             days.forEach { day ->
@@ -71,7 +62,7 @@ class WeatherFragment : Fragment() {
             mMainViewModel.weatherList = weatherList
             binding.loadingIndicator.hide()
             binding.weatherSwipeToRefresh.isRefreshing = false
-        })
+        }
 
         binding.weatherSwipeToRefresh.apply {
             setOnRefreshListener { fetchWeather() }
@@ -84,13 +75,7 @@ class WeatherFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun fetchWeather() {
         requireActivity().tryToRunFunctionOnInternet { mWeatherViewModel.fetchWeather() }
     }
-
 }

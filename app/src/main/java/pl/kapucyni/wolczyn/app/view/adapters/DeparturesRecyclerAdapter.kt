@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ class DeparturesRecyclerAdapter(private val mFragment: DepartureListFragment) :
 
     override fun getItemCount(): Int = mDeparturesList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setDeparturesList(list: List<Departure>) {
         mDeparturesList = list
         notifyDataSetChanged()

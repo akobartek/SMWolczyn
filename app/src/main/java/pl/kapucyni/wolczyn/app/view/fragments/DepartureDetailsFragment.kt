@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,27 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.SheetFragmentDepartureDetailsBinding
 import pl.kapucyni.wolczyn.app.model.Departure
 import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 
-class DepartureDetailsFragment : Fragment() {
+class DepartureDetailsFragment : BindingFragment<SheetFragmentDepartureDetailsBinding>() {
 
-    private var _binding: SheetFragmentDepartureDetailsBinding? = null
-    private val binding get() = _binding!!
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        SheetFragmentDepartureDetailsBinding.inflate(inflater, container, false)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = SheetFragmentDepartureDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         binding.hideBottomSheet.setOnClickListener { (parentFragment as DepartureListFragment).hideBottomSheet() }
         binding.departurePhone.setOnClickListener { makeCall(binding.departurePhone.text.toString()) }
         binding.departureEmail.setOnClickListener { sendMail(binding.departureEmail.text.toString()) }
@@ -36,11 +27,7 @@ class DepartureDetailsFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
+    @SuppressLint("SetTextI18n")
     fun setViewsValues(departure: Departure, imageResource: Int) {
         departure.let {
             binding.departureTransportType.setImageResource(imageResource)
@@ -98,8 +85,7 @@ class DepartureDetailsFragment : Fragment() {
 
     private fun sendMail(emailAddress: String) {
         val emailIntent = Intent(Intent.ACTION_SEND)
-        emailIntent.data = Uri.parse("mailto:")
-        emailIntent.type = "message/rfc822"
+        emailIntent.setDataAndType(Uri.parse("mailto:"), "message/rfc822")
         emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(emailAddress))
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Wyjazd na Wołczyn")
 

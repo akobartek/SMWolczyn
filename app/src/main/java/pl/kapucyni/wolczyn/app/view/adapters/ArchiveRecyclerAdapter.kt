@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
@@ -26,6 +27,7 @@ class ArchiveRecyclerAdapter(val activity: MainActivity) :
 
     override fun getItemCount(): Int = mMeetings.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setMeetingsList(list: List<ArchiveMeeting>) {
         mMeetings = list
         notifyDataSetChanged()

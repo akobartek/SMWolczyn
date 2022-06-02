@@ -4,11 +4,11 @@
 
     <PreferenceCategory>
         <SwitchPreference
-            android:background="?attr/colorBackground"
+            android:background="@color/app_theme_background"
             android:defaultValue="false"
             android:key="@string/night_mode_key"
             android:summary="@string/night_mode_summary"
-            android:textColor="?attr/colorText"
+            android:textColor="@color/app_theme_onBackground"
             android:title="@string/night_mode_title"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>

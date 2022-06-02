@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".view.activities.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:showIn="@layout/content_main">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordsRecyclerView"
@@ -14,5 +14,4 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         tools:listitem="@layout/item_archive_record" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

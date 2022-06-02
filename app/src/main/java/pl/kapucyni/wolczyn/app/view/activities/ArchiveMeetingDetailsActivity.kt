@@ -2,15 +2,14 @@ package pl.kapucyni.wolczyn.app.view.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ActivityArchiveMeetingDetailsBinding
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.view.adapters.ArchiveMeetingsRecyclerAdapter
@@ -29,16 +28,11 @@ class ArchiveMeetingDetailsActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         title = intent.getStringExtra("title")
 
-        if (!PreferencesManager.getNightMode()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                window.decorView.windowInsetsController?.setSystemBarsAppearance(
-                    APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS
-                )
-            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                @Suppress("DEPRECATION")
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            window.statusBarColor = Color.WHITE
-        }
+        val wic = WindowInsetsControllerCompat(window, window.decorView)
+        wic.isAppearanceLightStatusBars = !PreferencesManager.getNightMode()
+        wic.isAppearanceLightNavigationBars = !PreferencesManager.getNightMode()
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
 
         mAdapter = ArchiveMeetingsRecyclerAdapter(intent.getParcelableArrayListExtra("records"))
         binding.archiveLayout.recordsRecyclerView.layoutManager =

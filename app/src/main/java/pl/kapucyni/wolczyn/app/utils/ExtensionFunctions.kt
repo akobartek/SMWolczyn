@@ -58,10 +58,13 @@ fun Context.openWebsiteInCustomTabsService(url: String) {
 
 fun Activity.showMFTauDialog() {
     val dialogLayout = layoutInflater.inflate(R.layout.dialog_mftau, null)
-    val alertDialog = AlertDialog.Builder(this).setView(dialogLayout).create()
+    val alertDialog = AlertDialog.Builder(this)
+        .setCancelable(false)
+        .setView(dialogLayout)
+        .create()
 
     dialogLayout.findViewById<ImageView>(R.id.spoletoPoster).setOnClickListener {
-        openWebsiteInCustomTabsService("https://mftau.pl/wydarzenie/spoleto-2-2021/")
+        openWebsiteInCustomTabsService("https://mftau.pl/wydarzenie/")
     }
     dialogLayout.findViewById<ImageButton>(R.id.closeDialogBtn).setOnClickListener {
         alertDialog.dismiss()
@@ -167,18 +170,6 @@ fun View.collapse() {
     // Collapse speed of 1dp/ms
     animation.duration = ((initialHeight / context.resources.displayMetrics.density).toInt()).toLong()
     startAnimation(animation)
-}
-
-fun Context.getAttributeColor(@AttrRes attributeId: Int): Int {
-    val typedValue = TypedValue()
-    theme.resolveAttribute(attributeId, typedValue, true)
-    return if (typedValue.resourceId == 0) typedValue.data else ContextCompat.getColor(this, typedValue.resourceId)
-}
-
-fun Context.getAttributeDrawable(@AttrRes attributeId: Int): Drawable? {
-    val typedValue = TypedValue()
-    theme.resolveAttribute(attributeId, typedValue, true)
-    return ContextCompat.getDrawable(this, typedValue.resourceId)
 }
 
 fun <T> Response<T>.saveTokenAndReturnBody(): T? {

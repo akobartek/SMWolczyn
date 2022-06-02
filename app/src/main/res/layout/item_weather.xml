@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorListItemBackground"
+    android:background="@color/app_theme_surfaceVariant"
     app:cardCornerRadius="2dp"
     app:cardElevation="3dp"
     app:cardUseCompatPadding="true">
@@ -30,7 +30,7 @@
                 android:layout_marginStart="8dp"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:textColor="?attr/colorText"
+                android:textColor="@color/app_theme_onSurfaceVariant"
                 android:textSize="18sp"
                 tools:text="05.07.2019" />
 
@@ -58,7 +58,7 @@
                 android:id="@+id/weatherTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorText"
+                android:textColor="@color/app_theme_onSurfaceVariant"
                 android:textSize="88sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/celsius"
-                android:textColor="?attr/colorText"
+                android:textColor="@color/app_theme_onSurfaceVariant"
                 android:textSize="44sp"
                 app:layout_constraintStart_toEndOf="@+id/weatherTemperature"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -89,7 +89,7 @@
                 android:id="@+id/weatherDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorText"
+                android:textColor="@color/app_theme_onSurfaceVariant"
                 android:textSize="16sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="@+id/weatherTemperature"

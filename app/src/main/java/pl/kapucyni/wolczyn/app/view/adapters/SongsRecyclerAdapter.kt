@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -55,6 +56,7 @@ class SongsRecyclerAdapter(
                 return filterResults
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
                 @Suppress("UNCHECKED_CAST")
                 mSongTitlesFiltered = filterResults.values as Array<String>

@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -18,35 +17,26 @@ import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.view.adapters.DeparturesRecyclerAdapter
 import pl.kapucyni.wolczyn.app.viewmodels.DeparturesViewModel
 
-class DepartureListFragment : Fragment() {
+class DepartureListFragment : BindingFragment<FragmentDeparturesBinding>() {
 
-    private var _binding: FragmentDeparturesBinding? = null
-    private val binding get() = _binding!!
-
-    private lateinit var mDeparturesViewModel: DeparturesViewModel
+    private val mDeparturesViewModel: DeparturesViewModel by activityViewModels()
     private lateinit var mAdapter: DeparturesRecyclerAdapter
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     var selectedDeparture: Departure? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDeparturesBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentDeparturesBinding.inflate(inflater, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         mAdapter = DeparturesRecyclerAdapter(this@DepartureListFragment)
-        binding.departuresRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        binding.departuresRecyclerView.itemAnimator = DefaultItemAnimator()
-        binding.departuresRecyclerView.adapter = mAdapter
+        binding.departuresRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = DefaultItemAnimator()
+            adapter = mAdapter
+        }
 
-        mDeparturesViewModel =
-            ViewModelProvider(this@DepartureListFragment).get(DeparturesViewModel::class.java)
         fetchDepartures()
-        mDeparturesViewModel.departures.observe(viewLifecycleOwner, { departures ->
+        mDeparturesViewModel.departures.observe(viewLifecycleOwner) { departures ->
             departures.sortBy { it.city }
             mAdapter.setDeparturesList(departures)
             binding.departuresRecyclerView.scheduleLayoutAnimation()
@@ -54,9 +44,9 @@ class DepartureListFragment : Fragment() {
             binding.departuresSwipeToRefresh.isRefreshing = false
             binding.emptyView.visibility =
                 if (departures.isEmpty()) View.VISIBLE else View.INVISIBLE
-        })
+        }
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.departureSheet))
+        mBottomSheetBehavior = BottomSheetBehavior.from(binding.departureSheet)
         mBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SetTextI18n")
@@ -89,11 +79,6 @@ class DepartureListFragment : Fragment() {
                 ContextCompat.getColor(context, R.color.swipe_refresh_color_4)
             )
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun fetchDepartures() {

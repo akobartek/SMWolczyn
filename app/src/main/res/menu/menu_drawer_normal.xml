@@ -58,5 +58,9 @@
             android:icon="@drawable/ic_menu_map"
             android:title="@string/menu_map"
             android:visible="false" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_settings" />
     </group>
 </menu>

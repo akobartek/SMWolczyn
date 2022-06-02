@@ -2,32 +2,19 @@ package pl.kapucyni.wolczyn.app.view.fragments
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.FragmentAnthemBinding
 import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 
-class AnthemFragment : Fragment() {
+class AnthemFragment : BindingFragment<FragmentAnthemBinding>() {
 
-    private var _binding: FragmentAnthemBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) = run {
         setHasOptionsMenu(true)
-        _binding = FragmentAnthemBinding.inflate(inflater, container, false)
-        return binding.root
+        FragmentAnthemBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setup(savedInstanceState: Bundle?) {
         binding.anthemText.text = ANTHEM
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =

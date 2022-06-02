@@ -1,6 +1,7 @@
 <resources>
     <!-- BASIC STRINGS -->
     <string name="try_again">Spróbuj</string>
+    <string name="load">Załaduj</string>
     <string name="cancel">Anuluj</string>
     <string name="no_internet_title">Brak Internetu</string>
     <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
@@ -29,7 +30,7 @@
     <string name="create_account">Utwórz konto</string>
     <string name="login_error_empty">Login nie może być pusty!</string>
     <string name="password_error_empty">Hasło nie może być puste!</string>
-    <string name="account_not_found_dialog_message">Nieprawidłowy login lub hasło!</string>
+    <string name="account_not_found_dialog_message">Nie znaleziono konta! Upewnij się, że masz konto w systemie!</string>
     <string name="account_not_signed_for_event_dialog_message">Nie jesteś zapisany na Wołczyn! Logowanie w aplikacji dostępne jest tylko dla uczestników spotkania!</string>
     <string name="signed_in">Zalogowano</string>
     <string name="forgot_password">Nie pamiętasz hasła?</string>
@@ -38,7 +39,7 @@
     <!-- NAVIGATION STRINGS -->
     <string name="navigation_drawer_open">Otwórz panel nawigacyjny</string>
     <string name="navigation_drawer_close">Zamknij panel nawigacyjny</string>
-    <string name="action_settings">Ustawienia</string>
+    <string name="menu_settings">Ustawienia</string>
     <string name="menu_home">Strona Główna</string>
     <string name="menu_archive">Archiwum</string>
     <string name="menu_schedule">Plan</string>
@@ -116,6 +117,8 @@
 
     <!-- ANTHEM STRINGS -->
     <string name="see_on_youtube">Zobacz na YouTube</string>
+    <string name="anthem_not_available_title">Hymn niedostępny</string>
+    <string name="anthem_not_available_msg">Tegoroczny hymn nie jest jeszcze dostępny. Sprawdź ponownie za jakiś czas!</string>
 
     <!-- SONGBOOK STRINGS -->
     <string name="search">Search</string>
@@ -147,8 +150,13 @@
     <string name="send_mail_error">Nie znaleziono żadnego klienta mailowego!</string>
 
     <!-- BREVIARY STRINGS -->
+    <string name="select_office">Wybierz Oficjum</string>
+    <string name="invitatory">Wezwanie</string>
+    <string name="office_of_readings">Godzina czytań</string>
     <string name="morning_prayer">Jutrznia</string>
+    <string name="midmorning_prayer">Modlitwa przedpołudniowa</string>
+    <string name="midday_prayer">Modlitwa południowa</string>
+    <string name="midafternoon_prayer">Modlitwa popołudniowa</string>
     <string name="evening_prayer">Nieszpory</string>
     <string name="night_prayer">Kompleta</string>
-
 </resources>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.components.XAxis
@@ -18,7 +19,6 @@ import pl.kapucyni.wolczyn.app.databinding.ItemWeatherBinding
 import pl.kapucyni.wolczyn.app.model.WeatherRecord
 import pl.kapucyni.wolczyn.app.utils.collapse
 import pl.kapucyni.wolczyn.app.utils.expand
-import pl.kapucyni.wolczyn.app.utils.getAttributeColor
 
 class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.WeatherViewHolder>() {
 
@@ -34,6 +34,7 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
 
     override fun getItemCount(): Int = mWeatherList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setWeatherList(list: ArrayList<List<WeatherRecord>>) {
         mWeatherList = list
         notifyDataSetChanged()
@@ -89,7 +90,8 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
                     setDrawGridLines(false)
                     setDrawLabels(true)
                     granularity = 1f
-                    textColor = itemView.context.getAttributeColor(R.attr.colorText)
+                    textColor =
+                        ContextCompat.getColor(itemView.context, R.color.app_theme_onBackground)
                     valueFormatter = IndexAxisValueFormatter(hours)
                 }
                 legend.isEnabled = false
@@ -123,7 +125,8 @@ class WeatherRecyclerAdapter : RecyclerView.Adapter<WeatherRecyclerAdapter.Weath
                     override fun getFormattedValue(value: Float): String = value.toInt().toString()
                 }
                 valueTextSize = 16f
-                valueTextColor = binding.root.context.getAttributeColor(R.attr.colorText)
+                valueTextColor =
+                    ContextCompat.getColor(itemView.context, R.color.app_theme_onBackground)
             }
 
             binding.weatherChart.apply {

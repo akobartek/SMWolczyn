@@ -9,10 +9,116 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/SMWolczyn/app/src/main/res/layout/activity_main.xml" value="0.21875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/day_selected.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/horizontal_divider.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_arrow_back.xml" value="0.2085" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_arrow_down.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_bus.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_camera.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_car.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_close.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_email.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_empty_archive.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_empty_departures.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_empty_showers.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_facebook_color.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_facebook_mono.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_foot.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_instagram_color.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_instagram_mono.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_maintenance.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_anthem.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_archive.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_breviary.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_departure.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_group.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_guests.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_home.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_map.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_schedule.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_settings.xml" value="0.2715" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_showers.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_signings.xml" value="0.2095" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_songbook.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_menu_weather.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_phone.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_search.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_signings.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_train.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_broken_clouds.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_clear_sky.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_empty.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_few_clouds.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_mist.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_rain.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_scattered_clouds.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_shower_rain.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_snow.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_weather_thunderstorm.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_website_color.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_website_mono.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_youtube_color.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_youtube_menu.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/ic_youtube_mono.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/launch_screen_xml.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/sheet_background.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/drawable/tag_dot.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout-land/content_login.xml" value="0.328042328042328" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout-land/fragment_home.xml" value="0.25625" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout-land/sheet_fragment_departure_details.xml" value="0.25625" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout-land/sheet_fragment_guest_details.xml" value="0.328042328042328" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/activity_archive_meeting_details.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/activity_login.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/app_bar_main.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/content_archive_meeting_details.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/content_login.xml" value="0.22282608695652173" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/content_main.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/dialog_breviary_select_office.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/dialog_item_listview_select.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/dialog_loading.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/dialog_mftau.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_anthem.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_archive.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_breviary.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_breviary_select.xml" value="0.20104166666666667" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_departures.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_group.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_guest_list.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_guests_view_pager.xml" value="0.45597775718257644" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_home.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_map.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_schedule.xml" value="0.22282608695652173" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_showers.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_signings.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_songbook.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_viewpager.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/fragment_weather.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_archive.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_archive_record.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_departure.xml" value="0.46153846153846156" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_event.xml" value="0.4" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_event_header.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_guest.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_listview.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_song.xml" value="0.22282608695652173" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/item_weather.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/layout_days_bar.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/layout_links_bar.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/nav_header_drawer.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/sheet_fragment_departure_details.xml" value="0.20208333333333334" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/sheet_fragment_guest_details.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/layout/sheet_fragment_song.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/menu/menu_drawer_after.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/menu/menu_drawer_normal.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/menu/menu_main.xml" value="0.3875" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.269" />
+        <entry key="..\:/Users/baso/StudioProjects/SMWolczyn/app/src/main/res/xml/preferences.xml" value="0.3875" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackground"
+    android:background="@color/app_theme_background"
     tools:context=".view.fragments.GuestListFragment">
 
     <FrameLayout
@@ -32,5 +32,4 @@
         app:behavior_skipCollapsed="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         tools:layout="@layout/sheet_fragment_guest_details" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

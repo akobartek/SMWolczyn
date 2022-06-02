@@ -4,22 +4,24 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ActivityLoginBinding
 import pl.kapucyni.wolczyn.app.utils.*
@@ -28,9 +30,14 @@ import pl.kapucyni.wolczyn.app.viewmodels.LoginViewModel
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var mLoginViewModel: LoginViewModel
-    private lateinit var mLoadingDialog: AlertDialog
+    private val mLoadingDialog: AlertDialog by lazy {
+        MaterialAlertDialogBuilder(this)
+            .setView(R.layout.dialog_loading)
+            .setOnCancelListener { onBackPressed() }
+            .create()
+    }
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private val mLoginViewModel: LoginViewModel by viewModels()
     private var isTokenLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,25 +48,17 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
-        if (!PreferencesManager.getNightMode()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                window.decorView.windowInsetsController?.setSystemBarsAppearance(
-                    APPEARANCE_LIGHT_STATUS_BARS,
-                    APPEARANCE_LIGHT_STATUS_BARS
-                )
-            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                @Suppress("DEPRECATION")
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            window.statusBarColor = Color.WHITE
-            binding.contentLogin.googleSignInBtn.setColorScheme(SignInButton.COLOR_DARK)
-        }
+        val wic = WindowInsetsControllerCompat(window, window.decorView)
+        wic.isAppearanceLightStatusBars = !PreferencesManager.getNightMode()
+        wic.isAppearanceLightNavigationBars = !PreferencesManager.getNightMode()
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
 
         configureGoogleSignIn()
-
-        mLoginViewModel = ViewModelProvider(this@LoginActivity).get(LoginViewModel::class.java)
         setOnClickListeners()
 
-        mLoginViewModel.bearerToken.observe(this@LoginActivity, { token ->
+        mLoginViewModel.bearerToken.observe(this@LoginActivity) { token ->
+            if (mLoadingDialog.isShowing) mLoadingDialog.hide()
             if (token != null) {
                 PreferencesManager.setBearerToken(token)
                 isTokenLoaded = true
@@ -67,9 +66,9 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 showAccountNotFoundDialog()
             }
-        })
+        }
 
-        mLoginViewModel.loggedUser.observe(this@LoginActivity, { user ->
+        mLoginViewModel.loggedUser.observe(this@LoginActivity) { user ->
             if (isTokenLoaded) {
                 if (user != null) {
                     if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
@@ -80,17 +79,18 @@ class LoginActivity : AppCompatActivity() {
                     showAccountNotSignedForEventDialog()
                 }
             }
-        })
-
-        mLoadingDialog = AlertDialog.Builder(this@LoginActivity)
-            .setView(R.layout.dialog_loading)
-            .setCancelable(false)
-            .create()
+        }
 
         binding.contentLogin.forgotPasswordTV.text =
             binding.contentLogin.forgotPasswordTV.text.toString().createUnderlinedString()
         binding.contentLogin.forgotPasswordTV.setOnClickListener {
             openWebsiteInCustomTabsService("https://konto.kapucyni.pl/remind")
+        }
+
+        binding.contentLogin.createAccountTV?.text =
+            binding.contentLogin.createAccountTV?.text.toString().createUnderlinedString()
+        binding.contentLogin.createAccountTV?.setOnClickListener {
+            openWebsiteInCustomTabsService("https://konto.kapucyni.pl/register")
         }
 
 //        generateKeyHash()
@@ -120,17 +120,23 @@ class LoginActivity : AppCompatActivity() {
 
     private val googleSignIn =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val account = GoogleSignIn.getSignedInAccountFromIntent(it.data).result
-                if (account == null) showAccountNotFoundDialog()
+            try {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                val account = task.getResult(ApiException::class.java)
                 tryToRunFunctionOnInternet {
+                    mLoadingDialog.show()
                     mLoginViewModel.signInWithSocial(
-                        account!!.email!!, account.id!!, "google", this@LoginActivity
+                        account.email!!, account.id!!, "google", this@LoginActivity
                     )
                 }
                 mGoogleSignInClient.signOut()
+            } catch (exc: ApiException) {
+                if (BuildConfig.DEBUG) Log.e("LoginActivity", "GoogleSignIn: ${exc.statusCode}")
+                showAccountNotFoundDialog()
+            } catch (exc: Exception) {
+                if (BuildConfig.DEBUG) Log.e("LoginActivity", "GoogleSignIn: ${exc.stackTrace}")
+                showAccountNotFoundDialog()
             }
-            mLoadingDialog.show()
         }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -228,6 +234,7 @@ class LoginActivity : AppCompatActivity() {
 //            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
 //            info.signatures.forEach {
 //                val md = MessageDigest.getInstance("SHA")
+//                Log.d("SHA:", md.digest().toString())
 //                md.update(it.toByteArray())
 //                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
 //            }

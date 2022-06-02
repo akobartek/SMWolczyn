@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnNextLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,10 +26,7 @@ import pl.kapucyni.wolczyn.app.view.ui.ScheduleTimeHeadersDecoration
 import pl.kapucyni.wolczyn.app.viewmodels.ScheduleViewModel
 import java.util.*
 
-class ScheduleFragment : Fragment() {
-
-    private var _binding: FragmentScheduleBinding? = null
-    private val binding get() = _binding!!
+class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
 
     private lateinit var mScheduleViewModel: ScheduleViewModel
     private lateinit var mAdapter: ScheduleRecyclerAdapter
@@ -38,39 +35,35 @@ class ScheduleFragment : Fragment() {
     private var mSelectedDay = 0
     var selectedGuest: Guest? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentScheduleBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentScheduleBinding.inflate(inflater, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         val (schedule, positions) = createList()
 
         mAdapter = ScheduleRecyclerAdapter(schedule, this@ScheduleFragment)
-        val layoutManager = LinearLayoutManager(view.context)
-        binding.scheduleRecyclerView.layoutManager = layoutManager
-        binding.scheduleRecyclerView.itemAnimator = DefaultItemAnimator()
-        binding.scheduleRecyclerView.adapter = mAdapter
-        binding.scheduleRecyclerView.run {
-            doOnNextLayout {
-                if (itemDecorationCount > 0)
-                    for (i in itemDecorationCount - 1 downTo 0)
-                        removeItemDecorationAt(i)
-                addItemDecoration(ScheduleTimeHeadersDecoration(it.context, schedule))
+        val llm = LinearLayoutManager(requireContext())
+        binding.scheduleRecyclerView.apply {
+            layoutManager = llm
+            itemAnimator = DefaultItemAnimator()
+            adapter = mAdapter
+            run {
+                doOnNextLayout {
+                    if (itemDecorationCount > 0)
+                        for (i in itemDecorationCount - 1 downTo 0)
+                            removeItemDecorationAt(i)
+                    addItemDecoration(ScheduleTimeHeadersDecoration(it.context, schedule))
+                }
             }
         }
 
         mScheduleViewModel =
-            ViewModelProvider(this@ScheduleFragment).get(ScheduleViewModel::class.java)
+            ViewModelProvider(this@ScheduleFragment)[ScheduleViewModel::class.java]
         requireActivity().let {
             if (it.checkNetworkConnection()) mScheduleViewModel.fetchSchedule()
             else it.showNoInternetDialogDataOutOfDate()
         }
-        mScheduleViewModel.eventsFromFirestore.observe(viewLifecycleOwner, {
+        mScheduleViewModel.eventsFromFirestore.observe(viewLifecycleOwner) {
             it.forEach { firestoreEvent ->
                 if (firestoreEvent.id.isNotEmpty()) {
                     val index = events.indexOfFirst { event -> event.id == firestoreEvent.id }
@@ -78,12 +71,12 @@ class ScheduleFragment : Fragment() {
                     mAdapter.notifyItemChanged(index + 1)
                 }
             }
-        })
+        }
 
         binding.scheduleRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val visibleItemPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                val visibleItemPosition = llm.findFirstCompletelyVisibleItemPosition()
                 (activity as MainActivity).changeToolbarTitle(
                     when {
                         visibleItemPosition < positions[1] -> {
@@ -120,9 +113,7 @@ class ScheduleFragment : Fragment() {
             binding.daysBarLayout.fifthDay
         )
         mDayViews.forEachIndexed { i, v ->
-            v.setOnClickListener {
-                layoutManager.scrollToPositionWithOffset(positions[i], 10)
-            }
+            v.setOnClickListener { llm.scrollToPositionWithOffset(positions[i], 10) }
         }
         binding.scheduleListLayout.removeView(binding.daysBarLayout.root)
         (activity as MainActivity).addViewToAppBar(binding.daysBarLayout.root)
@@ -133,7 +124,7 @@ class ScheduleFragment : Fragment() {
         if (day in 12..16 && month == 7)
             mDayViews[day - 12].performClick()
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.scheduleGuestSheet))
+        mBottomSheetBehavior = BottomSheetBehavior.from(binding.scheduleGuestSheet)
         mBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -158,11 +149,6 @@ class ScheduleFragment : Fragment() {
         super.onStop()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     fun onItemClick(event: Event) {
         if (selectedGuest == null) when (event.eventType) {
             EventType.BREVIARY -> (requireActivity() as MainActivity).goToSelectedFragment(R.id.nav_breviary)
@@ -181,10 +167,11 @@ class ScheduleFragment : Fragment() {
             AppCompatResources.getDrawable(requireContext(), R.drawable.day_selected)
         mDayViews.forEach {
             it.background = null
-            it.setTextColor(requireView().context.getAttributeColor(R.attr.colorText))
+            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_theme_primary))
         }
         mDayViews[mSelectedDay].background = daySelectedDrawable
-        mDayViews[mSelectedDay].setTextColor(requireView().context.getAttributeColor(R.attr.colorBackground))
+        mDayViews[mSelectedDay]
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.app_theme_onPrimary))
     }
 
     private fun createList(): Pair<ArrayList<Any>, ArrayList<Int>> {

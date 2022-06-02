@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?colorListItemBackground"
+    android:background="@color/app_theme_surfaceVariant"
     android:orientation="vertical"
     android:paddingTop="24dp"
     android:paddingBottom="24dp">
@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:textColor="?colorText"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+        android:textColor="@color/app_theme_onSurfaceVariant"
         tools:text="Poniedziałek, 8.07" />
 </LinearLayout>

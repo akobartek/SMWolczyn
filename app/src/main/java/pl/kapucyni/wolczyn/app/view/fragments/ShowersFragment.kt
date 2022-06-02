@@ -5,43 +5,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.FragmentShowersBinding
 import pl.kapucyni.wolczyn.app.utils.GlideApp
-import pl.kapucyni.wolczyn.app.utils.getAttributeDrawable
 import pl.kapucyni.wolczyn.app.utils.showBearsDialog
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
-class ShowersFragment : Fragment() {
+class ShowersFragment : BindingFragment<FragmentShowersBinding>() {
 
-    private var _binding: FragmentShowersBinding? = null
-    private val binding get() = _binding!!
+    private val mMainViewModel: MainViewModel by activityViewModels()
 
-    private lateinit var mMainViewModel: MainViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentShowersBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentShowersBinding.inflate(inflater, container, false)
 
     @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         requireActivity().let {
-            mMainViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
-            mMainViewModel.currentUser.observe(viewLifecycleOwner, { user ->
+            mMainViewModel.currentUser.observe(viewLifecycleOwner) { user ->
                 if (user?.showers != null && user.global_showers != null) {
                     binding.showersEmptyView.visibility = View.GONE
                     binding.showersLayout.visibility = View.VISIBLE
                     GlideApp.with(this@ShowersFragment)
                         .load(user.photo_url)
                         .circleCrop()
-                        .placeholder(it.getAttributeDrawable(R.attr.logoMenu))
+                        .placeholder(R.drawable.ic_logo)
                         .into(binding.userPhoto)
                     binding.userName.text =
                         "${if (user.prefix != null) user.prefix + " " else ""}${user.name} ${user.surname}"
@@ -70,12 +58,7 @@ class ShowersFragment : Fragment() {
                     binding.showersEmptyView.visibility = View.VISIBLE
                     binding.showersLayout.visibility = View.GONE
                 }
-            })
+            }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

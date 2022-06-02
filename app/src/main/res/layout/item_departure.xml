@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorListItemBackground">
+        android:background="@color/app_theme_surfaceVariant">
 
         <ImageView
             android:id="@+id/departureTransportType"
@@ -32,8 +32,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="sans-serif-light"
-            android:textColor="?attr/colorText"
-            android:textSize="22sp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="@color/app_theme_onSurfaceVariant"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/departureTransportType"
@@ -48,8 +48,8 @@
             android:layout_marginEnd="12dp"
             android:fontFamily="sans-serif-light"
             android:paddingBottom="4dp"
-            android:textColor="?attr/colorText"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="@color/app_theme_onSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/departureTransportType"
             app:layout_constraintTop_toBottomOf="@+id/departureCity"

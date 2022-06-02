@@ -12,7 +12,7 @@
         android:id="@+id/itemLayout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="?colorListItemBackground">
+        android:background="@color/app_theme_surfaceVariant">
 
         <ImageView
             android:id="@+id/meetingPhoto"
@@ -33,11 +33,10 @@
             android:background="#CC000000"
             android:fontFamily="sans-serif-light"
             android:padding="8dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="XXV Wołczyn - Odbudowani" />
-
+            tools:text="28. Wołczyn - Miłością Odżywieni" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

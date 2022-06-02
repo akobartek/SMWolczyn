@@ -1,32 +1,21 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.SheetFragmentGuestDetailsBinding
 import pl.kapucyni.wolczyn.app.model.Guest
 import pl.kapucyni.wolczyn.app.utils.GlideApp
 
-class GuestDetailsFragment : Fragment() {
+class GuestDetailsFragment : BindingFragment<SheetFragmentGuestDetailsBinding>() {
 
-    private var _binding: SheetFragmentGuestDetailsBinding? = null
-    private val binding get() = _binding!!
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        SheetFragmentGuestDetailsBinding.inflate(inflater, container, false)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = SheetFragmentGuestDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         binding.hideBottomSheet.setOnClickListener {
             if (parentFragment is GuestListFragment)
                 (parentFragment as GuestListFragment).hideBottomSheet()
@@ -52,11 +41,6 @@ class GuestDetailsFragment : Fragment() {
                 (parentFragment as GuestListFragment).onIconClick(3)
             else (parentFragment as ScheduleFragment).onIconClick(3)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     fun setViewsValues(guest: Guest) {

@@ -5,50 +5,41 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.FragmentSongbookBinding
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import pl.kapucyni.wolczyn.app.view.adapters.SongsRecyclerAdapter
 
-class SongBookFragment : Fragment() {
-
-    private var _binding: FragmentSongbookBinding? = null
-    private val binding get() = _binding!!
+class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
 
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var mAdapter: SongsRecyclerAdapter
     private lateinit var mSearchView: SearchView
     var selectedSong: Int? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) = run {
         setHasOptionsMenu(true)
-        _binding = FragmentSongbookBinding.inflate(inflater, container, false)
-        return binding.root
+        FragmentSongbookBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         mAdapter = SongsRecyclerAdapter(this@SongBookFragment, songTitles)
-        binding.songsRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        binding.songsRecyclerView.itemAnimator = DefaultItemAnimator()
-        binding.songsRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                view.context,
-                DividerItemDecoration.VERTICAL
+        binding.songsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = DefaultItemAnimator()
+            addItemDecoration(
+                DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             )
-        )
-        binding.songsRecyclerView.adapter = mAdapter
-        binding.songsRecyclerView.scheduleLayoutAnimation()
+            adapter = mAdapter
+            scheduleLayoutAnimation()
+        }
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.songTextSheet))
+        mBottomSheetBehavior = BottomSheetBehavior.from(binding.songTextSheet)
         mBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -78,11 +69,6 @@ class SongBookFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         selectedSong?.let { outState.putInt("song", it) }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -115,15 +101,18 @@ class SongBookFragment : Fragment() {
             mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
             selectedSong = position
             binding.songsRecyclerView.animate().alpha(0.15f).duration = 200
-        } else (requireActivity() as MainActivity).goToSelectedFragment(R.id.nav_anthem)
+        } else if (MainActivity.APP_MEETING_MODE_ACTIVATED)
+            (requireActivity() as MainActivity).goToSelectedFragment(R.id.nav_anthem)
+        else
+            showAnthemNotAvailableDialog()
     }
 
     fun hideBottomSheet() {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    fun onBackPressed(): Boolean {
-        return if (!mSearchView.isIconified) {
+    fun onBackPressed(): Boolean =
+        if (!mSearchView.isIconified) {
             mSearchView.isIconified = true
             false
         } else if (mBottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN || mBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
@@ -132,6 +121,16 @@ class SongBookFragment : Fragment() {
             hideBottomSheet()
             false
         }
+
+    private fun showAnthemNotAvailableDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.anthem_not_available_title)
+            .setMessage(R.string.anthem_not_available_msg)
+            .setPositiveButton(R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     companion object {

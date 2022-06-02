@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -14,43 +12,30 @@ import pl.kapucyni.wolczyn.app.databinding.FragmentGuestListBinding
 import pl.kapucyni.wolczyn.app.model.Guest
 import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 import pl.kapucyni.wolczyn.app.view.adapters.GuestsRecyclerAdapter
-import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
-class GuestListFragment : Fragment() {
+class GuestListFragment : BindingFragment<FragmentGuestListBinding>() {
 
-    private var _binding: FragmentGuestListBinding? = null
-    private val binding get() = _binding!!
-
-    private lateinit var mViewModel: MainViewModel
     private lateinit var mAdapter: GuestsRecyclerAdapter
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
     var selectedGuest: Guest? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentGuestListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentGuestListBinding.inflate(inflater, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setup(savedInstanceState: Bundle?) {
         val guestType = requireArguments().getInt("guestType")
         mAdapter = GuestsRecyclerAdapter(
             if (guestType == 0) conferenceGuests else concertGuests,
             this@GuestListFragment
         )
-        binding.guestsRecyclerView.layoutManager = LinearLayoutManager(view.context)
-        binding.guestsRecyclerView.itemAnimator = DefaultItemAnimator()
-        binding.guestsRecyclerView.adapter = mAdapter
-        binding.guestsRecyclerView.scheduleLayoutAnimation()
-
-        requireActivity().let {
-            mViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
+        binding.guestsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = DefaultItemAnimator()
+            adapter = mAdapter
+            scheduleLayoutAnimation()
         }
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.guestSheet))
+        mBottomSheetBehavior = BottomSheetBehavior.from(binding.guestSheet)
         mBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -72,11 +57,6 @@ class GuestListFragment : Fragment() {
         binding.guestsListLayout.setOnClickListener { if (selectedGuest != null) hideBottomSheet() }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     fun expandBottomSheet(guest: Guest) {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         selectedGuest = guest
@@ -88,14 +68,13 @@ class GuestListFragment : Fragment() {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    fun onBackPressed(): Boolean {
-        return if (mBottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN || mBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+    fun onBackPressed(): Boolean =
+        if (mBottomSheetBehavior.state == BottomSheetBehavior.STATE_HIDDEN || mBottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
             true
         } else {
             hideBottomSheet()
             false
         }
-    }
 
     fun onIconClick(iconNumber: Int) {
         selectedGuest?.let {

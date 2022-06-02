@@ -46,5 +46,4 @@
         app:behavior_skipCollapsed="true"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         tools:layout="@layout/sheet_fragment_guest_details" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

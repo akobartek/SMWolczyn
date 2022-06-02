@@ -3,34 +3,23 @@ package pl.kapucyni.wolczyn.app.view.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import pl.kapucyni.wolczyn.app.databinding.FragmentSigningsBinding
 import pl.kapucyni.wolczyn.app.utils.tryToRunFunctionOnInternet
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
-class SigningsFragment : Fragment() {
+class SigningsFragment : BindingFragment<FragmentSigningsBinding>() {
 
-    private var _binding: FragmentSigningsBinding? = null
-    private val binding get() = _binding!!
+    private val mViewModel: MainViewModel by activityViewModels()
 
-    private lateinit var mViewModel: MainViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSigningsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun attachBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentSigningsBinding.inflate(inflater, container, false)
 
     @SuppressLint("SetJavaScriptEnabled")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setup(savedInstanceState: Bundle?) {
         binding.loadingIndicator.hide()
-        requireActivity().let { mViewModel = ViewModelProvider(it).get(MainViewModel::class.java) }
         binding.webView.settings.javaScriptEnabled = true
         if (savedInstanceState != null) binding.webView.restoreState(savedInstanceState)
         else requireActivity().tryToRunFunctionOnInternet {
@@ -41,10 +30,5 @@ class SigningsFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         binding.webView.saveState(outState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

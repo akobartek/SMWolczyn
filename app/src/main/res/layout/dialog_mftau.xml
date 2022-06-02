@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
@@ -12,7 +13,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/cd_spoleto_poster"
         android:scaleType="fitStart"
-        android:src="@drawable/mftau2021"
+        android:src="@drawable/mftau_2022"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,8 +26,11 @@
         android:background="@drawable/tag_dot"
         android:backgroundTint="#FFFFFF"
         android:contentDescription="@string/cd_close_btn"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:padding="4dp"
         android:src="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="@+id/spoletoPoster"
-        app:layout_constraintTop_toTopOf="@+id/spoletoPoster" />
+        app:layout_constraintTop_toTopOf="@+id/spoletoPoster"
+        tools:ignore="RedundantDescriptionCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

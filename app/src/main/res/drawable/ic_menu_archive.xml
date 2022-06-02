@@ -4,18 +4,18 @@
     android:viewportWidth="512"
     android:viewportHeight="512">
     <path
-        android:fillColor="?colorMenuIcons"
+        android:fillColor="@color/app_theme_onSurfaceVariant"
         android:pathData="m466,242v-242c-15.722,0 -341.516,0 -360,0v122h-90v345c0,24.813 20.187,45 45,45h390c24.813,0 45,-20.187 45,-45v-225zM436,30v212h-30v-143.213l-68.787,-68.787zM316,51.213 L354.787,90h-38.787zM286,29v90h90v123h-155.73l-30,-60h-54.27v-153zM76,467c0,8.271 -6.729,15 -15,15s-15,-6.729 -15,-15v-316h60v31h-30zM466,467c0,8.271 -6.729,15 -15,15h-347.57c1.664,-4.694 2.57,-9.743 2.57,-15v-255h65.729l30,60h264.271z" />
     <path
-        android:fillColor="?colorMenuIcons"
+        android:fillColor="@color/app_theme_onSurfaceVariant"
         android:pathData="m286,422h150v30h-150z" />
     <path
-        android:fillColor="?colorMenuIcons"
+        android:fillColor="@color/app_theme_onSurfaceVariant"
         android:pathData="m406,362h30v30h-30z" />
     <path
-        android:fillColor="?colorMenuIcons"
+        android:fillColor="@color/app_theme_onSurfaceVariant"
         android:pathData="m346,362h30v30h-30z" />
     <path
-        android:fillColor="?colorMenuIcons"
+        android:fillColor="@color/app_theme_onSurfaceVariant"
         android:pathData="m286,362h30v30h-30z" />
 </vector>

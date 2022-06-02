@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hideBottomSheet"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/guestName"
@@ -39,8 +39,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:textColor="?attr/colorText"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="@color/app_theme_onSurfaceVariant"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,8 +55,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:textColor="?attr/colorText"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+        android:textColor="@color/app_theme_onSurfaceVariant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guestName"
@@ -73,5 +73,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guestDescription"
         tools:visibility="visible" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
