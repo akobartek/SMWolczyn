@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(binding.contentMain.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val color = SurfaceColors.SURFACE_5.getColor(this)
+        val color = SurfaceColors.SURFACE_2.getColor(this)
         window.statusBarColor = color
         window.navigationBarColor = color
 
@@ -315,6 +315,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun openArchiveDetailsActivity(meeting: ArchiveMeeting) {
         val intent = Intent(this@MainActivity, ArchiveMeetingDetailsActivity::class.java)
         intent.putExtra("title", meeting.name.split(" - ")[1])
+        intent.putExtra("anthem", meeting.anthem)
         intent.putParcelableArrayListExtra("records", meeting.records)
         openArchiveDetails.launch(intent)
     }

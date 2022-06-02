@@ -23,7 +23,7 @@ class DepartureDetailsFragment : BindingFragment<SheetFragmentDepartureDetailsBi
         binding.departurePhone.setOnClickListener { makeCall(binding.departurePhone.text.toString()) }
         binding.departureEmail.setOnClickListener { sendMail(binding.departureEmail.text.toString()) }
         binding.departureSigningUrl.setOnClickListener {
-            context?.openWebsiteInCustomTabsService(binding.departureSigningUrl.text.toString())
+            requireContext().openWebsiteInCustomTabsService(binding.departureSigningUrl.text.toString())
         }
     }
 

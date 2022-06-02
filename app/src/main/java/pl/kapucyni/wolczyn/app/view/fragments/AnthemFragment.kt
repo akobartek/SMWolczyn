@@ -22,7 +22,7 @@ class AnthemFragment : BindingFragment<FragmentAnthemBinding>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_yt_anthem -> {
-            context?.openWebsiteInCustomTabsService(YOUTUBE_URL)
+            requireContext().openWebsiteInCustomTabsService(YOUTUBE_URL)
             true
         }
         else -> super.onOptionsItemSelected(item)

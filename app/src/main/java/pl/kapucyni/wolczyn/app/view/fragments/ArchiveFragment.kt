@@ -31,7 +31,7 @@ class ArchiveFragment : BindingFragment<FragmentArchiveBinding>() {
         }
 
         mArchiveViewModel =
-            ViewModelProvider(this@ArchiveFragment).get(ArchiveViewModel::class.java)
+            ViewModelProvider(this@ArchiveFragment)[ArchiveViewModel::class.java]
         requireActivity().let { if (!it.checkNetworkConnection()) it.showNoInternetDialogDataOutOfDate() }
         mArchiveViewModel.fetchMeetings()
         mArchiveViewModel.meetings.observe(viewLifecycleOwner) { meetings ->

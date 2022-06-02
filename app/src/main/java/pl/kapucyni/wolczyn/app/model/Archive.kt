@@ -7,6 +7,7 @@ data class ArchiveMeeting(
     val name: String = "",
     val photoUrl: String = "",
     val number: Int = 0,
+    val anthem: String = "",
     val records: ArrayList<Record> = arrayListOf()
 )
 

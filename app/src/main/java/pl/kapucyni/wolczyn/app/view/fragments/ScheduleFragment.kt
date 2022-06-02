@@ -208,7 +208,8 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
 
     fun onIconClick(iconNumber: Int) {
         selectedGuest?.let {
-            if (it.sites[iconNumber] != "") context?.openWebsiteInCustomTabsService(it.sites[iconNumber])
+            if (it.sites[iconNumber] != "")
+                requireContext().openWebsiteInCustomTabsService(it.sites[iconNumber])
         }
     }
 
