@@ -67,6 +67,7 @@
         layout="@layout/layout_links_bar"
         android:layout_width="0dp"
         android:layout_height="54dp"
+        android:layout_marginHorizontal="4dp"
         android:layout_marginTop="20dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"

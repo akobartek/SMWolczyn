@@ -1,5 +1,7 @@
 package pl.kapucyni.wolczyn.app.apicalls
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.kapucyni.wolczyn.app.apicalls.weather.WeatherApi
@@ -12,6 +14,9 @@ object RetrofitClient {
 
     private const val BASE_URL_KAPUCYNI_API = "https://api.kapucyni.pl/"
     private var kapucyniApiClient: Retrofit? = null
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     private const val BASE_URL_WEATHER =
         "http://api.openweathermap.org/data/2.5/"
@@ -21,7 +26,7 @@ object RetrofitClient {
         if (kapucyniApiClient === null) {
             kapucyniApiClient = Retrofit.Builder()
                 .baseUrl(BASE_URL_KAPUCYNI_API)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .client(getOkHttpClient())
                 .build()
         }
@@ -35,7 +40,7 @@ object RetrofitClient {
         if (weatherClient === null) {
             weatherClient = Retrofit.Builder()
                 .baseUrl(BASE_URL_WEATHER)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .client(getOkHttpClient())
                 .build()
         }
@@ -47,7 +52,7 @@ object RetrofitClient {
     private fun getAuthorizationKapucyniApiClient(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL_KAPUCYNI_API)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(getAuthorizationOkHttpClient())
             .build()
     }

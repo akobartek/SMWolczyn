@@ -14,12 +14,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.elevation.SurfaceColors
 import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ActivityLoginBinding
@@ -47,9 +48,11 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
-        val color = SurfaceColors.SURFACE_2.getColor(this)
-        window.statusBarColor = color
-        window.navigationBarColor = color
+        val wic = WindowInsetsControllerCompat(window, window.decorView)
+        wic.isAppearanceLightStatusBars = !PreferencesManager.getNightMode()
+        wic.isAppearanceLightNavigationBars = !PreferencesManager.getNightMode()
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
 
         configureGoogleSignIn()
         setOnClickListeners()

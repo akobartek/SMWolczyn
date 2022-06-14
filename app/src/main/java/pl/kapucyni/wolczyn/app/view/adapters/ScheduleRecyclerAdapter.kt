@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.view.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,8 +51,10 @@ class ScheduleRecyclerAdapter(
 
     inner class ScheduleHeaderViewHolder(private val binding: ItemEventHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bindView(header: String) {
-            binding.eventHeader.text = header
+            binding.eventHeader.text = header.split("~")[0]
+            binding.eventHeaderName.text = "\"${header.split("~")[1]}\""
         }
     }
 

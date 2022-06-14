@@ -39,7 +39,7 @@ class GuestsViewPagerFragment : BindingFragment<FragmentGuestsViewPagerBinding>(
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = mAdapter.getTabTitle(position)
         }.attach()
-        binding.viewPager.removeView(binding.tabLayout)
+        binding.root.removeView(binding.tabLayout)
         (activity as MainActivity).addViewToToolbar(binding.tabLayout)
     }
 

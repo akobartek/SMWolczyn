@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_archive_anthem"
+        android:icon="@drawable/ic_menu_anthem"
+        android:title="@string/menu_anthem"
+        app:showAsAction="ifRoom" />
+</menu>

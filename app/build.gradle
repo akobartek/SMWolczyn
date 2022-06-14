@@ -13,8 +13,8 @@ android {
         applicationId "pl.kapucyni.wolczyn.app"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 20
-        versionName "2022.0.1"
+        versionCode 21
+        versionName "2022.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -106,7 +106,7 @@ dependencies {
 
     // OkHttp3
     implementation "com.squareup.okhttp3:okhttp:4.9.1"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.11.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"

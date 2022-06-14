@@ -2,11 +2,10 @@
 <resources>
     <!-- Light base application theme. -->
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowContentTransitions">true</item>
 
         <item name="colorPrimary">@color/app_theme_primary</item>
-        <item name="colorPrimaryDark">@color/app_theme_onPrimaryContainer</item>
+        <item name="colorPrimaryDark">@color/app_theme_onBackground</item>
         <item name="colorOnPrimary">@color/app_theme_onPrimary</item>
         <item name="colorPrimaryContainer">@color/app_theme_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/app_theme_onPrimaryContainer</item>
@@ -35,8 +34,13 @@
         <!--        <item name="colorShadow">@color/md_theme_light_shadow</item>-->
         <item name="colorPrimaryInverse">@color/app_theme_primaryInverse</item>
 
+        <item name="preferenceTheme">@style/AppTheme.PrefsTheme</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
 <!--        <item name="android:itemBackground">@color/app_theme_surfaceVariant</item>-->
+    </style>
+
+    <style name="AppTheme.PrefsTheme" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="android:layout">@layout/fragment_preferences</item>
     </style>
 
     <style name="AppTheme.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">

@@ -40,6 +40,7 @@ class GroupFragment : BindingFragment<FragmentGroupBinding>() {
 
                     if (user.bears != null && user.bears > 0) it.showBearsDialog()
                 } else {
+                    binding.groupMembersTitle.visibility = View.GONE
                     binding.groupMembers.visibility = View.GONE
                     binding.groupsEmptyView.visibility = View.VISIBLE
                 }

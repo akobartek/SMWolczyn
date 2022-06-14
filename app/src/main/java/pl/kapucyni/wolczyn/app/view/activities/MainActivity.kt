@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,8 +16,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import com.google.android.material.elevation.SurfaceColors
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.navigation.NavigationView
 import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
@@ -30,7 +32,7 @@ import java.util.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
-        const val APP_MEETING_MODE_ACTIVATED = false
+        const val APP_MEETING_MODE_ACTIVATED = true
         private const val BREVIARY_FRAGMENT_ID = 2137
     }
 
@@ -43,6 +45,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
+
+        // Fix Android problem with resetting UI when WebView is initialized
+        WebView(applicationContext)
+
         if (PreferencesManager.getNightMode())
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else
@@ -53,9 +59,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(binding.contentMain.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val color = SurfaceColors.SURFACE_2.getColor(this)
-        window.statusBarColor = color
-        window.navigationBarColor = color
+        val wic = WindowInsetsControllerCompat(window, window.decorView)
+        wic.isAppearanceLightStatusBars = !PreferencesManager.getNightMode()
+        wic.isAppearanceLightNavigationBars = !PreferencesManager.getNightMode()
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
 
         val toggle = ActionBarDrawerToggle(
             this@MainActivity, binding.drawerLayout, binding.contentMain.toolbar,
@@ -327,5 +335,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun goBackToHome() = onNavigationItemSelected(binding.navView.menu.getItem(0))
 
     fun goToSelectedFragment(fragmentId: Int): Boolean =
-        onNavigationItemSelected(binding.navView.menu.findItem(fragmentId))
+        try {
+            onNavigationItemSelected(binding.navView.menu.findItem(fragmentId))
+        } catch (exc: Exception) {
+            exc.printStackTrace()
+            false
+        }
 }

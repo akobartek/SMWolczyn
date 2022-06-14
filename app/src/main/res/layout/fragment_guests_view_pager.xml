@@ -11,15 +11,14 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_theme_background">
+        android:background="@color/app_theme_background" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/app_theme_background"
-            app:tabIndicatorColor="@color/app_theme_onPrimaryContainer"
-            app:tabMode="fixed"
-            app:tabTextColor="@color/app_theme_onPrimaryContainer" />
-    </androidx.viewpager2.widget.ViewPager2>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_theme_background"
+        app:tabIndicatorColor="@color/app_theme_onPrimaryContainer"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/app_theme_onPrimaryContainer" />
 </FrameLayout>

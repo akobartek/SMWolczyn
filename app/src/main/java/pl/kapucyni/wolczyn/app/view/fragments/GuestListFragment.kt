@@ -94,14 +94,14 @@ class GuestListFragment : BindingFragment<FragmentGuestListBinding>() {
 
         val conferenceGuests = arrayOf(
             Guest(
-                "ks. Jakub Bartczak",
-                "Duszpasterz parafii Sulistrowice  (Święcenia kapłańskie 2007r.). Niegdyś znany również jako „Mane\", członek hip-hopowych ekip z Wrocławia (Drugi komplet, Drutz). W czasie kapłaństwa autor czterech albumów: \"Powołanie\", \"Po prostu wierze\", \"Bóg jest działa\", \"#Siemodle\".",
-                "https://www.niedziela.pl/gifs/portaln/624x400/1602229833.jpg",
+                "Tymoteusz Filar",
+                "Student teologii, lider wspólnoty Hesed",
+                "https://glosnapustyni.pl/media/118076355_1862725263867993_8249642876235377388_o-240x250.jpg",
                 arrayOf(
-                    "https://www.facebook.com/KsiadzJakubBartczak",
-                    "https://www.instagram.com/ksjakubbartczak/",
-                    "https://kskubabartczak.pl/",
-                    "https://www.youtube.com/user/ksjakubbartczak"
+                    "https://www.facebook.com/tymoteusz.filar",
+                    "https://www.instagram.com/tymoteusz.filar/",
+                    "",
+                    ""
                 )
             ),
             Guest(
@@ -110,35 +110,52 @@ class GuestListFragment : BindingFragment<FragmentGuestListBinding>() {
                 "https://wiez.pl/wp-content/uploads/2021/01/Bp-Damian-Bryl-1408x1000.jpg"
             ),
             Guest(
-                "Maja i Krzysztof Sowińscy",
-                "Należą do wspólnoty uwielbienia „Głos Pana”, są założycielami fundacji SOWINSKY, której celami jest ewangelizacja, działalność profilaktyczna oraz twórczorść i jej promowanie.",
-                "https://www.sowinsky.pl/wp-content/uploads/2019/12/razem1-600x400.png",
+                "Sebastian Kubis",
+                "Fizyk, absolwent Uniwersytetu Jagiellońskiego, (specjalność: astrofizyka), doktorat i  habilitacja w Instytucie Fizyki Jądrowej PAN w Krakowie. Zatrudniony na Politechnice Krakowskiej od 2012 roku.",
+                "https://imf.pk.edu.pl/download/deb8bbc9afdc584f6d78d90ed2e95283/seb2018-small.jpg"
+            ),
+            Guest(
+                "br. Maciej Jabłoński",
+                "Brat Kapucyn, misjonarz posługujący w Republice Środkowoafrykańskiej",
+                "https://scontent-frx5-2.xx.fbcdn.net/v/t39.30808-1/276056693_413665843897082_2163328572252112313_n.jpg?stp=c33.0.200.200a_dst-jpg_p200x200&_nc_cat=109&ccb=1-7&_nc_sid=c6021c&_nc_ohc=Rt_-O0w0Q38AX9S7PCO&_nc_ht=scontent-frx5-2.xx&oh=00_AT-VtJQZ3faSQVbT4ceT69GBFsTZdPZuPbxQ0zwhI76l1w&oe=62AD137D",
                 arrayOf(
-                    "https://www.facebook.com/sowinsky7/",
-                    "https://www.instagram.com/so.win.sky/",
-                    "https://www.sowinsky.pl/",
-                    "https://www.youtube.com/channel/UCuRLbbAPGvPMR2OJYDmgJjg"
+                    "https://www.facebook.com/profile.php?id=100057610082556",
+                    "",
+                    "https://zrzutka.pl/3h97h3",
+                    ""
                 )
             ),
             Guest(
-                "ks. Grzegorz Szczygieł MS",
-                "Saletyn, redaktor naczelny „La Salette” Posłaniec Matki Bożej Saletyńskiej.",
-                "https://saletyni.pl/wp-content/uploads/2018/09/szcz-150x150.jpg",
+                "s. Aleksandra Szyborska",
+                "Siostra Zgromadzenia Sióstr Uczennic Boskiego Mistrza, pracuje w Radiu Jasna Góra.",
+                "https://www.radiojasnagora.pl/media/u/mini/x3e602a0c87fc9ebecf5ba5b985992e4c.jpg.pagespeed.ic.84MpFbc5LE.jpg",
                 arrayOf(
-                    "", "",
-                    "https://saletyni.pl/author/g-szczygiel/",
-                    "https://www.youtube.com/channel/UCEAr1mHybyZb4-QvlX108Sw"
+                    "https://www.facebook.com/aleksandra.szyborska",
+                    "",
+                    "https://www.radiojasnagora.pl/u21-s-aleksandra-szyborska",
+                    ""
                 )
             ),
             Guest(
-                "ks. Michał Olszewki SCJ",
-                "Sercanin, rekolekcjonista, dyrektor Grupy Profeto, rzecznik Zespołu KEP ds. Nowej Ewangelizacji.",
-                "https://www.niedziela.pl/gifs/portaln/624x400/1454942603.jpg",
+                "Magdalena Myjak",
+                "Dziewica konsekrowana, wokalistka zespołu \"Mocni w Duchu\".",
+                "https://profeto.pl/Image/GetAvatar?authorId=223",
                 arrayOf(
-                    "https://www.facebook.com/KsMichalOlszewski",
-                    "https://www.instagram.com/profeto_pl",
-                    "https://profeto.pl/",
-                    "https://www.youtube.com/channel/UCCNzrPbGCa252PGRsRwnmOA"
+                    "https://www.facebook.com/mocniwduchu",
+                    "https://www.instagram.com/mocniwduchu/",
+                    "https://mocni.jezuici.pl/osoby/28/90/magda-myjak",
+                    "https://www.youtube.com/channel/UC9BaRiZ_E9_o2_sxwDqn5dg"
+                )
+            ),
+            Guest(
+                "ks. Michał Pabiańczyk",
+                "Ojciec duchowny w WSD w Częstochowie.",
+                "https://fiat.fm/wp-content/uploads/2018/02/ks_Michal_Pabiancczyk-720x480.jpg",
+                arrayOf(
+                    "",
+                    "",
+                    "http://www.seminarium.czest.pl/",
+                    ""
                 )
             )
         )
@@ -151,24 +168,36 @@ class GuestListFragment : BindingFragment<FragmentGuestListBinding>() {
                 arrayOf("", "", "", "https://www.youtube.com/user/WolczynSpotkanie")
             ),
             Guest(
-                "ks. Jakub Bartczak",
-                "Duszpasterz parafii Sulistrowice  (Święcenia kapłańskie 2007r.). Niegdyś znany również jako „Mane”, członek hip-hopowych ekip z Wrocławia (Drugi komplet, Drutz). W czasie kapłaństwa autor czterech albumów: \"Powołanie\", \"Po prostu wierze\", \"Bóg jest działa\", \"#Siemodle\".",
-                "https://www.niedziela.pl/gifs/portaln/624x400/1602229833.jpg",
+                "Carrantuohill",
+                "Założony w 1987 roku polski zespół, wykonuje zarówno tradycyjną muzykę celtycką rodem z Irlandii i Szkocji, jak i własne opracowania aranżacyjne oparte na \"celtyckich korzeniach\".",
+                "https://scontent-frx5-1.xx.fbcdn.net/v/t1.6435-9/38638961_10155711429550665_5314941403673919488_n.png?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=AFG0dT66bMsAX9puMe-&_nc_ht=scontent-frx5-1.xx&oh=00_AT_ceARwG-SkHfNSnxuWBVrVUJWh8bOLBF4FF4nHKsSdlg&oe=62CE32DB",
                 arrayOf(
-                    "https://www.facebook.com/KsiadzJakubBartczak",
-                    "https://www.instagram.com/ksjakubbartczak/",
-                    "https://kskubabartczak.pl/",
-                    "https://www.youtube.com/user/ksjakubbartczak"
+                    "https://www.facebook.com/Carrantuohill/",
+                    "https://www.instagram.com/carrantuohill/",
+                    "https://www.carrantuohill.pl/",
+                    "https://www.youtube.com/user/carrantuohillcelt"
                 )
             ),
             Guest(
-                "LUXTORPEDA",
-                "Polska grupa wykonująca szeroko pojętą muzykę rockową. Powstała w 2010 roku z inicjatywy gitarzysty i wokalisty Roberta Friedricha, znanego z zespołów: Acid Drinkers, Arka Noego, Kazik na Żywo i 2Tm2,3. Muzyk do współpracy zaprosił związanych z zespołem 2Tm2,3 gitarzystę Roberta Drężka i basistę Krzysztofa Kmiecika oraz ówczesnego perkusistę Turbo i zespołu Armia Tomasza Krzyżaniaka. W 2011 roku w trakcie nagrywania albumu skład uzupełnił wokalista Przemysław „Hans” Frencel, raper znany z duetu Pięć Dwa.",
-                "https://staryklasztor.com.pl/wp-content/uploads/2018/12/lux-900x804.jpg",
+                "Muode Koty",
+                "Muode Koty to hip-hopowy zespół chrześcijański, który oprócz koncertów prowadzi również rekolekcje i profilaktykę w szkołach. Mimo swojego młodego wieku mają już na swoim koncie parę wygranych konkursów oraz wielkich koncertów i festiwali",
+                "https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/242237280_3030357200566088_3465946037882297166_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=Yb6yMK6NfMYAX9-aKjb&_nc_ht=scontent-frt3-1.xx&oh=00_AT_r4795eFNqppkPdISUhI-gkpsbhYnKji33XXYIKRr5Mg&oe=62ADD8E0",
                 arrayOf(
-                    "https://www.facebook.com/LUXTORPEDA",
-                    "", "https://www.luxtorpeda.eu/",
-                    "https://www.youtube.com/user/OFFICIALLUXTORPEDA/"
+                    "https://www.facebook.com/muodekoty/",
+                    "https://www.instagram.com/muodekoty/",
+                    "https://www.muodekoty.com/",
+                    "https://www.youtube.com/channel/UCkH1V5MITxoiCkw5QJg44ew/"
+                )
+            ),
+            Guest(
+                "SOWINSKY",
+                "Krzysztof i Maja Sowińscy. Należą do wspólnoty uwielbienia „Głos Pana”, są założycielami fundacji SOWINSKY, której celami jest ewangelizacja, działalność profilaktyczna oraz twórczorść i jej promowanie.",
+                "https://www.sowinsky.pl/wp-content/uploads/2019/12/razem1-600x400.png",
+                arrayOf(
+                    "https://www.facebook.com/sowinsky7/",
+                    "https://www.instagram.com/so.win.sky/",
+                    "https://www.sowinsky.pl/",
+                    "https://www.youtube.com/channel/UCuRLbbAPGvPMR2OJYDmgJjg"
                 )
             )
         )
