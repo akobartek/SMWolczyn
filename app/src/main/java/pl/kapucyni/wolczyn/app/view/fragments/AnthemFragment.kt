@@ -29,36 +29,41 @@ class AnthemFragment : BindingFragment<FragmentAnthemBinding>() {
     }
 
     companion object {
-        const val YOUTUBE_URL = "https://www.youtube.com/watch?v=9NnGOWZyQoE"
+        const val YOUTUBE_URL = "https://www.youtube.com/watch?v=FblN6tvGz1c"
 
-        const val ANTHEM = "1. Utkałeś mnie w łonie mej matki,\n" +
-                "pod jej sercem cudownie złożyłeś.\n" +
-                "Tchnąłeś Ducha, więc żyję i kocham\n" +
-                "chcę być taki jak, jak mnie stworzyłeś.\n" +
-                "chcę być taki jak, jak mnie stworzyłeś.\n\n" +
-                "2. Stworzyłeś nas mężczyzną i kobietą,\n" +
-                "nasze święte życie, twoje od poczęcia,\n" +
-                "ciało nasze jest twoją świątynią,\n" +
-                "gdzie dusza spotyka swego Oblubieńca\n" +
-                "gdzie dusza spotyka swego Oblubieńca\n\n" +
-                "\t\tRef. Kto ma Ducha, słów tych słucha\n" +
-                "\t\tsercem dziecka je przyjmuje.\n" +
-                "\t\tKto bez Ducha, nie chce słuchać,\n" +
-                "\t\tplanu Boga nie pojmuje. x2,\n\n" +
-                "3. On i ona, ciał i dusz przymierze,\n" +
-                "tu rodzi się życie i karmi się wiarą.\n" +
-                "Dom ich kościołem, Kościół ich domem,\n" +
-                "tu miłość dojrzewa, stając się ofiarą.\n" +
-                "tu miłość dojrzewa, stając się ofiarą.\n\n" +
-                "\t\tRef. Kto ma Ducha...\n\n" +
-                "BRIDGE:\n" +
-                "Nie chcę wymyślać świata bez Ciebie,\n" +
-                "tego kim jestem, tego jak żyć,\n" +
-                "lecz Ciebie słuchać, aby zrozumieć\n" +
-                "jak Ty mnie widzisz, jaki mam być.\n\n" +
-                "\t\tRef. Kto ma Ducha... X2\n\n" +
-                "OUTRO:\n" +
-                "Ooo Ooo Ooo\n" +
-                "Słucham, by zrozumieć!\n\n"
+        const val ANTHEM = "Nie boję się już, bo Ty jesteś ze mną\n" +
+                "Nie boję się już, choć czasami tak trudno zrozumieć mi\n" +
+                "Dokąd mam iść? Co mówić mam?  Kogo słuchać?\n" +
+                "Ty uwalniasz mnie od lęków\n" +
+                "Pokój dajesz mi\n\n" +
+                "\t\tMiłość mnie ożywia, wszystko mi wyjaśnia\n" +
+                "\t\tCierpliwie podnosi, jest zawsze wierna\n" +
+                "\t\tMiłość mnie odżywia\n" +
+                "\t\tWszystko  rozwiązuje\n" +
+                "\t\tChcę być zawsze tam, gdzie ona\n" +
+                "\t\tOd teraz wiem jak mam kochać\n" +
+                "\t\tChce być zawsze tam, gdzie ona\n\n" +
+                "W miłości chcę żyć\n" +
+                "Bo ty działasz we mnie\n" +
+                "W miłości chcę żyć\n" +
+                "Dzięki mnie ten świat będzie zmieniał się\n" +
+                "Uwielbiam tę miłość gdziekolwiek jest chcę za nią kroczyć\n" +
+                "Ona uwalnia mnie od grzechu, daje nowy sens\n\n" +
+                "\t\tMiłość mnie ożywia, wszystko mi wyjaśnia\n" +
+                "\t\tCierpliwie podnosi,  jest zawsze wierna\n" +
+                "\t\tMiłość mnie odżywia, wszystko rozwiązuje\n" +
+                "\t\tChcę być zawsze tam, gdzie ona\n" +
+                "\t\tOd teraz wiem jak mam kochać\n\n" +
+                "Jeśli ta miłość ma działać we mnie, chcę być gotowy\n" +
+                "Chcę iść za twoim głosem, więc mów do mnie\n" +
+                "Jeśli ta miłość ma działać we mnie, chcę być gotowy\n" +
+                "Chcę iść za twoim głosem, więc mów do mnie\n\n" +
+                "Działaj! Działaj we mnie! \n\n" +
+                "\t\tMiłość mnie ożywia, wszystko mi wyjaśnia\n" +
+                "\t\tCierpliwie podnosi,  jest zawsze wierna\n" +
+                "\t\tMiłość mnie odżywia, wszystko rozwiązuje\n" +
+                "\t\tChcę być zawsze być tam gdzie ona\n" +
+                "\t\tOd teraz wiem jak mam kochać\n\n" +
+                "\t\tChcę być zawsze tam, gdzie ona\n"
     }
 }
