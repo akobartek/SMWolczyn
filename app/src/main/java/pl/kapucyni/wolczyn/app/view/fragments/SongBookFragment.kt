@@ -136,13 +136,28 @@ class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
     companion object {
         val songTitles = arrayOf(
             "HYMN",
-            "Tak bowiem Bóg",
             "Cały mój świat",
+            "Hosanna (mam moc)",
+            "Jesteś, który jesteś",
+            "Jezus Chrystus Panem jest",
+            "Każdy spragniony",
+            "Kosmos",
+            "Nowe serce",
+            "Powiedz tylko słowo",
+            "Rozmowa",
+            "Rzeka",
+            "Serce do Serca",
+            "Święty",
+            "W Tobie jest światło",
+            "Wszystkie pragnienia",
+            "Wzywam Cię",
+            "27 (CSM)",
+            "Hizop",
+            // stare:
+            "Tak bowiem Bóg",
             "Kim jesteś Ty, Panie",
             "Przed tronem Twym",
-            "Kosmos",
             "Ukaż mi Panie swą twarz",
-            "Hosanna (mam moc)",
             "Naucz nas",
             "Zawitaj Ukrzyżowany",
             "Jaśnieje Krzyż Chwalebny",
@@ -151,12 +166,8 @@ class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
             "On miłością jest",
             "W Chrystusie mym",
             "Zmiłuj się nade mną Boże",
-            "Święty",
             "Odradzam się",
             "O tak tak / Pan jest wśród nas",
-            "Jezus Chrystus Panem jest",
-            "Rzeka",
-            "Wzywam Cię",
             "Jezu jesteś tu",
             "Duchu Święty przyjdź",
             "Królestwo",
@@ -166,77 +177,16 @@ class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
 
         val songTexts = arrayOf(
             "",
-            "Tak bowiem Bóg umiłował świat,\n" +
-                    "że Syna swego nam dał\n" +
-                    "Aby każdy kto w Niego wierzy\n" +
-                    "miał życie wieczne.\n",
-            "Zwrotka:\n" +
-                    "Jesteś moim domem, moim bezpieczeństwem\n" +
-                    "Jesteś wszystkim czego szukam\n" +
-                    "Ty jesteś, jesteś\n\n" +
-                    "Ooo, Obecny\n" +
-                    "Ooo, Ty jesteś\n" +
-                    "Ooo, Niezmienny\n\n" +
-                    "Refren:\n" +
-                    "W Tobie cały mój świat\n" +
-                    "Ty jesteś moim ocaleniem\n" +
-                    "W Tobie cały mój świat\n\n" +
-                    "W Tobie cały mój świat\n" +
-                    "Podnoszę ręce, by chwalić Ciebie\n" +
-                    "W Tobie cały mój świat\n\n" +
-                    "Zwrotka 2:\n" +
-                    "Jesteś moim niebem, moim ukojeniem\n" +
-                    "Jesteś wszystkim na co czekam\n" +
-                    "Ty jesteś, jesteś\n\n" +
-                    "Ooo, Obecny\n" +
-                    "Ooo, Ty jesteś\n" +
-                    "Ooo, Niezmienny\n\n" +
+            "1. Jesteś moim domem, moim bezpieczeństwem\nJesteś wszystkim czego szukam\n" +
+                    "Ty jesteś, jesteś\n\nOoo, Obecny\nOoo, Ty jesteś\nOoo, Niezmienny\n\n" +
+                    "Refren:\nW Tobie cały mój świat\nTy jesteś moim ocaleniem\n" +
+                    "W Tobie cały mój świat\n\nW Tobie cały mój świat\n" +
+                    "Podnoszę ręce, by chwalić Ciebie\nW Tobie cały mój świat\n\n" +
+                    "2. Jesteś moim niebem, moim ukojeniem\nJesteś wszystkim na co czekam\nTy jesteś, jesteś\n\n" +
+                    "Ooo, Obecny\nOoo, Ty jesteś\nOoo, Niezmienny\n\n" +
                     "Ref. W Tobie cały mój świat...\n\n" +
-                    "Bridge:\n" +
-                    "Cały mój świat x2\n" +
-                    "W Tobie cały mój świat x4\n\n" +
+                    "Bridge:\nCały mój świat x2\nW Tobie cały mój świat x4\n\n" +
                     "Ref. W Tobie cały mój świat...\n\n",
-            "Kim jesteś Ty Panie, a kim jestem ja?\n" +
-                    "Kim Ty? A kim ja?\n\n",
-            "Przed tronem Twym stoimy\n" +
-                    "Wpatrzeni w Twej miłości blask\n" +
-                    "Do Ciebie Panie podobni\n" +
-                    "Stajemy się widząc Twą twarz\n\n" +
-                    "Refren:\n" +
-                    "Chwała Twa wypełnia nas\n" +
-                    "Obecności Twojej blask\n" +
-                    "Gdy wielbimy Ciebie, wiem\n" +
-                    "Jesteś tu.\n\n" +
-                    "Bridge:\n" +
-                    "Chwała, cześć\n" +
-                    "Mądrość, moc, błogosławieństwo\n" +
-                    "Na wieki, na wieki\n\n",
-            "ZWROTKA 1:\n" +
-                    "Jak to możliwe jest,\n" +
-                    "że Ty jeden umiesz kochać mnie za darmo,\n" +
-                    "kochać za darmo\n" +
-                    "Nie odrzucasz mnie\n" +
-                    "Mimo błędów każdy dzień to nowa szansa\n" +
-                    "to nowa szansa\n\n" +
-                    "REFREN:\n" +
-                    "Twoja miłość to kosmos\n" +
-                    "niezmierzona tajemnica\n" +
-                    "Twoja miłość to kosmos\n" +
-                    "nieustannie mnie zachwyca\n" +
-                    "Twoja miłość to kosmos x3\n\n" +
-                    "ZWROTKA 2:\n" +
-                    "W lustrze widzę Cię\n" +
-                    "Twe odbicie patrzy na mnie z przebaczeniem\n" +
-                    "z przebaczeniem\n" +
-                    "Nie oceniasz mnie\n" +
-                    "w Twoich oczach najważniejsza jest miłość\n" +
-                    "liczy się miłość\n\n" +
-                    "REFREN x2\n\n",
-            "Ukaż mi Panie swą twarz\n" +
-                    "Daj mi usłyszeć Twój głos\n" +
-                    "Bo słodki jest Twój głos\n" +
-                    "i twarz pełna wdzięku\n" +
-                    "Ukaż mi Panie swą twarz\n\n",
             "1. Niech słaby powie: „Mam moc”,\n" +
                     "Biedny wyzna: „Wszystko mam”,\n" +
                     "Ślepy mówi: „Widzę znów”, we mnie to uczynił Bóg\n\n" +
@@ -245,34 +195,124 @@ class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
                     "2. Wejdę w rzekę, gdzie grzechy me\n" +
                     "Zmywasz, Zbawco, swoją krwią.\n" +
                     "Z niebios miłość wylewa się, łaską swą ogarnij mnie.\n\n",
-            "Zwrotka 1:\n" +
-                    "Przychodzimy do Ciebie Panie\n" +
-                    "przynosimy Ci wszystko co mamy\n" +
-                    "Otwórz nasze oczy na cuda,\n" +
-                    "których nie dostrzegamy\n\n" +
-                    "Przychodzimy do Ciebie Panie\n" +
-                    "przynosimy Ci wszystko co mamy\n" +
-                    "Otwórz nasze serca na miłość,\n" +
-                    "której nie dostrzegamy\n\n" +
-                    "Naucz nas pragnąć Ciebie\n" +
-                    "Przebywać w Twej obecności\n" +
-                    "Pozwól nam ujrzeć Twoją twarz\n" +
-                    "Doświadczyć Twojej miłości\n\n" +
+            "1. Niezmienny\nBoże nadziei\nKtóry przyszłość znasz\n\n" +
+                    "Będziemy\nUfać Ci zawsze\nTy prowadzisz nas\n\n" +
+                    "Boże naszych ojców\nTwoje Imię trwa\nZawsze wierny\nOkazujesz się nam x2\n\n" +
+                    "2. Na przekór\nŚwiatu będziemy\nW tej nadziei stać\n\n" +
+                    "Ty jeden\nWiesz co najlepsze jest\nBądź wola Twa\n\nRefren\n\n" +
+                    "Bridge:\nJesteś który Jesteś\nAlfa i Omega\nLew i Baranek\nJesteś, Jesteś x4\n\nRefren x2\n\n",
+            "Jezus Chrystus Panem jest\nKról to królów, panów Pan\nCała ziemia Jego jest\npo najdalszy świata kres\n\n" +
+                    "Jezus, królów Król\nJezus, świata Pan\nŚwiata Pan x4\n\nAlleluja\n\n",
+            "Zwrotka:\nKażdy spragniony i słaby dziś\nNiech przyjdzie do źródła\nW Wodzie Życia zanurzy się\n" +
+                    "Ból i cierpienie niech odpłyną w dal\nW morzu miłości serca uleczy dzisiaj Pan\n\n" +
+                    "Ref. 1: Panie Jezu przyjdź\n\nZwrotka\n\nRef. 2: Duchu Święty przyjdź\n\n" +
+                    "Outro:\nPanie Jezu, Panie Jezu, Panie Jezu przyjdź!\n" +
+                    "Duchu Święty, Duchu Święty, Duchu Święty przyjdź\n\n",
+            "1. Jak to możliwe jest,\nże Ty jeden umiesz kochać mnie za darmo,\nkochać za darmo\n" +
+                    "Nie odrzucasz mnie\nMimo błędów każdy dzień to nowa szansa\nto nowa szansa\n\n" +
+                    "Ref. Twoja miłość to kosmos\nniezmierzona tajemnica\n" +
+                    "Twoja miłość to kosmos\nnieustannie mnie zachwyca\nTwoja miłość to kosmos x3\n\n" +
+                    "2. W lustrze widzę Cię\nTwe odbicie patrzy na mnie z przebaczeniem\nz przebaczeniem\n" +
+                    "Nie oceniasz mnie\nw Twoich oczach najważniejsza jest miłość\nliczy się miłość\n\n" +
+                    "Refren x2\n\n",
+            "1. Zburzone mury, wokół pustego miasta\ntam gdzie płynęły rzeki, zaległy suche kości\n" +
+                    "Poszukujmy, poszukujmy Jego głosu\npoznajmy Jego Słowo\n\n" +
+                    "Ref. To co upadło Bóg podniesie jeszcze\n" +
+                    "przywróci swoją chwałę, uleczy co złamane\nSpod gruzów pychy Pan wyciągnie nowe serce\n\n" +
+                    "2. To nasze winy, zabrały nas w niewolę\nlecz teraz czas powrócić, nadeszło odkupienie\n" +
+                    "Nasłuchujmy, nasłuchujmy, czy już wzywa\nby ruszyć nową drogą\n\n" +
+                    "Ref. To co upadło...\n\n" +
+                    "Bridge:\nSłyszę cichy szum, czuję lekki powiew\natmosfera się odmienia, idzie nowe\n\n" +
+                    "Z nieba spada deszcz, z gór wypływa strumień\nsuche brzegi znów wypełnia, rzeka życia\n\n" +
+                    "Ref. To co upadło... x2\n\n",
+            "Zwrotka:\nChrystus Pan\nMesjasz Król\nNa drzewo krzyża poniósł ciężar mój\n" +
+                    "Boży Syn Panów Pan\nPosłuszny Ojcu został całkiem sam\n\n" +
+                    "Ref. Powiedz tylko słowo\nA będzie uzdrowiona dusza ma\nPowiedz tylko słowo\nPanie mój\n\n" +
+                    "Bridge:\nUwielbiam Ciebie Jezu\nUwielbiam Ciebie Jezu\n\n",
+            "1. Przychodzę do Ciebie\nwiem, że czekasz na mnie zawsze, zawsze\n" +
+                    "Wszystko rozumiesz\nzanim zacznę Ci cokolwiek tłumaczyć\n\n" +
+                    "Pre-Chorus 1:\nGdzie ukryję się przed Tobą, O Panie\nSkoro wszystkie moje drogi są Ci znane\n\n" +
+                    "Chorus:\nTy znasz mnie, znasz moje serce\ni dobrze wiesz, czego mi trzeba\n" +
+                    "Chcę bliżej, być bliżej Ciebie\nrozmawiać o Twoich pragnieniach\n\n" +
+                    "2. Przychodzę do Ciebie\nstaram się szukać Cię zawsze, zawsze\n" +
+                    "Już się nie schowam\ngdy mnie znowu po imieniu zawołasz\n\n" +
+                    "Pre-Chorus 2:\nMoim szczęściem jest być z Tobą, O Panie\nTo kim jestem dziś na nowo Ci oddaję\n\n" +
+                    "Refren x2\n\n",
+            "1. Dobro wypełnia tej rzeki bieg\nKażdy mój smutek w jej źródle topi się\n" +
+                    "Ocean łaski - głębszy niż strach\nNiech się rozlewa, rośnie\n\n" +
+                    "2. W środku tej rzeki moc objawia się\nz Bożego serca wciąż wylewa się\n" +
+                    "niebieska łaska na nas spływa w dół\nNiech się rozlewa rośnie\n\n" +
+                    "Wzbierają wody, wzbierają rzeki\nZdrój wody Twej wylewa się /x2\n\n" +
+                    "Ref. Ta rzeka daje nam życie /x4\n\n" +
+                    "Bridge:Otwieraj więźniom drzwi\nWypuszczaj wolno ich\n" +
+                    "niech tryska moc, niech tryska moc\nniech we mnie budzi się\n\n" +
+                    "Nic nie zatrzyma mnie\nw radości tańczyć chcę\n" +
+                    "niech tryska moc, niech tryska moc\nniech we mnie budzi się\n\n",
+            "1. Niech przylgnie serce moje\nDo Twego serca Panie\n" +
+                    "Niech przylgnie serce moje\nDo Twego serca Panie mój\n\n" +
+                    "Ref. Bo tylko w Tobie\nspełnienie me\nBo tylko w Tobie\nwszystko jest\n" +
+                    "Bo tylko w Tobie\nwszystko czego pragnę\nBo tylko w Tobie\nżyć, umierać chcę.\n\n",
+            "Zwrotka:\nWszystko czego chcę to Ty i Twoja łaska\nWszystko czego chcę to Ty x2\n\n" +
+                    "Refren:\nJesteś święty, nieskończony, potężny Pan\n" +
+                    "Twoja łaska wiecznie trwa, dla Ciebie wszystko możliwe jest x2\n\n" +
+                    "Zwrotka\n\nRef. Jesteś święty...\n\n" +
+                    "Bridge:\nI raduje się moje serce,\nże przyszedłeś tu na ziemię,\n" +
+                    "żeby dać mi życie wieczne,\nuwielbiam Ciebie Panie x2\n\n" +
+                    "Ref. Jesteś święty...\n\n" +
+                    "Outro:\n" +
+                    "Jesteś Święty! x6\n\n",
+            "W Tobie jest światło\nKażdy mrok rozjaśni\nW Tobie jest życie\n" +
+                    "Ono śmierć zwycięża\nUfam Tobie Miłosierny\nJezu wybaw nas\n\n",
+            "Zwrotka:\nWszystkie pragnienia mego serca\nOddaję w Twoje święte ręce\n" +
+                    "Czekam z nadzieją, że je spełnisz\nZ Twoją wolą zgadzam się\n" +
+                    "Twe drogi nie są mi już obce\nSłucham uważnie Twego głosu\n" +
+                    "Tak bardzo cieszę się, że jesteś\nCieszę się, że jesteś blisko\n\n" +
+                    "Refren:\nCieszę się, że jesteś\nCieszę się, że jesteś blisko x2\n\n" +
+                    "Bridge:\nPrzyjdź do mnie Panie ze swoją radością\n" +
+                    "Przyjdź do mnie Panie ze swoją miłością\nWypełnij mnie, wypełnij mnie\n\n",
+            "1. Wzywam Cię, Duchu, przyjdź\nCzekam wciąż, byś dotknął nas\n" +
+                    "Wołam Cię, Panie, przyjdź\nJezu, Zbawco, do dzieci Twych\n\n" +
+                    "Ref. Jak spragniona ziemia rosy dusza ma\nTylko Ty możesz wypełnić\nSerca głód, serca głód\n\n" +
+                    "2. Głębio morz, potęgo gór,\nBoże mój, nie mogę bez\n" +
+                    "Twej miłości żyć\nNie chcę bez Ciebie żyć\n\n" +
+                    "Ref. Jak spragniona ziemia...\n\n",
+            "1. Szukam Twojej twarzy\nCałym sercem\nTy nie chowasz jej przede mną\nJesteś zawsze blisko mnie\n\n" +
+                    "Wszystkie moje źródła\nNieskończone\nWszystko czego potrzebuję\nNawet więcej w Tobie mam\n\n" +
+                    "Pre-Chorus:\nI choćby drżało mi serce\nChoćbym się lękał\nTym sercem Tobie zaufam\n\n" +
+                    "Ref. Rozjaśnij oblicze swe\nPoprowadź mnie tam, gdzie chcesz x2\n\n" +
+                    "2. Jedno czego pragnę\nO czym myślę\nTo poznawać Ciebie bliżej\nW obecności Twojej żyć\n\n" +
+                    "Ufać bezgranicznie\nTwemu Słowu\nŻe mnie nigdy nie pominiesz\nKiedy wzywam Imię Twe\n\n" +
+                    "Pre-Chorus\n\nRefren\n\n" +
+                    "Bridge:\nNie będę się bał\nW najciemniejszą noc\nZe mną mój Pan\n" +
+                    "Na pewno to wiem\nŻe zobaczę Cię x4\n\nRef. Rojaśnij oblicze swe...\n\n",
+            "Daleki bądź od strachu\nze mną nie masz się czym martwić\nja pokażę Ci jak wytrwać w mej miłości\n" +
+                    "Twe słowo drogowskazem\nGdy nie mam siły\nWtedy mówię Pan jest większy\nwtedy mówię Pan jest większy\n\n" +
+                    "Alleluja, dziękujmy Panu\nAlleluja, jego łaska trwa na wieki\njego łaska trwa na wieki\n" +
+                    "Alleluja, dziękujmy Panu\nAlleluja, jego łaska trwa na wieki\njego łaska trwa na wieki\n\n" +
+                    "Gdy patrzę na twe niebo\ni to co wysoko na nim\nzastanawiam się kim jestem\nw twoich oczach\n" +
+                    "Wciąż szukam odpowiedzi\nGdy nie mam siły\nOtwórz moje oczy Panie\nOtwórz moje oczy Panie\n\n" +
+                    "Alleluja, dziękujmy Panu\nAlleluja, jego łaska trwa na wieki\njego łaska trwa na wieki\n" +
+                    "Alleluja, dziękujmy Panu\nAlleluja, jego łaska trwa na wieki\njego łaska trwa na wieki\n\n",
+            // stare:
+            "Tak bowiem Bóg umiłował świat,\nże Syna swego nam dał\nAby każdy kto w Niego wierzy\nmiał życie wieczne.\n",
+            "Kim jesteś Ty Panie, a kim jestem ja?\nKim Ty? A kim ja?\n\n",
+            "Przed tronem Twym stoimy\nWpatrzeni w Twej miłości blask\nDo Ciebie Panie podobni\nStajemy się widząc Twą twarz\n\n" +
+                    "Refren:\nChwała Twa wypełnia nas\nObecności Twojej blask\nGdy wielbimy Ciebie, wiem\nJesteś tu.\n\n" +
+                    "Bridge:\nChwała, cześć\nMądrość, moc, błogosławieństwo\nNa wieki, na wieki\n\n",
+            "Ukaż mi Panie swą twarz\nDaj mi usłyszeć Twój głos\nBo słodki jest Twój głos\n" +
+                    "i twarz pełna wdzięku\nUkaż mi Panie swą twarz\n\n",
+            "1. Przychodzimy do Ciebie Panie\nprzynosimy Ci wszystko co mamy\n" +
+                    "Otwórz nasze oczy na cuda,\nktórych nie dostrzegamy\n\n" +
+                    "Przychodzimy do Ciebie Panie\nprzynosimy Ci wszystko co mamy\n" +
+                    "Otwórz nasze serca na miłość,\nktórej nie dostrzegamy\n\n" +
+                    "Naucz nas pragnąć Ciebie\nPrzebywać w Twej obecności\n" +
+                    "Pozwól nam ujrzeć Twoją twarz\nDoświadczyć Twojej miłości\n\n" +
                     "(instrumental)\n\n" +
-                    "Zwrotka 2:\n" +
-                    "Przychodzimy do Ciebie Panie\n" +
-                    "przynosimy Ci wszystko co mamy\n" +
-                    "Otwórz nasze oczy na cuda,\n" +
-                    "których nie dostrzegamy\n\n" +
-                    "Naucz nas pragnąć Ciebie\n" +
-                    "Przebywać w Twej obecności\n" +
-                    "Pozwól nam ujrzeć Twoją twarz\n" +
-                    "Doświadczyć Twojej miłości\n\n" +
-                    "Refren:\n" +
-                    "Tylko Tobie chwała\n" +
-                    "Tobie chwała\n\n" +
-                    "Bridge:\n" +
-                    "Jezus\n" +
+                    "2. Przychodzimy do Ciebie Panie\nprzynosimy Ci wszystko co mamy\n" +
+                    "Otwórz nasze oczy na cuda,\nktórych nie dostrzegamy\n\n" +
+                    "Naucz nas pragnąć Ciebie\nPrzebywać w Twej obecności\n" +
+                    "Pozwól nam ujrzeć Twoją twarz\nDoświadczyć Twojej miłości\n\n" +
+                    "Ref. Tylko Tobie chwała\nTobie chwała\n\nBridge:\nJezus\n" +
                     "Nasza pomoc jest w Imieniu Pana, który stworzył niebo i ziemię\n\n",
             "Zwrotka 1:\n" +
                     "Zawitaj, Ukrzyżowany,\n" +
@@ -333,22 +373,13 @@ class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
                     "Gdzie winny krzew rozpięty,\n" +
                     "Spływają krwawe strugi\n" +
                     "Czerwienią słodką wina.\n\n",
-            "Podnieś mnie Jezu i prowadź do Ojca x2\n" +
-                    "Zanurz mnie w wodzie Jego miłosierdzia\n" +
-                    "Amen\n\n",
-            "Zwrotka:\n" +
-                    "Powstań i żyj, chociaż wokół mrok,\n" +
-                    "powstań i żyj, dobro wielką ma moc,\n" +
-                    "powstań i żyj, choć upadłeś nie raz,\n" +
-                    "Jezus doda Ci sił, On zmartwychwstał byś żył,\n" +
+            "Podnieś mnie Jezu i prowadź do Ojca x2\nZanurz mnie w wodzie Jego miłosierdzia\nAmen\n\n",
+            "Zwrotka:\nPowstań i żyj, chociaż wokół mrok,\npowstań i żyj, dobro wielką ma moc,\n" +
+                    "powstań i żyj, choć upadłeś nie raz,\nJezus doda Ci sił, On zmartwychwstał byś żył,\n" +
                     "Jezus doda Ci sił, On zmartwychwstał byś żył!\n\n" +
-                    "Refren:\n" +
-                    "Ile trzeba łez, aby wrócić do Ciebie,\n" +
-                    "jak daleko oddalić się, by usłyszeć Twój szept,\n" +
-                    "jak bardzo żałować, aby pękło to serce kamienne.\n" +
-                    "Ile trzeba łez, aby wrócić do Ciebie.\n\n" +
-                    "Outro:\n" +
-                    "Powstań i żyj, powstań i żyj\n\n",
+                    "Refren:\nIle trzeba łez, aby wrócić do Ciebie,\njak daleko oddalić się, by usłyszeć Twój szept,\n" +
+                    "jak bardzo żałować, aby pękło to serce kamienne.\nIle trzeba łez, aby wrócić do Ciebie.\n\n" +
+                    "Outro:\nPowstań i żyj, powstań i żyj\n\n",
             "Nasze życie nie jest łatwe\n" +
                     "grzechem skażone każde jest\n" +
                     "Jeśli w sercu Twym cierpienie\n" +
@@ -408,22 +439,6 @@ class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
                     "poślij nam swojego Ducha\n" +
                     "Panie daj, daj serce czyste\n" +
                     "daj mi moc, daj mi moc\n\n",
-            "Zwrotka:\n" +
-                    "Wszystko czego chcę to Ty i Twoja łaska\n" +
-                    "Wszystko czego chcę to Ty x2\n\n" +
-                    "Refren:\n" +
-                    "Jesteś święty, nieskończony, potężny Pan\n" +
-                    "Twoja łaska wiecznie trwa, dla Ciebie wszystko możliwe jest x2\n\n" +
-                    "Zwrotka\n\n" +
-                    "Ref. Jesteś święty...\n\n" +
-                    "Bridge:\n" +
-                    "I raduje się moje serce,\n" +
-                    "że przyszedłeś tu na ziemię,\n" +
-                    "żeby dać mi życie wieczne,\n" +
-                    "uwielbiam Ciebie Panie x2\n\n" +
-                    "Ref. Jesteś święty...\n\n" +
-                    "Outro:\n" +
-                    "Jesteś Święty! x6\n\n",
             "Zwrotka 1:\n" +
                     "Do Ciebie dziś wracam znów, tak jak wtedy\n" +
                     "Kiedy przyjąłeś mnie po raz pierwszy\n" +
@@ -450,107 +465,27 @@ class SongBookFragment : BindingFragment<FragmentSongbookBinding>() {
                     "O tak, tak, tak Panie mówię tak Twemu prawu\n\n" +
                     "Jesteś mym Pasterzem, uczysz mnie jak tutaj żyć\n" +
                     "Twoje napomnienia chronią mnie, strzegą mnie, dają życie mi\n" +
-                    "O Alleluja, Alleluja\n\n" +
-                    "Pan jest wśród nas, prawdziwie jest wśród nas\n" +
-                    "Pan jest wśród nas, widzę Go /2x/\n\n" +
-                    "Kto zmartwychwstał i króluje?\n" +
-                    "Jezus, Jezus!\n" +
-                    "Kto jest tutaj by nam służyć?\n" +
-                    "Jezus, Jezus!\n\n" +
-                    "Pan zmartwychwstały,\n" +
-                    "wspaniały nasz Przyjaciel,\n" +
-                    "Chrystus Emmanuel tutaj jest! /2x/\n\n",
-            "Jezus Chrystus Panem jest\n" +
-                    "Król to królów, panów Pan\n" +
-                    "Cała ziemia Jego jest\n" +
-                    "po najdalszy świata kres\n\n" +
-                    "Jezus, królów Król\n" +
-                    "Jezus, świata Pan\n\n" +
-                    "Świata Pan x4\n\n" +
-                    "Alleluja x3 o Alleluja",
-            "Dobro wypełnia tej rzeki bieg\n" +
-                    "Każdy mój smutek w jej źródle topi się\n" +
-                    "Ocean łaski - głębszy niż strach\n" +
-                    "Niech się rozlewa, rośnie\n\n" +
-                    "W środku tej rzeki moc objawia się\n" +
-                    "z Bożego serca wciąż wylewa się\n" +
-                    "niebieska łaska na nas spływa w dół\n" +
-                    "Niech się rozlewa rośnie\n\n" +
-                    "Wzbierają wody, wzbierają rzeki\n" +
-                    "Zdrój wody Twej wylewa się /x2\n\n" +
-                    "Ta rzeka daje nam życie /x4\n\n" +
-                    "BRIDGE:" +
-                    "Otwieraj więźniom drzwi\n" +
-                    "Wypuszczaj wolno ich\n" +
-                    "niech tryska moc, niech tryska moc\n" +
-                    "niech we mnie budzi się\n\n" +
-                    "Nic nie zatrzyma mnie\n" +
-                    "w radości tańczyć chcę\n" +
-                    "niech tryska moc, niech tryska moc\n" +
-                    "niech we mnie budzi się\n\n",
-            "Zwrotka 1:\n" +
-                    "Wzywam Cię, Duchu, przyjdź\n" +
-                    "Czekam wciąż, byś dotknął nas\n" +
-                    "Wołam Cię, Panie, przyjdź\n" +
-                    "Jezu, Zbawco, do dzieci Twych\n\n" +
-                    "Refren:\n" +
-                    "Jak spragniona ziemia rosy dusza ma\n" +
-                    "Tylko Ty możesz wypełnić\n" +
-                    "Serca głód, serca głód\n\n" +
-                    "Zwrotka 2:\n" +
-                    "Głębio morz, potęgo gór,\n" +
-                    "Boże mój, nie mogę bez\n" +
-                    "Twej miłości żyć\n" +
-                    "Nie chcę bez Ciebie żyć\n\n" +
-                    "Ref. Jak spragniona ziemia...\n\n",
-            "Jezu jesteś tu,\n" +
-                    "świat odszedł w cień\n" +
-                    "Nie mam już nic\n" +
-                    "Moje życie to Ty!\n\n" +
-                    "Każdy dzień Twoim darem\n" +
-                    "Nie przestanę wielbić Cię\n\n" +
-                    "Ref:\n" +
-                    "Chwała! Chwała!\n" +
-                    "Jezu wielbię Cię\n\n",
+                    "O Alleluja, Alleluja\n\nPan jest wśród nas, prawdziwie jest wśród nas\n" +
+                    "Pan jest wśród nas, widzę Go /2x/\n\nKto zmartwychwstał i króluje?\n" +
+                    "Jezus, Jezus!\nKto jest tutaj by nam służyć?\nJezus, Jezus!\n\n" +
+                    "Pan zmartwychwstały,\nwspaniały nasz Przyjaciel,\nChrystus Emmanuel tutaj jest! /2x/\n\n",
+            "Jezu jesteś tu,\nświat odszedł w cień\nNie mam już nic\nMoje życie to Ty!\n\n" +
+                    "Każdy dzień Twoim darem\nNie przestanę wielbić Cię\n\n" +
+                    "Ref:\nChwała! Chwała!\nJezu wielbię Cię\n\n",
             "Duchu Święty przyjdź\n\n" +
-                    "REFREN:\n" +
-                    "Tylko Ty jesteś drogą\n" +
-                    "Tylko Ty jesteś prawdą\n" +
-                    "Tylko Ty jesteś życiem\n" +
-                    "Wypełnij nasze serca\n\n" +
-                    "OUTRO:\n" +
-                    "Duchu miłości, przemieniaj to co stare\n" +
-                    "Tchnij nowe życie w to co jest umarłe\n\n" +
-                    "Ożyw nas\n" +
-                    "Przemień nas\n\n",
-            "Refren:\n" +
-                    "Oooo\n\n" +
-                    "Zwrotka 1:\n" +
-                    "Ty Panie mnie znasz\n" +
-                    "Ty widzisz wszystko to co robię\n" +
-                    "Bez wahania biegnę tam\n" +
-                    "Tam gdzie Twe Królestwo,\n" +
-                    "Tam gdzie Twe Królestwo\n\n" +
-                    "Ty mnie znasz\n" +
-                    "Ty widzisz wszystko to co robię\n" +
-                    "Bez wahania biegnę tam\n" +
-                    "Tam gdzie Twe Królestwo,\n" +
-                    "Tam gdzie Twe Królestwo\n\n" +
-                    "Refren\n\n" +
-                    "Zwrotka 2:\n" +
-                    "Nic nie jest jak Ty\n" +
-                    "Żadne bogactwa tego świata\n" +
-                    "Jedyne dobro widzę tam\n" +
-                    "Tam gdzie Twe Królestwo,\n" +
-                    "Tam gdzie Twe Królestwo x2\n\n" +
-                    "Refren\n\n" +
-                    "Outro:\n" +
-                    "Tylko w Tobie jest potęga\n" +
-                    "Tylko w Tobie moja siła\n\n",
-            "Zaprowadź mnie tam, skąd powrotu nie ma\n" +
-                    "gdzie ustaje wiara, spełnia się nadzieja\n" +
-                    "Gdzie światłością pachnie każdy skrawek nieba\n" +
-                    "bo ją na swój obraz miłość wylewa\n\n",
+                    "REFREN:\nTylko Ty jesteś drogą\nTylko Ty jesteś prawdą\n" +
+                    "Tylko Ty jesteś życiem\nWypełnij nasze serca\n\n" +
+                    "OUTRO:\nDuchu miłości, przemieniaj to co stare\n" +
+                    "Tchnij nowe życie w to co jest umarłe\n\nOżyw nas\nPrzemień nas\n\n",
+            "Ref. Oooo\n\n1. Ty Panie mnie znasz\nTy widzisz wszystko to co robię\n" +
+                    "Bez wahania biegnę tam\nTam gdzie Twe Królestwo,\nTam gdzie Twe Królestwo\n\n" +
+                    "Ty mnie znasz\nTy widzisz wszystko to co robię\nBez wahania biegnę tam\n" +
+                    "Tam gdzie Twe Królestwo,\nTam gdzie Twe Królestwo\n\nRefren\n\n" +
+                    "2. Nic nie jest jak Ty\nŻadne bogactwa tego świata\nJedyne dobro widzę tam\n" +
+                    "Tam gdzie Twe Królestwo,\nTam gdzie Twe Królestwo x2\n\n" +
+                    "Refren\n\nOutro:\nTylko w Tobie jest potęga\nTylko w Tobie moja siła\n\n",
+            "Zaprowadź mnie tam, skąd powrotu nie ma\ngdzie ustaje wiara, spełnia się nadzieja\n" +
+                    "Gdzie światłością pachnie każdy skrawek nieba\nbo ją na swój obraz miłość wylewa\n\n",
             "Ubi Caritas et amor\nUbi Caritas Deus ibi est\n\n"
         )
     }

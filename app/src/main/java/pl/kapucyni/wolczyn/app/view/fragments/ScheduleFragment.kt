@@ -267,7 +267,7 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
             ),
             Event(
                 "2022-07-12-04", "Wtorek", "12 Lipca", "10:00",
-                "Konferenecja: Tymoteusz Filar",
+                "Konferenecja: Tymoteusz Filar - \"Ożywieni\"",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 0
             ),
             Event(
@@ -280,7 +280,8 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-12-07", "Wtorek", "12 Lipca", "14:00", "Świadectwo",
+                "2022-07-12-07", "Wtorek", "12 Lipca", "14:00",
+                "Świadectwo - Marcin Gręda z rodziną",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, null
             ),
             Event(
@@ -333,7 +334,7 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
             ),
             Event(
                 "2022-07-13-04", "Środa", "13 Lipca", "10:00",
-                "Konferencja: Sebastian Kubis oraz br. Tomasz Łakomczyk",
+                "Konferencja: Sebastian Kubis oraz br. Tomasz Łakomczyk\n- \"Ciało i Krew. Metafora czy kanibalizm?\"",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 2
             ),
             Event(
@@ -341,7 +342,7 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-13-06", "Środa", "13 Lipca", "11:30", "Eucharystia",
+                "2022-07-13-06", "Środa", "13 Lipca", "11:30", "Eucharystia: Bracia Misjonarze",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
@@ -353,8 +354,14 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                 EventPlace.CAMPSITE, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-13-09", "Środa", "13 Lipca", "15:00", "Koronka (Młodzież Franciszkańska Tau)",
-                EventPlace.CHURCH, EventType.PRAYER, null
+                "2022-07-13-09",
+                "Środa",
+                "13 Lipca",
+                "15:00",
+                "Koronka (Młodzież Franciszkańska Tau)",
+                EventPlace.CHURCH,
+                EventType.PRAYER,
+                null
             ),
             Event(
                 "2022-07-13-10", "Środa", "13 Lipca", "15:00", "Świadectwo: br. Maciej Jabłoński",
@@ -392,17 +399,17 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-14-02", "Czwartek", "14 Lipca", "8:00", "Śniadanie",
+                "2022-07-14-02", "Czwartek", "14 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-14-03", "Czwartek", "14 Lipca", "9:00",
+                "2022-07-14-03", "Czwartek", "14 Lipca", "9:30",
                 "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
                 "2022-07-14-04", "Czwartek", "14 Lipca", "10:00",
-                "Konferencja: s. Aleksandra Szyborska",
+                "Konferencja: s. Aleksandra Szyborska\n- \"Co ja mam na siebie włożyć? Czyli czy Bóg lubi modę\"",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 4
             ),
             Event(
@@ -410,7 +417,7 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-14-06", "Czwartek", "14 Lipca", "11:15", "Eucharystia",
+                "2022-07-14-06", "Czwartek", "14 Lipca", "11:30", "Eucharystia",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
@@ -455,17 +462,17 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-15-02", "Piątek", "15 Lipca", "8:00", "Śniadanie",
+                "2022-07-15-02", "Piątek", "15 Lipca", "7:45", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-15-03", "Piątek", "15 Lipca", "9:30",
+                "2022-07-15-03", "Piątek", "15 Lipca", "9:00",
                 "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-15-04", "Piątek", "15 Lipca", "9:45",
-                "Konferencja: ks. Michał Pabiańczyk",
+                "2022-07-15-04", "Piątek", "15 Lipca", "9:30",
+                "Konferencja: ks. Michał Pabiańczyk\n- Żyć szczęśliwie czy pobożnie? Na drogach Bożej Opatrzności",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 4
             ),
             Event(
