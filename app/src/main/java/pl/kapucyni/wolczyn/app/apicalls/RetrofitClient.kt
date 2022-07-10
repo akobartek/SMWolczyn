@@ -64,7 +64,6 @@ object RetrofitClient {
                 request = request.newBuilder().build()
                 chain.proceed(request)
             }
-            .addNetworkInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
     }
 

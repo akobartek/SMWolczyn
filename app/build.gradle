@@ -13,8 +13,8 @@ android {
         applicationId "pl.kapucyni.wolczyn.app"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 22
-        versionName "2022.1.1"
+        versionCode 23
+        versionName "2022.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
