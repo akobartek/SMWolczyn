@@ -2,6 +2,9 @@ package pl.kapucyni.wolczyn.app.view.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,8 +55,16 @@ class GroupFragment : BindingFragment<FragmentGroupBinding>() {
                     group.persons.forEach { person ->
                         groupMembers.append("${person.name}, ${person.age} - ${person.city}\n")
                     }
+                    binding.groupMembersTitle.visibility = View.VISIBLE
                     binding.groupMembers.visibility = View.VISIBLE
-                    binding.groupMembers.text = groupMembers.toString()
+                    val membersString = SpannableString(groupMembers.toString())
+                    membersString.setSpan(
+                        UnderlineSpan(),
+                        0,
+                        groupMembers.indexOf("\n"),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    binding.groupMembers.text = membersString
                 }
             }
         }

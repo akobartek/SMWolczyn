@@ -78,7 +78,7 @@
     <string name="video_image_description">Link do nagrania tego wydarzenia</string>
     <string name="place_amphitheatre">Amfiteatr</string>
     <string name="place_white_tent">Biały Namiot</string>
-    <string name="place_garden">Ogród koło Białego Namiotu</string>
+    <string name="place_garden">Ogród za domem Braci</string>
     <string name="place_campsite">Pole namiotowe</string>
     <string name="place_court">Orlik</string>
     <string name="place_everywhere">Wszędzie</string>
@@ -130,7 +130,7 @@
     <string name="user_group">Numer fraterki:\n%s</string>
     <string name="bears_dialog_title">Nabroiłeś!</string>
     <string name="bears_dialog_message">Nieładnie, dostałeś karnego miśka! Uważaj na siebie! :D</string>
-    <string name="group_members_title">Członkowie grupy:\n%s</string>
+    <string name="group_members_title">Członkowie grupy:</string>
 
     <!-- SHOWERS STRINGS -->
     <string name="empty_showers_list">Do Twojego konta nie przypisano jeszcze pryszniców!</string>
