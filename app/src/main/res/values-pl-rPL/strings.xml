@@ -51,7 +51,6 @@
     <string name="menu_breviary">Brewiarz</string>
     <string name="menu_weather">Pogoda</string>
     <string name="menu_signings">Zapisy</string>
-    <string name="menu_departures">Wyjazdy</string>
     <string name="menu_map">Mapa</string>
 
     <!-- HOME STRINGS -->
@@ -83,6 +82,7 @@
     <string name="place_court">Orlik</string>
     <string name="place_everywhere">Wszędzie</string>
     <string name="place_church">Czerwony kościół</string>
+    <string name="place_unknown">Miejsce podane podczas spotkania</string>
     <string name="type_conference">Konferencja</string>
     <string name="type_concert">Koncert</string>
     <string name="type_mass">Msza</string>
@@ -90,6 +90,7 @@
     <string name="type_prayer">Modlitwa</string>
     <string name="type_organization">Organizacyjne</string>
     <string name="type_groups">Fraterki</string>
+    <string name="type_workshops">Warsztaty</string>
     <string name="type_meal">Posiłek</string>
     <string name="type_breviary">Brewiarz</string>
     <string name="type_extra">Dodatkowe</string>
@@ -141,13 +142,6 @@
     <string name="concerts">Koncerty</string>
     <string name="guest_photo_description">Zdjęcie gościa Wołczyna</string>
     <string name="guest_link_description">Link do mediów społecznościowych gościa</string>
-
-    <!-- DEPARTURES STRINGS -->
-    <string name="empty_departures_list">W bazie nie ma żadnych wyjazdów organizowanych!</string>
-    <string name="transport_type_image_description">Ikona reprezentująca środek transportu</string>
-    <string name="organizer">Organizator: %s</string>
-    <string name="send_mail">Wyślij maila…</string>
-    <string name="send_mail_error">Nie znaleziono żadnego klienta mailowego!</string>
 
     <!-- BREVIARY STRINGS -->
     <string name="select_office">Wybierz Oficjum</string>

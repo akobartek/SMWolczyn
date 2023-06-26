@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -33,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     private val mLoadingDialog: AlertDialog by lazy {
         MaterialAlertDialogBuilder(this)
             .setView(R.layout.dialog_loading)
-            .setOnCancelListener { onBackPressed() }
+            .setOnCancelListener { onBackPressedDispatcher.onBackPressed() }
             .create()
     }
     private lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -58,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
         setOnClickListeners()
 
         mLoginViewModel.bearerToken.observe(this@LoginActivity) { token ->
-            if (mLoadingDialog.isShowing) mLoadingDialog.hide()
+            if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
             if (token != null) {
                 PreferencesManager.setBearerToken(token)
                 isTokenLoaded = true
@@ -93,15 +94,17 @@ class LoginActivity : AppCompatActivity() {
             openWebsiteInCustomTabsService("https://konto.kapucyni.pl/register")
         }
 
+        onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                returnActivity(false)
+            }
+        })
+
 //        generateKeyHash()
     }
 
-    override fun onBackPressed() {
-        returnActivity(false)
-    }
-
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 

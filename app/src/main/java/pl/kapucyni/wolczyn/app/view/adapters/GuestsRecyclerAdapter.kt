@@ -3,11 +3,11 @@ package pl.kapucyni.wolczyn.app.view.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ItemGuestBinding
 import pl.kapucyni.wolczyn.app.model.Guest
-import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.view.fragments.GuestListFragment
 
 class GuestsRecyclerAdapter(
@@ -31,7 +31,7 @@ class GuestsRecyclerAdapter(
             with(binding) {
                 root.tag = guest.name
                 guestName.text = guest.name
-                GlideApp.with(root.context)
+                Glide.with(root.context)
                     .load(guest.photoUrl)
                     .circleCrop()
                     .placeholder(R.drawable.ic_menu_guests)

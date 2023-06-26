@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="54dp"
-    android:divider="@drawable/horizontal_divider"
     android:background="@color/app_theme_background"
+    android:divider="@drawable/horizontal_divider"
     android:orientation="horizontal"
     android:showDividers="middle">
 
@@ -32,6 +32,18 @@
         android:src="@drawable/ic_instagram_mono" />
 
     <ImageButton
+        android:id="@+id/tiktokImage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/guest_link_description"
+        android:padding="14dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_tiktok_mono" />
+
+    <ImageButton
         android:id="@+id/websiteImage"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -54,5 +66,4 @@
         android:padding="16dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_youtube_mono" />
-
 </LinearLayout>

@@ -9,9 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.FragmentGroupBinding
-import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.utils.showBearsDialog
 import pl.kapucyni.wolczyn.app.viewmodels.MainViewModel
 
@@ -28,7 +28,7 @@ class GroupFragment : BindingFragment<FragmentGroupBinding>() {
             mMainViewModel.currentUser.observe(viewLifecycleOwner) { user ->
                 if (user?.group != null) {
                     binding.groupsEmptyView.visibility = View.INVISIBLE
-                    GlideApp.with(this@GroupFragment)
+                    Glide.with(this@GroupFragment)
                         .load(user.photo_url)
                         .circleCrop()
                         .placeholder(R.drawable.ic_logo)

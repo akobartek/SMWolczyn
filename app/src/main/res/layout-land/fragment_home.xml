@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/poster"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/poster_description"
-            android:scaleType="fitStart"
+            android:scaleType="fitCenter"
             android:src="@drawable/meeting_banner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:gravity="center"
             android:text="@string/decalogue_title"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +45,7 @@
             android:layout_marginStart="16dp"
             android:text="I."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue1"
             tools:ignore="HardcodedText" />
@@ -61,7 +61,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_1"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogueTitle" />
@@ -73,7 +73,7 @@
             android:layout_marginStart="16dp"
             android:text="II."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue2"
             tools:ignore="HardcodedText" />
@@ -89,7 +89,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_2"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue1" />
@@ -101,7 +101,7 @@
             android:layout_marginStart="16dp"
             android:text="III."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue3"
             tools:ignore="HardcodedText" />
@@ -117,7 +117,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_3"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue2" />
@@ -129,7 +129,7 @@
             android:layout_marginStart="16dp"
             android:text="IV."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue4"
             tools:ignore="HardcodedText" />
@@ -145,7 +145,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_4"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue3" />
@@ -157,7 +157,7 @@
             android:layout_marginStart="16dp"
             android:text="V."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue5"
             tools:ignore="HardcodedText" />
@@ -173,7 +173,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_5"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue4" />
@@ -185,7 +185,7 @@
             android:layout_marginStart="16dp"
             android:text="VI."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue6"
             tools:ignore="HardcodedText" />
@@ -201,7 +201,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_6"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue5" />
@@ -213,7 +213,7 @@
             android:layout_marginStart="16dp"
             android:text="VII."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue7"
             tools:ignore="HardcodedText" />
@@ -229,7 +229,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_7"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue6" />
@@ -241,7 +241,7 @@
             android:layout_marginStart="16dp"
             android:text="VIII."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue8"
             tools:ignore="HardcodedText" />
@@ -257,7 +257,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_8"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue7" />
@@ -269,7 +269,7 @@
             android:layout_marginStart="16dp"
             android:text="IX."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue9"
             tools:ignore="HardcodedText" />
@@ -285,7 +285,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_9"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue8" />
@@ -297,7 +297,7 @@
             android:layout_marginStart="16dp"
             android:text="X."
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/decalogue10"
             tools:ignore="HardcodedText" />
@@ -313,7 +313,7 @@
             android:minHeight="36dp"
             android:text="@string/decalogue_10"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="@color/app_theme_secondary"
+            android:textColor="@color/app_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/number8"
             app:layout_constraintTop_toBottomOf="@+id/decalogue9" />

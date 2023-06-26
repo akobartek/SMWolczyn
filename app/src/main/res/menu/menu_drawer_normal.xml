@@ -49,11 +49,6 @@
             android:icon="@drawable/ic_menu_signings"
             android:title="@string/menu_signings" />
         <item
-            android:id="@+id/nav_departures"
-            android:icon="@drawable/ic_menu_departure"
-            android:title="@string/menu_departures"
-            android:visible="false" />
-        <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_menu_map"
             android:title="@string/menu_map"

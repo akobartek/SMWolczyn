@@ -57,7 +57,6 @@
     <string name="menu_breviary">Breviary</string>
     <string name="menu_weather">Weather</string>
     <string name="menu_signings">Signings</string>
-    <string name="menu_departures">Departures</string>
     <string name="menu_map">Map</string>
 
     <!-- HOME STRINGS -->
@@ -89,12 +88,14 @@
     <string name="place_court">Court at the school</string>
     <string name="place_everywhere">Everywhere</string>
     <string name="place_church">Red church</string>
+    <string name="place_unknown">Place told on the meeting</string>
     <string name="type_conference">Conference</string>
     <string name="type_concert">Concert</string>
     <string name="type_mass">Mass</string>
     <string name="type_devotion">Devotion</string>
     <string name="type_organization">Organization</string>
     <string name="type_groups">Groups</string>
+    <string name="type_workshops">Workshops</string>
     <string name="type_meal">Meal</string>
     <string name="type_breviary">Breviary</string>
     <string name="type_prayer">Prayer</string>
@@ -149,13 +150,6 @@
     <string name="concerts">Concerts</string>
     <string name="guest_photo_description">Guest\'s photo</string>
     <string name="guest_link_description">Link to guest\'s social media</string>
-
-    <!-- DEPARTURES STRINGS -->
-    <string name="empty_departures_list">There are no departures yet!</string>
-    <string name="transport_type_image_description">Icon that represent transport type</string>
-    <string name="organizer">Organizer: %s</string>
-    <string name="send_mail">Send mail…</string>
-    <string name="send_mail_error">There is no email client installed!</string>
 
     <!-- BREVIARY STRINGS -->
     <string name="select_office">Select the Office</string>

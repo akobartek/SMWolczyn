@@ -1,18 +1,13 @@
 package pl.kapucyni.wolczyn.app.apicalls.wolczyn
 
-import pl.kapucyni.wolczyn.app.model.Departure
 import pl.kapucyni.wolczyn.app.model.Group
 import pl.kapucyni.wolczyn.app.model.User
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface KapucyniApi {
-
-    @GET("wolczyn/wyjazdy")
-    suspend fun getDeparturesAsync(): MutableList<Departure>
 
     @FormUrlEncoded
     @POST("auth/login")

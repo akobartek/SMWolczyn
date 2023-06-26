@@ -8,7 +8,7 @@ object PreferencesManager {
 
     private const val BEARER_TOKEN = "bearer_token"
     private const val NIGHT_MODE = "night_mode"
-    private const val MF_TAU = "mf_tau_2022"
+    private const val MF_TAU = "mf_tau_2023"
 
 
     private val sharedPref: SharedPreferences =

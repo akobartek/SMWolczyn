@@ -8,8 +8,6 @@ import retrofit2.Response
 
 class KapucyniApiRepository(private val api: KapucyniApi) {
 
-    suspend fun getDepartures() = RetrofitClient.kapucyniApi.getDeparturesAsync()
-
     suspend fun loginToSystemWithEmail(login: String, password: String): String? {
         val response = api.loginToSystemWithEmailAsync(login, password, BuildConfig.KAPUCYNI_API_KEY)
         if (response.isSuccessful) return response.body()

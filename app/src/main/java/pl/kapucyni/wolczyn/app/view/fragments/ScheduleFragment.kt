@@ -83,18 +83,22 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                             mSelectedDay = 0
                             "${getString(R.string.menu_schedule)} - ${getString(R.string.monday)}"
                         }
+
                         visibleItemPosition < positions[2] -> {
                             mSelectedDay = 1
                             "${getString(R.string.menu_schedule)} - ${getString(R.string.tuesday)}"
                         }
+
                         visibleItemPosition < positions[3] -> {
                             mSelectedDay = 2
                             "${getString(R.string.menu_schedule)} - ${getString(R.string.wednesday)}"
                         }
+
                         visibleItemPosition < positions[4] -> {
                             mSelectedDay = 3
                             "${getString(R.string.menu_schedule)} - ${getString(R.string.thursday)}"
                         }
+
                         else -> {
                             mSelectedDay = 4
                             "${getString(R.string.menu_schedule)} - ${getString(R.string.friday)}"
@@ -150,16 +154,18 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
     }
 
     fun onItemClick(event: Event) {
-        if (selectedGuest == null) when (event.eventType) {
-            EventType.BREVIARY -> (requireActivity() as MainActivity).goToSelectedFragment(R.id.nav_breviary)
-            EventType.CONCERT -> expandBottomSheet(GuestListFragment.concertGuests[event.guestIndex!!])
-            EventType.CONFERENCE -> expandBottomSheet(GuestListFragment.conferenceGuests[event.guestIndex!!])
-            EventType.MASS -> if (event.guestIndex != null) expandBottomSheet(GuestListFragment.conferenceGuests[event.guestIndex])
-            else -> when (event.id) {
-                "2022-07-13-09", "2022-07-13-12" -> requireActivity().showMFTauDialog()
-                else -> return
-            }
-        } else hideBottomSheet()
+        if (selectedGuest == null)
+            when (event.eventType) {
+                EventType.BREVIARY -> (requireActivity() as MainActivity).goToSelectedFragment(R.id.nav_breviary)
+                EventType.CONCERT, EventType.CONFERENCE, EventType.MASS ->
+                    if (event.guestIndex != null)
+                        expandBottomSheet(GuestListFragment.guests[event.guestIndex])
+
+                else -> when (event.id) {
+                    "2022-07-13-09", "2022-07-13-12" -> requireActivity().showMFTauDialog()
+                    else -> return
+                }
+            } else hideBottomSheet()
     }
 
     private fun invalidateDayViews() {
@@ -214,273 +220,261 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
     }
 
     companion object {
-        val dayNames = listOf("Obdarzeni", "Ożywieni", "Odżywieni", "Odziani", "Oddani")
+        val dayNames = listOf("Spotkanie", "Odkrycie", "Wypowiedzenie", "Radość", "Pokój")
 
         val events = listOf(
             Event(
-                "2022-07-11-01", "Poniedziałek", "11 Lipca", "8:30", "Rejestracja uczestników",
+                "2022-07-17-01", "Poniedziałek", "17 Lipca", "7:30", "Rejestracja uczestników",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "2022-07-11-02", "Poniedziałek", "11 Lipca", "14:00", "Taniec z gwiazdami",
+                "2022-07-17-02", "Poniedziałek", "17 Lipca", "14:00", "Taniec z gwiazdami",
                 EventPlace.CAMPSITE, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-11-03", "Poniedziałek", "11 Lipca", "17:30",
-                "Rozpoczęcie 28. Spotkania Młodych",
+                "2022-07-17-03", "Poniedziałek", "17 Lipca", "17:30",
+                "Rozpoczęcie 29. Spotkania Młodych",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "2022-07-11-04", "Poniedziałek", "11 Lipca", "18:15", "Kolacja",
+                "2022-07-17-04", "Poniedziałek", "17 Lipca", "18:30", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-11-05", "Poniedziałek", "11 Lipca", "19:15", "Nieszpory",
+                "2022-07-17-05", "Poniedziałek", "17 Lipca", "19:00", "Nieszpory",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-11-06", "Poniedziałek", "11 Lipca", "20:00", "Koncert: Carrantuohill",
-                EventPlace.AMPHITHEATRE, EventType.CONCERT, 1
+                "2022-07-17-06", "Poniedziałek", "17 Lipca", "20:00", "Koncert: KapEl'a",
+                EventPlace.AMPHITHEATRE, EventType.CONCERT, 0
             ),
             Event(
-                "2022-07-11-07", "Poniedziałek", "11 Lipca", "21:30",
-                "Nabożeństwo rozpoczęcia: \"Obdarzeni Miłością\"",
+                "2022-07-17-07", "Poniedziałek", "17 Lipca", "21:30",
+                "Nabożeństwo: \"Spotkanie\"\n/ br. Paweł Frąckowiak OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "2022-07-11-08", "Poniedziałek", "11 Lipca", "22:30",
-                "Podsumowanie dnia",
+                "2022-07-17-08", "Poniedziałek", "17 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "2022-07-12-01", "Wtorek", "12 Lipca", "7:30", "Jutrznia",
+                "2022-07-18-01", "Wtorek", "18 Lipca", "7:30", "Jutrznia",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-12-02", "Wtorek", "12 Lipca", "8:15", "Śniadanie",
+                "2022-07-18-02", "Wtorek", "18 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-12-03", "Wtorek", "12 Lipca", "9:30",
+                "2022-07-18-03", "Wtorek", "18 Lipca", "9:30",
                 "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-12-04", "Wtorek", "12 Lipca", "10:00",
-                "Konferenecja: Tymoteusz Filar - \"Ożywieni\"",
-                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 0
+                "2022-07-18-04", "Wtorek", "18 Lipca", "10:00",
+                "Konferenecja: ks. Sebastian Kosecki",
+                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 1
             ),
             Event(
-                "2022-07-12-05", "Wtorek", "12 Lipca", "11:15",
-                "Mecz: Kapucyni vs. Reszta Świata",
-                EventPlace.COURT, EventType.EXTRA, null
+                "2019-07-18-05", "Wtorek", "18 Lipca", "11:00", "Przygotowanie do Eucharystii",
+                EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-12-06", "Wtorek", "12 Lipca", "12:15", "Obiad",
+                "2022-07-18-06", "Wtorek", "18 Lipca", "11:15", "Eucharystia",
+                EventPlace.AMPHITHEATRE, EventType.MASS, null
+            ),
+            Event(
+                "2022-07-18-07", "Wtorek", "18 Lipca", "12:30", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-12-07", "Wtorek", "12 Lipca", "14:00",
-                "Świadectwo - Marcin Gręda z rodziną",
+                "2022-07-18-08", "Wtorek", "18 Lipca", "13:45", "Warsztaty",
+                EventPlace.UNKNOWN, EventType.WORKSHOPS, null
+            ),
+            Event(
+                "2022-07-18-09", "Wtorek", "18 Lipca", "15:45", "Spotkanie w grupkach",
+                EventPlace.EVERYWHERE, EventType.GROUPS, null
+            ),
+            Event(
+                "2022-07-18-10", "Wtorek", "18 Lipca", "17:45", "Kolacja",
+                EventPlace.CAMPSITE, EventType.MEAL, null
+            ),
+            Event(
+                "2022-07-18-11", "Wtorek", "18 Lipca", "18:00", "Nieszpory",
+                EventPlace.CHURCH, EventType.BREVIARY, null
+            ),
+            Event(
+                "2022-07-18-12", "Wtorek", "18 Lipca", "19:00", "Koncert: Sezon na czereśnie",
+                EventPlace.AMPHITHEATRE, EventType.CONCERT, 2
+            ),
+            Event(
+                "2022-07-18-13", "Wtorek", "18 Lipca", "20:30",
+                "Nabożeństwo: \"Odkrycie\"\n/ br. Rafał Ciurej OFMCap",
+                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
+            ),
+            Event(
+                "2022-07-18-14", "Wtorek", "18 Lipca", "22:00", "Podsumowanie dnia",
+                EventPlace.AMPHITHEATRE, EventType.OTHER, null
+            ),
+            Event(
+                "2022-07-19-01", "Środa", "19 Lipca", "7:30", "Jutrznia",
+                EventPlace.CHURCH, EventType.BREVIARY, null
+            ),
+            Event(
+                "2022-07-19-02", "Środa", "19 Lipca", "8:15", "Śniadanie",
+                EventPlace.CAMPSITE, EventType.MEAL, null
+            ),
+            Event(
+                "2022-07-19-03", "Środa", "19 Lipca", "9:30", "Modlitwa poranna / Rozgrzewka",
+                EventPlace.AMPHITHEATRE, EventType.PRAYER, null
+            ),
+            Event(
+                "2022-07-19-04", "Środa", "19 Lipca", "10:00",
+                "Konferencja: br. Piotr Szaro OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, null
             ),
             Event(
-                "2022-07-12-08", "Wtorek", "12 Lipca", "15:00", "Spotkania w grupkach",
-                EventPlace.AMPHITHEATRE, EventType.GROUPS, null
-            ),
-            Event(
-                "2019-07-12-09", "Wtorek", "12 Lipca", "16:30", "Przygotowanie do Eucharystii",
+                "2022-07-19-05", "Środa", "19 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-12-10", "Wtorek", "12 Lipca", "17:00",
-                "Eucharystia (bp Damian Bryl)",
-                EventPlace.AMPHITHEATRE, EventType.MASS, 1
-            ),
-            Event(
-                "2022-07-12-11", "Wtorek", "12 Lipca", "18:00", "Kolacja",
-                EventPlace.CAMPSITE, EventType.MEAL, null
-            ),
-            Event(
-                "2022-07-12-12", "Wtorek", "12 Lipca", "18:30", "Nieszpory",
-                EventPlace.CHURCH, EventType.BREVIARY, null
-            ),
-            Event(
-                "2022-07-12-13", "Wtorek", "12 Lipca", "19:00", "Koncert: Muode Koty",
-                EventPlace.AMPHITHEATRE, EventType.CONCERT, 0
-            ),
-            Event(
-                "2022-07-12-15", "Wtorek", "12 Lipca", "20:30",
-                "Nabożeństwo: \"Ożywieni Miłością\"",
-                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
-            ),
-            Event(
-                "2022-07-12-16", "Wtorek", "12 Lipca", "22:30",
-                "Podsumowanie dnia",
-                EventPlace.AMPHITHEATRE, EventType.OTHER, null
-            ),
-            Event(
-                "2022-07-13-01", "Środa", "13 Lipca", "7:30", "Jutrznia",
-                EventPlace.CHURCH, EventType.BREVIARY, null
-            ),
-            Event(
-                "2022-07-13-02", "Środa", "13 Lipca", "8:15", "Śniadanie",
-                EventPlace.CAMPSITE, EventType.MEAL, null
-            ),
-            Event(
-                "2022-07-13-03", "Środa", "13 Lipca", "9:30",
-                "Modlitwa poranna / Rozgrzewka",
-                EventPlace.AMPHITHEATRE, EventType.PRAYER, null
-            ),
-            Event(
-                "2022-07-13-04", "Środa", "13 Lipca", "10:00",
-                "Konferencja: Sebastian Kubis oraz br. Tomasz Łakomczyk\n- \"Ciało i Krew. Metafora czy kanibalizm?\"",
-                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 2
-            ),
-            Event(
-                "2022-07-13-05", "Środa", "13 Lipca", "11:00", "Przygotowanie do Eucharystii",
+                "2022-07-19-06", "Środa", "19 Lipca", "11:15", "Eucharystia: bp Damian Bryl",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-13-06", "Środa", "13 Lipca", "11:30", "Eucharystia: Bracia Misjonarze",
-                EventPlace.AMPHITHEATRE, EventType.MASS, null
-            ),
-            Event(
-                "2022-07-13-07", "Środa", "13 Lipca", "13:00", "Obiad",
+                "2022-07-19-07", "Środa", "19 Lipca", "12:30", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-13-08", "Środa", "13 Lipca", "14:00", "Taniec z gwiazdami",
+                "2022-07-19-08", "Środa", "19 Lipca", "13:00", "Q&A Kapucyni",
                 EventPlace.CAMPSITE, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-13-09",
-                "Środa",
-                "13 Lipca",
-                "15:00",
-                "Koronka (Młodzież Franciszkańska Tau)",
-                EventPlace.CHURCH,
-                EventType.PRAYER,
-                null
+                "2022-07-19-09", "Środa", "19 Lipca", "13:45", "Warsztaty",
+                EventPlace.UNKNOWN, EventType.WORKSHOPS, null
             ),
             Event(
-                "2022-07-13-10", "Środa", "13 Lipca", "15:00", "Świadectwo: br. Maciej Jabłoński",
-                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 3
-            ),
-            Event(
-                "2022-07-13-11", "Środa", "13 Lipca", "16:30", "Spotkanie w grupkach",
+                "2022-07-19-10", "Środa", "19 Lipca", "15:30", "Spotkanie w grupkach",
                 EventPlace.EVERYWHERE, EventType.GROUPS, null
             ),
             Event(
-                "2022-07-13-12", "Środa", "13 Lipca", "18:00", "Kolacja || Grill z MF Tau",
-                EventPlace.GARDEN, EventType.MEAL, null
+                "2022-07-19-11", "Środa", "19 Lipca", "17:30", "Mecz: Kapucyni vs. Reszta Świata",
+                EventPlace.COURT, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-13-13", "Środa", "13 Lipca", "19:15", "Nieszpory",
-                EventPlace.CHURCH, EventType.BREVIARY, null
-            ),
-            Event(
-                "2022-07-13-14", "Środa", "13 Lipca", "19:30",
-                "Koncert: KapEl'a",
-                EventPlace.AMPHITHEATRE, EventType.CONCERT, 0
-            ),
-            Event(
-                "2022-07-13-15", "Środa", "13 Lipca", "21:00",
-                "Nabożeństwo: \"Odżywieni Miłością\"",
-                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
-            ),
-            Event(
-                "2022-07-13-16", "Środa", "13 Lipca", "22:00",
-                "Podsumowanie dnia",
-                EventPlace.AMPHITHEATRE, EventType.OTHER, null
-            ),
-            Event(
-                "2022-07-14-01", "Czwartek", "14 Lipca", "7:30", "Jutrznia",
-                EventPlace.CHURCH, EventType.BREVIARY, null
-            ),
-            Event(
-                "2022-07-14-02", "Czwartek", "14 Lipca", "8:15", "Śniadanie",
+                "2022-07-19-12", "Środa", "19 Lipca", "18:00", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-14-03", "Czwartek", "14 Lipca", "9:30",
-                "Modlitwa poranna / Rozgrzewka",
-                EventPlace.AMPHITHEATRE, EventType.PRAYER, null
-            ),
-            Event(
-                "2022-07-14-04", "Czwartek", "14 Lipca", "10:00",
-                "Konferencja: s. Aleksandra Szyborska\n- \"Co ja mam na siebie włożyć? Czyli czy Bóg lubi modę\"",
-                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 4
-            ),
-            Event(
-                "2022-07-14-05", "Czwartek", "14 Lipca", "11:00", "Przygotowanie do Eucharystii",
-                EventPlace.AMPHITHEATRE, EventType.MASS, null
-            ),
-            Event(
-                "2022-07-14-06", "Czwartek", "14 Lipca", "11:30", "Eucharystia",
-                EventPlace.AMPHITHEATRE, EventType.MASS, null
-            ),
-            Event(
-                "2022-07-14-07", "Czwartek", "14 Lipca", "13:00", "Obiad",
-                EventPlace.CAMPSITE, EventType.MEAL, null
-            ),
-            Event(
-                "2022-07-14-08", "Czwartek", "14 Lipca", "14:00", "Taniec z gwiazdami",
-                EventPlace.CAMPSITE, EventType.EXTRA, null
-            ),
-            Event(
-                "2022-07-14-09", "Czwartek", "14 Lipca", "15:00", "Koronka",
-                EventPlace.AMPHITHEATRE, EventType.PRAYER, null
-            ),
-            Event(
-                "2022-07-14-10", "Czwartek", "14 Lipca", "15:20",
-                "Świadectwo: Magdalena Myjak",
-                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 5
-            ),
-            Event(
-                "2022-07-14-11", "Czwartek", "14 Lipca", "16:00", "Spotkanie w grupkach",
-                EventPlace.EVERYWHERE, EventType.GROUPS, null
-            ),
-            Event(
-                "2022-07-14-12", "Czwartek", "14 Lipca", "18:00", "Kolacja",
-                EventPlace.GARDEN, EventType.MEAL, null
-            ),
-            Event(
-                "2022-07-14-13", "Czwartek", "14 Lipca", "19:15", "Nieszpory",
+                "2022-07-13-13", "Środa", "19 Lipca", "18:15", "Nieszpory",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-14-14", "Czwartek", "14 Lipca", "20:00", "Wieczór chwały: SOWINSKY",
+                "2022-07-19-14", "Środa", "19 Lipca", "19:15",
+                "Koronka: Młodzież Franciszkańska Tau",
+                EventPlace.CHURCH, EventType.PRAYER, null
+            ),
+            Event(
+                "2022-07-19-15", "Środa", "19 Lipca", "19:45",
+                "Spotkanie i świadectwo: Wyrwani z niewoli",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 3
             ),
             Event(
-                "2022-07-14-15", "Czwartek", "14 Lipca", "21:30", "Podsumowanie dnia",
+                "2022-07-19-16", "Środa", "19 Lipca", "21:00",
+                "Nabożeństwo pokutne: \"Wypowiedzenie\"\n/ br. Piotr Szaro OFMCap",
+                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
+            ),
+            Event(
+                "2022-07-19-17", "Środa", "19 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "2022-07-15-01", "Piątek", "15 Lipca", "7:00", "Jutrznia",
+                "2022-07-20-01", "Czwartek", "20 Lipca", "7:30", "Jutrznia",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-15-02", "Piątek", "15 Lipca", "7:45", "Śniadanie",
+                "2022-07-20-02", "Czwartek", "20 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-15-03", "Piątek", "15 Lipca", "9:00",
-                "Modlitwa poranna / Rozgrzewka",
+                "2022-07-20-03", "Czwartek", "20 Lipca", "9:30", "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-15-04", "Piątek", "15 Lipca", "9:30",
-                "Konferencja: ks. Michał Pabiańczyk\n- Żyć szczęśliwie czy pobożnie? Na drogach Bożej Opatrzności",
+                "2022-07-20-04", "Czwartek", "20 Lipca", "10:00", "Konferencja: Barbara Turek",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 4
             ),
             Event(
-                "2022-07-15-05", "Piątek", "15 Lipca", "10:45", "Eucharystia",
+                "2022-07-20-05", "Czwartek", "20 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-15-06", "Piątek", "15 Lipca", "12:00",
+                "2022-07-20-06", "Czwartek", "20 Lipca", "11:15",
+                "Eucharystia: br. Adam Szmyt OFMCap",
+                EventPlace.AMPHITHEATRE, EventType.MASS, null
+            ),
+            Event(
+                "2022-07-20-07", "Czwartek", "20 Lipca", "13:00", "Obiad",
+                EventPlace.CAMPSITE, EventType.MEAL, null
+            ),
+            Event(
+                "2022-07-20-08", "Czwartek", "20 Lipca", "13:00", "Świadectwa",
+                EventPlace.WHITE_TENT, EventType.EXTRA, null
+            ),
+            Event(
+                "2022-07-20-09", "Czwartek", "20 Lipca", "14:30", "Warsztaty",
+                EventPlace.UNKNOWN, EventType.WORKSHOPS, null
+            ),
+            Event(
+                "2022-07-20-10", "Czwartek", "20 Lipca", "16:15", "Spotkanie w grupkach",
+                EventPlace.EVERYWHERE, EventType.GROUPS, null
+            ),
+            Event(
+                "2022-07-20-11", "Czwartek", "20 Lipca", "18:00", "Kolacja || Grill z MF Tau",
+                EventPlace.GARDEN, EventType.MEAL, null
+            ),
+            Event(
+                "2022-07-20-12", "Czwartek", "20 Lipca", "19:00", "Nieszpory",
+                EventPlace.CHURCH, EventType.BREVIARY, null
+            ),
+            Event(
+                "2022-07-20-13", "Czwartek", "20 Lipca", "20:00",
+                "Koncert: Anna Madej + młodzież Wołczyna",
+                EventPlace.AMPHITHEATRE, EventType.CONCERT, 5
+            ),
+            Event(
+                "2022-07-20-14", "Czwartek", "20 Lipca", "21:30",
+                "Nabożeństwo: \"Radość\"\n/ br. Ryszard Dorda OFMCap",
+                EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
+            ),
+            Event(
+                "2022-07-20-15", "Czwartek", "20 Lipca", "22:30", "Podsumowanie dnia",
+                EventPlace.AMPHITHEATRE, EventType.OTHER, null
+            ),
+            Event(
+                "2022-07-21-01", "Piątek", "21 Lipca", "7:00", "Jutrznia",
+                EventPlace.CHURCH, EventType.BREVIARY, null
+            ),
+            Event(
+                "2022-07-21-02", "Piątek", "21 Lipca", "8:00", "Śniadanie",
+                EventPlace.CAMPSITE, EventType.MEAL, null
+            ),
+            Event(
+                "2022-07-21-03", "Piątek", "21 Lipca", "9:00", "Modlitwa poranna / Rozgrzewka",
+                EventPlace.AMPHITHEATRE, EventType.PRAYER, null
+            ),
+            Event(
+                "2022-07-21-04", "Piątek", "21 Lipca", "10:00",
+                "Konferencja: br. Grzegorz Dziedzic OFMCap",
+                EventPlace.AMPHITHEATRE, EventType.CONFERENCE, null
+            ),
+            Event(
+                "2022-07-21-05", "Piątek", "21 Lipca", "10:45",
+                "Eucharystia: br. Marek Miszczyński OFMCap",
+                EventPlace.AMPHITHEATRE, EventType.MASS, null
+            ),
+            Event(
+                "2022-07-21-06", "Piątek", "21 Lipca", "12:00",
                 "Rozesłanie i zakończenie spotkania",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             )

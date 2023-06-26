@@ -2,9 +2,11 @@ package pl.kapucyni.wolczyn.app.view.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ActivityArchiveMeetingDetailsBinding
+import pl.kapucyni.wolczyn.app.model.Record
 import pl.kapucyni.wolczyn.app.utils.PreferencesManager
 import pl.kapucyni.wolczyn.app.utils.openWebsiteInCustomTabsService
 import pl.kapucyni.wolczyn.app.view.adapters.ArchiveMeetingsRecyclerAdapter
@@ -36,8 +39,13 @@ class ArchiveMeetingDetailsActivity : AppCompatActivity() {
         wic.isAppearanceLightNavigationBars = !PreferencesManager.getNightMode()
         window.statusBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
-
-        mAdapter = ArchiveMeetingsRecyclerAdapter(intent.getParcelableArrayListExtra("records"))
+        @Suppress("DEPRECATION")
+        mAdapter = ArchiveMeetingsRecyclerAdapter(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                intent.getParcelableArrayListExtra("records", Record::class.java)
+            else
+                intent.getParcelableArrayListExtra("records")
+        )
         binding.archiveLayout.recordsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@ArchiveMeetingDetailsActivity)
             itemAnimator = DefaultItemAnimator()
@@ -50,15 +58,17 @@ class ArchiveMeetingDetailsActivity : AppCompatActivity() {
             adapter = mAdapter
             scheduleLayoutAnimation()
         }
-    }
 
-    override fun onBackPressed() {
-        setResult(Activity.RESULT_OK, Intent())
-        finish()
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                setResult(Activity.RESULT_OK, Intent())
+                finish()
+            }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
@@ -74,6 +84,7 @@ class ArchiveMeetingDetailsActivity : AppCompatActivity() {
                 openWebsiteInCustomTabsService(intent.getStringExtra("anthem") ?: "")
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

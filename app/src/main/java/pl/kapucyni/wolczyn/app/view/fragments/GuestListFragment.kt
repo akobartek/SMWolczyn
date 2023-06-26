@@ -23,11 +23,7 @@ class GuestListFragment : BindingFragment<FragmentGuestListBinding>() {
         FragmentGuestListBinding.inflate(inflater, container, false)
 
     override fun setup(savedInstanceState: Bundle?) {
-        val guestType = requireArguments().getInt("guestType")
-        mAdapter = GuestsRecyclerAdapter(
-            if (guestType == 0) conferenceGuests else concertGuests,
-            this@GuestListFragment
-        )
+        mAdapter = GuestsRecyclerAdapter(guests, this@GuestListFragment)
         binding.guestsRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             itemAnimator = DefaultItemAnimator()
@@ -92,114 +88,73 @@ class GuestListFragment : BindingFragment<FragmentGuestListBinding>() {
             }
         }
 
-        val conferenceGuests = arrayOf(
-            Guest(
-                "Tymoteusz Filar",
-                "Student teologii, lider wspólnoty Hesed",
-                "https://glosnapustyni.pl/media/118076355_1862725263867993_8249642876235377388_o-240x250.jpg",
-                arrayOf(
-                    "https://www.facebook.com/tymoteusz.filar",
-                    "https://www.instagram.com/tymoteusz.filar/",
-                    "",
-                    ""
-                )
-            ),
-            Guest(
-                "bp Damian Dryl",
-                "Doktor nauk teologicznych, biskup pomocniczy poznański w latach 2013–2021, biskup diecezjalny kaliski od 2021.",
-                "https://wiez.pl/wp-content/uploads/2021/01/Bp-Damian-Bryl-1408x1000.jpg"
-            ),
-            Guest(
-                "Sebastian Kubis",
-                "Fizyk, absolwent Uniwersytetu Jagiellońskiego, (specjalność: astrofizyka), doktorat i  habilitacja w Instytucie Fizyki Jądrowej PAN w Krakowie. Zatrudniony na Politechnice Krakowskiej od 2012 roku.",
-                "https://imf.pk.edu.pl/download/deb8bbc9afdc584f6d78d90ed2e95283/seb2018-small.jpg"
-            ),
-            Guest(
-                "br. Maciej Jabłoński",
-                "Brat Kapucyn, misjonarz posługujący w Republice Środkowoafrykańskiej",
-                "https://scontent-frx5-2.xx.fbcdn.net/v/t39.30808-1/276056693_413665843897082_2163328572252112313_n.jpg?stp=c33.0.200.200a_dst-jpg_p200x200&_nc_cat=109&ccb=1-7&_nc_sid=c6021c&_nc_ohc=Rt_-O0w0Q38AX9S7PCO&_nc_ht=scontent-frx5-2.xx&oh=00_AT-VtJQZ3faSQVbT4ceT69GBFsTZdPZuPbxQ0zwhI76l1w&oe=62AD137D",
-                arrayOf(
-                    "https://www.facebook.com/profile.php?id=100057610082556",
-                    "",
-                    "https://zrzutka.pl/3h97h3",
-                    ""
-                )
-            ),
-            Guest(
-                "s. Aleksandra Szyborska",
-                "Siostra Zgromadzenia Sióstr Uczennic Boskiego Mistrza, pracuje w Radiu Jasna Góra.",
-                "https://www.radiojasnagora.pl/media/u/mini/x3e602a0c87fc9ebecf5ba5b985992e4c.jpg.pagespeed.ic.84MpFbc5LE.jpg",
-                arrayOf(
-                    "https://www.facebook.com/aleksandra.szyborska",
-                    "",
-                    "https://www.radiojasnagora.pl/u21-s-aleksandra-szyborska",
-                    ""
-                )
-            ),
-            Guest(
-                "Magdalena Myjak",
-                "Dziewica konsekrowana, wokalistka zespołu \"Mocni w Duchu\".",
-                "https://profeto.pl/Image/GetAvatar?authorId=223",
-                arrayOf(
-                    "https://www.facebook.com/mocniwduchu",
-                    "https://www.instagram.com/mocniwduchu/",
-                    "https://mocni.jezuici.pl/osoby/28/90/magda-myjak",
-                    "https://www.youtube.com/channel/UC9BaRiZ_E9_o2_sxwDqn5dg"
-                )
-            ),
-            Guest(
-                "ks. Michał Pabiańczyk",
-                "Ojciec duchowny w WSD w Częstochowie.",
-                "https://fiat.fm/wp-content/uploads/2018/02/ks_Michal_Pabiancczyk-720x480.jpg",
-                arrayOf(
-                    "",
-                    "",
-                    "http://www.seminarium.czest.pl/",
-                    ""
-                )
-            )
-        )
-
-        val concertGuests = arrayOf(
+        val guests = arrayOf(
             Guest(
                 "KapEl'a",
-                "Bez nich nie byłoby Wołczyna. Oczywiście w tym roku też ich nie zabraknie. Wszyscy ich znają i kochają. W jakim składzie zagrają w tym roku?  Niespodzianka! Przyjedź i przekonaj się sam!",
+                "Bez nich nie byłoby Wołczyna. Oczywiście w tym roku też ich nie zabraknie. Wszyscy ich znają i kochają. W jakim składzie zagrają w tym roku? Niespodzianka! Przyjedź i przekonaj się sam!",
                 "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/P7110796-768x512.jpg",
-                arrayOf("", "", "", "https://www.youtube.com/user/WolczynSpotkanie")
+                arrayOf("", "", "", "", "https://www.youtube.com/user/WolczynSpotkanie/")
             ),
             Guest(
-                "Carrantuohill",
-                "Założony w 1987 roku polski zespół, wykonuje zarówno tradycyjną muzykę celtycką rodem z Irlandii i Szkocji, jak i własne opracowania aranżacyjne oparte na \"celtyckich korzeniach\".",
-                "https://scontent-frx5-1.xx.fbcdn.net/v/t1.6435-9/38638961_10155711429550665_5314941403673919488_n.png?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=AFG0dT66bMsAX9puMe-&_nc_ht=scontent-frx5-1.xx&oh=00_AT_ceARwG-SkHfNSnxuWBVrVUJWh8bOLBF4FF4nHKsSdlg&oe=62CE32DB",
+                "ks. Sebastian Kosecki",
+                "Ksiądz pochodzący z Częstochowy, który żyje swoją wiarą i dzieli się nią poprzez media społeczniościowe.",
+                "https://scontent.fktw5-1.fna.fbcdn.net/v/t39.30808-6/306150193_5519048851518025_2112752686275974803_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=okiUJFvQwQkAX_YqZFU&_nc_ht=scontent.fktw5-1.fna&oh=00_AfAzt2MFbgJ3krm_iA40ZzrZccwEYvgbY25aIKUIh45Bwg&oe=649D7509",
                 arrayOf(
-                    "https://www.facebook.com/Carrantuohill/",
-                    "https://www.instagram.com/carrantuohill/",
-                    "https://www.carrantuohill.pl/",
-                    "https://www.youtube.com/user/carrantuohillcelt"
+                    "https://www.facebook.com/sebastian.kosecki.35/",
+                    "https://www.instagram.com/sebq918/",
+                    "https://www.tiktok.com/@ks.sebastian.kosecki/",
+                    "",
+                    "https://www.youtube.com/@ks.sebastian.kosecki/"
                 )
             ),
             Guest(
-                "Muode Koty",
-                "Muode Koty to hip-hopowy zespół chrześcijański, który oprócz koncertów prowadzi również rekolekcje i profilaktykę w szkołach. Mimo swojego młodego wieku mają już na swoim koncie parę wygranych konkursów oraz wielkich koncertów i festiwali",
-                "https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/242237280_3030357200566088_3465946037882297166_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=Yb6yMK6NfMYAX9-aKjb&_nc_ht=scontent-frt3-1.xx&oh=00_AT_r4795eFNqppkPdISUhI-gkpsbhYnKji33XXYIKRr5Mg&oe=62ADD8E0",
+                "Sezon na czereśnie",
+                "Sezon na czereśnie to taki czas, gdzie wszystko wydaje się być piękniejsze. Drzewa zaczynają kwitnąć, trawa staje się bardziej zielona, docierają do nas pierwsze ciepłe promienie słońca. To wszystko sprawia, że zaczynamy mieć więcej energii do działania, stajemy się szczęśliwi. Dlatego też każdym koncertem chcą otwierać sezon na czereśnie i uwielbiać Boga.",
+                "https://scontent.fktw5-1.fna.fbcdn.net/v/t39.30808-6/344080776_916063042781682_1156101957148802007_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=XpvbmobhLXMAX9Ym3fU&_nc_ht=scontent.fktw5-1.fna&oh=00_AfBzTtmakXt8G9gOlrQKnRkYTGjoodml6ZyHA6kT1su5ag&oe=649D1C5A",
                 arrayOf(
-                    "https://www.facebook.com/muodekoty/",
-                    "https://www.instagram.com/muodekoty/",
-                    "https://www.muodekoty.com/",
-                    "https://www.youtube.com/channel/UCkH1V5MITxoiCkw5QJg44ew/"
+                    "https://www.facebook.com/sezon.na.czeresnie/",
+                    "https://www.instagram.com/sezonnaczeresnie/",
+                    "",
+                    "https://sezonnaczeresnie.pl/",
+                    "https://www.youtube.com/@sezonnaczeresnie/"
                 )
             ),
             Guest(
-                "SOWINSKY",
-                "Krzysztof i Maja Sowińscy. Należą do wspólnoty uwielbienia „Głos Pana”, są założycielami fundacji SOWINSKY, której celami jest ewangelizacja, działalność profilaktyczna oraz twórczorść i jej promowanie.",
-                "https://www.sowinsky.pl/wp-content/uploads/2019/12/razem1-600x400.png",
+                "Wyrwani z niewoli",
+                "Zachwycają oraz inspirują młodych ludzi swoim nowatorskim podejściem do ewangelizacji. Ich przekaz dociera do wielu serc. Najważniejsze dla nich jest głoszenie dobrej nowiny i żywego świadectwa, które niosą do młodzieży z całej Polski.",
+                "https://wolczyn.kapucyni.pl/wp-content/uploads/2019/05/wznw-768x740.png",
                 arrayOf(
-                    "https://www.facebook.com/sowinsky7/",
-                    "https://www.instagram.com/so.win.sky/",
-                    "https://www.sowinsky.pl/",
-                    "https://www.youtube.com/channel/UCuRLbbAPGvPMR2OJYDmgJjg"
+                    "https://www.facebook.com/hereswzn/",
+                    "https://www.instagram.com/hereswzn/",
+                    "https://www.tiktok.com/@heres_wyrwanizniewoli/",
+                    "",
+                    "https://www.youtube.com/c/WYRWANIZNIEWOLItv/"
                 )
-            )
+            ),
+            Guest(
+                "Barbara Turek",
+                "Pomimo poruszania się na wózku, stara się prowadzić aktywne życie, tak aby żyć \"pełnym garściami\". Z wykształcenia pedagog i coach.",
+                "https://scontent.fktw5-1.fna.fbcdn.net/v/t39.30808-6/293256232_413865477452430_8426853892457880830_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=YE3n3J5_Gi0AX8wE2IZ&_nc_ht=scontent.fktw5-1.fna&oh=00_AfBwW2hfOMbr9B9fDeeY13s8CyItPmsyYJ0AeYh7AJ-JGw&oe=649E41E6",
+                arrayOf(
+                    "https://www.facebook.com/basiapelnymigarsciami/",
+                    "https://www.instagram.com/barbaraturek/",
+                    "",
+                    "https://www.fundacjaavalon.pl/nasi_beneficjenci/barbara_turek_16860/",
+                    "https://www.youtube.com/@penymigarsciami6511/"
+                )
+            ),
+            Guest(
+                "Anna Madej",
+                "Śpiewa oraz dyryguje w wielu miejscach, chwaląc Pana. Jej wokal jest znany każdemu w Wołczynie, gdzie od lat pilnuje Spotkania Młodych od strony muzycznej. Tym razem wraz z miejscową młodzieżą przygotują nam kolejne muzyczne doznania.",
+                "https://scontent.fktw5-1.fna.fbcdn.net/v/t39.30808-6/346774290_277047971325472_8219792603232167613_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=V0boSwELfmIAX9HZViR&_nc_ht=scontent.fktw5-1.fna&oh=00_AfBDdOP1kRZWO-KHoKOz9KuAzchppA1lV1baD1OZx6kM1Q&oe=649E0795",
+                arrayOf(
+                    "https://www.facebook.com/madej.ann/",
+                    "https://www.instagram.com/madejan.ka/",
+                    "",
+                    "",
+                    "https://www.youtube.com/@madejanka"
+                )
+            ),
         )
     }
 }

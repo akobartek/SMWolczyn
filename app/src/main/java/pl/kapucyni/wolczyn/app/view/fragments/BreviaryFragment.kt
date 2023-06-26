@@ -23,7 +23,7 @@ class BreviaryFragment : BindingFragment<FragmentBreviaryBinding>() {
     private val mLoadingDialog: AlertDialog by lazy {
         MaterialAlertDialogBuilder(requireContext())
             .setView(R.layout.dialog_loading)
-            .setOnCancelListener { requireActivity().onBackPressed() }
+            .setOnCancelListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
             .create()
     }
 
@@ -49,13 +49,13 @@ class BreviaryFragment : BindingFragment<FragmentBreviaryBinding>() {
                 if (offices != null) showSelectOfficeDialog(offices)
                 else loadBreviary()
             }, {
-                if (mLoadingDialog.isShowing) mLoadingDialog.hide()
+                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
                 activity?.showNoInternetDialogWithTryAgain { checkIfThereAreMultipleOffices() }
             })
     }
 
     private fun showSelectOfficeDialog(offices: List<Pair<String, String>>) {
-        if (mLoadingDialog.isShowing) mLoadingDialog.hide()
+        if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
 
         val dialogBinding = DialogBreviarySelectOfficeBinding.inflate(layoutInflater)
         dialogBinding.selectOfficeList.apply {
@@ -90,7 +90,7 @@ class BreviaryFragment : BindingFragment<FragmentBreviaryBinding>() {
             office,
             requireArguments().getInt("position"),
             { textToShow ->
-                if (mLoadingDialog.isShowing) mLoadingDialog.hide()
+                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
                 binding.breviaryText.apply {
                     loadDataWithBaseURL(
                         null, textToShow, "text/html", null, null
@@ -99,7 +99,7 @@ class BreviaryFragment : BindingFragment<FragmentBreviaryBinding>() {
                     scrollTo(0, 0)
                 }
             }, {
-                if (mLoadingDialog.isShowing) mLoadingDialog.hide()
+                if (mLoadingDialog.isShowing) mLoadingDialog.dismiss()
                 activity?.showNoInternetDialogWithTryAgain { loadBreviary(office) }
             }
         )

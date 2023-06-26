@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-                android:textColor="@color/app_theme_primary"
+                android:textColor="@color/app_theme_onSurface"
                 tools:text="Artur Spórna" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-                android:textColor="@color/app_theme_primary"
+                android:textColor="@color/app_theme_onSurface"
                 tools:text="ID: 2137" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:gravity="center"
                 android:text="@string/showers_title"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
-                android:textColor="@color/app_theme_primary" />
+                android:textColor="@color/app_theme_onSurface" />
 
             <TextView
                 android:id="@+id/showersList"
@@ -61,7 +61,7 @@
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                android:textColor="@color/app_theme_primary"
+                android:textColor="@color/app_theme_onSurface"
                 tools:text="Poniedziałek 22:00-23:00" />
         </LinearLayout>
 
@@ -74,7 +74,7 @@
             android:drawablePadding="16dp"
             android:text="@string/empty_showers_list"
             android:textAlignment="center"
-            android:textColor="@color/app_theme_primary"
+            android:textColor="@color/app_theme_onSurface"
             android:textSize="15sp"
             app:drawableTopCompat="@drawable/ic_empty_showers"
             app:layout_constraintBottom_toBottomOf="parent"

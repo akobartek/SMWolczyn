@@ -13,7 +13,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/cd_spoleto_poster"
         android:scaleType="fitStart"
-        android:src="@drawable/mftau_2022"
+        android:src="@drawable/mftau_2023"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

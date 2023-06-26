@@ -32,9 +32,11 @@ class ScheduleRecyclerAdapter(
             TYPE_HEADER -> ScheduleHeaderViewHolder(
                 ItemEventHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
+
             TYPE_ITEM -> ScheduleViewHolder(
                 ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
+
             else -> throw IllegalStateException("There is no type like this!")
         }
     }
@@ -72,6 +74,7 @@ class ScheduleRecyclerAdapter(
                         EventPlace.COURT -> R.string.place_court
                         EventPlace.EVERYWHERE -> R.string.place_everywhere
                         EventPlace.CHURCH -> R.string.place_church
+                        EventPlace.UNKNOWN -> R.string.place_unknown
                     }
                 )
                 eventType.text = root.context.getString(
@@ -85,6 +88,7 @@ class ScheduleRecyclerAdapter(
                         EventType.MEAL -> R.string.type_meal
                         EventType.OTHER -> R.string.type_other
                         EventType.GROUPS -> R.string.type_groups
+                        EventType.WORKSHOPS -> R.string.type_workshops
                         EventType.BREVIARY -> R.string.type_breviary
                         EventType.EXTRA -> R.string.type_extra
                     }
@@ -93,7 +97,7 @@ class ScheduleRecyclerAdapter(
                     EventType.CONFERENCE, EventType.CONCERT -> R.color.colorEventType1
                     EventType.MASS, EventType.DEVOTION, EventType.PRAYER -> R.color.colorEventType2
                     EventType.ORGANIZATION, EventType.MEAL, EventType.OTHER -> R.color.colorEventType3
-                    EventType.GROUPS -> R.color.colorEventType4
+                    EventType.GROUPS, EventType.WORKSHOPS -> R.color.colorEventType4
                     EventType.BREVIARY, EventType.EXTRA -> R.color.colorEventType5
                 }
                 DrawableCompat.setTint(

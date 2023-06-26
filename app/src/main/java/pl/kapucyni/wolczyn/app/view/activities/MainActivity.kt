@@ -2,15 +2,18 @@ package pl.kapucyni.wolczyn.app.view.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -18,7 +21,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.WindowCompat
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import pl.kapucyni.wolczyn.app.BuildConfig
 import pl.kapucyni.wolczyn.app.R
@@ -59,11 +63,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(binding.contentMain.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val wic = WindowInsetsControllerCompat(window, window.decorView)
-        wic.isAppearanceLightStatusBars = !PreferencesManager.getNightMode()
-        wic.isAppearanceLightNavigationBars = !PreferencesManager.getNightMode()
-        window.statusBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
-        window.navigationBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
+        setStatusBar()
 
         val toggle = ActionBarDrawerToggle(
             this@MainActivity, binding.drawerLayout, binding.contentMain.toolbar,
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (isUserFetched) {
                 val user = mViewModel.currentUser.value
                 if (user != null && binding.navView.findViewById<ImageView>(R.id.headerDrawerImage) != null) {
-                    GlideApp.with(this@MainActivity)
+                    Glide.with(this@MainActivity)
                         .load(user.photo_url)
                         .circleCrop()
                         .placeholder(R.drawable.ic_logo)
@@ -103,12 +103,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 10
+        if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 16
             && Calendar.getInstance().get(Calendar.MONTH) > 6
             && !PreferencesManager.wasMFTauAdShowed()
         ) {
             showMFTauDialog()
             PreferencesManager.markAdAsShowed()
+        }
+
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                when {
+                    binding.drawerLayout.isDrawerOpen(GravityCompat.START) ->
+                        binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+                    mCurrentFragmentId == R.id.nav_schedule ->
+                        if ((supportFragmentManager.fragments.first { it.javaClass == ScheduleFragment::class.java } as ScheduleFragment).onBackPressed())
+                            doubleBackPressToExit()
+
+                    mCurrentFragmentId == R.id.nav_songbook ->
+                        if ((supportFragmentManager.fragments.first { it.javaClass == SongBookFragment::class.java } as SongBookFragment).onBackPressed())
+                            doubleBackPressToExit()
+
+                    mCurrentFragmentId == R.id.nav_guests ->
+                        if ((supportFragmentManager.fragments.first { it.javaClass == GuestListFragment::class.java } as GuestListFragment).onBackPressed())
+                            doubleBackPressToExit()
+
+                    mCurrentFragmentId == BREVIARY_FRAGMENT_ID ->
+                        goToSelectedFragment(R.id.nav_breviary)
+
+                    mCurrentFragmentId!! < 0 ->
+                        onNavigationItemSelected(binding.navView.menu.getItem(-1 * mCurrentFragmentId!! - 1))
+
+                    else -> doubleBackPressToExit()
+                }
+            }
+        })
+    }
+
+    fun setStatusBar() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.app_theme_background)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = !PreferencesManager.getNightMode()
+            isAppearanceLightNavigationBars = !PreferencesManager.getNightMode()
         }
     }
 
@@ -139,28 +179,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (mIsTransactionPending) goToSelectedFragment(mCurrentFragmentId!!)
     }
 
-    override fun onBackPressed() {
-        when {
-            binding.drawerLayout.isDrawerOpen(GravityCompat.START) ->
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-            mCurrentFragmentId == R.id.nav_schedule ->
-                if ((supportFragmentManager.fragments.first { it.javaClass == ScheduleFragment::class.java } as ScheduleFragment).onBackPressed()) doubleBackPressToExit()
-            mCurrentFragmentId == R.id.nav_songbook ->
-                if ((supportFragmentManager.fragments.first { it.javaClass == SongBookFragment::class.java } as SongBookFragment).onBackPressed()) doubleBackPressToExit()
-            mCurrentFragmentId == R.id.nav_guests ->
-                if ((supportFragmentManager.fragments.first { it.javaClass == GuestsViewPagerFragment::class.java } as GuestsViewPagerFragment).onBackPressed()) doubleBackPressToExit()
-            mCurrentFragmentId == R.id.nav_departures ->
-                if ((supportFragmentManager.fragments.first { it.javaClass == DepartureListFragment::class.java } as DepartureListFragment).onBackPressed()) doubleBackPressToExit()
-            mCurrentFragmentId == BREVIARY_FRAGMENT_ID ->
-                goToSelectedFragment(R.id.nav_breviary)
-            mCurrentFragmentId!! < 0 ->
-                onNavigationItemSelected(binding.navView.menu.getItem(-1 * mCurrentFragmentId!! - 1))
-            else -> doubleBackPressToExit()
-        }
-    }
-
     private fun doubleBackPressToExit() {
-        if (mBackPressed + 2000 > System.currentTimeMillis()) super.onBackPressed()
+        if (mBackPressed + 2000 > System.currentTimeMillis()) onBackPressedDispatcher.onBackPressed()
         else Toast.makeText(this, getString(R.string.press_to_exit), Toast.LENGTH_SHORT).show()
         mBackPressed = System.currentTimeMillis()
     }
@@ -176,6 +196,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 menu.findItem(R.id.action_sign_in)?.isVisible = true
                 menu.findItem(R.id.action_sign_out)?.isVisible = false
             }
+
             else -> {
                 menu.findItem(R.id.action_sign_in)?.isVisible = false
                 menu.findItem(R.id.action_sign_out)?.isVisible = true
@@ -190,10 +211,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 openLoginActivity()
                 true
             }
+
             R.id.action_sign_out -> {
                 signOutUser()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -207,22 +230,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.contentMain.toolbar.title = getString(R.string.menu_home)
                 HomeFragment()
             }
+
             R.id.nav_archive -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_archive)
                 ArchiveFragment()
             }
+
             R.id.nav_schedule -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()
             }
+
             R.id.nav_anthem -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_anthem)
                 AnthemFragment()
             }
+
             R.id.nav_songbook -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_songbook)
                 SongBookFragment()
             }
+
             R.id.nav_group -> {
                 if (PreferencesManager.getBearerToken().isNullOrEmpty()) {
                     openLoginActivity()
@@ -232,6 +260,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     GroupFragment()
                 }
             }
+
             R.id.nav_showers -> {
                 if (PreferencesManager.getBearerToken().isNullOrEmpty()) {
                     openLoginActivity()
@@ -241,10 +270,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     ShowersFragment()
                 }
             }
+
             R.id.nav_guests -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_guests)
-                GuestsViewPagerFragment()
+                GuestListFragment()
             }
+
             R.id.nav_breviary -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_breviary)
                 BreviarySelectFragment {
@@ -256,26 +287,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .commit()
                 }
             }
+
             R.id.nav_weather -> {
                 binding.contentMain.toolbar.title = getString(R.string.weather_title, "Wołczyn")
                 WeatherFragment()
             }
+
             R.id.nav_signings -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_signings)
                 SigningsFragment()
             }
-            R.id.nav_departures -> {
-                binding.contentMain.toolbar.title = getString(R.string.menu_departures)
-                DepartureListFragment()
-            }
+
             R.id.nav_map -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_map)
                 MapFragment()
             }
+
             R.id.nav_settings -> {
                 binding.contentMain.toolbar.title = getString(R.string.preferences)
                 PreferenceFragment()
             }
+
             else -> {
                 binding.contentMain.toolbar.title = getString(R.string.menu_schedule)
                 ScheduleFragment()

@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import pl.kapucyni.wolczyn.app.R
 import pl.kapucyni.wolczyn.app.databinding.ItemArchiveBinding
 import pl.kapucyni.wolczyn.app.model.ArchiveMeeting
-import pl.kapucyni.wolczyn.app.utils.GlideApp
 import pl.kapucyni.wolczyn.app.view.activities.MainActivity
 
 class ArchiveRecyclerAdapter(val activity: MainActivity) :
@@ -37,7 +37,7 @@ class ArchiveRecyclerAdapter(val activity: MainActivity) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindView(meeting: ArchiveMeeting) {
             with(binding) {
-                GlideApp.with(root.context)
+                Glide.with(root.context)
                     .load(meeting.photoUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(meetingPhoto)
