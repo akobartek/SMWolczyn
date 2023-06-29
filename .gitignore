@@ -11,6 +11,6 @@
 /build
 /captures
 .externalNativeBuild
-.aab
+*.aab
 
 google-services.json
