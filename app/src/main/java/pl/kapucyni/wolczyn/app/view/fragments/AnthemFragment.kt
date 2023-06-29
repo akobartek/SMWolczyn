@@ -29,41 +29,16 @@ class AnthemFragment : BindingFragment<FragmentAnthemBinding>() {
     }
 
     companion object {
-        const val YOUTUBE_URL = "https://www.youtube.com/watch?v=FblN6tvGz1c"
+        const val YOUTUBE_URL = "https://www.youtube.com/watch?v=zxmi6j548V8"
 
-        const val ANTHEM = "Nie boję się już, bo Ty jesteś ze mną\n" +
-                "Nie boję się już, choć czasami tak trudno zrozumieć mi\n" +
-                "Dokąd mam iść? Co mówić mam?  Kogo słuchać?\n" +
-                "Ty uwalniasz mnie od lęków\n" +
-                "Pokój dajesz mi\n\n" +
-                "\t\tMiłość mnie ożywia, wszystko mi wyjaśnia\n" +
-                "\t\tCierpliwie podnosi, jest zawsze wierna\n" +
-                "\t\tMiłość mnie odżywia\n" +
-                "\t\tWszystko  rozwiązuje\n" +
-                "\t\tChcę być zawsze tam, gdzie ona\n" +
-                "\t\tOd teraz wiem jak mam kochać\n" +
-                "\t\tChce być zawsze tam, gdzie ona\n\n" +
-                "W miłości chcę żyć\n" +
-                "Bo ty działasz we mnie\n" +
-                "W miłości chcę żyć\n" +
-                "Dzięki mnie ten świat będzie zmieniał się\n" +
-                "Uwielbiam tę miłość gdziekolwiek jest chcę za nią kroczyć\n" +
-                "Ona uwalnia mnie od grzechu, daje nowy sens\n\n" +
-                "\t\tMiłość mnie ożywia, wszystko mi wyjaśnia\n" +
-                "\t\tCierpliwie podnosi,  jest zawsze wierna\n" +
-                "\t\tMiłość mnie odżywia, wszystko rozwiązuje\n" +
-                "\t\tChcę być zawsze tam, gdzie ona\n" +
-                "\t\tOd teraz wiem jak mam kochać\n\n" +
-                "Jeśli ta miłość ma działać we mnie, chcę być gotowy\n" +
-                "Chcę iść za twoim głosem, więc mów do mnie\n" +
-                "Jeśli ta miłość ma działać we mnie, chcę być gotowy\n" +
-                "Chcę iść za twoim głosem, więc mów do mnie\n\n" +
-                "Działaj! Działaj we mnie! \n\n" +
-                "\t\tMiłość mnie ożywia, wszystko mi wyjaśnia\n" +
-                "\t\tCierpliwie podnosi,  jest zawsze wierna\n" +
-                "\t\tMiłość mnie odżywia, wszystko rozwiązuje\n" +
-                "\t\tChcę być zawsze być tam gdzie ona\n" +
-                "\t\tOd teraz wiem jak mam kochać\n\n" +
-                "\t\tChcę być zawsze tam, gdzie ona\n"
+        const val ANTHEM = "Kim jestem w Twoich oczach\nJak widzisz mnie Ty\n" +
+                "Tyle pytań mam do Ciebie\nGłowa pełna wątpliwości jest\n\n" +
+                "Czy odkryje tutaj prawdę\nCzy usłyszę Twój głos\nCzy naprawdę mnie kochasz\n\n" +
+                "Chcę się dowiedzieć\nCzekam na Ciebie\nWołam przyjdź\n\n" +
+                "To jest czas prawdy\nprawdziwego przebaczenia\npełnej wolności\nduchowego wyzwolenia\n\n" +
+                "W mojej duszy wielki wybuch\nPada na mnie Twój cień\n" +
+                "Odpalam się dla Ciebie\nW lustrze widzę wreszcie Twoją twarz\n\n" +
+                "Dziś odrzucam moją ciemność\nzapamiętam ten czas\nCzy to światło nie zgaśnie\n\n" +
+                "Chcę się dowiedzieć\nCzekam na Ciebie\nWołam przyjdź żyj we mnie\n"
     }
 }
