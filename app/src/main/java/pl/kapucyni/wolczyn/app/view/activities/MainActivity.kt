@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun doubleBackPressToExit() {
-        if (mBackPressed + 2000 > System.currentTimeMillis()) onBackPressedDispatcher.onBackPressed()
+        if (mBackPressed + 2000 > System.currentTimeMillis()) finish()
         else Toast.makeText(this, getString(R.string.press_to_exit), Toast.LENGTH_SHORT).show()
         mBackPressed = System.currentTimeMillis()
     }
