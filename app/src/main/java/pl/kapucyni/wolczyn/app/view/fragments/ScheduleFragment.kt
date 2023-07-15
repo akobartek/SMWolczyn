@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.view.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -118,6 +119,8 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
         )
         mDayViews.forEachIndexed { i, v ->
             v.setOnClickListener { llm.scrollToPositionWithOffset(positions[i], 10) }
+            @SuppressLint("SetTextI18n")
+            v.text = "${firstDay + i}.07"
         }
         binding.scheduleListLayout.removeView(binding.daysBarLayout.root)
         (activity as MainActivity).addViewToAppBar(binding.daysBarLayout.root)
@@ -125,7 +128,7 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val month = calendar.get(Calendar.MONTH) + 1
-        if (day in 12..16 && month == 7)
+        if (day in firstDay..firstDay + 4 && month == 7)
             mDayViews[day - 12].performClick()
 
         mBottomSheetBehavior = BottomSheetBehavior.from(binding.scheduleGuestSheet)
@@ -162,7 +165,7 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                         expandBottomSheet(GuestListFragment.guests[event.guestIndex])
 
                 else -> when (event.id) {
-                    "2022-07-13-09", "2022-07-13-12" -> requireActivity().showMFTauDialog()
+                    "2023-07-20-11", "2023-07-19-14" -> requireActivity().showMFTauDialog()
                     else -> return
                 }
             } else hideBottomSheet()
@@ -220,58 +223,60 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
     }
 
     companion object {
+        const val firstDay = 17
+
         val dayNames = listOf("Spotkanie", "Odkrycie", "Wypowiedzenie", "Radość", "Pokój")
 
         val events = listOf(
             Event(
-                "2022-07-17-01", "Poniedziałek", "17 Lipca", "7:30", "Rejestracja uczestników",
+                "2023-07-17-01", "Poniedziałek", "17 Lipca", "7:30", "Rejestracja uczestników",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "2022-07-17-02", "Poniedziałek", "17 Lipca", "14:00", "Taniec z gwiazdami",
+                "2023-07-17-02", "Poniedziałek", "17 Lipca", "14:00", "Taniec z gwiazdami",
                 EventPlace.CAMPSITE, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-17-03", "Poniedziałek", "17 Lipca", "17:30",
+                "2023-07-17-03", "Poniedziałek", "17 Lipca", "17:30",
                 "Rozpoczęcie 29. Spotkania Młodych",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             ),
             Event(
-                "2022-07-17-04", "Poniedziałek", "17 Lipca", "18:30", "Kolacja",
+                "2023-07-17-04", "Poniedziałek", "17 Lipca", "18:30", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-17-05", "Poniedziałek", "17 Lipca", "19:00", "Nieszpory",
+                "2023-07-17-05", "Poniedziałek", "17 Lipca", "19:00", "Nieszpory",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-17-06", "Poniedziałek", "17 Lipca", "20:00", "Koncert: KapEl'a",
+                "2023-07-17-06", "Poniedziałek", "17 Lipca", "20:00", "Koncert: KapEl'a",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 0
             ),
             Event(
-                "2022-07-17-07", "Poniedziałek", "17 Lipca", "21:30",
+                "2023-07-17-07", "Poniedziałek", "17 Lipca", "21:30",
                 "Nabożeństwo: \"Spotkanie\"\n/ br. Paweł Frąckowiak OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "2022-07-17-08", "Poniedziałek", "17 Lipca", "22:30", "Podsumowanie dnia",
+                "2023-07-17-08", "Poniedziałek", "17 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "2022-07-18-01", "Wtorek", "18 Lipca", "7:30", "Jutrznia",
+                "2023-07-18-01", "Wtorek", "18 Lipca", "7:30", "Jutrznia",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-18-02", "Wtorek", "18 Lipca", "8:15", "Śniadanie",
+                "2023-07-18-02", "Wtorek", "18 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-18-03", "Wtorek", "18 Lipca", "9:30",
+                "2023-07-18-03", "Wtorek", "18 Lipca", "9:30",
                 "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-18-04", "Wtorek", "18 Lipca", "10:00",
+                "2023-07-18-04", "Wtorek", "18 Lipca", "10:00",
                 "Konferenecja: ks. Sebastian Kosecki",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 1
             ),
@@ -280,201 +285,201 @@ class ScheduleFragment : BindingFragment<FragmentScheduleBinding>() {
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-18-06", "Wtorek", "18 Lipca", "11:15", "Eucharystia",
+                "2023-07-18-06", "Wtorek", "18 Lipca", "11:15", "Eucharystia",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-18-07", "Wtorek", "18 Lipca", "12:30", "Obiad",
+                "2023-07-18-07", "Wtorek", "18 Lipca", "12:30", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-18-08", "Wtorek", "18 Lipca", "13:45", "Warsztaty",
+                "2023-07-18-08", "Wtorek", "18 Lipca", "13:45", "Warsztaty",
                 EventPlace.UNKNOWN, EventType.WORKSHOPS, null
             ),
             Event(
-                "2022-07-18-09", "Wtorek", "18 Lipca", "15:45", "Spotkanie w grupkach",
+                "2023-07-18-09", "Wtorek", "18 Lipca", "15:45", "Spotkanie w grupkach",
                 EventPlace.EVERYWHERE, EventType.GROUPS, null
             ),
             Event(
-                "2022-07-18-10", "Wtorek", "18 Lipca", "17:45", "Kolacja",
+                "2023-07-18-10", "Wtorek", "18 Lipca", "17:45", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-18-11", "Wtorek", "18 Lipca", "18:00", "Nieszpory",
+                "2023-07-18-11", "Wtorek", "18 Lipca", "18:00", "Nieszpory",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-18-12", "Wtorek", "18 Lipca", "19:00", "Koncert: Sezon na czereśnie",
+                "2023-07-18-12", "Wtorek", "18 Lipca", "19:00", "Koncert: Sezon na czereśnie",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 2
             ),
             Event(
-                "2022-07-18-13", "Wtorek", "18 Lipca", "20:30",
+                "2023-07-18-13", "Wtorek", "18 Lipca", "20:30",
                 "Nabożeństwo: \"Odkrycie\"\n/ br. Rafał Ciurej OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "2022-07-18-14", "Wtorek", "18 Lipca", "22:00", "Podsumowanie dnia",
+                "2023-07-18-14", "Wtorek", "18 Lipca", "22:00", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "2022-07-19-01", "Środa", "19 Lipca", "7:30", "Jutrznia",
+                "2023-07-19-01", "Środa", "19 Lipca", "7:30", "Jutrznia",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-19-02", "Środa", "19 Lipca", "8:15", "Śniadanie",
+                "2023-07-19-02", "Środa", "19 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-19-03", "Środa", "19 Lipca", "9:30", "Modlitwa poranna / Rozgrzewka",
+                "2023-07-19-03", "Środa", "19 Lipca", "9:30", "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-19-04", "Środa", "19 Lipca", "10:00",
+                "2023-07-19-04", "Środa", "19 Lipca", "10:00",
                 "Konferencja: br. Piotr Szaro OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, null
             ),
             Event(
-                "2022-07-19-05", "Środa", "19 Lipca", "11:00", "Przygotowanie do Eucharystii",
+                "2023-07-19-05", "Środa", "19 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-19-06", "Środa", "19 Lipca", "11:15", "Eucharystia: bp Damian Bryl",
+                "2023-07-19-06", "Środa", "19 Lipca", "11:15", "Eucharystia: bp Damian Bryl",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-19-07", "Środa", "19 Lipca", "12:30", "Obiad",
+                "2023-07-19-07", "Środa", "19 Lipca", "12:30", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-19-08", "Środa", "19 Lipca", "13:00", "Q&A Kapucyni",
+                "2023-07-19-08", "Środa", "19 Lipca", "13:00", "Q&A Kapucyni",
                 EventPlace.CAMPSITE, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-19-09", "Środa", "19 Lipca", "13:45", "Warsztaty",
+                "2023-07-19-09", "Środa", "19 Lipca", "13:45", "Warsztaty",
                 EventPlace.UNKNOWN, EventType.WORKSHOPS, null
             ),
             Event(
-                "2022-07-19-10", "Środa", "19 Lipca", "15:30", "Spotkanie w grupkach",
+                "2023-07-19-10", "Środa", "19 Lipca", "15:30", "Spotkanie w grupkach",
                 EventPlace.EVERYWHERE, EventType.GROUPS, null
             ),
             Event(
-                "2022-07-19-11", "Środa", "19 Lipca", "17:30", "Mecz: Kapucyni vs. Reszta Świata",
+                "2023-07-19-11", "Środa", "19 Lipca", "17:30", "Mecz: Kapucyni vs. Reszta Świata",
                 EventPlace.COURT, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-19-12", "Środa", "19 Lipca", "18:00", "Kolacja",
+                "2023-07-19-12", "Środa", "19 Lipca", "18:00", "Kolacja",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-13-13", "Środa", "19 Lipca", "18:15", "Nieszpory",
+                "2023-07-13-13", "Środa", "19 Lipca", "18:15", "Nieszpory",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-19-14", "Środa", "19 Lipca", "19:15",
+                "2023-07-19-14", "Środa", "19 Lipca", "19:15",
                 "Koronka: Młodzież Franciszkańska Tau",
                 EventPlace.CHURCH, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-19-15", "Środa", "19 Lipca", "19:45",
+                "2023-07-19-15", "Środa", "19 Lipca", "19:45",
                 "Spotkanie i świadectwo: Wyrwani z niewoli",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 3
             ),
             Event(
-                "2022-07-19-16", "Środa", "19 Lipca", "21:00",
+                "2023-07-19-16", "Środa", "19 Lipca", "21:00",
                 "Nabożeństwo pokutne: \"Wypowiedzenie\"\n/ br. Piotr Szaro OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "2022-07-19-17", "Środa", "19 Lipca", "22:30", "Podsumowanie dnia",
+                "2023-07-19-17", "Środa", "19 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "2022-07-20-01", "Czwartek", "20 Lipca", "7:30", "Jutrznia",
+                "2023-07-20-01", "Czwartek", "20 Lipca", "7:30", "Jutrznia",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-20-02", "Czwartek", "20 Lipca", "8:15", "Śniadanie",
+                "2023-07-20-02", "Czwartek", "20 Lipca", "8:15", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-20-03", "Czwartek", "20 Lipca", "9:30", "Modlitwa poranna / Rozgrzewka",
+                "2023-07-20-03", "Czwartek", "20 Lipca", "9:30", "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-20-04", "Czwartek", "20 Lipca", "10:00", "Konferencja: Barbara Turek",
+                "2023-07-20-04", "Czwartek", "20 Lipca", "10:00", "Konferencja: Barbara Turek",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, 4
             ),
             Event(
-                "2022-07-20-05", "Czwartek", "20 Lipca", "11:00", "Przygotowanie do Eucharystii",
+                "2023-07-20-05", "Czwartek", "20 Lipca", "11:00", "Przygotowanie do Eucharystii",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-20-06", "Czwartek", "20 Lipca", "11:15",
+                "2023-07-20-06", "Czwartek", "20 Lipca", "11:15",
                 "Eucharystia: br. Adam Szmyt OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-20-07", "Czwartek", "20 Lipca", "13:00", "Obiad",
+                "2023-07-20-07", "Czwartek", "20 Lipca", "13:00", "Obiad",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-20-08", "Czwartek", "20 Lipca", "13:00", "Świadectwa",
+                "2023-07-20-08", "Czwartek", "20 Lipca", "13:00", "Świadectwa",
                 EventPlace.WHITE_TENT, EventType.EXTRA, null
             ),
             Event(
-                "2022-07-20-09", "Czwartek", "20 Lipca", "14:30", "Warsztaty",
+                "2023-07-20-09", "Czwartek", "20 Lipca", "14:30", "Warsztaty",
                 EventPlace.UNKNOWN, EventType.WORKSHOPS, null
             ),
             Event(
-                "2022-07-20-10", "Czwartek", "20 Lipca", "16:15", "Spotkanie w grupkach",
+                "2023-07-20-10", "Czwartek", "20 Lipca", "16:15", "Spotkanie w grupkach",
                 EventPlace.EVERYWHERE, EventType.GROUPS, null
             ),
             Event(
-                "2022-07-20-11", "Czwartek", "20 Lipca", "18:00", "Kolacja || Grill z MF Tau",
+                "2023-07-20-11", "Czwartek", "20 Lipca", "18:00", "Kolacja || Grill z MF Tau",
                 EventPlace.GARDEN, EventType.MEAL, null
             ),
             Event(
-                "2022-07-20-12", "Czwartek", "20 Lipca", "19:00", "Nieszpory",
+                "2023-07-20-12", "Czwartek", "20 Lipca", "19:00", "Nieszpory",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-20-13", "Czwartek", "20 Lipca", "20:00",
+                "2023-07-20-13", "Czwartek", "20 Lipca", "20:00",
                 "Koncert: Anna Madej + młodzież Wołczyna",
                 EventPlace.AMPHITHEATRE, EventType.CONCERT, 5
             ),
             Event(
-                "2022-07-20-14", "Czwartek", "20 Lipca", "21:30",
+                "2023-07-20-14", "Czwartek", "20 Lipca", "21:30",
                 "Nabożeństwo: \"Radość\"\n/ br. Ryszard Dorda OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.DEVOTION, null
             ),
             Event(
-                "2022-07-20-15", "Czwartek", "20 Lipca", "22:30", "Podsumowanie dnia",
+                "2023-07-20-15", "Czwartek", "20 Lipca", "22:30", "Podsumowanie dnia",
                 EventPlace.AMPHITHEATRE, EventType.OTHER, null
             ),
             Event(
-                "2022-07-21-01", "Piątek", "21 Lipca", "7:00", "Jutrznia",
+                "2023-07-21-01", "Piątek", "21 Lipca", "7:00", "Jutrznia",
                 EventPlace.CHURCH, EventType.BREVIARY, null
             ),
             Event(
-                "2022-07-21-02", "Piątek", "21 Lipca", "8:00", "Śniadanie",
+                "2023-07-21-02", "Piątek", "21 Lipca", "8:00", "Śniadanie",
                 EventPlace.CAMPSITE, EventType.MEAL, null
             ),
             Event(
-                "2022-07-21-03", "Piątek", "21 Lipca", "9:00", "Modlitwa poranna / Rozgrzewka",
+                "2023-07-21-03", "Piątek", "21 Lipca", "9:00", "Modlitwa poranna / Rozgrzewka",
                 EventPlace.AMPHITHEATRE, EventType.PRAYER, null
             ),
             Event(
-                "2022-07-21-04", "Piątek", "21 Lipca", "10:00",
+                "2023-07-21-04", "Piątek", "21 Lipca", "10:00",
                 "Konferencja: br. Grzegorz Dziedzic OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.CONFERENCE, null
             ),
             Event(
-                "2022-07-21-05", "Piątek", "21 Lipca", "10:45",
+                "2023-07-21-05", "Piątek", "21 Lipca", "10:45",
                 "Eucharystia: br. Marek Miszczyński OFMCap",
                 EventPlace.AMPHITHEATRE, EventType.MASS, null
             ),
             Event(
-                "2022-07-21-06", "Piątek", "21 Lipca", "12:00",
+                "2023-07-21-06", "Piątek", "21 Lipca", "12:00",
                 "Rozesłanie i zakończenie spotkania",
                 EventPlace.AMPHITHEATRE, EventType.ORGANIZATION, null
             )

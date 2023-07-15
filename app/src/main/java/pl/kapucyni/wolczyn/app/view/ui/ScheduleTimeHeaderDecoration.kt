@@ -51,11 +51,10 @@ class ScheduleTimeHeadersDecoration(
 
     // Get the event index:start time and create header layouts for each
     private val timeSlots: Map<Int, StaticLayout> =
-        indexSessionHeaders(events).map { it.first to createHeader(it.second.split(" ")[0]) }.toMap()
+        indexSessionHeaders(events).associate { it.first to createHeader(it.second.split(" ")[0]) }
 
     private fun indexSessionHeaders(events: List<Any>): List<Pair<Int, String>> {
         return events.mapIndexed { index, event -> index to if (event is Event) "${event.hour} ${event.date}" else "" }
-            .distinctBy { it.second }
     }
 
     /**
@@ -77,7 +76,7 @@ class ScheduleTimeHeadersDecoration(
                 // This should not be null, but observed null at times.
                 // Guard against it to avoid crash and log the state.
                 Log.w(
-                    "SheduleTimeHeader", """View is null. Index: $i, childCount: ${parent.childCount},
+                    "ScheduleTimeHeader", """View is null. Index: $i, childCount: ${parent.childCount},
                         |RecyclerView.State: $state""".trimMargin()
                 )
                 continue

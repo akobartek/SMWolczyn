@@ -18,10 +18,9 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="12.07"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/app_theme_primary"
-        tools:ignore="HardcodedText" />
+        tools:text="17.07" />
 
     <TextView
         android:id="@+id/secondDay"
@@ -32,10 +31,9 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="13.07"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/app_theme_primary"
-        tools:ignore="HardcodedText" />
+        tools:text="18.07" />
 
     <TextView
         android:id="@+id/thirdDay"
@@ -46,10 +44,9 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="14.07"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/app_theme_primary"
-        tools:ignore="HardcodedText" />
+        tools:text="19.07" />
 
     <TextView
         android:id="@+id/fourthDay"
@@ -60,11 +57,10 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="15.07"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/app_theme_primary"
         tools:background="@drawable/day_selected"
-        tools:ignore="HardcodedText"
+        tools:text="20.07"
         tools:textColor="@color/app_theme_onPrimary" />
 
     <TextView
@@ -76,8 +72,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/guest_link_description"
         android:gravity="center"
-        android:text="16.07"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:textColor="@color/app_theme_primary"
-        tools:ignore="HardcodedText" />
+        tools:text="21.07" />
 </LinearLayout>
