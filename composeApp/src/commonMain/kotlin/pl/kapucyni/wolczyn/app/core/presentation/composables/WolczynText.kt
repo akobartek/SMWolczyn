@@ -4,7 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import pl.kapucyni.wolczyn.app.theme.PoppinsFontFamily
+import pl.kapucyni.wolczyn.app.theme.poppinsFontFamily
 
 @Composable
 fun WolczynText(
@@ -14,7 +14,7 @@ fun WolczynText(
 ) {
     Text(
         text = text,
-        fontFamily = PoppinsFontFamily(),
+        fontFamily = poppinsFontFamily(),
         style = textStyle,
         modifier = modifier
     )

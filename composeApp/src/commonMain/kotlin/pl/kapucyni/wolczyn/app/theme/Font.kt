@@ -15,7 +15,7 @@ import smwolczyn.composeapp.generated.resources.Res
 
 
 @Composable
-internal fun PoppinsFontFamily() = FontFamily(
+internal fun poppinsFontFamily() = FontFamily(
     Font(Res.font.Poppins_Regular, FontWeight.Normal),
     Font(Res.font.Poppins_Black, FontWeight.Black),
     Font(Res.font.Poppins_ExtraBold, FontWeight.ExtraBold),
