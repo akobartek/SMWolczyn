@@ -1,13 +1,14 @@
 package pl.kapucyni.wolczyn.app.core.presentation
 
-import pl.kapucyni.wolczyn.app.theme.ARCHIVE_ROUTE
-import pl.kapucyni.wolczyn.app.theme.BREVIARY_ROUTE
-import pl.kapucyni.wolczyn.app.theme.DECALOGUE_ROUTE
-import pl.kapucyni.wolczyn.app.theme.KITCHEN_ROUTE
-import pl.kapucyni.wolczyn.app.theme.SCHEDULE_ROUTE
-import pl.kapucyni.wolczyn.app.theme.SHOP_ROUTE
-import pl.kapucyni.wolczyn.app.theme.SONG_BOOK_ROUTE
-import pl.kapucyni.wolczyn.app.theme.WEATHER_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.ARCHIVE_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.BREVIARY_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.DECALOGUE_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.KITCHEN_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.SCHEDULE_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.SHOP_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.SONG_BOOK_ROUTE
+import pl.kapucyni.wolczyn.app.theme.Screen.Companion.WEATHER_ROUTE
+
 
 enum class HomeTileType(val navRoute: String) {
     SCHEDULE(SCHEDULE_ROUTE),
