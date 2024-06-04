@@ -38,7 +38,7 @@ fun HomeTileList(columns: Int) {
     }
 }
 
-private fun getTileBackground(num: Int) = if (num % 2 == 0) appColorSecondary else appColorTertiary
+private fun getTileBackground(num: Int) = if (num % 2 == 0) appColorTertiary else appColorSecondary
 
 private val oneColumn = arrayOf(
     arrayOf(AGENDA),
