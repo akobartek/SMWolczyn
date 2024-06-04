@@ -1,3 +1,12 @@
 <resources>
-    <string name="home_title">Pokój i Dobro</string>
+    <string name="home_title">Pokój i Dobro!</string>
+
+    <string name="agenda_title">Plan</string>
+    <string name="song_book_title">Śpiewnik</string>
+    <string name="kitchen_title">Kuchnia Wasyla</string>
+    <string name="shop_title">Sklepik</string>
+    <string name="decalogue_title">Dekalog spotkania</string>
+    <string name="weather_title">Pogoda</string>
+    <string name="breviary_title">Brewiarz</string>
+    <string name="archive_title">Archiwum</string>
 </resources>

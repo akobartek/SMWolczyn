@@ -1,5 +1,7 @@
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -24,6 +26,7 @@ fun App() {
                     navController = navController,
                     startDestination = Screen.Home.route,
                     modifier = Modifier.padding(innerPadding)
+                        .background(MaterialTheme.colorScheme.surface)
                 ) {
                     composable(Screen.Home.route) {
                         HomeScreen()

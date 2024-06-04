@@ -13,7 +13,7 @@ fun WolczynText(
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = text,
+        text = text.uppercase(),
         fontFamily = poppinsFontFamily(),
         style = textStyle,
         modifier = modifier
