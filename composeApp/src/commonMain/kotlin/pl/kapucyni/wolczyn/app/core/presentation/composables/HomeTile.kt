@@ -29,7 +29,7 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.AGENDA
+import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.SCHEDULE
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.ARCHIVE
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.BREVIARY
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.DECALOGUE
@@ -38,7 +38,7 @@ import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.SHOP
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.SONG_BOOK
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.WEATHER
 import smwolczyn.composeapp.generated.resources.Res
-import smwolczyn.composeapp.generated.resources.agenda_title
+import smwolczyn.composeapp.generated.resources.schedule_title
 import smwolczyn.composeapp.generated.resources.archive_title
 import smwolczyn.composeapp.generated.resources.breviary_title
 import smwolczyn.composeapp.generated.resources.decalogue_title
@@ -55,17 +55,18 @@ import smwolczyn.composeapp.generated.resources.weather_title
 fun getHomeTile(
     tileType: HomeTileType,
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (tileType) {
-        AGENDA -> AgendaTile(backgroundColor, modifier)
-        SONG_BOOK -> SongBookTile(backgroundColor, modifier)
-        KITCHEN -> KitchenTile(backgroundColor, modifier)
-        SHOP -> ShopTile(backgroundColor, modifier)
-        DECALOGUE -> DecalogueTile(backgroundColor, modifier)
+        SCHEDULE -> ScheduleTile(backgroundColor, onClick, modifier)
+        SONG_BOOK -> SongBookTile(backgroundColor, onClick, modifier)
+        KITCHEN -> KitchenTile(backgroundColor, onClick, modifier)
+        SHOP -> ShopTile(backgroundColor, onClick, modifier)
+        DECALOGUE -> DecalogueTile(backgroundColor, onClick, modifier)
         WEATHER -> WeatherTile(backgroundColor, modifier)
-        BREVIARY -> BreviaryTile(backgroundColor, modifier)
-        ARCHIVE -> ArchiveTile(backgroundColor, modifier)
+        BREVIARY -> BreviaryTile(backgroundColor, onClick, modifier)
+        ARCHIVE -> ArchiveTile(backgroundColor, onClick, modifier)
     }
 }
 
@@ -77,9 +78,11 @@ private fun HomeTile(
     backgroundColor: Color,
     image: @Composable BoxScope.() -> Unit,
     additionalContent: @Composable ColumnScope.() -> Unit = {},
+    onClick: () -> Unit = {},
     modifier: Modifier
 ) {
     Card(
+        onClick = onClick,
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors().copy(containerColor = backgroundColor),
         modifier = modifier.height(height)
@@ -108,18 +111,20 @@ private fun HomeTile(
 }
 
 @Composable
-private fun AgendaTile(
+private fun ScheduleTile(
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeTile(
-        nameRes = Res.string.agenda_title,
+        nameRes = Res.string.schedule_title,
         nameAlignment = Alignment.TopStart,
         height = 170.dp,
         backgroundColor = backgroundColor,
         image = {
-
+            // TODO
         },
+        onClick = onClick,
         modifier = modifier
     )
 }
@@ -127,6 +132,7 @@ private fun AgendaTile(
 @Composable
 private fun SongBookTile(
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeTile(
@@ -143,6 +149,7 @@ private fun SongBookTile(
                 modifier = Modifier.padding(start = 20.dp, top = 8.dp)
             )
         },
+        onClick = onClick,
         modifier = modifier
     )
 }
@@ -150,6 +157,7 @@ private fun SongBookTile(
 @Composable
 private fun KitchenTile(
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeTile(
@@ -166,6 +174,7 @@ private fun KitchenTile(
                     .offset(x = 25.dp, y = 25.dp)
             )
         },
+        onClick = onClick,
         modifier = modifier
     )
 }
@@ -173,7 +182,8 @@ private fun KitchenTile(
 @Composable
 private fun ShopTile(
     backgroundColor: Color,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     HomeTile(
         nameRes = Res.string.shop_title,
@@ -181,8 +191,9 @@ private fun ShopTile(
         height = 170.dp,
         backgroundColor = backgroundColor,
         image = {
-
+            // TODO
         },
+        onClick = onClick,
         modifier = modifier
     )
 }
@@ -190,6 +201,7 @@ private fun ShopTile(
 @Composable
 private fun DecalogueTile(
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeTile(
@@ -208,6 +220,7 @@ private fun DecalogueTile(
                     .scale(scaleX = -1f, scaleY = 1f)
             )
         },
+        onClick = onClick,
         modifier = modifier
     )
 }
@@ -231,6 +244,7 @@ private fun WeatherTile(
                 modifier = Modifier.padding(start = 10.dp)
             )
         },
+        onClick = { },
         modifier = modifier
     )
 }
@@ -238,6 +252,7 @@ private fun WeatherTile(
 @Composable
 private fun BreviaryTile(
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeTile(
@@ -246,8 +261,9 @@ private fun BreviaryTile(
         height = 170.dp,
         backgroundColor = backgroundColor,
         image = {
-
+            // TODO
         },
+        onClick = onClick,
         modifier = modifier
     )
 }
@@ -255,6 +271,7 @@ private fun BreviaryTile(
 @Composable
 private fun ArchiveTile(
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HomeTile(
@@ -263,8 +280,9 @@ private fun ArchiveTile(
         height = 170.dp,
         backgroundColor = backgroundColor,
         image = {
-
+                // TODO
         },
+        onClick = onClick,
         modifier = modifier
     )
 }

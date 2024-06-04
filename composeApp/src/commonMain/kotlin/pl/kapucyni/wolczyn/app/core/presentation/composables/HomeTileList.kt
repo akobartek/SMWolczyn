@@ -6,12 +6,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.*
 import pl.kapucyni.wolczyn.app.theme.appColorSecondary
 import pl.kapucyni.wolczyn.app.theme.appColorTertiary
 
 @Composable
-fun HomeTileList(columns: Int) {
+fun HomeTileList(
+    columns: Int,
+    onTileClick: (HomeTileType) -> Unit
+) {
     val tiles = when (columns) {
         1 -> oneColumn
         2 -> twoColumns
@@ -19,18 +23,21 @@ fun HomeTileList(columns: Int) {
     }
 
     tiles.forEachIndexed { i, row ->
-        if (row.size == 1)
+        if (row.size == 1) {
+            val tileType = row[0]
             getHomeTile(
-                tileType = row[0],
+                tileType = tileType,
                 backgroundColor = getTileBackground(i),
+                onClick = { onTileClick(tileType) },
                 modifier = Modifier.fillMaxWidth()
             )
-        else
+        } else
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 row.forEachIndexed { j, tileType ->
                     getHomeTile(
                         tileType = tileType,
                         backgroundColor = getTileBackground(i + j),
+                        onClick = { onTileClick(tileType) },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -41,7 +48,7 @@ fun HomeTileList(columns: Int) {
 private fun getTileBackground(num: Int) = if (num % 2 == 0) appColorTertiary else appColorSecondary
 
 private val oneColumn = arrayOf(
-    arrayOf(AGENDA),
+    arrayOf(SCHEDULE),
     arrayOf(SONG_BOOK),
     arrayOf(KITCHEN),
     arrayOf(SHOP),
@@ -52,14 +59,14 @@ private val oneColumn = arrayOf(
 )
 
 private val twoColumns = arrayOf(
-    arrayOf(AGENDA, SONG_BOOK),
+    arrayOf(SCHEDULE, SONG_BOOK),
     arrayOf(KITCHEN, SHOP),
     arrayOf(DECALOGUE, WEATHER),
     arrayOf(BREVIARY, ARCHIVE)
 )
 
 private val threeColumns = arrayOf(
-    arrayOf(AGENDA, SONG_BOOK, KITCHEN),
+    arrayOf(SCHEDULE, SONG_BOOK, KITCHEN),
     arrayOf(SHOP, DECALOGUE, WEATHER),
     arrayOf(BREVIARY, ARCHIVE)
 )

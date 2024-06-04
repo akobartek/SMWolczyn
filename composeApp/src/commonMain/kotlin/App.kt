@@ -29,10 +29,32 @@ fun App() {
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     composable(Screen.Home.route) {
-                        HomeScreen()
+                        HomeScreen(
+                            onTileClick = { navController.navigate(it.navRoute) }
+                        )
+                    }
+                    composable(Screen.Schedule.route) {
+
+                    }
+                    composable(Screen.SongBook.route) {
+
+                    }
+                    composable(Screen.Kitchen.route) {
+
+                    }
+                    composable(Screen.Shop.route) {
+
+                    }
+                    composable(Screen.Decalogue.route) {
+
+                    }
+                    composable(Screen.Breviary.route) {
+
+                    }
+                    composable(Screen.Archive.route) {
+
                     }
                 }
-
             }
         }
     }

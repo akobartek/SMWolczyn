@@ -29,7 +29,7 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.home_title
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onTileClick: (HomeTileType) -> Unit) {
     var screenWidth by remember { mutableStateOf(0) }
     val screenWidthDp = with(LocalDensity.current) { screenWidth.toDp() }
     val columns = (screenWidthDp.value / 360).toInt()
@@ -55,7 +55,10 @@ fun HomeScreen() {
             verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.padding(horizontal = 20.dp)
         ) {
-            HomeTileList(columns)
+            HomeTileList(
+                columns = columns,
+                onTileClick = onTileClick
+            )
         }
         Spacer(modifier = Modifier.height(24.dp))
     }
