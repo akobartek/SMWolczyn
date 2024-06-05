@@ -10,6 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
+import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
+import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.theme.Screen
 
@@ -17,7 +19,7 @@ import pl.kapucyni.wolczyn.app.theme.Screen
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules()
+        modules(songBookModule)
     }) {
         AppTheme {
             val navController = rememberNavController()
@@ -37,7 +39,7 @@ fun App() {
 
                     }
                     composable(Screen.SongBook.route) {
-
+                        SongBookScreen()
                     }
                     composable(Screen.Kitchen.route) {
 
