@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.SCHEDULE
 import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.ARCHIVE
@@ -92,7 +93,7 @@ private fun HomeTile(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.align(nameAlignment)
             ) {
-                WolczynText(
+                WolczynTitleText(
                     text = stringResource(nameRes),
                     textStyle = TextStyle(
                         fontSize = 28.sp,

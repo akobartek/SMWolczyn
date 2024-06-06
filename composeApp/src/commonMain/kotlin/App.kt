@@ -39,7 +39,7 @@ fun App() {
 
                     }
                     composable(Screen.SongBook.route) {
-                        SongBookScreen()
+                        SongBookScreen(onBackPressed = { navController.navigateUp() })
                     }
                     composable(Screen.Kitchen.route) {
 

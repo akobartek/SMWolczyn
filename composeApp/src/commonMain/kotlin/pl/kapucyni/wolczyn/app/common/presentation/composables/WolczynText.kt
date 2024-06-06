@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.core.presentation.composables
+package pl.kapucyni.wolczyn.app.common.presentation.composables
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +13,7 @@ fun WolczynText(
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = text.uppercase(),
+        text = text,
         fontFamily = poppinsFontFamily(),
         style = textStyle,
         modifier = modifier

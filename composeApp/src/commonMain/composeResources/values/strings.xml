@@ -1,6 +1,8 @@
 <resources>
+    <!-- BASIC STRINGS -->
     <string name="home_title">Pokój i Dobro!</string>
 
+    <!-- HOME SCREEN STRINGS -->
     <string name="schedule_title">Plan</string>
     <string name="song_book_title">Śpiewnik</string>
     <string name="kitchen_title">Kuchnia Wasyla</string>
@@ -9,4 +11,8 @@
     <string name="weather_title">Pogoda</string>
     <string name="breviary_title">Brewiarz</string>
     <string name="archive_title">Archiwum</string>
+
+    <!-- SONG BOOK STRINGS -->
+    <string name="search">Szukaj</string>
+    <string name="empty_search_list">Nie znaleziono żadnej pieśni z podanym wyrażaniem!</string>
 </resources>

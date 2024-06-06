@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.core.presentation.composables.HomeTileList
-import pl.kapucyni.wolczyn.app.core.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
 import pl.kapucyni.wolczyn.app.theme.appColorPrimary
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.home_title
@@ -42,7 +42,7 @@ fun HomeScreen(onTileClick: (HomeTileType) -> Unit) {
             .onGloballyPositioned { screenWidth = it.size.width }
     ) {
         Spacer(modifier = Modifier.height(24.dp))
-        WolczynText(
+        WolczynTitleText(
             text = stringResource(Res.string.home_title),
             textStyle = TextStyle(
                 fontSize = 24.sp,
