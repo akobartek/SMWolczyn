@@ -1,9 +1,10 @@
 <resources>
     <!-- BASIC STRINGS -->
     <string name="home_title">Pokój i Dobro!</string>
+    <string name="cd_navigate_up">Cofnij na poprzedni ekran</string>
 
     <!-- HOME SCREEN STRINGS -->
-    <string name="schedule_title">Plan</string>
+    <string name="schedule_title">Plan\nspotkania</string>
     <string name="song_book_title">Śpiewnik</string>
     <string name="kitchen_title">Kuchnia Wasyla</string>
     <string name="shop_title">Sklepik</string>
@@ -11,6 +12,34 @@
     <string name="weather_title">Pogoda</string>
     <string name="breviary_title">Brewiarz</string>
     <string name="archive_title">Archiwum</string>
+
+    <!-- SCHEDULE STRINGS -->
+    <string name="video_image_description">Link do nagrania</string>
+    <string name="place_big_tent">Duży namiot</string>
+    <string name="place_campsite">Pole namiotowe</string>
+    <string name="place_church">Czerwony kościół</string>
+    <string name="place_everywhere">Wszędzie</string>
+    <string name="place_court">Boisko</string>
+    <string name="place_unknown">Miejsce podane podczas spotkania</string>
+    <string name="type_conference">Konferencja</string>
+    <string name="type_concert">Koncert</string>
+    <string name="type_mass">Msza</string>
+    <string name="type_devotion">Nabożeństwo</string>
+    <string name="type_prayer">Modlitwa</string>
+    <string name="type_organization">Organizacyjne</string>
+    <string name="type_groups">Fraterki</string>
+    <string name="type_workshops">Warsztaty</string>
+    <string name="type_meal">Posiłek</string>
+    <string name="type_breviary">Brewiarz</string>
+    <string name="type_extra">Dodatkowe</string>
+    <string name="type_other">Inne</string>
+    <string-array name="schedule_days">
+        <item>Poniedziałek</item>
+        <item>Wtorek</item>
+        <item>Środa</item>
+        <item>Czwartek</item>
+        <item>Piątek</item>
+    </string-array>
 
     <!-- SONG BOOK STRINGS -->
     <string name="search">Szukaj</string>

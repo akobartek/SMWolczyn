@@ -20,26 +20,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FixedScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.ARCHIVE
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.BREVIARY
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.DECALOGUE
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.KITCHEN
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.SCHEDULE
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.SHOP
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.SONG_BOOK
+import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.WEATHER
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.SCHEDULE
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.ARCHIVE
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.BREVIARY
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.DECALOGUE
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.KITCHEN
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.SHOP
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.SONG_BOOK
-import pl.kapucyni.wolczyn.app.core.presentation.HomeTileType.WEATHER
 import smwolczyn.composeapp.generated.resources.Res
-import smwolczyn.composeapp.generated.resources.schedule_title
 import smwolczyn.composeapp.generated.resources.archive_title
 import smwolczyn.composeapp.generated.resources.breviary_title
 import smwolczyn.composeapp.generated.resources.decalogue_title
@@ -48,6 +44,7 @@ import smwolczyn.composeapp.generated.resources.ic_cap_kitchen
 import smwolczyn.composeapp.generated.resources.ic_cap_song_book
 import smwolczyn.composeapp.generated.resources.ic_cap_weather
 import smwolczyn.composeapp.generated.resources.kitchen_title
+import smwolczyn.composeapp.generated.resources.schedule_title
 import smwolczyn.composeapp.generated.resources.shop_title
 import smwolczyn.composeapp.generated.resources.song_book_title
 import smwolczyn.composeapp.generated.resources.weather_title
@@ -95,11 +92,7 @@ private fun HomeTile(
             ) {
                 WolczynTitleText(
                     text = stringResource(nameRes),
-                    textStyle = TextStyle(
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSecondary
-                    ),
+                    color = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier.padding(20.dp)
                 )
                 additionalContent()
@@ -281,7 +274,7 @@ private fun ArchiveTile(
         height = 170.dp,
         backgroundColor = backgroundColor,
         image = {
-                // TODO
+            // TODO
         },
         onClick = onClick,
         modifier = modifier

@@ -10,16 +10,18 @@ import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
+import pl.kapucyni.wolczyn.app.schedule.di.scheduleModule
+import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
 import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
-import pl.kapucyni.wolczyn.app.theme.Screen
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 
 @Composable
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(songBookModule)
+        modules(scheduleModule, songBookModule)
     }) {
         AppTheme {
             val navController = rememberNavController()
@@ -36,7 +38,7 @@ fun App() {
                         )
                     }
                     composable(Screen.Schedule.route) {
-
+                        ScheduleScreen(onBackPressed = { navController.navigateUp() })
                     }
                     composable(Screen.SongBook.route) {
                         SongBookScreen(onBackPressed = { navController.navigateUp() })

@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.theme
+package pl.kapucyni.wolczyn.app.common.presentation
 
 sealed class Screen(val route: String) {
     data object Home: Screen(HOME_ROUTE)

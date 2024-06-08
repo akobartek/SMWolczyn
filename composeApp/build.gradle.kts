@@ -40,6 +40,8 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
             implementation(libs.viewmodel)
             implementation(libs.room.runtime)

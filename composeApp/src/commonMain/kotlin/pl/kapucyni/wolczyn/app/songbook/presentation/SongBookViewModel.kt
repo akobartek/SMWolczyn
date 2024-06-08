@@ -16,9 +16,7 @@ import pl.kapucyni.wolczyn.app.songbook.domain.model.Song
 import pl.kapucyni.wolczyn.app.songbook.domain.usecase.FilterSongsUseCase
 
 @OptIn(FlowPreview::class)
-class SongBookViewModel(
-    private val filterSongsUseCase: FilterSongsUseCase
-) : ViewModel() {
+class SongBookViewModel(private val filterSongsUseCase: FilterSongsUseCase) : ViewModel() {
 
     sealed class State {
         data object Loading : State()
