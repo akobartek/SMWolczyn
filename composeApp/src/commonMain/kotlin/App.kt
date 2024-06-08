@@ -38,7 +38,10 @@ fun App() {
                         )
                     }
                     composable(Screen.Schedule.route) {
-                        ScheduleScreen(onBackPressed = { navController.navigateUp() })
+                        ScheduleScreen(
+                            onBackPressed = { navController.navigateUp() },
+                            navigateTo = { navController.navigate(it.navRoute) }
+                        )
                     }
                     composable(Screen.SongBook.route) {
                         SongBookScreen(onBackPressed = { navController.navigateUp() })

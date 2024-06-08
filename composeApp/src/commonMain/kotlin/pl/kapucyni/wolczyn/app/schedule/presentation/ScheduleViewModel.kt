@@ -26,7 +26,8 @@ class ScheduleViewModel(getScheduleUseCase: GetScheduleUseCase) : ViewModel() {
         data object Loading : State()
         data class Schedule(
             val schedule: List<ScheduleDay>,
-            val selectedDay: Int
+            val selectedDay: Int,
+            val currentDay: Int
         ) : State()
     }
 
@@ -48,7 +49,8 @@ class ScheduleViewModel(getScheduleUseCase: GetScheduleUseCase) : ViewModel() {
                             _screenState.update {
                                 State.Schedule(
                                     schedule = schedule,
-                                    selectedDay = daysUntil.coerceIn(0, 4)
+                                    selectedDay = daysUntil.coerceIn(0, 4),
+                                    currentDay = daysUntil
                                 )
                             }
                         }

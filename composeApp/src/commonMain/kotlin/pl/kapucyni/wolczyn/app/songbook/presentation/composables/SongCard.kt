@@ -44,7 +44,7 @@ fun SongCard(
             focusManager.clearFocus(true)
             expanded = !expanded
         },
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth().padding(horizontal = 4.dp)
     ) {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {

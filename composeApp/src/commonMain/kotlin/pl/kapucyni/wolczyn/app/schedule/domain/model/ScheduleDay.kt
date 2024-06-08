@@ -6,4 +6,6 @@ data class ScheduleDay(
     val date: LocalDate,
     val name: String,
     val events: List<Event>
-)
+) {
+    fun getCurrentEventIndex() = events.indexOfLast { event -> event.isEventOverOrLasting() }
+}

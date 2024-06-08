@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.theme.appColorPrimary
-import pl.kapucyni.wolczyn.app.theme.appColorTertiary
+import pl.kapucyni.wolczyn.app.theme.appColorSecondary
 
 @Composable
 fun RowScope.ScheduleDaySelector(
@@ -32,7 +32,7 @@ fun RowScope.ScheduleDaySelector(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor by animateColorAsState(if (isSelected) appColorPrimary else appColorTertiary)
+    val backgroundColor by animateColorAsState(if (isSelected) appColorPrimary else appColorSecondary)
     val contentColor by animateColorAsState(
         if (isSelected) MaterialTheme.colorScheme.onPrimary else appColorPrimary
     )
