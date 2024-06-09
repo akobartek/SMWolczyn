@@ -36,9 +36,7 @@ fun App() {
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     composable(Screen.Home.route) {
-                        HomeScreen(
-                            onTileClick = { navController.navigate(it.navRoute) }
-                        )
+                        HomeScreen(onTileClick = { navController.navigate(it.navRoute) })
                     }
                     composable(Screen.Schedule.route) {
                         ScheduleScreen(

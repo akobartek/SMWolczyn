@@ -53,6 +53,7 @@ fun KitchenScreenContent(screenState: BasicViewModel.State<KitchenMenu>) {
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp)
+            .padding(bottom = 12.dp)
     ) {
         item {
             WolczynTitleText(
