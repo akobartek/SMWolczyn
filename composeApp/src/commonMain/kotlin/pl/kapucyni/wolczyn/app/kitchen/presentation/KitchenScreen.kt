@@ -85,7 +85,7 @@ fun KitchenScreenContent(screenState: BasicViewModel.State<KitchenMenu>) {
                             )
                         )
                     }
-                    items(items = menuItems, key = { it.name }) {item ->
+                    items(items = menuItems, key = { it.id }) {item ->
                         KitchenMenuItem(item = item)
                     }
                 }
