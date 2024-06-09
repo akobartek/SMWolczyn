@@ -17,13 +17,14 @@ import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
+import pl.kapucyni.wolczyn.app.kitchen.di.kitchenModule
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
 
 @Composable
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(scheduleModule, songBookModule)
+        modules(scheduleModule, songBookModule, kitchenModule)
     }) {
         AppTheme {
             val navController = rememberNavController()

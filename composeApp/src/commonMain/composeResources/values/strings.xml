@@ -46,10 +46,10 @@
     <string name="empty_search_list">Nie znaleziono żadnej pieśni z podanym wyrażaniem!</string>
 
     <!-- KITCHEN STRINGS -->
-    <string name="menu">Menu</string>
-    <string name="snacks">Na słono</string>
-    <string name="sweets">Na słodko</string>
-    <string name="beverages">Napoje</string>
+    <string name="kitchen_menu">Menu</string>
+    <string name="kitchen_section_snacks">Na słono</string>
+    <string name="kitchen_section_sweets">Na słodko</string>
+    <string name="kitchen_section_beverages">Napoje</string>
 
     <!-- DECALOGUE STRINGS -->
     <string-array name="decalogue_rules">

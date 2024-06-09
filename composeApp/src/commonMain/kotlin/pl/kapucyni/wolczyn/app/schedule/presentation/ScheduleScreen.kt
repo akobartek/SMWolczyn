@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import pl.kapucyni.wolczyn.app.common.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -59,89 +60,91 @@ fun ScheduleScreen(
 
 @Composable
 fun ScheduleScreenContent(
-    screenState: ScheduleViewModel.State,
+    screenState: BasicViewModel.State<ScheduleScreenState>,
     onDaySelected: (Int) -> Unit,
     navigateTo: (HomeTileType) -> Unit
 ) {
-    if (screenState is ScheduleViewModel.State.Loading)
-        LoadingBox()
-    else {
-        val state = screenState as ScheduleViewModel.State.Schedule
-        val lazyListState = rememberLazyListState()
-        var currentEventIndex by remember { mutableIntStateOf(-1) }
+    when (screenState) {
+        is BasicViewModel.State.Loading -> LoadingBox()
+        is BasicViewModel.State.Success -> {
+            val state = screenState.data
+            val lazyListState = rememberLazyListState()
+            var currentEventIndex by remember { mutableIntStateOf(-1) }
 
-        LaunchedEffect(state.selectedDay) {
-            val index =
-                if (state.selectedDay == state.currentDay) {
-                    currentEventIndex =
-                        state.schedule.getOrNull(state.selectedDay)?.getCurrentEventIndex() ?: -1
-                    currentEventIndex
-                } else 0
-            lazyListState.animateScrollToItem(index.coerceAtLeast(0))
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .height(104.dp)
-                .padding(horizontal = 16.dp)
-        ) {
-            state.schedule.forEachIndexed { index, scheduleDay ->
-                ScheduleDaySelector(
-                    day = scheduleDay.date.dayOfMonth,
-                    name = scheduleDay.name,
-                    isSelected = state.selectedDay == index,
-                    onClick = { onDaySelected(index) }
-                )
+            LaunchedEffect(state.selectedDay) {
+                val index =
+                    if (state.selectedDay == state.currentDay) {
+                        currentEventIndex =
+                            state.schedule.getOrNull(state.selectedDay)
+                                ?.getCurrentEventIndex() ?: -1
+                        currentEventIndex
+                    } else 0
+                lazyListState.animateScrollToItem(index.coerceAtLeast(0))
             }
-        }
 
-        state.schedule.getOrNull(state.selectedDay)?.let { scheduleDay ->
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                state = lazyListState,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 16.dp)
+                    .height(104.dp)
                     .padding(horizontal = 16.dp)
             ) {
-                item {
-                    Row(
-                        verticalAlignment = Alignment.Bottom,
-                        modifier = Modifier.padding(bottom = 12.dp)
-                    ) {
-                        WolczynText(
-                            text = stringArrayResource(Res.array.schedule_days)[state.selectedDay].uppercase(),
-                            textStyle = TextStyle(
-                                fontSize = 32.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            ),
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        WolczynText(
-                            text = scheduleDay.name,
-                            textStyle = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.outlineVariant,
-                                letterSpacing = (0.5).sp
+                state.schedule.forEachIndexed { index, scheduleDay ->
+                    ScheduleDaySelector(
+                        day = scheduleDay.date.dayOfMonth,
+                        name = scheduleDay.name,
+                        isSelected = state.selectedDay == index,
+                        onClick = { onDaySelected(index) }
+                    )
+                }
+            }
+
+            state.schedule.getOrNull(state.selectedDay)?.let { scheduleDay ->
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    state = lazyListState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 16.dp)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    item {
+                        Row(
+                            verticalAlignment = Alignment.Bottom,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        ) {
+                            WolczynText(
+                                text = stringArrayResource(Res.array.schedule_days)[state.selectedDay].uppercase(),
+                                textStyle = TextStyle(
+                                    fontSize = 32.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                ),
                             )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            WolczynText(
+                                text = scheduleDay.name,
+                                textStyle = TextStyle(
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = MaterialTheme.colorScheme.outlineVariant,
+                                    letterSpacing = (0.5).sp
+                                )
+                            )
+                        }
+                    }
+
+                    itemsIndexed(
+                        items = scheduleDay.events,
+                        key = { _, event -> event.id }
+                    ) { index, event ->
+                        EventCard(
+                            event = event,
+                            filledCircle = currentEventIndex >= index,
+                            isLast = index == scheduleDay.events.lastIndex,
+                            onIconClick = navigateTo
                         )
                     }
-                }
-
-                itemsIndexed(
-                    items = scheduleDay.events,
-                    key = { _, event -> event.id }
-                ) { index, event ->
-                    EventCard(
-                        event = event,
-                        filledCircle = currentEventIndex >= index,
-                        isLast = index == scheduleDay.events.lastIndex,
-                        onIconClick = navigateTo
-                    )
                 }
             }
         }

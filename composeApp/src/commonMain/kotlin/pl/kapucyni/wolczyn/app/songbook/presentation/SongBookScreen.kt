@@ -2,7 +2,6 @@ package pl.kapucyni.wolczyn.app.songbook.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,9 +20,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import org.koin.compose.koinInject
+import pl.kapucyni.wolczyn.app.common.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
+import pl.kapucyni.wolczyn.app.songbook.domain.model.Song
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongBookSearchBar
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongCard
 import smwolczyn.composeapp.generated.resources.Res
@@ -40,7 +41,7 @@ fun SongBookScreen(
     val searchQuery by viewModel.searchQuery.collectAsStateMultiplatform()
 
     SongBookScreenContent(
-        screenState = screenState,
+        state = screenState,
         searchQuery = searchQuery,
         onSearchQueryChange = viewModel::updateSearchQuery,
         onBackPressed = onBackPressed
@@ -50,7 +51,7 @@ fun SongBookScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongBookScreenContent(
-    screenState: SongBookViewModel.State,
+    state: BasicViewModel.State<List<Song>>,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onBackPressed: () -> Unit
@@ -88,22 +89,22 @@ fun SongBookScreenContent(
             )
         }
 
-        if (screenState is SongBookViewModel.State.Loading)
-            item { Column(Modifier.fillParentMaxHeight()) { LoadingBox() } }
-        else {
-            val state = screenState as SongBookViewModel.State.SongBook
-            if (state.songs.isNotEmpty()) {
-                items(items = state.songs, key = { it.title }) { song ->
-                    SongCard(
-                        song = song,
-                        modifier = Modifier.fillParentMaxWidth()
+        when (state) {
+            is BasicViewModel.State.Loading -> item { LoadingBox() }
+            is BasicViewModel.State.Success -> {
+                if (state.data.isNotEmpty()) {
+                    items(items = state.data, key = { it.title }) { song ->
+                        SongCard(
+                            song = song,
+                            modifier = Modifier.fillParentMaxWidth()
+                        )
+                    }
+                } else item {
+                    EmptyListInfo(
+                        messageRes = Res.string.empty_search_list,
+                        drawableRes = Res.drawable.ic_empty_song_book
                     )
                 }
-            } else item {
-                EmptyListInfo(
-                    messageRes = Res.string.empty_search_list,
-                    drawableRes = Res.drawable.ic_empty_song_book
-                )
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.*
+import pl.kapucyni.wolczyn.app.core.presentation.getHomeTile
 import pl.kapucyni.wolczyn.app.theme.appColorSecondary
 import pl.kapucyni.wolczyn.app.theme.appColorTertiary
 

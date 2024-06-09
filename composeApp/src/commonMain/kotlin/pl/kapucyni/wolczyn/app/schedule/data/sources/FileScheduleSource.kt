@@ -7,7 +7,7 @@ import pl.kapucyni.wolczyn.app.schedule.domain.model.EventPlace
 import pl.kapucyni.wolczyn.app.schedule.domain.model.EventType
 import pl.kapucyni.wolczyn.app.schedule.domain.model.ScheduleDay
 
-val schedule = listOf(
+internal val schedule = listOf(
     ScheduleDay(
         date = LocalDate(dayOfMonth = 22, monthNumber = 7, year = 2024),
         name = "chaos",

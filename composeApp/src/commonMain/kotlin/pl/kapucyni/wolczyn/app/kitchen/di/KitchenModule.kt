@@ -1,0 +1,16 @@
+package pl.kapucyni.wolczyn.app.kitchen.di
+
+import org.koin.dsl.module
+import pl.kapucyni.wolczyn.app.kitchen.data.repository.KitchenRepositoryImpl
+import pl.kapucyni.wolczyn.app.kitchen.domain.repository.KitchenRepository
+import pl.kapucyni.wolczyn.app.kitchen.domain.usecase.GetKitchenMenuUseCase
+import pl.kapucyni.wolczyn.app.kitchen.domain.usecase.GetPromotionsCountUseCase
+import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenViewModel
+
+val kitchenModule = module {
+        single<KitchenRepository> { KitchenRepositoryImpl() }
+        single { GetKitchenMenuUseCase(get()) }
+        single { GetPromotionsCountUseCase(get()) }
+
+        single { KitchenViewModel(get()) }
+}

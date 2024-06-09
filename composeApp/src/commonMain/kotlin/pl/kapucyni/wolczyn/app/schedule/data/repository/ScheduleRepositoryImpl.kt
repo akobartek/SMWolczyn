@@ -6,6 +6,7 @@ import pl.kapucyni.wolczyn.app.schedule.data.sources.schedule
 import pl.kapucyni.wolczyn.app.schedule.domain.model.ScheduleDay
 import pl.kapucyni.wolczyn.app.schedule.domain.repository.ScheduleRepository
 
+// connect to firebase
 class ScheduleRepositoryImpl: ScheduleRepository {
     override fun getSchedule(): Flow<List<ScheduleDay>> =
         flowOf(schedule)
