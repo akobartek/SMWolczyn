@@ -251,7 +251,7 @@ private fun BreviaryTile(
 ) {
     HomeTile(
         nameRes = Res.string.breviary_title,
-        nameAlignment = Alignment.TopEnd,
+        nameAlignment = Alignment.TopStart,
         height = 170.dp,
         backgroundColor = backgroundColor,
         image = {
