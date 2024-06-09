@@ -16,6 +16,7 @@ import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
+import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 
 @Composable
 @Preview
@@ -47,19 +48,19 @@ fun App() {
                         SongBookScreen(onBackPressed = { navController.navigateUp() })
                     }
                     composable(Screen.Kitchen.route) {
-
+                        // TODO()
                     }
                     composable(Screen.Shop.route) {
-
+                        // TODO()
                     }
                     composable(Screen.Decalogue.route) {
-
+                        DecalogueScreen(onBackPressed = { navController.navigateUp() })
                     }
                     composable(Screen.Breviary.route) {
-
+                        // TODO()
                     }
                     composable(Screen.Archive.route) {
-
+                        // TODO()
                     }
                 }
             }

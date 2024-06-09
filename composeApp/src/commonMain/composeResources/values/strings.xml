@@ -44,4 +44,18 @@
     <!-- SONG BOOK STRINGS -->
     <string name="search">Szukaj</string>
     <string name="empty_search_list">Nie znaleziono żadnej pieśni z podanym wyrażaniem!</string>
+
+    <!-- DECALOGUE STRINGS -->
+    <string-array name="decalogue_rules">
+        <item>Tworzę wspólnotę ze wszystkimi uczestnikami Spotkania.</item>
+        <item>Uśmiecham się jak najczęściej, okazuję życzliwość innym uczestnikom, a także mieszkańcom Wołczyna.</item>
+        <item>Staram się dzielić z drugim tym, co mam i czym dzielić się mogę.</item>
+        <item>Biorę udział we wszystkich punktach programu. W czasie ich trwania przebywam na zamkniętym terenie Spotkania. Organizatorzy nie biorą odpowiedzialności za uczestników poza terenem Spotkania.</item>
+        <item>Dbam o czystość w mieście i na polu namiotowym. Śmieci wyrzucam do koszy i worków, segreguję odpady.</item>
+        <item>Żadnych koedukacyjnych spotkań nocnych. Dziewczęta i chłopcy śpią w oddzielnych namiotach. </item>
+        <item>Żadnych papierosów, alkoholu, narkotyków.</item>
+        <item>Przestrzegam ciszy nocnej, która obowiązuje od godziny wskazanej przez organizatorów.</item>
+        <item>Niezachowanie punktów 6–8 skutkuje wykluczeniem z grona uczestników Spotkania.</item>
+        <item>Akceptuję inne postanowienia pełnego regulaminu.</item>
+    </string-array>
 </resources>

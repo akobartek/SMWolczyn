@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -132,11 +132,14 @@ fun ScheduleScreenContent(
                     }
                 }
 
-                items(items = scheduleDay.events, key = { it.id }) { event ->
+                itemsIndexed(
+                    items = scheduleDay.events,
+                    key = { _, event -> event.id }
+                ) { index, event ->
                     EventCard(
                         event = event,
-                        filledCircle = currentEventIndex >= scheduleDay.events.indexOf(event),
-                        isLast = scheduleDay.events.indexOf(event) == scheduleDay.events.lastIndex,
+                        filledCircle = currentEventIndex >= index,
+                        isLast = index == scheduleDay.events.lastIndex,
                         onIconClick = navigateTo
                     )
                 }
