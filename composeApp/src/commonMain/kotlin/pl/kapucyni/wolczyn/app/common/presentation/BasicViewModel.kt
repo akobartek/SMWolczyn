@@ -1,11 +1,11 @@
-package pl.kapucyni.wolczyn.app.common
+package pl.kapucyni.wolczyn.app.common.presentation
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-open class BasicViewModel<T>: ViewModel() {
+abstract class BasicViewModel<T>: ViewModel() {
 
     sealed class State<out X> {
         data object Loading : State<Nothing>()

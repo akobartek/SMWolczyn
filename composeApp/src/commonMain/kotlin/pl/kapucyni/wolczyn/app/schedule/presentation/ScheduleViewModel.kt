@@ -13,8 +13,8 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
-import pl.kapucyni.wolczyn.app.common.BasicViewModel
-import pl.kapucyni.wolczyn.app.schedule.domain.usecase.GetScheduleUseCase
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.schedule.domain.usecases.GetScheduleUseCase
 
 class ScheduleViewModel(getScheduleUseCase: GetScheduleUseCase) : BasicViewModel<ScheduleScreenState>() {
 

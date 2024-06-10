@@ -19,12 +19,15 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.di.kitchenModule
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
+import pl.kapucyni.wolczyn.app.shop.di.shopModule
+import pl.kapucyni.wolczyn.app.shop.presentation.ShopProductScreen
+import pl.kapucyni.wolczyn.app.shop.presentation.ShopScreen
 
 @Composable
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(scheduleModule, songBookModule, kitchenModule)
+        modules(scheduleModule, songBookModule, kitchenModule, shopModule)
     }) {
         AppTheme {
             val navController = rememberNavController()
@@ -51,7 +54,25 @@ fun App() {
                         KitchenScreen(onBackPressed = { navController.navigateUp() })
                     }
                     composable(Screen.Shop.route) {
-                        // TODO()
+                        ShopScreen(
+                            onBackPressed = { navController.navigateUp() },
+                            onProductClick = {
+                                navController.navigate(Screen.ShopProduct.productRoute(it))
+                            }
+                        )
+                    }
+                    composable(Screen.ShopProduct.route) {
+                        val productId = it.arguments?.getString("productId")
+                        if (productId == null) {
+                            navController.navigate(Screen.Home.route) {
+                                popUpTo(Screen.Shop.route) { inclusive = true }
+                            }
+                        } else {
+                            ShopProductScreen(
+                                productId = productId,
+                                onBackPressed = { navController.navigateUp() }
+                            )
+                        }
                     }
                     composable(Screen.Decalogue.route) {
                         DecalogueScreen(onBackPressed = { navController.navigateUp() })

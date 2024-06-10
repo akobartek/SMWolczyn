@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import pl.kapucyni.wolczyn.app.common.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.songbook.domain.model.Song
-import pl.kapucyni.wolczyn.app.songbook.domain.usecase.FilterSongsUseCase
+import pl.kapucyni.wolczyn.app.songbook.domain.usecases.FilterSongsUseCase
 
 @OptIn(FlowPreview::class)
 class SongBookViewModel(private val filterSongsUseCase: FilterSongsUseCase) :

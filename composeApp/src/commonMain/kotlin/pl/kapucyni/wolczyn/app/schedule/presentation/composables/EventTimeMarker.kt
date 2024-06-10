@@ -18,8 +18,6 @@ fun EventTimeMarker(
     val color = MaterialTheme.colorScheme.primary
 
     Canvas(modifier = modifier) {
-        println(size.width.toDp())
-        println(size.height.toDp())
         drawCircle(
             color = color,
             radius = 6.dp.toPx(),

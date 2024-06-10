@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.kitchen.domain.usecase
+package pl.kapucyni.wolczyn.app.kitchen.domain.usecases
 
 import kotlinx.coroutines.flow.Flow
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu

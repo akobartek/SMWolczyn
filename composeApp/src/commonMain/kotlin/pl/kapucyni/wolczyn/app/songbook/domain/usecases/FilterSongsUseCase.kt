@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.songbook.domain.usecase
+package pl.kapucyni.wolczyn.app.songbook.domain.usecases
 
 import pl.kapucyni.wolczyn.app.songbook.domain.model.Song
 import pl.kapucyni.wolczyn.app.songbook.domain.repository.SongBookRepository

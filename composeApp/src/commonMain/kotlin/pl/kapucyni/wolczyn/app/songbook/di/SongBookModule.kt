@@ -3,7 +3,7 @@ package pl.kapucyni.wolczyn.app.songbook.di
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.songbook.data.repository.WolczynSongBookRepository
 import pl.kapucyni.wolczyn.app.songbook.domain.repository.SongBookRepository
-import pl.kapucyni.wolczyn.app.songbook.domain.usecase.FilterSongsUseCase
+import pl.kapucyni.wolczyn.app.songbook.domain.usecases.FilterSongsUseCase
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookViewModel
 
 val songBookModule = module {

@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.kitchen.presentation
+package pl.kapucyni.wolczyn.app.shop.presentation
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -9,20 +9,19 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
-import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu
-import pl.kapucyni.wolczyn.app.kitchen.domain.usecases.GetKitchenMenuUseCase
+import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
+import pl.kapucyni.wolczyn.app.shop.domain.usecases.GetShopUseCase
 
-class KitchenViewModel(private val getKitchenMenuUseCase: GetKitchenMenuUseCase) :
-    BasicViewModel<KitchenMenu>() {
+class ShopViewModel(private val getShopUseCase: GetShopUseCase): BasicViewModel<Shop>() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                getKitchenMenuUseCase()
+                getShopUseCase()
                     .stateIn(this, SharingStarted.WhileSubscribed(5000L), null)
                     .onEach { _screenState.update { State.Loading } }
-                    .collect { menu ->
-                        menu?.let { _screenState.update { State.Success(menu) } }
+                    .collect { shop ->
+                        shop?.let { _screenState.update { State.Success(shop) } }
                     }
             } catch (_: Exception) {
             }

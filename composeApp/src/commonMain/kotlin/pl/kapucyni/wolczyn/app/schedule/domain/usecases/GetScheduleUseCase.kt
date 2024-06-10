@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.schedule.domain.usecase
+package pl.kapucyni.wolczyn.app.schedule.domain.usecases
 
 import kotlinx.coroutines.flow.Flow
 import pl.kapucyni.wolczyn.app.schedule.domain.model.ScheduleDay
