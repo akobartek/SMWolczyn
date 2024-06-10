@@ -11,5 +11,6 @@ enum class EventType {
     MEAL,
     BREVIARY,
     PRAYER,
+    MF_TAU,
     OTHER
 }

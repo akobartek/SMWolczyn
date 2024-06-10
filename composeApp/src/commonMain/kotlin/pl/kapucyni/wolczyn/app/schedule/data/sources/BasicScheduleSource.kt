@@ -127,7 +127,7 @@ internal val schedule = listOf(
             ),
             Event(
                 id = "2024-07-23-10",
-                time = LocalTime(18, 0),
+                time = LocalTime(17, 30),
                 name = "kolacja",
                 place = EventPlace.CAMPSITE,
                 type = EventType.MEAL,
@@ -226,20 +226,27 @@ internal val schedule = listOf(
             ),
             Event(
                 id = "2024-07-24-10",
-                time = LocalTime(18, 0),
+                time = LocalTime(17, 30),
+                name = "grill z MF Tau",
+                place = EventPlace.CAMPSITE,
+                type = EventType.MF_TAU,
+            ),
+            Event(
+                id = "2024-07-24-11",
+                time = LocalTime(17, 30),
                 name = "kolacja",
                 place = EventPlace.CAMPSITE,
                 type = EventType.MEAL,
             ),
             Event(
-                id = "2024-07-24-11",
+                id = "2024-07-24-12",
                 time = LocalTime(20, 30),
                 name = "nabożeństwo",
                 place = EventPlace.BIG_TENT,
                 type = EventType.DEVOTION
             ),
             Event(
-                id = "2024-07-24-12",
+                id = "2024-07-24-13",
                 time = LocalTime(22, 0),
                 name = "podsumowanie dnia",
                 place = EventPlace.BIG_TENT,
@@ -318,7 +325,7 @@ internal val schedule = listOf(
             ),
             Event(
                 id = "2024-07-25-10",
-                time = LocalTime(18, 0),
+                time = LocalTime(17, 30),
                 name = "kolacja",
                 place = EventPlace.CAMPSITE,
                 type = EventType.MEAL,

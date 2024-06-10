@@ -141,6 +141,9 @@ fun ScheduleScreenContent(
                         EventCard(
                             event = event,
                             filledCircle = currentEventIndex >= index,
+                            hideTime =
+                            if (index > 0) scheduleDay.events[index - 1].time == event.time
+                            else false,
                             isLast = index == scheduleDay.events.lastIndex,
                             onIconClick = navigateTo
                         )

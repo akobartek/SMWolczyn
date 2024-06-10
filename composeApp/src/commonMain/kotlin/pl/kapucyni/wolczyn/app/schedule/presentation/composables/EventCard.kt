@@ -52,6 +52,7 @@ import smwolczyn.composeapp.generated.resources.place_unknown
 fun EventCard(
     event: Event,
     filledCircle: Boolean,
+    hideTime: Boolean,
     isLast: Boolean,
     onIconClick: (HomeTileType) -> Unit
 ) {
@@ -59,15 +60,16 @@ fun EventCard(
     val cardHeightDp = with(LocalDensity.current) { cardHeight.toDp() }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        WolczynText(
-            text = "${event.time.hour}.${event.time.minute}".replace(".0", ".00"),
-            textStyle = TextStyle(
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.primary
-            ),
-            modifier = Modifier.padding(top = 12.dp)
-        )
+        if (!hideTime)
+            WolczynText(
+                text = "${event.time.hour}.${event.time.minute}".replace(".0", ".00"),
+                textStyle = TextStyle(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier.padding(top = 12.dp)
+            )
 
         EventTimeMarker(
             filledCircle = filledCircle,
@@ -146,6 +148,7 @@ fun EventCard(
                     EventType.DEVOTION,
                     EventType.ORGANIZATION,
                     EventType.PRAYER,
+                    EventType.MF_TAU,
                     EventType.OTHER -> {
                         null
                     }
