@@ -10,37 +10,41 @@ internal val basicShop = Shop(
             id = "1",
             name = "koszulka 30-lecie SMW",
             photosUrls = mapOf(
-
+                BLACK to listOf(),
+                BROWN to listOf(),
+                WHITE to listOf(),
             ),
-            colors = listOf(BLACK, BROWN, WHITE),
-            sizes = "XS, S, M, L, XL"
+            sizes = "XS, S, M, L, XL",
         ),
         ShopProduct(
             id = "2",
             name = "koszulka \"jest radość\"",
             photosUrls = mapOf(
-
+                BLACK to listOf(),
+                BROWN to listOf(),
+                WHITE to listOf(),
             ),
-            colors = listOf(BLACK, BROWN, WHITE),
-            sizes = "XS, S, M, L, XL"
+            sizes = "XS, S, M, L, XL",
         ),
         ShopProduct(
             id = "3",
             name = "koszulka \"sól ziemi\"",
             photosUrls = mapOf(
-
+                BLACK to listOf(),
+                BROWN to listOf(),
+                WHITE to listOf(),
             ),
-            colors = listOf(BLACK, BROWN, WHITE),
-            sizes = "XS, S, M, L, XL"
+            sizes = "XS, S, M, L, XL",
         ),
         ShopProduct(
             id = "4",
             name = "koszulka z logiem SMW",
             photosUrls = mapOf(
-
+                BLACK to listOf(),
+                BROWN to listOf(),
+                WHITE to listOf(),
             ),
-            colors = listOf(BLACK, BROWN, WHITE),
-            sizes = "XS, S, M, L, XL"
+            sizes = "XS, S, M, L, XL",
         ),
     ),
 )
