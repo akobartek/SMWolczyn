@@ -1,6 +1,7 @@
 <resources>
     <!-- BASIC STRINGS -->
     <string name="home_title">Pokój i Dobro!</string>
+    <string name="empty"> </string>
     <string name="cd_navigate_up">Cofnij na poprzedni ekran</string>
 
     <!-- HOME SCREEN STRINGS -->
@@ -50,6 +51,13 @@
     <string name="kitchen_section_snacks">Na słono</string>
     <string name="kitchen_section_sweets">Na słodko</string>
     <string name="kitchen_section_beverages">Napoje</string>
+
+    <!-- SHOP STRINGS -->
+    <string name="shop_sizes">rozmiary</string>
+    <string name="shop_color_white">biały</string>
+    <string name="shop_color_black">czarny</string>
+    <string name="shop_color_brown">brązowy</string>
+    <string name="shop_color_green">zielony</string>
 
     <!-- DECALOGUE STRINGS -->
     <string-array name="decalogue_rules">

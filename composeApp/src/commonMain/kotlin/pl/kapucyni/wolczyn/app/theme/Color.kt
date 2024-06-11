@@ -221,3 +221,8 @@ val surfaceContainerHighestDarkHighContrast = Color(0xFF3C332D)
 val appColorPrimary = Color(0xFF95541C)
 val appColorSecondary = Color(0xFFDEB795)
 val appColorTertiary = Color(0xFFD69D6B)
+
+val shopColorWhite = Color(0xFFFFFFFF)
+val shopColorBlack = Color(0xFF000000)
+val shopColorBrown = Color(0xFF69320A)
+val shopColorGreen = Color(0xFF0B2F05)

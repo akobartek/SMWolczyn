@@ -16,6 +16,8 @@ import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
+import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
+import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.di.kitchenModule
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
@@ -39,43 +41,43 @@ fun App() {
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     composable(Screen.Home.route) {
-                        HomeScreen(onTileClick = { navController.navigate(it.navRoute) })
+                        HomeScreen(onTileClick = { navController.navigateSafely(it.navRoute) })
                     }
                     composable(Screen.Schedule.route) {
                         ScheduleScreen(
-                            onBackPressed = { navController.navigateUp() },
-                            navigateTo = { navController.navigate(it.navRoute) }
+                            onBackPressed = { navController.navigateUpSafely(Screen.Schedule.route) },
+                            navigateTo = { navController.navigateSafely(it.navRoute) }
                         )
                     }
                     composable(Screen.SongBook.route) {
-                        SongBookScreen(onBackPressed = { navController.navigateUp() })
+                        SongBookScreen(
+                            onBackPressed = { navController.navigateUpSafely(Screen.SongBook.route) }
+                        )
                     }
                     composable(Screen.Kitchen.route) {
-                        KitchenScreen(onBackPressed = { navController.navigateUp() })
+                        KitchenScreen(
+                            onBackPressed = { navController.navigateUpSafely(Screen.Kitchen.route) }
+                        )
                     }
                     composable(Screen.Shop.route) {
                         ShopScreen(
-                            onBackPressed = { navController.navigateUp() },
+                            onBackPressed = { navController.navigateUpSafely(Screen.Shop.route) },
                             onProductClick = {
-                                navController.navigate(Screen.ShopProduct.productRoute(it))
+                                navController.navigateSafely(Screen.ShopProduct.productRoute(it))
                             }
                         )
                     }
                     composable(Screen.ShopProduct.route) {
                         val productId = it.arguments?.getString("productId")
-                        if (productId == null) {
-                            navController.navigate(Screen.Home.route) {
-                                popUpTo(Screen.Shop.route) { inclusive = true }
-                            }
-                        } else {
-                            ShopProductScreen(
-                                productId = productId,
-                                onBackPressed = { navController.navigateUp() }
-                            )
-                        }
+                        ShopProductScreen(
+                            productId = productId,
+                            onBackPressed = { navController.navigateUpSafely(Screen.ShopProduct.route) }
+                        )
                     }
                     composable(Screen.Decalogue.route) {
-                        DecalogueScreen(onBackPressed = { navController.navigateUp() })
+                        DecalogueScreen(
+                            onBackPressed = { navController.navigateUpSafely(Screen.Decalogue.route) }
+                        )
                     }
                     composable(Screen.Breviary.route) {
                         // TODO()

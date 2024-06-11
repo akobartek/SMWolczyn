@@ -1,7 +1,7 @@
 package pl.kapucyni.wolczyn.app.shop.data.sources
 
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
-import pl.kapucyni.wolczyn.app.shop.domain.model.ShopColor.*
+import pl.kapucyni.wolczyn.app.shop.domain.model.ProductColor.*
 import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
 
 internal val basicShop = Shop(
