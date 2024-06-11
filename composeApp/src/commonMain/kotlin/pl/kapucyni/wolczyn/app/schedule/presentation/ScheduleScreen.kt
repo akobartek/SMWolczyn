@@ -72,13 +72,15 @@ fun ScheduleScreenContent(
             var currentEventIndex by remember { mutableIntStateOf(-1) }
 
             LaunchedEffect(state.selectedDay) {
+                currentEventIndex =
+                    if (state.selectedDay == state.currentDay)
+                        state.schedule.getOrNull(state.selectedDay)?.getCurrentEventIndex() ?: -1
+                    else if (state.selectedDay < state.currentDay)
+                        state.schedule.getOrNull(state.selectedDay)?.events?.lastIndex ?: -1
+                    else -1
                 val index =
-                    if (state.selectedDay == state.currentDay) {
-                        currentEventIndex =
-                            state.schedule.getOrNull(state.selectedDay)
-                                ?.getCurrentEventIndex() ?: -1
-                        currentEventIndex
-                    } else 0
+                    if (state.selectedDay == state.currentDay) currentEventIndex
+                    else 0
                 lazyListState.animateScrollToItem(index.coerceAtLeast(0))
             }
 
