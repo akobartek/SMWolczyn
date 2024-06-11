@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -36,12 +37,13 @@ import smwolczyn.composeapp.generated.resources.cd_navigate_up
 fun ProductPhotosPager(
     photos: List<String>,
     onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(pageCount = { photos.size })
     val scope = rememberCoroutineScope()
     val colors = listOf(appColorPrimary, appColorSecondary, appColorTertiary)
 
-    Box {
+    Box(modifier = modifier) {
         // TODO() -> replace with image
         HorizontalPager(
             state = pagerState,
