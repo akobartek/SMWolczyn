@@ -35,7 +35,7 @@ fun DecalogueScreenContent() {
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(start = 8.dp, end = 20.dp)
     ) {
         items(items = decalogue, key = { it.first }) { pair ->
             DecalogueElement(pair)
