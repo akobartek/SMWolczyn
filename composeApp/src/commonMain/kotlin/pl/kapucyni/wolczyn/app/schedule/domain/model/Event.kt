@@ -12,7 +12,7 @@ data class Event(
     val place: EventPlace = EventPlace.UNKNOWN,
     val type: EventType = EventType.OTHER,
     val guest: String? = null,
-    var videoUrl: String? = null
+    val videoUrl: String? = null
 ) {
     fun  isEventOverOrLasting(): Boolean {
         val now = Clock.System.now()

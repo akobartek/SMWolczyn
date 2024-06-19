@@ -4,8 +4,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
@@ -18,11 +17,8 @@ class ShopViewModel(private val getShopUseCase: GetShopUseCase): BasicViewModel<
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 getShopUseCase()
-                    .stateIn(this, SharingStarted.WhileSubscribed(5000L), null)
-                    .onEach { _screenState.update { State.Loading } }
-                    .collect { shop ->
-                        shop?.let { _screenState.update { State.Success(shop) } }
-                    }
+                    .shareIn(this, SharingStarted.Lazily, 1)
+                    .collect { shop -> _screenState.update { State.Success(shop) } }
             } catch (_: Exception) {
             }
         }

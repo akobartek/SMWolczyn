@@ -8,6 +8,9 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -49,6 +52,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.ktor.core)
+            implementation(libs.firebase.gitlive.crashlytics)
+            implementation(libs.firebase.gitlive.firestore)
+            implementation(libs.firebase.gitlive.common)
         }
         androidMain.dependencies {
             implementation(compose.preview)
@@ -77,7 +83,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 29
-        versionName = "2024.1.0"
+        versionName = "2024.0.0"
     }
     packaging {
         resources {

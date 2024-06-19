@@ -7,11 +7,11 @@ import pl.kapucyni.wolczyn.app.schedule.domain.model.EventPlace
 import pl.kapucyni.wolczyn.app.schedule.domain.model.EventType
 import pl.kapucyni.wolczyn.app.schedule.domain.model.ScheduleDay
 
-internal val schedule = listOf(
+internal fun getBasicSchedule() = listOf(
     ScheduleDay(
         date = LocalDate(dayOfMonth = 22, monthNumber = 7, year = 2024),
         name = "chaos",
-        events = listOf(
+        events = mutableListOf(
             Event(
                 id = "2024-07-22-01",
                 time = LocalTime(7, 30),
@@ -59,7 +59,7 @@ internal val schedule = listOf(
     ScheduleDay(
         date = LocalDate(dayOfMonth = 23, monthNumber = 7, year = 2024),
         name = "śmierć",
-        events = listOf(
+        events = mutableListOf(
             Event(
                 id = "2024-07-23-01",
                 time = LocalTime(7, 30),
@@ -158,7 +158,7 @@ internal val schedule = listOf(
     ScheduleDay(
         date = LocalDate(dayOfMonth = 24, monthNumber = 7, year = 2024),
         name = "bitwa",
-        events = listOf(
+        events = mutableListOf(
             Event(
                 id = "2024-07-24-01",
                 time = LocalTime(7, 30),
@@ -257,7 +257,7 @@ internal val schedule = listOf(
     ScheduleDay(
         date = LocalDate(dayOfMonth = 25, monthNumber = 7, year = 2024),
         name = "radość",
-        events = listOf(
+        events = mutableListOf(
             Event(
                 id = "2024-07-25-01",
                 time = LocalTime(7, 30),
@@ -350,7 +350,7 @@ internal val schedule = listOf(
     ScheduleDay(
         date = LocalDate(dayOfMonth = 26, monthNumber = 7, year = 2024),
         name = "pokój",
-        events = listOf(
+        events = mutableListOf(
             Event(
                 id = "2024-07-26-01",
                 time = LocalTime(7, 30),

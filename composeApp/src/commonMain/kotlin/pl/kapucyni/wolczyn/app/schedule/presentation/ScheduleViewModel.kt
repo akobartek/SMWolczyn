@@ -5,8 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -16,29 +15,27 @@ import kotlinx.datetime.toLocalDateTime
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.schedule.domain.usecases.GetScheduleUseCase
 
-class ScheduleViewModel(getScheduleUseCase: GetScheduleUseCase) : BasicViewModel<ScheduleScreenState>() {
+class ScheduleViewModel(getScheduleUseCase: GetScheduleUseCase) :
+    BasicViewModel<ScheduleScreenState>() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 getScheduleUseCase()
-                    .stateIn(this, SharingStarted.WhileSubscribed(5000L), null)
-                    .onEach { _screenState.update { State.Loading } }
+                    .shareIn(this, SharingStarted.Lazily, 1)
                     .collect { schedule ->
-                        schedule?.let {
-                            val today = Clock.System.now()
-                                .toLocalDateTime(TimeZone.currentSystemDefault()).date
-                            val daysUntil = schedule.getOrNull(0)?.date?.daysUntil(today) ?: 0
+                        val today = Clock.System.now()
+                            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+                        val daysUntil = schedule.getOrNull(0)?.date?.daysUntil(today) ?: 0
 
-                            _screenState.update {
-                                State.Success(
-                                    ScheduleScreenState(
-                                        schedule = schedule,
-                                        selectedDay = daysUntil.coerceIn(0, 4),
-                                        currentDay = daysUntil
-                                    )
+                        _screenState.update {
+                            State.Success(
+                                ScheduleScreenState(
+                                    schedule = schedule,
+                                    selectedDay = daysUntil.coerceIn(0, 4),
+                                    currentDay = daysUntil
                                 )
-                            }
+                            )
                         }
                     }
             } catch (_: Exception) {
@@ -52,6 +49,7 @@ class ScheduleViewModel(getScheduleUseCase: GetScheduleUseCase) : BasicViewModel
                 is State.Success -> {
                     State.Success(data = state.data.copy(selectedDay = day))
                 }
+
                 else -> state
             }
         }

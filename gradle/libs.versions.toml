@@ -17,11 +17,16 @@ serialization = "1.6.3"
 androidx-navigation = "2.8.0-alpha02"
 kotlinx-datetime = "0.6.0"
 viewmodel = "2.8.0"
-room = "2.7.0-alpha03"
+room = "2.7.0-alpha04"
 ksp = "2.0.0-1.0.21"
 sqlite = "2.5.0-SNAPSHOT"
 ktor = "2.3.9"
 koin = "3.6.0-alpha1"
+
+firebase-gitlive-sdk = "1.12.0"
+crashlytics = "3.0.1"
+google-services = "4.4.2"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -35,7 +40,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewmodel" }
@@ -49,6 +54,10 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+firebase-gitlive-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-gitlive-sdk" }
+firebase-gitlive-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive-sdk" }
+firebase-gitlive-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase-gitlive-sdk" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -58,3 +67,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

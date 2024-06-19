@@ -1,13 +1,31 @@
 package pl.kapucyni.wolczyn.app.schedule.data.repository
 
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import pl.kapucyni.wolczyn.app.schedule.data.sources.schedule
+import kotlinx.coroutines.flow.map
+import pl.kapucyni.wolczyn.app.schedule.data.sources.getFirestoreSchedule
+import pl.kapucyni.wolczyn.app.schedule.data.sources.getBasicSchedule
 import pl.kapucyni.wolczyn.app.schedule.domain.model.ScheduleDay
 import pl.kapucyni.wolczyn.app.schedule.domain.repository.ScheduleRepository
 
-// connect to firebase
-class ScheduleRepositoryImpl: ScheduleRepository {
+class ScheduleRepositoryImpl : ScheduleRepository {
     override fun getSchedule(): Flow<List<ScheduleDay>> =
-        flowOf(schedule)
+        Firebase.firestore.getFirestoreSchedule().map { firestoreEvents ->
+            val schedule = getBasicSchedule()
+            firestoreEvents.forEach { event ->
+                var eventIndex = -1
+                schedule.indexOfFirst { day ->
+                    val index = day.events.indexOfFirst { it.id == event.id }
+                    if (index > -1) eventIndex = index
+                    eventIndex >= 0
+                }
+                    .takeIf { it >= 0 }
+                    ?.let { dayIndex ->
+                        schedule[dayIndex].events[eventIndex] =
+                            event.copyToDomainObject(schedule[dayIndex].events[eventIndex])
+                    }
+            }
+            schedule
+        }
 }
