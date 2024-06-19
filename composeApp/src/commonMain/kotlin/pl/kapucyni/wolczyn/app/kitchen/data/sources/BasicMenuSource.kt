@@ -4,7 +4,7 @@ import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenuItem
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenuSection
 
-internal val basicMenu = KitchenMenu(
+internal fun getBasicMenu() = KitchenMenu(
     menu = mapOf(
         KitchenMenuSection.SNACKS to listOf(
             KitchenMenuItem(

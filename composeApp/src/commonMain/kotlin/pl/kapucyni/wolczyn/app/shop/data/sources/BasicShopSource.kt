@@ -4,7 +4,7 @@ import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
 import pl.kapucyni.wolczyn.app.shop.domain.model.ProductColor.*
 import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
 
-internal val basicShop = Shop(
+internal fun getBasicShop() = Shop(
     products = listOf(
         ShopProduct(
             id = "1",
