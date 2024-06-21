@@ -32,7 +32,6 @@ sealed class Screen(val route: String) {
         const val WEATHER_ROUTE = "weather"
         const val BREVIARY_ROUTE = "breviary"
         const val ARCHIVE_ROUTE = "archive"
-        const val ARCHIVE_MEETING_ROUTE =
-            "archive_meeting/{$ARGUMENT_MEETING_NUMBER}"
+        const val ARCHIVE_MEETING_ROUTE = "archive_meeting/{$ARGUMENT_MEETING_NUMBER}"
     }
 }
