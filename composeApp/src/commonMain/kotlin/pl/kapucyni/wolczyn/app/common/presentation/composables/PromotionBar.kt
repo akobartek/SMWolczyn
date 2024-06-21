@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -29,12 +30,17 @@ fun PromotionBar(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.PriorityHigh,
+                contentDescription = null,
+                modifier = Modifier.padding(start = 12.dp)
+            )
             WolczynText(
                 text = name,
                 textStyle = TextStyle(fontWeight = FontWeight.Medium),
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 12.dp)
+                    .padding(horizontal = 6.dp)
             )
             IconButton(onClick = { onRemove(name) }) {
                 Icon(

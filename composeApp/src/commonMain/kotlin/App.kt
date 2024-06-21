@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
+import pl.kapucyni.wolczyn.app.archive.di.archiveModule
+import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.schedule.di.scheduleModule
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
@@ -29,7 +31,7 @@ import pl.kapucyni.wolczyn.app.shop.presentation.ShopScreen
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(scheduleModule, songBookModule, kitchenModule, shopModule)
+        modules(scheduleModule, songBookModule, kitchenModule, shopModule, archiveModule)
     }) {
         AppTheme {
             val navController = rememberNavController()
@@ -83,7 +85,9 @@ fun App() {
                         // TODO()
                     }
                     composable(Screen.Archive.route) {
-                        // TODO()
+                        ArchiveScreen(
+                            onBackPressed = { navController.navigateUpSafely(Screen.Archive.route) }
+                        )
                     }
                 }
             }
