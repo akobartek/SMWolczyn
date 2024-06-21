@@ -15,24 +15,17 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.core.presentation.composables.HomeTileList
-import pl.kapucyni.wolczyn.app.weather.presentation.WeatherViewModel
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.home_title
 
 @Composable
-fun HomeScreen(
-    onTileClick: (HomeTileType) -> Unit,
-    weatherViewModel: WeatherViewModel = koinInject()
-) {
+fun HomeScreen(onTileClick: (HomeTileType) -> Unit) {
     var screenWidth by remember { mutableStateOf(0) }
     val screenWidthDp = with(LocalDensity.current) { screenWidth.toDp() }
     val columns = (screenWidthDp.value / 360).toInt().coerceIn(1, 3)
-    val weather by weatherViewModel.screenState.collectAsStateMultiplatform()
 
     ScreenLayout(
         title = stringResource(Res.string.home_title),
@@ -47,7 +40,6 @@ fun HomeScreen(
             HomeTileList(
                 columns = columns,
                 onTileClick = onTileClick,
-                weather = weather,
             )
         }
     }
