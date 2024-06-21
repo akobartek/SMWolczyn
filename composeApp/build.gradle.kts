@@ -52,6 +52,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.ktor.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+
             implementation(libs.firebase.gitlive.crashlytics)
             implementation(libs.firebase.gitlive.firestore)
             implementation(libs.firebase.gitlive.common)
