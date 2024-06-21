@@ -16,7 +16,7 @@ data class FirestoreEvent(
     val guest: String? = null,
     var videoUrl: String? = null
 ) {
-    fun copyToDomainObject(event: Event) = event.copy(
+    fun toDomainObject(event: Event) = event.copy(
         time =
         if (time.isBlank()) event.time
         else time.split(":").let {

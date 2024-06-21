@@ -1,7 +1,9 @@
 package pl.kapucyni.wolczyn.app.kitchen.presentation
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,8 +15,9 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
+import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
@@ -38,23 +41,41 @@ fun KitchenScreen(
     viewModel: KitchenViewModel = koinInject()
 ) {
     val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val openPromotions by viewModel.openPromotions.collectAsStateMultiplatform()
 
     ScreenLayout(
         title = stringResource(Res.string.kitchen_title),
         onBackPressed = onBackPressed
     ) {
-        KitchenScreenContent(screenState)
+        KitchenScreenContent(
+            screenState = screenState,
+            openPromotions = openPromotions,
+            onPromotionRemove = viewModel::removePromotion
+        )
     }
 }
 
 @Composable
-fun KitchenScreenContent(screenState: BasicViewModel.State<KitchenMenu>) {
+fun KitchenScreenContent(
+    screenState: State<KitchenMenu>,
+    openPromotions: List<String>,
+    onPromotionRemove: (String) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 20.dp)
             .padding(bottom = 12.dp)
     ) {
+        items(items = openPromotions, key = { it }) { promo ->
+            PromotionBar(
+                name = promo,
+                onRemove = onPromotionRemove
+            )
+        }
+        if (openPromotions.isNotEmpty())
+            item { Spacer(modifier = Modifier.height(12.dp)) }
+
         item {
             WolczynTitleText(
                 text = stringResource(Res.string.kitchen_menu),
@@ -64,8 +85,8 @@ fun KitchenScreenContent(screenState: BasicViewModel.State<KitchenMenu>) {
         }
 
         when (screenState) {
-            is BasicViewModel.State.Loading -> item { LoadingBox() }
-            is BasicViewModel.State.Success -> {
+            is State.Loading -> item { LoadingBox() }
+            is State.Success -> {
                 screenState.data.menu.forEach { (section, menuItems) ->
                     item {
                         KitchenSectionHeader(
@@ -85,7 +106,7 @@ fun KitchenScreenContent(screenState: BasicViewModel.State<KitchenMenu>) {
                             )
                         )
                     }
-                    items(items = menuItems, key = { it.id }) {item ->
+                    items(items = menuItems, key = { it.id }) { item ->
                         KitchenMenuItem(item = item)
                     }
                 }

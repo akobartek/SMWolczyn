@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import org.koin.compose.koinInject
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
@@ -51,7 +51,7 @@ fun SongBookScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongBookScreenContent(
-    state: BasicViewModel.State<List<Song>>,
+    state: State<List<Song>>,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onBackPressed: () -> Unit
@@ -90,8 +90,8 @@ fun SongBookScreenContent(
         }
 
         when (state) {
-            is BasicViewModel.State.Loading -> item { LoadingBox() }
-            is BasicViewModel.State.Success -> {
+            is State.Loading -> item { LoadingBox() }
+            is State.Success -> {
                 if (state.data.isNotEmpty()) {
                     items(items = state.data, key = { it.title }) { song ->
                         SongCard(

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -60,13 +60,13 @@ fun ScheduleScreen(
 
 @Composable
 fun ScheduleScreenContent(
-    screenState: BasicViewModel.State<ScheduleScreenState>,
+    screenState: State<ScheduleScreenState>,
     onDaySelected: (Int) -> Unit,
     navigateTo: (HomeTileType) -> Unit
 ) {
     when (screenState) {
-        is BasicViewModel.State.Loading -> LoadingBox()
-        is BasicViewModel.State.Success -> {
+        is State.Loading -> LoadingBox()
+        is State.Success -> {
             val state = screenState.data
             val lazyListState = rememberLazyListState()
             var currentEventIndex by remember { mutableIntStateOf(-1) }

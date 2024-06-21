@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
@@ -39,12 +39,12 @@ fun ShopScreen(
 
 @Composable
 fun ShopScreenContent(
-    screenState: BasicViewModel.State<Shop>,
+    screenState: State<Shop>,
     onProductClick: (String) -> Unit,
 ) {
     when (screenState) {
-        is BasicViewModel.State.Loading -> LoadingBox()
-        is BasicViewModel.State.Success -> {
+        is State.Loading -> LoadingBox()
+        is State.Success -> {
             val shop = screenState.data
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(160.dp),

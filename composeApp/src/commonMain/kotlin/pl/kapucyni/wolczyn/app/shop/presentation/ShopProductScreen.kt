@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import org.koin.compose.koinInject
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
@@ -33,12 +33,12 @@ fun ShopProductScreen(
 @Composable
 fun ShopProductScreenContent(
     productId: String?,
-    screenState: BasicViewModel.State<Shop>,
+    screenState: State<Shop>,
     onBackPressed: () -> Unit,
 ) {
     when (screenState) {
-        is BasicViewModel.State.Loading -> LoadingBox()
-        is BasicViewModel.State.Success -> {
+        is State.Loading -> LoadingBox()
+        is State.Success -> {
             val product = screenState.data.products.find { it.id == productId }
             if (product == null || productId == null) {
                 onBackPressed()

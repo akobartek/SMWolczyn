@@ -1,7 +1,5 @@
 package pl.kapucyni.wolczyn.app.schedule.data.repository
 
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import pl.kapucyni.wolczyn.app.schedule.data.sources.getFirestoreSchedule
@@ -11,7 +9,7 @@ import pl.kapucyni.wolczyn.app.schedule.domain.repository.ScheduleRepository
 
 class ScheduleRepositoryImpl : ScheduleRepository {
     override fun getSchedule(): Flow<List<ScheduleDay>> =
-        Firebase.firestore.getFirestoreSchedule().map { firestoreEvents ->
+        getFirestoreSchedule().map { firestoreEvents ->
             val schedule = getBasicSchedule()
             firestoreEvents.forEach { event ->
                 var eventIndex = -1
@@ -23,7 +21,7 @@ class ScheduleRepositoryImpl : ScheduleRepository {
                     .takeIf { it >= 0 }
                     ?.let { dayIndex ->
                         schedule[dayIndex].events[eventIndex] =
-                            event.copyToDomainObject(schedule[dayIndex].events[eventIndex])
+                            event.toDomainObject(schedule[dayIndex].events[eventIndex])
                     }
             }
             schedule

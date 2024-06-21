@@ -23,7 +23,7 @@ fun KitchenHomeTile(
     HomeTile(
         nameRes = Res.string.kitchen_title,
         nameAlignment = Alignment.TopStart,
-        height = 240.dp,
+        height = 190.dp,
         backgroundColor = backgroundColor,
         image = {
             Image(
@@ -31,7 +31,7 @@ fun KitchenHomeTile(
                 contentScale = FixedScale(0.42f),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.BottomEnd)
-                    .offset(x = 25.dp, y = 25.dp)
+                    .offset(x = 20.dp, y = 25.dp)
             )
         },
         onClick = onClick,
