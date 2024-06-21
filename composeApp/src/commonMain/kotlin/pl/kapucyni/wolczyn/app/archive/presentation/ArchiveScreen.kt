@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
-import pl.kapucyni.wolczyn.app.archive.presentation.composables.ArchiveMeetingItem
+import pl.kapucyni.wolczyn.app.archive.presentation.composables.ArchiveMeetingCard
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -23,6 +23,7 @@ import smwolczyn.composeapp.generated.resources.archive_title
 @Composable
 fun ArchiveScreen(
     onBackPressed: () -> Unit,
+    onMeetingClick: (Int) -> Unit,
     viewModel: ArchiveViewModel = koinInject()
 ) {
     val screenState by viewModel.screenState.collectAsStateMultiplatform()
@@ -33,14 +34,17 @@ fun ArchiveScreen(
     ) {
         ArchiveScreenContent(
             screenState = screenState,
+            onMeetingClick = onMeetingClick
         )
     }
 }
 
 @Composable
 fun ArchiveScreenContent(
-    screenState: State<List<ArchiveMeeting>>
+    screenState: State<List<ArchiveMeeting>>,
+    onMeetingClick: (Int) -> Unit = {}
 ) {
+
     when (screenState) {
         is State.Loading -> LoadingBox()
         is State.Success -> {
@@ -58,7 +62,10 @@ fun ArchiveScreenContent(
                     count = archive.size,
                     key = { archive[it].number }
                 ) { index ->
-                    ArchiveMeetingItem(meeting = archive[index])
+                    ArchiveMeetingCard(
+                        meeting = archive[index],
+                        onMeetingClick = onMeetingClick
+                    )
                 }
             }
         }

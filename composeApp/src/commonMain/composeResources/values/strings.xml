@@ -3,6 +3,8 @@
     <string name="home_title">Pokój i Dobro!</string>
     <string name="empty"> </string>
     <string name="cd_navigate_up">Cofnij na poprzedni ekran</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Anuluj</string>
 
     <!-- HOME SCREEN STRINGS -->
     <string name="schedule_title">Plan\nspotkania</string>
@@ -72,4 +74,8 @@
         <item>Niezachowanie punktów 6–8 skutkuje wykluczeniem z grona uczestników Spotkania.</item>
         <item>Akceptuję inne postanowienia pełnego regulaminu.</item>
     </string-array>
+
+    <!-- ARCHIVE STRINGS -->
+    <string name="no_records_dialog_title">Brak nagrań</string>
+    <string name="no_records_dialog_message">Nagrania z tego Spotkania nie są jeszcze dostępne!</string>
 </resources>

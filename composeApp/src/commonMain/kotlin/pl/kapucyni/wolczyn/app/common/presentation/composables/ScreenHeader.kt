@@ -1,10 +1,9 @@
 package pl.kapucyni.wolczyn.app.common.presentation.composables
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -22,7 +21,8 @@ import smwolczyn.composeapp.generated.resources.cd_navigate_up
 @Composable
 fun ScreenHeader(
     title: String,
-    onBackPressed: (() -> Unit)? = null
+    onBackPressed: (() -> Unit)? = null,
+    actionIcon: (@Composable RowScope.() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -44,6 +44,6 @@ fun ScreenHeader(
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f)
         )
-        Spacer(modifier = Modifier.width(if (onBackPressed == null) 0.dp else 40.dp))
+        actionIcon?.let { it() } ?: WidthSpacer(if (onBackPressed == null) 0.dp else 40.dp)
     }
 }

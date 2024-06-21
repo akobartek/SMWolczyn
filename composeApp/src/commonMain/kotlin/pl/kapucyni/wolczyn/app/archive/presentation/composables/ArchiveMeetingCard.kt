@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,14 +26,23 @@ import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 
 @Composable
-fun ArchiveMeetingItem(meeting: ArchiveMeeting) {
+fun ArchiveMeetingCard(
+    meeting: ArchiveMeeting,
+    onMeetingClick: (Int) -> Unit
+) {
+    var isNoRecordsDialogVisible by remember { mutableStateOf(false) }
+
     Card(
         shape = RoundedCornerShape(12.dp),
-        onClick = {/*TODO*/ },
+        onClick = {
+            if (meeting.records.isNotEmpty()) onMeetingClick(meeting.number)
+            else isNoRecordsDialogVisible = true
+        },
     ) {
-        Box(modifier = Modifier
-            .height(200.dp)
-            .fillMaxWidth()
+        Box(
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxWidth()
         ) {
             AsyncImage(
                 model = meeting.photoUrl,
@@ -51,4 +64,9 @@ fun ArchiveMeetingItem(meeting: ArchiveMeeting) {
             )
         }
     }
+
+    ArchiveNoRecordsDialog(
+        isVisible = isNoRecordsDialogVisible,
+        onDismiss = { isNoRecordsDialogVisible = false }
+    )
 }

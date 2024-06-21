@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.schedule.domain.model.Event
 import pl.kapucyni.wolczyn.app.schedule.domain.model.EventPlace
@@ -114,7 +115,7 @@ fun EventCard(
                             )
                         )
                     }
-                    Spacer(modifier = Modifier.width(4.dp))
+                    WidthSpacer(4.dp)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             painter = painterResource(Res.drawable.ic_schedule_map_pin),
@@ -122,7 +123,7 @@ fun EventCard(
                             tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(24.dp)
                         )
-                        Spacer(modifier = Modifier.width(2.dp))
+                        WidthSpacer(2.dp)
                         when (event.place) {
                             EventPlace.BIG_TENT -> Res.string.place_big_tent
                             EventPlace.CAMPSITE -> Res.string.place_campsite

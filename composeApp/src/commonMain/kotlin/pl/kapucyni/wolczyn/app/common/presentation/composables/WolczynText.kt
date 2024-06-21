@@ -10,7 +10,7 @@ import pl.kapucyni.wolczyn.app.theme.poppinsFontFamily
 @Composable
 fun WolczynText(
     text: String,
-    textStyle: TextStyle,
+    textStyle: TextStyle = TextStyle(),
     isOneLiner: Boolean = false,
     modifier: Modifier = Modifier
 ) {
