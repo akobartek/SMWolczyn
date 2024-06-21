@@ -45,7 +45,7 @@ fun HomeTile(
                 WolczynTitleText(
                     text = stringResource(nameRes),
                     color = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp)
                 )
                 additionalContent()
             }

@@ -31,12 +31,20 @@ import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
 import pl.kapucyni.wolczyn.app.shop.di.shopModule
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopProductScreen
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopScreen
+import pl.kapucyni.wolczyn.app.weather.di.weatherModule
 
 @Composable
 @Preview
 fun App() {
     KoinApplication(application = {
-        modules(scheduleModule, songBookModule, kitchenModule, shopModule, archiveModule)
+        modules(
+            scheduleModule,
+            songBookModule,
+            kitchenModule,
+            shopModule,
+            weatherModule,
+            archiveModule
+        )
     }) {
         AppTheme {
             val navController = rememberNavController()

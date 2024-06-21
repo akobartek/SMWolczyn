@@ -11,11 +11,13 @@ import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.*
 import pl.kapucyni.wolczyn.app.core.presentation.getHomeTile
 import pl.kapucyni.wolczyn.app.theme.appColorSecondary
 import pl.kapucyni.wolczyn.app.theme.appColorTertiary
+import pl.kapucyni.wolczyn.app.weather.domain.model.Weather
 
 @Composable
 fun HomeTileList(
     columns: Int,
-    onTileClick: (HomeTileType) -> Unit
+    onTileClick: (HomeTileType) -> Unit,
+    weather: Weather?,
 ) {
     val tiles = when (columns) {
         1 -> oneColumn
@@ -30,6 +32,7 @@ fun HomeTileList(
                 tileType = tileType,
                 backgroundColor = getTileBackground(i),
                 onClick = { onTileClick(tileType) },
+                weather = weather,
                 modifier = Modifier.fillMaxWidth()
             )
         } else
@@ -39,6 +42,7 @@ fun HomeTileList(
                         tileType = tileType,
                         backgroundColor = getTileBackground(i + j),
                         onClick = { onTileClick(tileType) },
+                        weather = weather,
                         modifier = Modifier.weight(1f)
                     )
                 }

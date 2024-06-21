@@ -11,6 +11,7 @@ import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
+import pl.kapucyni.wolczyn.app.weather.domain.model.Weather
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_cap_weather
 import smwolczyn.composeapp.generated.resources.weather_title
@@ -18,6 +19,7 @@ import smwolczyn.composeapp.generated.resources.weather_title
 @Composable
 fun WeatherHomeTile(
     backgroundColor: Color,
+    weather: Weather?,
     modifier: Modifier = Modifier
 ) {
     HomeTile(
@@ -35,6 +37,9 @@ fun WeatherHomeTile(
             )
         },
         onClick = { },
+        additionalContent = {
+            weather?.let { WeatherContent(it) }
+        },
         modifier = modifier
     )
 }

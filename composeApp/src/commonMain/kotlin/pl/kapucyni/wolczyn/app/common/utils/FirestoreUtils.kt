@@ -31,3 +31,12 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
                 .map<DocumentSnapshot, T> { it.data() }
                 .firstOrNull()
         }
+
+inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
+    collectionName: String,
+    documentName: String,
+): Flow<T> =
+    this.collection(collectionName)
+        .document(documentName)
+        .snapshots
+        .map { it.data() }
