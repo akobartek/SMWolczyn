@@ -10,5 +10,5 @@ val scheduleModule = module {
     single<ScheduleRepository> { ScheduleRepositoryImpl() }
     single { GetScheduleUseCase(get()) }
 
-    single { ScheduleViewModel(get()) }
+    factory { ScheduleViewModel(get()) }
 }

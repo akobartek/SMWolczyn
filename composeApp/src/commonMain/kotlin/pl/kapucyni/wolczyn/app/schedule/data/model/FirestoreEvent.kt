@@ -14,7 +14,7 @@ data class FirestoreEvent(
     val place: EventPlace = EventPlace.UNKNOWN,
     val type: EventType = EventType.OTHER,
     val guest: String? = null,
-    var videoUrl: String? = null
+    var guestUrl: String? = null
 ) {
     fun toDomainObject(event: Event) = event.copy(
         time =
@@ -26,6 +26,6 @@ data class FirestoreEvent(
         place = if (place == EventPlace.UNKNOWN) event.place else place,
         type = if (type == EventType.OTHER) event.type else type,
         guest = if (guest.isNullOrBlank()) event.guest else guest,
-        videoUrl = if (videoUrl.isNullOrBlank()) event.videoUrl else videoUrl
+        guestUrl = if (guestUrl.isNullOrBlank()) event.guestUrl else guestUrl
     )
 }

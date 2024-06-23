@@ -12,5 +12,5 @@ val kitchenModule = module {
     single { GetKitchenMenuUseCase(get()) }
     single { GetPromotionsCountUseCase(get()) }
 
-    single { KitchenViewModel(get()) }
+    factory { KitchenViewModel(get()) }
 }

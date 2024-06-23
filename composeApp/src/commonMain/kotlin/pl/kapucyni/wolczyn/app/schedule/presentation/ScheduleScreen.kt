@@ -85,10 +85,10 @@ fun ScheduleScreenContent(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
                 modifier = Modifier
                     .height(104.dp)
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 6.dp)
             ) {
                 state.schedule.forEachIndexed { index, scheduleDay ->
                     ScheduleDaySelector(
@@ -122,9 +122,9 @@ fun ScheduleScreenContent(
                                     color = MaterialTheme.colorScheme.primary
                                 ),
                             )
-                            WidthSpacer(6.dp)
+                            WidthSpacer(4.dp)
                             WolczynText(
-                                text = scheduleDay.name,
+                                text = scheduleDay.name.replace("\n", ""),
                                 textStyle = TextStyle(
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Medium,
@@ -146,7 +146,7 @@ fun ScheduleScreenContent(
                             if (index > 0) scheduleDay.events[index - 1].time == event.time
                             else false,
                             isLast = index == scheduleDay.events.lastIndex,
-                            onIconClick = navigateTo
+                            onNavClick = navigateTo
                         )
                     }
                 }

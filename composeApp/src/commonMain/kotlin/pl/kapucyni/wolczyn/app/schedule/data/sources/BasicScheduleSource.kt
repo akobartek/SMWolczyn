@@ -16,43 +16,58 @@ internal fun getBasicSchedule() = listOf(
                 id = "2024-07-22-01",
                 time = LocalTime(7, 30),
                 name = "rejestracja uczestników",
-                place = EventPlace.BIG_TENT,
-                type = EventType.ORGANIZATION
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.ORGANIZATION,
             ),
             Event(
                 id = "2024-07-22-02",
-                time = LocalTime(17, 30),
-                name = "rozpoczęcie Spotkania",
-                place = EventPlace.BIG_TENT,
-                type = EventType.ORGANIZATION
+                time = LocalTime(14, 0),
+                name = "taniec z gwiazdami",
+                place = EventPlace.CAMPSITE,
+                type = EventType.OTHER,
             ),
             Event(
                 id = "2024-07-22-03",
-                time = LocalTime(18, 30),
-                name = "kolacja",
-                place = EventPlace.CAMPSITE,
-                type = EventType.MEAL
+                time = LocalTime(17, 30),
+                name = "rozpoczęcie Spotkania",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.ORGANIZATION,
             ),
             Event(
                 id = "2024-07-22-04",
-                time = LocalTime(20, 0),
-                name = "koncert: KapEl'a",
-                place = EventPlace.BIG_TENT,
-                type = EventType.CONCERT
+                time = LocalTime(18, 30),
+                name = "kolacja",
+                place = EventPlace.CAMPSITE,
+                type = EventType.MEAL,
             ),
             Event(
                 id = "2024-07-22-05",
-                time = LocalTime(21, 30),
-                name = "nabożeństwo",
-                place = EventPlace.BIG_TENT,
-                type = EventType.DEVOTION
+                time = LocalTime(19, 0),
+                name = "nieszpory",
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
                 id = "2024-07-22-06",
+                time = LocalTime(20, 0),
+                name = "koncert: KapEl'a",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.CONCERT,
+                guestUrl = "https://www.youtube.com/@WolczynSpotkanie/"
+            ),
+            Event(
+                id = "2024-07-22-07",
+                time = LocalTime(21, 30),
+                name = "nabożeństwo",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.DEVOTION,
+            ),
+            Event(
+                id = "2024-07-22-08",
                 time = LocalTime(22, 30),
                 name = "podsumowanie dnia",
-                place = EventPlace.BIG_TENT,
-                type = EventType.PRAYER
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER,
             ),
         )
     ),
@@ -64,43 +79,44 @@ internal fun getBasicSchedule() = listOf(
                 id = "2024-07-23-01",
                 time = LocalTime(7, 30),
                 name = "jutrznia",
-                place = EventPlace.CHURCH,
-                type = EventType.BREVIARY
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
                 id = "2024-07-23-02",
                 time = LocalTime(8, 0),
                 name = "śniadanie",
                 place = EventPlace.CAMPSITE,
-                type = EventType.MEAL
+                type = EventType.MEAL,
             ),
             Event(
                 id = "2024-07-23-03",
                 time = LocalTime(9, 0),
-                name = "rozgrzewka",
-                place = EventPlace.BIG_TENT,
-                type = EventType.MEAL
+                name = "modlitwa poranna",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER
             ),
             Event(
                 id = "2024-07-23-04",
                 time = LocalTime(9, 30),
                 name = "konferencja",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.CONFERENCE,
-                guest = "ks. Rafał Główczyński SDS"
+                guest = "ks. Rafał Główczyński",
+                guestUrl = "",
             ),
             Event(
                 id = "2024-07-23-05",
                 time = LocalTime(10, 30),
                 name = "przygotowanie do Eucharystii",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
             ),
             Event(
                 id = "2024-07-23-06",
                 time = LocalTime(10, 45),
                 name = "Eucharystia",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
                 guest = "ks. bp Łukasz Buzun"
             ),
@@ -120,38 +136,55 @@ internal fun getBasicSchedule() = listOf(
             ),
             Event(
                 id = "2024-07-23-09",
-                time = LocalTime(15, 30),
+                time = LocalTime(15, 0),
                 name = "spotkania w grupach",
                 place = EventPlace.EVERYWHERE,
                 type = EventType.GROUPS,
             ),
             Event(
                 id = "2024-07-23-10",
-                time = LocalTime(17, 30),
+                time = LocalTime(17, 0),
+                name = "spotkanie z gościem",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.GUEST_TALK,
+                guest = "Anna Leśniak",
+                guestUrl = "",
+            ),
+            Event(
+                id = "2024-07-23-11",
+                time = LocalTime(18, 0),
                 name = "kolacja",
                 place = EventPlace.CAMPSITE,
                 type = EventType.MEAL,
             ),
             Event(
-                id = "2024-07-23-11",
-                time = LocalTime(19, 0),
-                name = "koncert: Piotr \"Edzio\" Bylina",
-                place = EventPlace.BIG_TENT,
-                type = EventType.CONCERT,
-            ),
-            Event(
                 id = "2024-07-23-12",
-                time = LocalTime(20, 30),
-                name = "nabożeństwo",
-                place = EventPlace.BIG_TENT,
-                type = EventType.DEVOTION
+                time = LocalTime(18, 0),
+                name = "nieszpory",
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
                 id = "2024-07-23-13",
+                time = LocalTime(19, 0),
+                name = "koncert: Piotr \"Edzio\" Bylina",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.CONCERT,
+                guestUrl = "https://www.instagram.com/edzioo/"
+            ),
+            Event(
+                id = "2024-07-23-14",
+                time = LocalTime(20, 30),
+                name = "nabożeństwo",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.DEVOTION,
+            ),
+            Event(
+                id = "2024-07-23-15",
                 time = LocalTime(22, 0),
                 name = "podsumowanie dnia",
-                place = EventPlace.BIG_TENT,
-                type = EventType.PRAYER
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER,
             ),
         )
     ),
@@ -163,45 +196,47 @@ internal fun getBasicSchedule() = listOf(
                 id = "2024-07-24-01",
                 time = LocalTime(7, 30),
                 name = "jutrznia",
-                place = EventPlace.CHURCH,
-                type = EventType.BREVIARY
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
                 id = "2024-07-24-02",
-                time = LocalTime(8, 0),
+                time = LocalTime(8, 15),
                 name = "śniadanie",
                 place = EventPlace.CAMPSITE,
-                type = EventType.MEAL
+                type = EventType.MEAL,
             ),
             Event(
                 id = "2024-07-24-03",
                 time = LocalTime(9, 0),
-                name = "rozgrzewka",
-                place = EventPlace.BIG_TENT,
-                type = EventType.MEAL
+                name = "modlitwa poranna",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER,
             ),
             Event(
                 id = "2024-07-24-04",
                 time = LocalTime(9, 30),
                 name = "konferencja",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.CONFERENCE,
-                guest = "s. Teresa Pawlak ZSAPU"
+                guest = "s. Teresa Pawlak",
+                guestUrl = "https://www.instagram.com/teresa_pawlak_swiatzzakrat",
             ),
             Event(
                 id = "2024-07-24-05",
                 time = LocalTime(10, 30),
                 name = "przygotowanie do Eucharystii",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
             ),
             Event(
                 id = "2024-07-24-06",
                 time = LocalTime(10, 45),
                 name = "Eucharystia",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
-                guest = "ks. Rafał Główczyński"
+                guest = "ks. Rafał Główczyński",
+                guestUrl = "https://www.instagram.com/ksiadz_z_osiedla/",
             ),
             Event(
                 id = "2024-07-24-07",
@@ -226,81 +261,104 @@ internal fun getBasicSchedule() = listOf(
             ),
             Event(
                 id = "2024-07-24-10",
+                time = LocalTime(16, 30),
+                name = "spotkanie z gościem",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.GUEST_TALK,
+                guest = "s. Teresa Pawlak",
+                guestUrl = "https://www.instagram.com/teresa_pawlak_swiatzzakrat"
+            ),
+            Event(
+                id = "2024-07-24-11",
                 time = LocalTime(17, 30),
-                name = "grill z MF Tau",
+                name = "mecz: Kapucyni vs reszta świata",
+                place = EventPlace.COURT,
+                type = EventType.OTHER,
+            ),
+            Event(
+                id = "2024-07-24-12",
+                time = LocalTime(17, 30),
+                name = "ognisko z MF Tau",
                 place = EventPlace.CAMPSITE,
                 type = EventType.MF_TAU,
             ),
             Event(
-                id = "2024-07-24-11",
+                id = "2024-07-24-13",
                 time = LocalTime(17, 30),
                 name = "kolacja",
                 place = EventPlace.CAMPSITE,
                 type = EventType.MEAL,
             ),
             Event(
-                id = "2024-07-24-12",
-                time = LocalTime(20, 30),
-                name = "nabożeństwo",
-                place = EventPlace.BIG_TENT,
-                type = EventType.DEVOTION
+                id = "2024-07-24-14",
+                time = LocalTime(18, 0),
+                name = "nieszpory",
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
-                id = "2024-07-24-13",
+                id = "2024-07-24-15",
+                time = LocalTime(20, 30),
+                name = "nabożeństwo",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.DEVOTION,
+            ),
+            Event(
+                id = "2024-07-24-16",
                 time = LocalTime(22, 0),
                 name = "podsumowanie dnia",
-                place = EventPlace.BIG_TENT,
-                type = EventType.PRAYER
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER,
             ),
         )
     ),
     ScheduleDay(
         date = LocalDate(dayOfMonth = 25, monthNumber = 7, year = 2024),
-        name = "radość",
+        name = "przeba\nczenie",
         events = mutableListOf(
             Event(
                 id = "2024-07-25-01",
                 time = LocalTime(7, 30),
                 name = "jutrznia",
-                place = EventPlace.CHURCH,
-                type = EventType.BREVIARY
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
                 id = "2024-07-25-02",
-                time = LocalTime(8, 0),
+                time = LocalTime(8, 15),
                 name = "śniadanie",
                 place = EventPlace.CAMPSITE,
-                type = EventType.MEAL
+                type = EventType.MEAL,
             ),
             Event(
                 id = "2024-07-25-03",
                 time = LocalTime(9, 0),
-                name = "rozgrzewka",
-                place = EventPlace.BIG_TENT,
-                type = EventType.MEAL
+                name = "modlitwa poranna",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER,
             ),
             Event(
                 id = "2024-07-25-04",
                 time = LocalTime(9, 30),
                 name = "konferencja",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.CONFERENCE,
-                guest = "ks. Kamil Sowada"
+                guest = "ks. Kamil Sowada",
             ),
             Event(
                 id = "2024-07-25-05",
                 time = LocalTime(10, 30),
                 name = "przygotowanie do Eucharystii",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
             ),
             Event(
                 id = "2024-07-25-06",
                 time = LocalTime(10, 45),
                 name = "Eucharystia",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
-                guest = "ks. Kamil Sowada"
+                guest = "ks. Kamil Sowada",
             ),
             Event(
                 id = "2024-07-25-07",
@@ -325,25 +383,41 @@ internal fun getBasicSchedule() = listOf(
             ),
             Event(
                 id = "2024-07-25-10",
-                time = LocalTime(17, 30),
+                time = LocalTime(16, 30),
+                name = "spotkanie z gościem",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.GUEST_TALK,
+                guest = "br. Marek Miszczyński",
+            ),
+            Event(
+                id = "2024-07-25-11",
+                time = LocalTime(18, 0),
                 name = "kolacja",
                 place = EventPlace.CAMPSITE,
                 type = EventType.MEAL,
             ),
             Event(
-                id = "2024-07-25-11",
-                time = LocalTime(19, 0),
-                name = "nabożeństwo + koncert",
-                place = EventPlace.BIG_TENT,
-                type = EventType.DEVOTION,
-                guest = "Anna Madej, br. Grzegorz Dziedzic i młodzież Wołczyna"
+                id = "2024-07-25-12",
+                time = LocalTime(18, 0),
+                name = "nieszpory",
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
-                id = "2024-07-25-12",
+                id = "2024-07-25-13",
+                time = LocalTime(19, 0),
+                name = "nabożeństwo + koncert",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.DEVOTION,
+                guest = "Anna Madej, br. Grzegorz Dziedzic i młodzież Wołczyna",
+                guestUrl = "https://www.instagram.com/madejan.ka",
+            ),
+            Event(
+                id = "2024-07-25-14",
                 time = LocalTime(21, 30),
                 name = "podsumowanie dnia",
-                place = EventPlace.BIG_TENT,
-                type = EventType.PRAYER
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER,
             ),
         )
     ),
@@ -353,53 +427,53 @@ internal fun getBasicSchedule() = listOf(
         events = mutableListOf(
             Event(
                 id = "2024-07-26-01",
-                time = LocalTime(7, 30),
+                time = LocalTime(7, 0),
                 name = "jutrznia",
-                place = EventPlace.CHURCH,
-                type = EventType.BREVIARY
+                place = EventPlace.WHITE_TENT,
+                type = EventType.BREVIARY,
             ),
             Event(
                 id = "2024-07-26-02",
                 time = LocalTime(8, 0),
                 name = "śniadanie",
                 place = EventPlace.CAMPSITE,
-                type = EventType.MEAL
+                type = EventType.MEAL,
             ),
             Event(
                 id = "2024-07-26-03",
                 time = LocalTime(9, 0),
-                name = "rozgrzewka",
-                place = EventPlace.BIG_TENT,
-                type = EventType.MEAL
+                name = "modlitwa poranna",
+                place = EventPlace.AMPHITHEATRE,
+                type = EventType.PRAYER,
             ),
             Event(
                 id = "2024-07-26-04",
                 time = LocalTime(9, 30),
                 name = "konferencja",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.CONFERENCE,
-                guest = "br. Paweł Frąckowiak OFMCap"
+                guest = "br. Paweł Frąckowiak"
             ),
             Event(
                 id = "2024-07-25-05",
                 time = LocalTime(10, 30),
                 name = "przygotowanie do Eucharystii",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
             ),
             Event(
                 id = "2024-07-26-06",
                 time = LocalTime(10, 45),
                 name = "Eucharystia",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.MASS,
-                guest = "br. Marek Miszczyński OFMCap"
+                guest = "br. Marek Miszczyński",
             ),
             Event(
                 id = "2024-07-26-07",
                 time = LocalTime(12, 0),
                 name = "rozesłanie",
-                place = EventPlace.BIG_TENT,
+                place = EventPlace.AMPHITHEATRE,
                 type = EventType.ORGANIZATION,
             ),
         )

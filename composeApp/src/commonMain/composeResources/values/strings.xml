@@ -18,7 +18,8 @@
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>
-    <string name="place_big_tent">duży namiot</string>
+    <string name="place_amphitheatre">amfiteatr</string>
+    <string name="place_white_tent">biały namiot</string>
     <string name="place_campsite">pole namiotowe</string>
     <string name="place_church">czerwony kościół</string>
     <string name="place_everywhere">wszędzie</string>
@@ -34,7 +35,7 @@
     <string name="type_workshops">Warsztaty</string>
     <string name="type_meal">Posiłek</string>
     <string name="type_breviary">Brewiarz</string>
-    <string name="type_extra">Dodatkowe</string>
+    <string name="type_guest_talk">Rozmowa z gościem</string>
     <string name="type_other">Inne</string>
     <string-array name="schedule_days">
         <item>Poniedziałek</item>

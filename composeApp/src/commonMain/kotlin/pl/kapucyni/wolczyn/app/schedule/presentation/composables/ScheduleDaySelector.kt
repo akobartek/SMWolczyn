@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -36,13 +37,13 @@ fun RowScope.ScheduleDaySelector(
     val contentColor by animateColorAsState(
         if (isSelected) MaterialTheme.colorScheme.onPrimary else appColorPrimary
     )
-    val height by animateDpAsState(if (isSelected) 104.dp else 90.dp)
+    val height by animateDpAsState(if (isSelected) 110.dp else 96.dp)
     val weight by animateFloatAsState(if (isSelected) 1.2f else 1f)
     val numberTextSize by animateIntAsState(if (isSelected) 32 else 22)
 
     Card(
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(53.dp),
+        shape = RoundedCornerShape(56.dp),
         onClick = onClick,
         modifier = Modifier
             .weight(weight)
@@ -65,9 +66,11 @@ fun RowScope.ScheduleDaySelector(
                 text = name,
                 textStyle = TextStyle(
                     fontSize = 16.sp,
+                    lineHeight = 16.sp,
                     fontWeight = FontWeight.Medium,
                     letterSpacing = (-1).sp,
                     color = contentColor,
+                    textAlign = TextAlign.Center,
                 ),
             )
         }

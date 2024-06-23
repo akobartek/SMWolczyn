@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -42,12 +42,13 @@ import smwolczyn.composeapp.generated.resources.ic_schedule_breviary
 import smwolczyn.composeapp.generated.resources.ic_schedule_kitchen
 import smwolczyn.composeapp.generated.resources.ic_schedule_map_pin
 import smwolczyn.composeapp.generated.resources.ic_schedule_song_book
-import smwolczyn.composeapp.generated.resources.place_big_tent
+import smwolczyn.composeapp.generated.resources.place_amphitheatre
 import smwolczyn.composeapp.generated.resources.place_campsite
 import smwolczyn.composeapp.generated.resources.place_church
 import smwolczyn.composeapp.generated.resources.place_court
 import smwolczyn.composeapp.generated.resources.place_everywhere
 import smwolczyn.composeapp.generated.resources.place_unknown
+import smwolczyn.composeapp.generated.resources.place_white_tent
 
 @Composable
 fun EventCard(
@@ -55,8 +56,9 @@ fun EventCard(
     filledCircle: Boolean,
     hideTime: Boolean,
     isLast: Boolean,
-    onIconClick: (HomeTileType) -> Unit
+    onNavClick: (HomeTileType) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
     var cardHeight by remember { mutableStateOf(0) }
     val cardHeightDp = with(LocalDensity.current) { cardHeight.toDp() }
 
@@ -85,6 +87,17 @@ fun EventCard(
             colors = CardDefaults.cardColors(
                 containerColor = appColorSecondary
             ),
+            onClick = {
+                when (event.type) {
+                    EventType.MASS -> onNavClick(HomeTileType.SONG_BOOK)
+                    EventType.MEAL -> onNavClick(HomeTileType.KITCHEN)
+                    EventType.BREVIARY -> onNavClick(HomeTileType.BREVIARY)
+                    else -> {
+                        if (!event.guestUrl.isNullOrBlank())
+                            uriHandler.openUri(event.guestUrl)
+                    }
+                }
+            },
             shape = RoundedCornerShape(14.dp),
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -125,7 +138,8 @@ fun EventCard(
                         )
                         WidthSpacer(2.dp)
                         when (event.place) {
-                            EventPlace.BIG_TENT -> Res.string.place_big_tent
+                            EventPlace.AMPHITHEATRE -> Res.string.place_amphitheatre
+                            EventPlace.WHITE_TENT -> Res.string.place_white_tent
                             EventPlace.CAMPSITE -> Res.string.place_campsite
                             EventPlace.CHURCH -> Res.string.place_church
                             EventPlace.EVERYWHERE -> Res.string.place_everywhere
@@ -148,39 +162,23 @@ fun EventCard(
                     EventType.CONCERT,
                     EventType.DEVOTION,
                     EventType.ORGANIZATION,
+                    EventType.GROUPS,
+                    EventType.WORKSHOPS,
                     EventType.PRAYER,
                     EventType.MF_TAU,
-                    EventType.OTHER -> {
-                        null
-                    }
+                    EventType.GUEST_TALK,
+                    EventType.OTHER -> null
 
-                    EventType.MASS ->
-                        Pair(HomeTileType.SONG_BOOK, Res.drawable.ic_schedule_song_book)
-
-                    EventType.MEAL ->
-                        Pair(HomeTileType.KITCHEN, Res.drawable.ic_schedule_kitchen)
-
-                    EventType.BREVIARY ->
-                        Pair(HomeTileType.BREVIARY, Res.drawable.ic_schedule_breviary)
-
-                    EventType.GROUPS -> {
-//                        TODO()
-                        null
-                    }
-
-                    EventType.WORKSHOPS -> {
-//                        TODO()
-                        null
-                    }
-                }?.let { (tileType, drawable) ->
-                    IconButton(onClick = { onIconClick(tileType) }) {
-                        Icon(
-                            painter = painterResource(drawable),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondary,
-                            modifier = Modifier.size(34.dp)
-                        )
-                    }
+                    EventType.MASS -> Res.drawable.ic_schedule_song_book
+                    EventType.MEAL -> Res.drawable.ic_schedule_kitchen
+                    EventType.BREVIARY -> Res.drawable.ic_schedule_breviary
+                }?.let { drawable ->
+                    Icon(
+                        painter = painterResource(drawable),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondary,
+                        modifier = Modifier.size(34.dp)
+                    )
                 }
             }
         }

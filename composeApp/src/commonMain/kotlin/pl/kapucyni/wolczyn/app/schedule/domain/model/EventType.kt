@@ -12,5 +12,6 @@ enum class EventType {
     BREVIARY,
     PRAYER,
     MF_TAU,
+    GUEST_TALK,
     OTHER
 }

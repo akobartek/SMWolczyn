@@ -10,5 +10,5 @@ val songBookModule = module {
     single<SongBookRepository> { WolczynSongBookRepository() }
     single { FilterSongsUseCase(get()) }
 
-    single { SongBookViewModel(get()) }
+    factory { SongBookViewModel(get()) }
 }

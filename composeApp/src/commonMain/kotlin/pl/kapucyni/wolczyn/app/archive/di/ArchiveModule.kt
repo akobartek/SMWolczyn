@@ -13,6 +13,6 @@ val archiveModule = module {
     single { GetArchiveUseCase(get()) }
     single { GetArchiveMeetingByNumberUseCase(get()) }
 
-    single { ArchiveViewModel(get()) }
+    factory { ArchiveViewModel(get()) }
     factory { ArchiveMeetingViewModel(get()) }
 }
