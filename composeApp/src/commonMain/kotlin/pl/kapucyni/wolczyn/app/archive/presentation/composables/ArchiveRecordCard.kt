@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,8 +22,11 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 
 @Composable
 fun ArchiveRecordCard(record: ArchiveRecord) {
+    val uriHandler = LocalUriHandler.current
+
     Card(
         shape = RoundedCornerShape(4.dp),
+        onClick = { uriHandler.openUri(record.videoUrl) },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         ),
