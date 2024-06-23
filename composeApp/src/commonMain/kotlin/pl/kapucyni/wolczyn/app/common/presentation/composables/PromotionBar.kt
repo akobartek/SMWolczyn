@@ -37,7 +37,10 @@ fun PromotionBar(
             )
             WolczynText(
                 text = name,
-                textStyle = TextStyle(fontWeight = FontWeight.Medium),
+                textStyle = TextStyle(
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                ),
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 6.dp)
