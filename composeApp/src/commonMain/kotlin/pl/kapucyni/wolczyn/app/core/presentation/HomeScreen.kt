@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
+import pl.kapucyni.wolczyn.app.core.presentation.composables.AdminAccessDialog
 import pl.kapucyni.wolczyn.app.core.presentation.composables.HomeTileList
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.home_title
@@ -26,6 +28,7 @@ fun HomeScreen(onTileClick: (HomeTileType) -> Unit) {
     var screenWidth by remember { mutableStateOf(0) }
     val screenWidthDp = with(LocalDensity.current) { screenWidth.toDp() }
     val columns = (screenWidthDp.value / 360).toInt().coerceIn(1, 3)
+    var adminAccessDialogVisible by rememberSaveable { mutableStateOf(false) }
 
     ScreenLayout(
         title = stringResource(Res.string.home_title),
@@ -39,8 +42,22 @@ fun HomeScreen(onTileClick: (HomeTileType) -> Unit) {
         ) {
             HomeTileList(
                 columns = columns,
-                onTileClick = onTileClick,
+                onTileClick = {
+                    when (it) {
+                        HomeTileType.WEATHER -> adminAccessDialogVisible = true
+                        else -> onTileClick(it)
+                    }
+                },
             )
         }
     }
+
+    AdminAccessDialog(
+        isVisible = adminAccessDialogVisible,
+        onAccess = {
+            adminAccessDialogVisible = false
+            onTileClick(HomeTileType.WEATHER)
+        },
+        onCancel = { adminAccessDialogVisible = false }
+    )
 }

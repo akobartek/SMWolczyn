@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,6 +12,16 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.buildconfig)
+}
+
+buildConfig {
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
+    val apiKey = properties.getProperty("kapucyni_api_key") ?: ""
+    val password = properties.getProperty("admin_password") ?: ""
+    buildConfigField<String>(name = "KAPUCYNI_API_KEY", value = apiKey)
+    buildConfigField<String>(name = "ADMIN_PASSWORD", value = password)
 }
 
 kotlin {

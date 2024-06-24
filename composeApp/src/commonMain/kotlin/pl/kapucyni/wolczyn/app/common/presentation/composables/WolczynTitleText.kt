@@ -24,7 +24,7 @@ fun WolczynTitleText(
         style = TextStyle(
             color = color,
             fontWeight = FontWeight.Bold,
-            fontSize = 28.sp,
+            fontSize = 26.sp,
             textAlign = textAlign
         ),
         modifier = modifier

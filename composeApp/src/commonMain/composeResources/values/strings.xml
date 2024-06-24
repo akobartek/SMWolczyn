@@ -1,16 +1,21 @@
 <resources>
     <!-- BASIC STRINGS -->
-    <string name="home_title">Pokój i Dobro!</string>
     <string name="empty"> </string>
     <string name="cd_navigate_up">Cofnij na poprzedni ekran</string>
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
+    <string name="sign_in">Zaloguj</string>
     <string name="no_internet_title">Brak Internetu</string>
     <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
     <string name="try_again">Spróbuj</string>
     <string name="load">Załaduj</string>
+    <string name="restricted_access">Ograniczony dostęp</string>
+    <string name="password">Hasło</string>
+    <string name="admin_password_error">Wprowadzono złe hasło</string>
+    <string name="cd_clear_field">Wyczyść pole</string>
 
     <!-- HOME SCREEN STRINGS -->
+    <string name="home_title">Pokój i Dobro!</string>
     <string name="schedule_title">Plan\nspotkania</string>
     <string name="song_book_title">Śpiewnik</string>
     <string name="kitchen_title">Kuchnia\nWasyla</string>

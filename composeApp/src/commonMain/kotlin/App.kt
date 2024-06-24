@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
+import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.di.archiveModule
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
@@ -54,6 +55,7 @@ fun App() {
     }) {
         AppTheme {
             val navController = rememberNavController()
+
             Scaffold { innerPadding ->
                 NavHost(
                     navController = navController,
@@ -63,6 +65,11 @@ fun App() {
                 ) {
                     composable(Screen.Home.route) {
                         HomeScreen(onTileClick = { navController.navigateSafely(it.navRoute) })
+                    }
+                    composable(Screen.Admin.route) {
+                        AdminScreen(
+                            onBackPressed = { navController.navigateUpSafely(Screen.Admin.route) }
+                        )
                     }
                     composable(Screen.Schedule.route) {
                         ScheduleScreen(

@@ -3,13 +3,18 @@ package pl.kapucyni.wolczyn.app.weather.presentation.composables
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
@@ -23,6 +28,7 @@ import smwolczyn.composeapp.generated.resources.weather_title
 @Composable
 fun WeatherHomeTile(
     backgroundColor: Color,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     weatherViewModel: WeatherViewModel = koinInject()
 ) {
@@ -30,6 +36,7 @@ fun WeatherHomeTile(
     WeatherHomeTileContent(
         backgroundColor = backgroundColor,
         weather = weather,
+        onClick = onClick,
         modifier = modifier
     )
 }
@@ -38,8 +45,25 @@ fun WeatherHomeTile(
 fun WeatherHomeTileContent(
     backgroundColor: Color,
     weather: Weather?,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var counter by rememberSaveable { mutableStateOf(0) }
+
+    LaunchedEffect(counter) {
+        when (counter) {
+            0 -> return@LaunchedEffect
+            5 -> {
+                counter = 0
+                onClick()
+            }
+            else -> {
+                delay(500)
+                counter = 0
+            }
+        }
+    }
+
     HomeTile(
         nameRes = Res.string.weather_title,
         nameAlignment = Alignment.TopEnd,
@@ -54,7 +78,7 @@ fun WeatherHomeTileContent(
                 modifier = Modifier.padding(start = 10.dp)
             )
         },
-        onClick = { },
+        onClick = { counter++ },
         additionalContent = {
             weather?.let { WeatherContent(it) }
         },

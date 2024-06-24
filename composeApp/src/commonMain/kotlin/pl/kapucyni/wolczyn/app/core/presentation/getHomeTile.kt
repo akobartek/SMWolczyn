@@ -27,7 +27,7 @@ fun getHomeTile(
         KITCHEN -> KitchenHomeTile(backgroundColor, onClick, modifier)
         SHOP -> ShopHomeTile(backgroundColor, onClick, modifier)
         DECALOGUE -> DecalogueHomeTile(backgroundColor, onClick, modifier)
-        WEATHER -> WeatherHomeTile(backgroundColor, modifier)
+        WEATHER -> WeatherHomeTile(backgroundColor, onClick, modifier)
         BREVIARY -> BreviaryHomeTile(backgroundColor, onClick, modifier)
         ARCHIVE -> ArchiveHomeTile(backgroundColor, onClick, modifier)
     }

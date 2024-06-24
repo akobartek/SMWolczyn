@@ -28,7 +28,7 @@ fun ScreenHeader(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 20.dp)
+            .padding(vertical = 16.dp)
     ) {
         onBackPressed?.let {
             IconButton(onClick = it) {
