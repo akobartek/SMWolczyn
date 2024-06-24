@@ -5,6 +5,10 @@
     <string name="cd_navigate_up">Cofnij na poprzedni ekran</string>
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
+    <string name="no_internet_title">Brak Internetu</string>
+    <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
+    <string name="try_again">Spróbuj</string>
+    <string name="load">Załaduj</string>
 
     <!-- HOME SCREEN STRINGS -->
     <string name="schedule_title">Plan\nspotkania</string>
@@ -74,6 +78,23 @@
         <item>Przestrzegam ciszy nocnej, która obowiązuje od godziny wskazanej przez organizatorów.</item>
         <item>Niezachowanie punktów 6–8 skutkuje wykluczeniem z grona uczestników Spotkania.</item>
         <item>Akceptuję inne postanowienia pełnego regulaminu.</item>
+    </string-array>
+
+    <!-- BREVIARY STRINGS -->
+    <string name="breviary_yesterday">Wczorajszy brewiarz</string>
+    <string name="breviary_today">Dzisiejszy brewiarz</string>
+    <string name="breviary_tomorrow">Jutrzejszy brewiarz</string>
+    <string name="select_office">Wybierz Oficjum</string>
+    <string name="breviary_copyright">Teksty Liturgii Godzin:\n© Copyright by Konferencja Episkopatu Polski i Wydawnictwo Pallottinum</string>
+    <string-array name="breviary_list">
+        <item>Wezwanie</item>
+        <item>Godzina Czytań</item>
+        <item>Jutrznia</item>
+        <item>Modlitwa przedpołudniowa</item>
+        <item>Modlitwa południowa</item>
+        <item>Modlitwa popołudniowa</item>
+        <item>Nieszpory</item>
+        <item>Kompleta</item>
     </string-array>
 
     <!-- ARCHIVE STRINGS -->

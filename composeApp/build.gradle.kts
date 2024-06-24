@@ -55,7 +55,6 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.ksoup)
-            implementation(libs.ksoup.network)
 
             implementation(libs.firebase.gitlive.crashlytics)
             implementation(libs.firebase.gitlive.firestore)

@@ -1,7 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.presentation
 
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARCHIVE_ROUTE
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.BREVIARY_ROUTE
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.BREVIARY_SELECT_ROUTE
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.DECALOGUE_ROUTE
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.KITCHEN_ROUTE
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.SCHEDULE_ROUTE
@@ -17,6 +17,6 @@ enum class HomeTileType(val navRoute: String) {
     SHOP(SHOP_ROUTE),
     DECALOGUE(DECALOGUE_ROUTE),
     WEATHER(WEATHER_ROUTE),
-    BREVIARY(BREVIARY_ROUTE),
+    BREVIARY(BREVIARY_SELECT_ROUTE),
     ARCHIVE(ARCHIVE_ROUTE)
 }

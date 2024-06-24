@@ -14,6 +14,9 @@ import org.koin.compose.KoinApplication
 import pl.kapucyni.wolczyn.app.archive.di.archiveModule
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
+import pl.kapucyni.wolczyn.app.breviary.di.breviaryModule
+import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySelectScreen
+import pl.kapucyni.wolczyn.app.breviary.presentation.BreviaryTextScreen
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.schedule.di.scheduleModule
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
@@ -21,6 +24,8 @@ import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BREVIARY_DATE
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BREVIARY_POSITION
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_MEETING_NUMBER
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_PRODUCT_ID
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
@@ -43,7 +48,8 @@ fun App() {
             kitchenModule,
             shopModule,
             weatherModule,
-            archiveModule
+            breviaryModule,
+            archiveModule,
         )
     }) {
         AppTheme {
@@ -84,6 +90,7 @@ fun App() {
                     }
                     composable(Screen.ShopProduct.route) {
                         val productId = it.arguments?.getString(ARGUMENT_PRODUCT_ID)
+
                         ShopProductScreen(
                             productId = productId,
                             onBackPressed = { navController.navigateUpSafely(Screen.ShopProduct.route) }
@@ -94,8 +101,31 @@ fun App() {
                             onBackPressed = { navController.navigateUpSafely(Screen.Decalogue.route) }
                         )
                     }
-                    composable(Screen.Breviary.route) {
-                        // TODO()
+                    composable(Screen.BreviarySelect.route) {
+                        BreviarySelectScreen(
+                            onBackPressed = { navController.navigateUpSafely(Screen.BreviarySelect.route) },
+                            onSelected = { position, date ->
+                                navController.navigateSafely(
+                                    Screen.BreviaryText.breviaryTextRoute(position, date)
+                                )
+                            }
+                        )
+                    }
+                    composable(
+                        route = Screen.BreviaryText.route,
+                        arguments = listOf(
+                            navArgument(ARGUMENT_BREVIARY_POSITION) { type = NavType.IntType },
+                            navArgument(ARGUMENT_BREVIARY_DATE) { type = NavType.StringType }
+                        )
+                    ) {
+                        val position = it.arguments?.getInt(ARGUMENT_BREVIARY_POSITION) ?: 0
+                        val date = it.arguments?.getString(ARGUMENT_BREVIARY_DATE) ?: ""
+
+                        BreviaryTextScreen(
+                            onBackPressed = { navController.navigateUpSafely(Screen.BreviaryText.route) },
+                            position = position,
+                            date = date
+                        )
                     }
                     composable(Screen.Archive.route) {
                         ArchiveScreen(
@@ -111,6 +141,7 @@ fun App() {
                         listOf(navArgument(ARGUMENT_MEETING_NUMBER) { type = NavType.IntType })
                     ) {
                         val meetingNumber = it.arguments?.getInt(ARGUMENT_MEETING_NUMBER) ?: 0
+
                         ArchiveMeetingScreen(
                             onBackPressed = { navController.navigateUpSafely(Screen.ArchiveMeeting.route) },
                             meetingNumber = meetingNumber
