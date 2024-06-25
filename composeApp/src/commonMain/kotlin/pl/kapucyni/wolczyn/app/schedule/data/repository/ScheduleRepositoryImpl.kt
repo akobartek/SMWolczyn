@@ -2,15 +2,18 @@ package pl.kapucyni.wolczyn.app.schedule.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import pl.kapucyni.wolczyn.app.schedule.data.sources.getFirestoreSchedule
-import pl.kapucyni.wolczyn.app.schedule.data.sources.getBasicSchedule
+import pl.kapucyni.wolczyn.app.schedule.data.sources.BasicScheduleSource
+import pl.kapucyni.wolczyn.app.schedule.data.sources.FirestoreScheduleSource
 import pl.kapucyni.wolczyn.app.schedule.domain.model.ScheduleDay
 import pl.kapucyni.wolczyn.app.schedule.domain.repository.ScheduleRepository
 
-class ScheduleRepositoryImpl : ScheduleRepository {
+class ScheduleRepositoryImpl(
+    private val firestoreSource: FirestoreScheduleSource,
+    private val basicSource: BasicScheduleSource
+) : ScheduleRepository {
     override fun getSchedule(): Flow<List<ScheduleDay>> =
-        getFirestoreSchedule().map { firestoreEvents ->
-            val schedule = getBasicSchedule()
+        firestoreSource.getFirestoreSchedule().map { firestoreEvents ->
+            val schedule = basicSource.getBasicSchedule()
             firestoreEvents.forEach { event ->
                 var eventIndex = -1
                 schedule.indexOfFirst { day ->

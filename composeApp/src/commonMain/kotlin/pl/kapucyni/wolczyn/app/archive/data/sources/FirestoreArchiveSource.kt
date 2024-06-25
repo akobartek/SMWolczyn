@@ -7,15 +7,19 @@ import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionByField
 
-private const val ARCHIVE_COLLECTION = "archive"
-private const val ARCHIVE_NUMBER_FIELD = "number"
+class FirestoreArchiveSource {
+    companion object {
+        private const val ARCHIVE_COLLECTION = "archive"
+        private const val ARCHIVE_NUMBER_FIELD = "number"
+    }
 
-internal fun getFirestoreArchive(): Flow<List<ArchiveMeeting>> =
-    Firebase.firestore.getFirestoreCollection(ARCHIVE_COLLECTION)
+    fun getFirestoreArchive(): Flow<List<ArchiveMeeting>> =
+        Firebase.firestore.getFirestoreCollection(ARCHIVE_COLLECTION)
 
-internal fun getFirestoreArchiveMeetingByNumber(number: Int): Flow<ArchiveMeeting?> =
-    Firebase.firestore.getFirestoreCollectionByField(
-        collectionName = ARCHIVE_COLLECTION,
-        fieldName = ARCHIVE_NUMBER_FIELD,
-        fieldValue = number
-    )
+    fun getFirestoreArchiveMeetingByNumber(number: Int): Flow<ArchiveMeeting?> =
+        Firebase.firestore.getFirestoreCollectionByField(
+            collectionName = ARCHIVE_COLLECTION,
+            fieldName = ARCHIVE_NUMBER_FIELD,
+            fieldValue = number
+        )
+}

@@ -6,7 +6,12 @@ import kotlinx.coroutines.flow.Flow
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.schedule.data.model.FirestoreEvent
 
-private const val SCHEDULE_COLLECTION = "schedule"
+class FirestoreScheduleSource {
 
-internal fun getFirestoreSchedule(): Flow<List<FirestoreEvent>> =
-    Firebase.firestore.getFirestoreCollection(SCHEDULE_COLLECTION)
+    companion object {
+        private const val SCHEDULE_COLLECTION = "schedule"
+    }
+
+    fun getFirestoreSchedule(): Flow<List<FirestoreEvent>> =
+        Firebase.firestore.getFirestoreCollection(SCHEDULE_COLLECTION)
+}

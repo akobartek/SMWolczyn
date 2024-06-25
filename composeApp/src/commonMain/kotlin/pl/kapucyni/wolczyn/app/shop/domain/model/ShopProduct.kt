@@ -5,5 +5,5 @@ data class ShopProduct(
     val name: String = "",
     val photosUrls: Map<ProductColor, List<String>> = mapOf(),
     val sizes: String = "",
-    val available: Boolean = true,
+    val isAvailable: Boolean = true,
 )
