@@ -2,15 +2,17 @@ package pl.kapucyni.wolczyn.app.archive.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import pl.kapucyni.wolczyn.app.archive.data.sources.getFirestoreArchive
-import pl.kapucyni.wolczyn.app.archive.data.sources.getFirestoreArchiveMeetingByNumber
+import pl.kapucyni.wolczyn.app.archive.data.sources.FirestoreArchiveSource
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.archive.domain.repository.ArchiveRepository
 
-class ArchiveRepositoryImpl : ArchiveRepository {
+class ArchiveRepositoryImpl(
+    private val firestoreSource: FirestoreArchiveSource,
+) : ArchiveRepository {
     override fun getArchive(): Flow<List<ArchiveMeeting>> =
-        getFirestoreArchive().map { meetings -> meetings.sortedByDescending { it.number } }
+        firestoreSource.getFirestoreArchive()
+            .map { meetings -> meetings.sortedByDescending { it.number } }
 
     override fun getMeetingByNumber(number: Int): Flow<ArchiveMeeting?> =
-        getFirestoreArchiveMeetingByNumber(number)
+        firestoreSource.getFirestoreArchiveMeetingByNumber(number)
 }
