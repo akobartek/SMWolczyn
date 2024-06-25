@@ -5,6 +5,4 @@ import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu
 
 interface KitchenRepository {
     fun getKitchenMenu(): Flow<KitchenMenu>
-
-    fun getPromotionsCount(): Flow<Int>
 }

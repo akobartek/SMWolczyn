@@ -13,11 +13,6 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollection(collectionName: 
             querySnapshot.documents.map { it.data() }
         }
 
-fun FirebaseFirestore.getFirestoreCollectionCount(collectionName: String): Flow<Int> =
-    this.collection(collectionName)
-        .snapshots
-        .map { it.documents.size }
-
 inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
     collectionName: String,
     fieldName: String,

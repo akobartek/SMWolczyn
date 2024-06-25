@@ -2,18 +2,19 @@ package pl.kapucyni.wolczyn.app.kitchen.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import pl.kapucyni.wolczyn.app.kitchen.data.sources.getBasicMenu
-import pl.kapucyni.wolczyn.app.kitchen.data.sources.getFirestoreKitchenMenu
-import pl.kapucyni.wolczyn.app.kitchen.data.sources.getFirestoreKitchenPromotions
-import pl.kapucyni.wolczyn.app.kitchen.data.sources.getNumberOfPromotions
+import pl.kapucyni.wolczyn.app.kitchen.data.sources.BasicKitchenSource
+import pl.kapucyni.wolczyn.app.kitchen.data.sources.FirestoreKitchenSource
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu
 import pl.kapucyni.wolczyn.app.kitchen.domain.repository.KitchenRepository
 
-class KitchenRepositoryImpl : KitchenRepository {
+class KitchenRepositoryImpl(
+    private val firestoreSource: FirestoreKitchenSource,
+    private val basicSource: BasicKitchenSource,
+) : KitchenRepository {
     override fun getKitchenMenu(): Flow<KitchenMenu> =
-        getFirestoreKitchenMenu()
-            .combine(getFirestoreKitchenPromotions()) { menu, promotions ->
-                if (menu.isEmpty()) getBasicMenu()
+        firestoreSource.getFirestoreKitchenMenu()
+            .combine(firestoreSource.getFirestoreKitchenPromotions()) { menu, promotions ->
+                if (menu.isEmpty()) basicSource.getBasicMenu()
                 else {
                     val menuMap = menu
                         .filter { it.isAvailable }
@@ -26,6 +27,4 @@ class KitchenRepositoryImpl : KitchenRepository {
                     )
                 }
             }
-
-    override fun getPromotionsCount(): Flow<Int> = getNumberOfPromotions()
 }

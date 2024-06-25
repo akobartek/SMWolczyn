@@ -54,6 +54,14 @@
         <item>Piątek</item>
     </string-array>
 
+    <!-- ADMIN STRINGS -->
+    <string name="app_data">Dane aplikacji</string>
+    <string name="kitchen">Kuchnia</string>
+    <string name="shop">Sklepik</string>
+    <string name="promotions">Promocje</string>
+    <string name="quiz">Quiz</string>
+    <string name="shop_products">Produkty</string>
+
     <!-- SONG BOOK STRINGS -->
     <string name="search">Szukaj</string>
     <string name="empty_search_list">Nie znaleziono żadnej pieśni z podanym wyrażaniem!</string>
