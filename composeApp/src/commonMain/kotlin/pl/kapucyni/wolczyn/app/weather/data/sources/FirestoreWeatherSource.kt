@@ -11,7 +11,7 @@ class FirestoreWeatherSource {
         private const val WEATHER_DOCUMENT = "current"
     }
 
-    fun getFirestoreWeather() =
+    fun getWeather() =
         Firebase.firestore.getFirestoreDocument<Weather>(
             collectionName = WEATHER_COLLECTION,
             documentName = WEATHER_DOCUMENT

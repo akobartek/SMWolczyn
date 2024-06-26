@@ -53,8 +53,8 @@ private val oneColumn = arrayOf(
     arrayOf(SONG_BOOK),
     arrayOf(KITCHEN),
     arrayOf(SHOP),
-    arrayOf(DECALOGUE),
     arrayOf(WEATHER),
+    arrayOf(DECALOGUE),
     arrayOf(BREVIARY),
     arrayOf(ARCHIVE)
 )
@@ -62,12 +62,12 @@ private val oneColumn = arrayOf(
 private val twoColumns = arrayOf(
     arrayOf(SCHEDULE, SONG_BOOK),
     arrayOf(KITCHEN, SHOP),
-    arrayOf(DECALOGUE, WEATHER),
-    arrayOf(BREVIARY, ARCHIVE)
+    arrayOf(BREVIARY, WEATHER),
+    arrayOf(DECALOGUE, ARCHIVE)
 )
 
 private val threeColumns = arrayOf(
-    arrayOf(SCHEDULE, SONG_BOOK, KITCHEN),
-    arrayOf(SHOP, DECALOGUE, WEATHER),
-    arrayOf(BREVIARY, ARCHIVE)
+    arrayOf(SCHEDULE, SONG_BOOK, BREVIARY),
+    arrayOf(SHOP, KITCHEN, WEATHER),
+    arrayOf(DECALOGUE, ARCHIVE)
 )

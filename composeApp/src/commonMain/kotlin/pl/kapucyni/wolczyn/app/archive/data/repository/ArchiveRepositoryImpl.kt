@@ -9,10 +9,11 @@ import pl.kapucyni.wolczyn.app.archive.domain.repository.ArchiveRepository
 class ArchiveRepositoryImpl(
     private val firestoreSource: FirestoreArchiveSource,
 ) : ArchiveRepository {
+
     override fun getArchive(): Flow<List<ArchiveMeeting>> =
-        firestoreSource.getFirestoreArchive()
+        firestoreSource.getArchive()
             .map { meetings -> meetings.sortedByDescending { it.number } }
 
     override fun getMeetingByNumber(number: Int): Flow<ArchiveMeeting?> =
-        firestoreSource.getFirestoreArchiveMeetingByNumber(number)
+        firestoreSource.getArchiveMeetingByNumber(number)
 }

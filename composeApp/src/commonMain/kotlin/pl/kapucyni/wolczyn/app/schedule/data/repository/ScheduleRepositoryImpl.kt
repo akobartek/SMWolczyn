@@ -12,7 +12,7 @@ class ScheduleRepositoryImpl(
     private val basicSource: BasicScheduleSource
 ) : ScheduleRepository {
     override fun getSchedule(): Flow<List<ScheduleDay>> =
-        firestoreSource.getFirestoreSchedule().map { firestoreEvents ->
+        firestoreSource.getSchedule().map { firestoreEvents ->
             val schedule = basicSource.getBasicSchedule()
             firestoreEvents.forEach { event ->
                 var eventIndex = -1

@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.utils
 
 import java.text.Normalizer
+import java.util.UUID
 
 actual fun String.normalizeMultiplatform(): String {
     val regex = Regex("[^A-Za-z0-9 ]")
@@ -9,3 +10,5 @@ actual fun String.normalizeMultiplatform(): String {
         .replace(regex, "")
         .lowercase()
 }
+
+actual fun randomUUID(): String = UUID.randomUUID().toString()

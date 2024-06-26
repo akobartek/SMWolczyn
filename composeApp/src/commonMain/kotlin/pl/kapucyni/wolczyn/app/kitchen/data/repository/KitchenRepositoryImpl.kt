@@ -12,8 +12,8 @@ class KitchenRepositoryImpl(
     private val basicSource: BasicKitchenSource,
 ) : KitchenRepository {
     override fun getKitchenMenu(): Flow<KitchenMenu> =
-        firestoreSource.getFirestoreKitchenMenu()
-            .combine(firestoreSource.getFirestoreKitchenPromotions()) { menu, promotions ->
+        firestoreSource.getKitchenMenu()
+            .combine(firestoreSource.getKitchenPromotions()) { menu, promotions ->
                 if (menu.isEmpty()) basicSource.getBasicMenu()
                 else {
                     val menuMap = menu

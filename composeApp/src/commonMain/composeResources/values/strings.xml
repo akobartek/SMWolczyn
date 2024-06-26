@@ -5,6 +5,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
     <string name="sign_in">Zaloguj</string>
+    <string name="save">Zapisz</string>
     <string name="no_internet_title">Brak Internetu</string>
     <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
     <string name="try_again">Spróbuj</string>
@@ -13,6 +14,7 @@
     <string name="password">Hasło</string>
     <string name="admin_password_error">Wprowadzono złe hasło</string>
     <string name="cd_clear_field">Wyczyść pole</string>
+    <string name="cd_close_dialog">Zamknij okno</string>
 
     <!-- HOME SCREEN STRINGS -->
     <string name="home_title">Pokój i Dobro!</string>
@@ -61,6 +63,10 @@
     <string name="promotions">Promocje</string>
     <string name="quiz">Quiz</string>
     <string name="shop_products">Produkty</string>
+    <string name="kitchen_promos_title">Kuchnia - promocje</string>
+    <string name="shop_promos_title">Sklepik - promocje</string>
+    <string name="new_promo_name">Nowa promocja</string>
+    <string name="cd_save_promotion">Zapisz promocję</string>
 
     <!-- SONG BOOK STRINGS -->
     <string name="search">Szukaj</string>

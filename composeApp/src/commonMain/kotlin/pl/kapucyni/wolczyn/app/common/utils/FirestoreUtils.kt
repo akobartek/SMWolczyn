@@ -35,3 +35,20 @@ inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
         .document(documentName)
         .snapshots
         .map { it.data() }
+
+suspend inline fun <reified T> FirebaseFirestore.saveObject(
+    collectionName: String,
+    id: String,
+    data: T
+) =
+    this.collection(collectionName)
+        .document(id)
+        .set(data)
+
+suspend inline fun FirebaseFirestore.deleteObject(
+    collectionName: String,
+    id: String,
+) =
+    this.collection(collectionName)
+        .document(id)
+        .delete()

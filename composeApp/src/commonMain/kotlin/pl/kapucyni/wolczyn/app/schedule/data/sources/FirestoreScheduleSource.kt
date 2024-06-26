@@ -12,6 +12,6 @@ class FirestoreScheduleSource {
         private const val SCHEDULE_COLLECTION = "schedule"
     }
 
-    fun getFirestoreSchedule(): Flow<List<FirestoreEvent>> =
+    fun getSchedule(): Flow<List<FirestoreEvent>> =
         Firebase.firestore.getFirestoreCollection(SCHEDULE_COLLECTION)
 }

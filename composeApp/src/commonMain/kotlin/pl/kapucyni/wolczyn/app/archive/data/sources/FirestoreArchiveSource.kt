@@ -13,10 +13,10 @@ class FirestoreArchiveSource {
         private const val ARCHIVE_NUMBER_FIELD = "number"
     }
 
-    fun getFirestoreArchive(): Flow<List<ArchiveMeeting>> =
+    fun getArchive(): Flow<List<ArchiveMeeting>> =
         Firebase.firestore.getFirestoreCollection(ARCHIVE_COLLECTION)
 
-    fun getFirestoreArchiveMeetingByNumber(number: Int): Flow<ArchiveMeeting?> =
+    fun getArchiveMeetingByNumber(number: Int): Flow<ArchiveMeeting?> =
         Firebase.firestore.getFirestoreCollectionByField(
             collectionName = ARCHIVE_COLLECTION,
             fieldName = ARCHIVE_NUMBER_FIELD,

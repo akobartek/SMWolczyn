@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.utils
 
 import platform.Foundation.NSString
+import platform.Foundation.NSUUID
 import platform.Foundation.decomposedStringWithCompatibilityMapping
 
 actual fun String.normalizeMultiplatform(): String {
@@ -12,3 +13,5 @@ actual fun String.normalizeMultiplatform(): String {
         .replace(regex, "")
         .lowercase()
 }
+
+actual fun randomUUID(): String = NSUUID().UUIDString()

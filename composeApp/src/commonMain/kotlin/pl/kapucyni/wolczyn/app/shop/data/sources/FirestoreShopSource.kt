@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.kitchen.data.sources
+package pl.kapucyni.wolczyn.app.shop.data.sources
 
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
@@ -7,33 +7,30 @@ import pl.kapucyni.wolczyn.app.common.data.model.FirestorePromotion
 import pl.kapucyni.wolczyn.app.common.utils.deleteObject
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
-import pl.kapucyni.wolczyn.app.kitchen.data.model.FirestoreMenuItem
+import pl.kapucyni.wolczyn.app.shop.data.model.FirestoreShopProduct
 
-class FirestoreKitchenSource {
-
+class FirestoreShopSource {
     companion object {
-        private const val KITCHEN_MENU_COLLECTION = "kitchen_menu"
-        private const val KITCHEN_PROMOTIONS_COLLECTION = "kitchen_promotions"
+        private const val SHOP_PRODUCTS_COLLECTION = "shop_products"
+        private const val SHOP_PROMOTIONS_COLLECTION = "shop_promotions"
     }
 
-    fun getKitchenMenu(): Flow<List<FirestoreMenuItem>> =
-        Firebase.firestore.getFirestoreCollection(KITCHEN_MENU_COLLECTION)
+    fun getShopProducts(): Flow<List<FirestoreShopProduct>> =
+        Firebase.firestore.getFirestoreCollection(SHOP_PRODUCTS_COLLECTION)
 
-    fun getKitchenPromotions(): Flow<List<FirestorePromotion>> =
-        Firebase.firestore.getFirestoreCollection(KITCHEN_PROMOTIONS_COLLECTION)
+    fun getShopPromotions(): Flow<List<FirestorePromotion>> =
+        Firebase.firestore.getFirestoreCollection(SHOP_PROMOTIONS_COLLECTION)
 
     suspend fun savePromotion(promotion: FirestorePromotion) =
         Firebase.firestore.saveObject(
-            collectionName = KITCHEN_PROMOTIONS_COLLECTION,
+            collectionName = SHOP_PROMOTIONS_COLLECTION,
             id = promotion.id,
             data = promotion
         )
 
     suspend fun deletePromotion(promoId: String) =
         Firebase.firestore.deleteObject(
-            collectionName = KITCHEN_PROMOTIONS_COLLECTION,
+            collectionName = SHOP_PROMOTIONS_COLLECTION,
             id = promoId
         )
 }
-
-

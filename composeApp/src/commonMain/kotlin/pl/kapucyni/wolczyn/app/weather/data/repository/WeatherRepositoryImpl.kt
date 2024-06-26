@@ -8,5 +8,5 @@ import pl.kapucyni.wolczyn.app.weather.domain.repository.WeatherRepository
 class WeatherRepositoryImpl(
     private val firestoreSource: FirestoreWeatherSource,
 ): WeatherRepository {
-    override fun getWeather(): Flow<Weather> = firestoreSource.getFirestoreWeather()
+    override fun getWeather(): Flow<Weather> = firestoreSource.getWeather()
 }
