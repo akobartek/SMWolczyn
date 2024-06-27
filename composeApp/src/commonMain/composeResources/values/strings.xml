@@ -81,6 +81,7 @@
     <string name="kitchen_section_beverages">Napoje</string>
 
     <!-- SHOP STRINGS -->
+    <string name="empty_shop_list">Nie znaleziono żadnych produktów, sklepik został w całości wykupiony!</string>
     <string name="shop_sizes">rozmiary</string>
     <string name="shop_color_white">biały</string>
     <string name="shop_color_black">czarny</string>

@@ -29,7 +29,7 @@ import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongBookSearchB
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongCard
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.empty_search_list
-import smwolczyn.composeapp.generated.resources.ic_empty_song_book
+import smwolczyn.composeapp.generated.resources.ic_cap_song_book
 import kotlin.math.roundToInt
 
 @Composable
@@ -92,19 +92,20 @@ fun SongBookScreenContent(
         when (state) {
             is State.Loading -> item { LoadingBox() }
             is State.Success -> {
-                if (state.data.isNotEmpty()) {
-                    items(items = state.data, key = { it.title }) { song ->
-                        SongCard(
-                            song = song,
-                            modifier = Modifier.fillParentMaxWidth()
-                        )
-                    }
-                } else item {
-                    EmptyListInfo(
-                        messageRes = Res.string.empty_search_list,
-                        drawableRes = Res.drawable.ic_empty_song_book
+                items(items = state.data, key = { it.title }) { song ->
+                    SongCard(
+                        song = song,
+                        modifier = Modifier.fillParentMaxWidth()
                     )
                 }
+
+                if (state.data.isEmpty())
+                    item {
+                        EmptyListInfo(
+                            messageRes = Res.string.empty_search_list,
+                            drawableRes = Res.drawable.ic_cap_song_book
+                        )
+                    }
             }
         }
     }

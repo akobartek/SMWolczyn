@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,12 +14,15 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
+import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ProductListItem
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.empty_shop_list
+import smwolczyn.composeapp.generated.resources.ic_cap_song_book
 import smwolczyn.composeapp.generated.resources.shop_title
 
 @Composable
@@ -65,6 +69,14 @@ fun ShopScreenContent(
                         modifier = Modifier.clickable { onProductClick(product.id) }
                     )
                 }
+
+                if (shop.products.isEmpty())
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        EmptyListInfo(
+                            messageRes = Res.string.empty_shop_list,
+                            drawableRes = Res.drawable.ic_cap_song_book // TODO
+                        )
+                    }
             }
         }
     }
