@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import pl.kapucyni.wolczyn.app.common.data.model.FirestorePromotion
+import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 
 @Composable
-fun PromotionListItem(
-    promotion: FirestorePromotion,
-    onPromotionActivation: (FirestorePromotion) -> Unit,
-    onPromotionDelete: (String) -> Unit,
+fun AdminDataListItem(
+    data: AdminData,
+    onPromotionActivation: (String, Boolean) -> Unit,
+    onPromotionDelete: ((String) -> Unit)?,
 ) {
     Row(
         modifier = Modifier
@@ -32,25 +32,29 @@ fun PromotionListItem(
                 color = MaterialTheme.colorScheme.outline,
                 shape = RoundedCornerShape(12.dp)
             )
-            .padding(8.dp),
+            .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         WolczynText(
-            text = promotion.name,
+            text = data.name,
             textStyle = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground
             ),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp)
         )
         Checkbox(
-            checked = promotion.isValid,
-            onCheckedChange = { onPromotionActivation(promotion.copy(isValid = it)) },
+            checked = data.isChecked,
+            onCheckedChange = { checked -> onPromotionActivation(data.id, checked) },
         )
-        IconButton(onClick = { onPromotionDelete(promotion.id) }) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = null
-            )
+        onPromotionDelete?.let {
+            IconButton(onClick = { onPromotionDelete(data.id) }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = null
+                )
+            }
         }
     }
 }

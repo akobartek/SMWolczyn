@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -70,15 +71,18 @@ fun FullScreenDialog(
                     }
                     WolczynText(
                         text = title,
-                        textStyle = MaterialTheme.typography.titleLarge,
+                        textStyle = MaterialTheme.typography.titleLarge.copy(
+                            textAlign = TextAlign.Center
+                        ),
                         modifier = Modifier
                             .weight(1f)
                             .padding(horizontal = 8.dp)
                     )
-                    if (onSave != null)
+                    onSave?.let {
                         TextButton(onClick = onSave) {
                             Text(text = stringResource(Res.string.save))
                         }
+                    } ?: WidthSpacer(40.dp)
                     action()
                 }
                 Column(

@@ -19,8 +19,10 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.admin.data.model.FirestoreData
-import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreenAction.*
-import pl.kapucyni.wolczyn.app.admin.presentation.composables.PromotionsDialog
+import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminScreenAction.*
+import pl.kapucyni.wolczyn.app.admin.presentation.composables.AdminDataDialog
+import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
+import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminScreenAction
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -30,11 +32,13 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.app_data
 import smwolczyn.composeapp.generated.resources.kitchen
 import smwolczyn.composeapp.generated.resources.kitchen_menu
+import smwolczyn.composeapp.generated.resources.kitchen_menu_title
 import smwolczyn.composeapp.generated.resources.kitchen_promos_title
 import smwolczyn.composeapp.generated.resources.promotions
 import smwolczyn.composeapp.generated.resources.quiz
 import smwolczyn.composeapp.generated.resources.shop
 import smwolczyn.composeapp.generated.resources.shop_products
+import smwolczyn.composeapp.generated.resources.shop_products_title
 import smwolczyn.composeapp.generated.resources.shop_promos_title
 
 @Composable
@@ -62,7 +66,9 @@ fun AdminScreenContent(
     data: FirestoreData,
     handleScreenAction: (AdminScreenAction) -> Unit
 ) {
+    var isKitchenMenuDialogVisible by rememberSaveable { mutableStateOf(false) }
     var isKitchenPromosDialogVisible by rememberSaveable { mutableStateOf(false) }
+    var isShopProductsDialogVisible by rememberSaveable { mutableStateOf(false) }
     var isShopPromosDialogVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -81,8 +87,7 @@ fun AdminScreenContent(
                 .padding(horizontal = 12.dp)
         ) {
             Button(
-                onClick = { /*TODO*/ },
-                enabled = false,
+                onClick = { isKitchenMenuDialogVisible = true },
                 modifier = Modifier.weight(1f),
             ) {
                 Text(stringResource(Res.string.kitchen_menu))
@@ -119,8 +124,7 @@ fun AdminScreenContent(
                 .padding(horizontal = 48.dp)
         ) {
             Button(
-                onClick = { /*TODO*/ },
-                enabled = false,
+                onClick = { isShopProductsDialogVisible = true },
                 modifier = Modifier.weight(1f),
             ) {
                 Text(stringResource(Res.string.shop_products))
@@ -135,22 +139,58 @@ fun AdminScreenContent(
         }
     }
 
-    PromotionsDialog(
+    AdminDataDialog(
+        isVisible = isKitchenMenuDialogVisible,
+        title = stringResource(Res.string.kitchen_menu_title),
+        data = data.kitchenMenuItems.map { AdminData.fromMenuItem(it) },
+        onPromotionAdd = null,
+        onPromotionUpdate = { id, checked ->
+            data.kitchenMenuItems.firstOrNull { it.id == id }?.let { item ->
+                handleScreenAction(UpdateMenuItem(item.copy(isAvailable = checked)))
+            }
+        },
+        onPromotionDelete = null,
+        onDismiss = { isKitchenMenuDialogVisible = false },
+    )
+
+    AdminDataDialog(
         isVisible = isKitchenPromosDialogVisible,
         title = stringResource(Res.string.kitchen_promos_title),
-        promotions = data.kitchenPromotions,
+        data = data.kitchenPromotions.map { AdminData.fromPromotion(it) },
         onPromotionAdd = { handleScreenAction(AddPromotion(it, true)) },
-        onPromotionUpdate = { handleScreenAction(UpdatePromotion(it, true)) },
+        onPromotionUpdate = { id, checked ->
+            data.kitchenPromotions.firstOrNull { it.id == id }?.let { promo ->
+                handleScreenAction(UpdatePromotion(promo.copy(isValid = checked), true))
+            }
+        },
         onPromotionDelete = { handleScreenAction(DeletePromotion(it, true)) },
         onDismiss = { isKitchenPromosDialogVisible = false },
     )
 
-    PromotionsDialog(
+    AdminDataDialog(
+        isVisible = isShopProductsDialogVisible,
+        title = stringResource(Res.string.shop_products_title),
+        data = data.shopProducts.map { AdminData.fromShopProduct(it) },
+        onPromotionAdd = null,
+        onPromotionUpdate = { id, checked ->
+            data.shopProducts.firstOrNull { it.id == id }?.let { item ->
+                handleScreenAction(UpdateShopProduct(item.copy(isAvailable = checked)))
+            }
+        },
+        onPromotionDelete = null,
+        onDismiss = { isShopProductsDialogVisible = false },
+    )
+
+    AdminDataDialog(
         isVisible = isShopPromosDialogVisible,
         title = stringResource(Res.string.shop_promos_title),
-        promotions = data.shopPromotions,
+        data = data.shopPromotions.map { AdminData.fromPromotion(it) },
         onPromotionAdd = { handleScreenAction(AddPromotion(it, false)) },
-        onPromotionUpdate = { handleScreenAction(UpdatePromotion(it, false)) },
+        onPromotionUpdate = { id, checked ->
+            data.shopPromotions.firstOrNull { it.id == id }?.let { promo ->
+                handleScreenAction(UpdatePromotion(promo.copy(isValid = checked), false))
+            }
+        },
         onPromotionDelete = { handleScreenAction(DeletePromotion(it, false)) },
         onDismiss = { isShopPromosDialogVisible = false },
     )

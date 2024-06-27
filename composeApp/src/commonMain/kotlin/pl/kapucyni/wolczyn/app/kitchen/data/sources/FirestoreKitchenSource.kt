@@ -22,6 +22,13 @@ class FirestoreKitchenSource {
     fun getKitchenPromotions(): Flow<List<FirestorePromotion>> =
         Firebase.firestore.getFirestoreCollection(KITCHEN_PROMOTIONS_COLLECTION)
 
+    suspend fun saveMenuItem(item: FirestoreMenuItem) =
+        Firebase.firestore.saveObject(
+            collectionName = KITCHEN_MENU_COLLECTION,
+            id = item.id,
+            data = item
+        )
+
     suspend fun savePromotion(promotion: FirestorePromotion) =
         Firebase.firestore.saveObject(
             collectionName = KITCHEN_PROMOTIONS_COLLECTION,

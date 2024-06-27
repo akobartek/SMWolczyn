@@ -21,6 +21,13 @@ class FirestoreShopSource {
     fun getShopPromotions(): Flow<List<FirestorePromotion>> =
         Firebase.firestore.getFirestoreCollection(SHOP_PROMOTIONS_COLLECTION)
 
+    suspend fun saveShopProduct(product: FirestoreShopProduct) =
+        Firebase.firestore.saveObject(
+            collectionName = SHOP_PROMOTIONS_COLLECTION,
+            id = product.id,
+            data = product
+        )
+
     suspend fun savePromotion(promotion: FirestorePromotion) =
         Firebase.firestore.saveObject(
             collectionName = SHOP_PROMOTIONS_COLLECTION,

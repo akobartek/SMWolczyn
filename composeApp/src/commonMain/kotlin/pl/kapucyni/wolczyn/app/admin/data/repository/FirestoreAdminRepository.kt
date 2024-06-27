@@ -5,7 +5,9 @@ import kotlinx.coroutines.flow.combine
 import pl.kapucyni.wolczyn.app.admin.data.model.FirestoreData
 import pl.kapucyni.wolczyn.app.admin.domain.repository.AdminRepository
 import pl.kapucyni.wolczyn.app.common.data.model.FirestorePromotion
+import pl.kapucyni.wolczyn.app.kitchen.data.model.FirestoreMenuItem
 import pl.kapucyni.wolczyn.app.kitchen.data.sources.FirestoreKitchenSource
+import pl.kapucyni.wolczyn.app.shop.data.model.FirestoreShopProduct
 import pl.kapucyni.wolczyn.app.shop.data.sources.FirestoreShopSource
 
 class FirestoreAdminRepository(
@@ -27,6 +29,12 @@ class FirestoreAdminRepository(
                 shopPromos.sortedBy { it.name },
             )
         }
+
+    override suspend fun saveMenuItem(item: FirestoreMenuItem) =
+        kitchenSource.saveMenuItem(item)
+
+    override suspend fun saveShopProduct(product: FirestoreShopProduct) =
+        shopSource.saveShopProduct(product)
 
     override suspend fun savePromotion(promotion: FirestorePromotion, isFromKitchen: Boolean) =
         if (isFromKitchen) kitchenSource.savePromotion(promotion)

@@ -63,7 +63,9 @@
     <string name="promotions">Promocje</string>
     <string name="quiz">Quiz</string>
     <string name="shop_products">Produkty</string>
+    <string name="kitchen_menu_title">Kuchnia - menu</string>
     <string name="kitchen_promos_title">Kuchnia - promocje</string>
+    <string name="shop_products_title">Sklepik - produkty</string>
     <string name="shop_promos_title">Sklepik - promocje</string>
     <string name="new_promo_name">Nowa promocja</string>
     <string name="cd_save_promotion">Zapisz promocję</string>

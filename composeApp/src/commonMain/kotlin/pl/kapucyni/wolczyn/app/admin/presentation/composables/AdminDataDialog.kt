@@ -2,7 +2,9 @@ package pl.kapucyni.wolczyn.app.admin.presentation.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,28 +20,28 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import pl.kapucyni.wolczyn.app.common.data.model.FirestorePromotion
+import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FullScreenDialog
 
 @Composable
-fun PromotionsDialog(
+fun AdminDataDialog(
     isVisible: Boolean,
     title: String,
-    promotions: List<FirestorePromotion>,
-    onPromotionAdd: (String) -> Unit,
-    onPromotionUpdate: (FirestorePromotion) -> Unit,
-    onPromotionDelete: (String) -> Unit,
+    data: List<AdminData>,
+    onPromotionAdd: ((String) -> Unit)?,
+    onPromotionUpdate: (String, Boolean) -> Unit,
+    onPromotionDelete: ((String) -> Unit)?,
     onDismiss: () -> Unit,
 ) {
     val density = LocalDensity.current
-    var newPromotionName by rememberSaveable { mutableStateOf("") }
+    var newObjectName by rememberSaveable { mutableStateOf("") }
     var isLoading by rememberSaveable { mutableStateOf(false) }
     val listModifier = if (isLoading) Modifier.blur(16.dp) else Modifier
     var listHeight by remember { mutableStateOf(0.dp) }
 
-    LaunchedEffect(key1 = promotions) {
+    LaunchedEffect(key1 = data) {
         isLoading = false
-        newPromotionName = ""
+        newObjectName = ""
     }
 
     FullScreenDialog(
@@ -58,29 +60,36 @@ fun PromotionsDialog(
                         listHeight = with(density) { coords.size.height.toDp() }
                 }
         ) {
-            items(items = promotions, key = { it.id }) { promotion ->
-                PromotionListItem(
-                    promotion = promotion,
-                    onPromotionActivation = {
+            items(items = data, key = { it.id }) { item ->
+                AdminDataListItem(
+                    data = item,
+                    onPromotionActivation = { id, checked ->
                         isLoading = true
-                        onPromotionUpdate(it)
+                        onPromotionUpdate(id, checked)
                     },
-                    onPromotionDelete = {
-                        isLoading = true
-                        onPromotionDelete(it)
-                    },
+                    onPromotionDelete = onPromotionDelete?.let {
+                        {
+                            isLoading = true
+                            onPromotionDelete(it)
+                        }
+                    }
                 )
             }
+            onPromotionAdd?.let {
+                item {
+                    CreatePromotionItem(
+                        newPromotionName = newObjectName,
+                        onChangeName = { newObjectName = it },
+                        onSave = {
+                            isLoading = true
+                            onPromotionAdd(newObjectName.trim())
+                        },
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
+                }
+            }
             item {
-                CreatePromotionItem(
-                    newPromotionName = newPromotionName,
-                    onChangeName = { newPromotionName = it },
-                    onSave = {
-                        isLoading = true
-                        onPromotionAdd(newPromotionName.trim())
-                    },
-                    modifier = Modifier.padding(top = 12.dp)
-                )
+                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
