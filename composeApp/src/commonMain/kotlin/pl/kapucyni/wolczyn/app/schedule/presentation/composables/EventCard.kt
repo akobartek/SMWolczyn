@@ -59,8 +59,15 @@ fun EventCard(
     onNavClick: (HomeTileType) -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
+    var mfTauDialogVisible by remember { mutableStateOf(false) }
     var cardHeight by remember { mutableStateOf(0) }
     val cardHeightDp = with(LocalDensity.current) { cardHeight.toDp() }
+
+    MfTauDialog(
+        isVisible = mfTauDialogVisible,
+        onClick = { uriHandler.openUri("https://mftau.pl/wydarzenie/spoleto/") },
+        onDismiss = { mfTauDialogVisible = false }
+    )
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (!hideTime)
@@ -92,6 +99,7 @@ fun EventCard(
                     EventType.MASS -> onNavClick(HomeTileType.SONG_BOOK)
                     EventType.MEAL -> onNavClick(HomeTileType.KITCHEN)
                     EventType.BREVIARY -> onNavClick(HomeTileType.BREVIARY)
+                    EventType.MF_TAU -> mfTauDialogVisible = true
                     else -> {
                         if (!event.guestUrl.isNullOrBlank())
                             uriHandler.openUri(event.guestUrl)
@@ -165,12 +173,11 @@ fun EventCard(
                     EventType.GROUPS,
                     EventType.WORKSHOPS,
                     EventType.PRAYER,
-                    EventType.MF_TAU,
                     EventType.GUEST_TALK,
                     EventType.OTHER -> null
 
                     EventType.MASS -> Res.drawable.ic_schedule_song_book
-                    EventType.MEAL -> Res.drawable.ic_schedule_kitchen
+                    EventType.MF_TAU, EventType.MEAL -> Res.drawable.ic_schedule_kitchen
                     EventType.BREVIARY -> Res.drawable.ic_schedule_breviary
                 }?.let { drawable ->
                     Icon(

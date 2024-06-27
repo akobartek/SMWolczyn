@@ -44,9 +44,7 @@ fun FullScreenDialog(
     if (isVisible)
         Dialog(
             onDismissRequest = onDismiss,
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false
-            )
+            properties = DialogProperties(usePlatformDefaultWidth = false)
         ) {
             val focusManager = LocalFocusManager.current
             val interactionSource = remember { MutableInteractionSource() }
