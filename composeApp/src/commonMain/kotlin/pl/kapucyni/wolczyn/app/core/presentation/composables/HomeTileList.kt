@@ -90,8 +90,8 @@ private fun twoColumns(appVersion: AppVersion) = when (appVersion) {
 
     AppVersion.NO_MEETING -> {
         arrayOf(
-            arrayOf(SONG_BOOK, ARCHIVE),
-            arrayOf(BREVIARY)
+            arrayOf(SONG_BOOK, BREVIARY),
+            arrayOf(ARCHIVE)
         )
     }
 }
