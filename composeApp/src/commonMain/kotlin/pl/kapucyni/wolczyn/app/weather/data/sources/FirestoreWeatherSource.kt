@@ -14,6 +14,6 @@ class FirestoreWeatherSource {
     fun getWeather() =
         Firebase.firestore.getFirestoreDocument<Weather>(
             collectionName = WEATHER_COLLECTION,
-            documentName = WEATHER_DOCUMENT
+            documentId = WEATHER_DOCUMENT
         )
 }

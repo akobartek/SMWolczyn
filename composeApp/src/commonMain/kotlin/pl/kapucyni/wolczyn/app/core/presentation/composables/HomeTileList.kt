@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.*
+import pl.kapucyni.wolczyn.app.core.domain.model.AppVersion
 import pl.kapucyni.wolczyn.app.core.presentation.getHomeTile
 import pl.kapucyni.wolczyn.app.theme.appColorSecondary
 import pl.kapucyni.wolczyn.app.theme.appColorTertiary
@@ -16,12 +17,13 @@ import pl.kapucyni.wolczyn.app.theme.appColorTertiary
 @Composable
 fun HomeTileList(
     columns: Int,
+    appVersion: AppVersion,
     onTileClick: (HomeTileType) -> Unit,
 ) {
     val tiles = when (columns) {
-        1 -> oneColumn
-        2 -> twoColumns
-        else -> threeColumns
+        1 -> oneColumn(appVersion)
+        2 -> twoColumns(appVersion)
+        else -> threeColumns(appVersion)
     }
 
     tiles.forEachIndexed { i, row ->
@@ -50,28 +52,62 @@ fun HomeTileList(
     }
 }
 
-private fun getTileBackground(num: Int) = if (num % 2 == 0) appColorTertiary else appColorSecondary
+private fun getTileBackground(num: Int) =
+    if (num % 2 == 0) appColorTertiary else appColorSecondary
 
-private val oneColumn = arrayOf(
-    arrayOf(SCHEDULE),
-    arrayOf(SONG_BOOK),
-    arrayOf(KITCHEN),
-    arrayOf(SHOP),
-    arrayOf(WEATHER),
-    arrayOf(DECALOGUE),
-    arrayOf(BREVIARY),
-    arrayOf(ARCHIVE)
-)
+private fun oneColumn(appVersion: AppVersion) = when (appVersion) {
+    AppVersion.MEETING -> {
+        arrayOf(
+            arrayOf(SCHEDULE),
+            arrayOf(SONG_BOOK),
+            arrayOf(KITCHEN),
+            arrayOf(SHOP),
+            arrayOf(WEATHER),
+            arrayOf(DECALOGUE),
+            arrayOf(BREVIARY),
+            arrayOf(ARCHIVE),
+        )
+    }
 
-private val twoColumns = arrayOf(
-    arrayOf(SCHEDULE, SONG_BOOK),
-    arrayOf(KITCHEN, SHOP),
-    arrayOf(BREVIARY, WEATHER),
-    arrayOf(DECALOGUE, ARCHIVE)
-)
+    AppVersion.NO_MEETING -> {
+        arrayOf(
+            arrayOf(SONG_BOOK),
+            arrayOf(BREVIARY),
+            arrayOf(ARCHIVE),
+        )
+    }
+}
 
-private val threeColumns = arrayOf(
-    arrayOf(SCHEDULE, SONG_BOOK, BREVIARY),
-    arrayOf(SHOP, KITCHEN, WEATHER),
-    arrayOf(DECALOGUE, ARCHIVE)
-)
+private fun twoColumns(appVersion: AppVersion) = when (appVersion) {
+    AppVersion.MEETING -> {
+        arrayOf(
+            arrayOf(SCHEDULE, SONG_BOOK),
+            arrayOf(KITCHEN, SHOP),
+            arrayOf(BREVIARY, WEATHER),
+            arrayOf(DECALOGUE, ARCHIVE),
+        )
+    }
+
+    AppVersion.NO_MEETING -> {
+        arrayOf(
+            arrayOf(SONG_BOOK, ARCHIVE),
+            arrayOf(BREVIARY)
+        )
+    }
+}
+
+private fun threeColumns(appVersion: AppVersion) = when (appVersion) {
+    AppVersion.MEETING -> {
+        arrayOf(
+            arrayOf(SCHEDULE, SONG_BOOK, BREVIARY),
+            arrayOf(SHOP, KITCHEN, WEATHER),
+            arrayOf(DECALOGUE, ARCHIVE),
+        )
+    }
+
+    AppVersion.NO_MEETING -> {
+        arrayOf(
+            arrayOf(SONG_BOOK, BREVIARY, ARCHIVE),
+        )
+    }
+}

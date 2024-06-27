@@ -15,7 +15,7 @@ import kotlinx.datetime.toLocalDateTime
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.schedule.domain.usecases.GetScheduleUseCase
 
-class ScheduleViewModel(getScheduleUseCase: GetScheduleUseCase) :
+class ScheduleViewModel(private val getScheduleUseCase: GetScheduleUseCase) :
     BasicViewModel<ScheduleScreenState>() {
 
     init {

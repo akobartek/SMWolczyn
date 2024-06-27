@@ -29,10 +29,10 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
 
 inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
     collectionName: String,
-    documentName: String,
+    documentId: String,
 ): Flow<T> =
     this.collection(collectionName)
-        .document(documentName)
+        .document(documentId)
         .snapshots
         .map { it.data() }
 
