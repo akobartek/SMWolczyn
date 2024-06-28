@@ -19,6 +19,7 @@ import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
 import pl.kapucyni.wolczyn.app.breviary.di.breviaryModule
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySelectScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviaryTextScreen
+import pl.kapucyni.wolczyn.app.common.di.platformModule
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.schedule.di.scheduleModule
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
@@ -46,6 +47,7 @@ import pl.kapucyni.wolczyn.app.weather.di.weatherModule
 fun App() {
     KoinApplication(application = {
         modules(
+            platformModule,
             coreModule,
             scheduleModule,
             songBookModule,
