@@ -129,7 +129,3 @@ android {
 room {
     schemaDirectory("$projectDir/schemas")
 }
-
-dependencies {
-    ksp(libs.room.compiler)
-}
