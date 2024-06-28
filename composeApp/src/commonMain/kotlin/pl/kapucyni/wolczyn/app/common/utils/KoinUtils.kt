@@ -31,9 +31,3 @@ fun initKoinAndroid(androidModule: Module) {
         modules(androidModule + getBaseModules())
     }
 }
-
-fun initKoin() {
-    startKoin {
-        modules(getBaseModules())
-    }
-}
