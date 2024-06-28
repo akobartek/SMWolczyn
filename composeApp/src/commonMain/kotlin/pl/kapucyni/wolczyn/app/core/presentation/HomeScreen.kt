@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +31,9 @@ import pl.kapucyni.wolczyn.app.core.domain.model.AppState
 import pl.kapucyni.wolczyn.app.core.domain.model.AppVersion
 import pl.kapucyni.wolczyn.app.core.presentation.composables.AdminAccessDialog
 import pl.kapucyni.wolczyn.app.core.presentation.composables.HomeTileList
+import pl.kapucyni.wolczyn.app.theme.appColorPrimary
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.cd_navigate_up
 import smwolczyn.composeapp.generated.resources.home_title
 
 @Composable
@@ -39,6 +45,15 @@ fun HomeScreen(
 
     ScreenLayout(
         title = stringResource(Res.string.home_title),
+        actionIcon = {
+            IconButton(onClick = viewModel::exampleLogin) {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    tint = appColorPrimary,
+                    contentDescription = stringResource(Res.string.cd_navigate_up)
+                )
+            }
+        },
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         HomeScreenContent(screenState, onTileClick)

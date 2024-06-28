@@ -38,7 +38,7 @@ fun ScreenHeader(
                     contentDescription = stringResource(Res.string.cd_navigate_up)
                 )
             }
-        }
+        } ?: WidthSpacer(if (actionIcon == null) 0.dp else 40.dp)
         WolczynTitleText(
             text = title.replace("\n", " "),
             textAlign = TextAlign.Center,
