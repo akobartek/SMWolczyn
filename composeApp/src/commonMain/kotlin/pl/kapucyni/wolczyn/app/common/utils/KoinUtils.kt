@@ -13,7 +13,7 @@ import pl.kapucyni.wolczyn.app.shop.di.shopModule
 import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
 import pl.kapucyni.wolczyn.app.weather.di.weatherModule
 
-private fun getBaseModules() = listOf(
+fun getBaseModules() = listOf(
     platformModule,
     coreModule,
     scheduleModule,
@@ -26,7 +26,7 @@ private fun getBaseModules() = listOf(
     adminModule,
 )
 
-fun initKoin(androidModule: Module) {
+fun initKoinAndroid(androidModule: Module) {
     startKoin {
         modules(androidModule + getBaseModules())
     }
