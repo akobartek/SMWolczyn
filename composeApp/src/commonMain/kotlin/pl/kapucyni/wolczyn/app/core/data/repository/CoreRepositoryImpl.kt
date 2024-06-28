@@ -32,14 +32,17 @@ class CoreRepositoryImpl(
     }
 
     override suspend fun loginWithGoogle(email: String, identifier: String): WolczynUser? {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
+        return getUserInfo()
     }
 
     override suspend fun getUserInfo(): WolczynUser? {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
+        return wolczynApi.getUserInfo("").getOrNull()?.second
     }
 
     override suspend fun getGroupInfo(): WolczynGroup? {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
+        return wolczynApi.getGroupInfo("").getOrNull()?.second
     }
 }
