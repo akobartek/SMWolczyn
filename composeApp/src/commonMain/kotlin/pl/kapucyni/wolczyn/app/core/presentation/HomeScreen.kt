@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.core.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -20,6 +21,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
@@ -30,6 +32,7 @@ import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.core.domain.model.AppState
 import pl.kapucyni.wolczyn.app.core.domain.model.AppVersion
 import pl.kapucyni.wolczyn.app.core.presentation.composables.AdminAccessDialog
+import pl.kapucyni.wolczyn.app.core.presentation.composables.AuthDialog
 import pl.kapucyni.wolczyn.app.core.presentation.composables.HomeTileList
 import pl.kapucyni.wolczyn.app.theme.appColorPrimary
 import smwolczyn.composeapp.generated.resources.Res
@@ -42,21 +45,38 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel = koinInject(),
 ) {
     val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val authDialogState by viewModel.authState.collectAsStateMultiplatform()
 
     ScreenLayout(
         title = stringResource(Res.string.home_title),
         actionIcon = {
-            IconButton(onClick = viewModel::exampleLogin) {
-                Icon(
+            IconButton(onClick = viewModel::showAuthDialog) {
+                authDialogState.user?.photoUrl?.let {
+                    AsyncImage(
+                        model = it,
+                        contentDescription = null,
+                        modifier = Modifier.size(60.dp)
+                    )
+                } ?: Icon(
                     imageVector = Icons.Default.AccountCircle,
                     tint = appColorPrimary,
                     contentDescription = stringResource(Res.string.cd_navigate_up)
                 )
+
             }
         },
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        HomeScreenContent(screenState, onTileClick)
+        HomeScreenContent(
+            state = screenState,
+            onTileClick = onTileClick
+        )
+        AuthDialog(
+            state = authDialogState,
+            onSignIn = viewModel::signIn,
+            onSignOut = viewModel::signOut,
+            onDismiss = viewModel::hideAuthDialog,
+        )
     }
 }
 

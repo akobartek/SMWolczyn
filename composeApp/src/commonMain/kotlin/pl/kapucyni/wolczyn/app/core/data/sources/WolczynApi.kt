@@ -22,7 +22,7 @@ class WolczynApi(private val httpClient: HttpClient) {
         private const val MEDIA_TYPE_GOOGLE = "google"
     }
 
-    suspend fun login(login: String, password: String): Result<String> = runCatching {
+    suspend fun signIn(login: String, password: String): Result<String> = runCatching {
         httpClient.submitForm(
             url = "auth/login",
             formParameters = parameters {
@@ -33,7 +33,7 @@ class WolczynApi(private val httpClient: HttpClient) {
         ).body<String>().correctResponse()
     }
 
-    suspend fun loginWithGoogle(email: String, identifier: String): Result<String> = runCatching {
+    suspend fun signInWithGoogle(email: String, identifier: String): Result<String> = runCatching {
         httpClient.submitForm(
             url = "auth/social",
             formParameters = parameters {

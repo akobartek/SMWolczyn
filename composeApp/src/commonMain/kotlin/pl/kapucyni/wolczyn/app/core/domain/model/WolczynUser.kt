@@ -9,11 +9,10 @@ data class WolczynUser(
     val number: Int?,
     val name: String?,
     val surname: String?,
+    val prefix: String?,
     val type: Int?,
     val state: Int?,
     val status: Int?,
     val group: Int?,
-    val prefix: String?,
     @SerialName("photo_url") val photoUrl: String?,
-    val bears: Int?,
 )

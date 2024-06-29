@@ -42,13 +42,15 @@ class CoreRepositoryImpl(
             AppState(configuration, notifications)
         }
 
-    override suspend fun login(login: String, password: String): WolczynUser? =
-        wolczynApi.login(login, password)
+    override suspend fun signIn(login: String, password: String): WolczynUser? =
+        wolczynApi.signIn(login, password)
             .saveTokenAndGetUserInfo()
 
-    override suspend fun loginWithGoogle(email: String, identifier: String): WolczynUser? =
-        wolczynApi.loginWithGoogle(email, identifier)
+    override suspend fun signInWithGoogle(email: String, identifier: String): WolczynUser? =
+        wolczynApi.signInWithGoogle(email, identifier)
             .saveTokenAndGetUserInfo()
+
+    override suspend fun signOut() = saveUserToken("")
 
     override suspend fun getUserInfo(): WolczynUser? =
         getUserToken()?.let { token ->

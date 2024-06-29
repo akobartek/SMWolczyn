@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_close_dialog
@@ -36,7 +37,8 @@ import smwolczyn.composeapp.generated.resources.save
 fun FullScreenDialog(
     isVisible: Boolean,
     title: String,
-    onSave: (() -> Unit)? = {},
+    actionTitle: StringResource? = null,
+    onAction: (() -> Unit)? = {},
     onDismiss: () -> Unit,
     action: @Composable RowScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit = {},
@@ -76,9 +78,9 @@ fun FullScreenDialog(
                             .weight(1f)
                             .padding(horizontal = 8.dp)
                     )
-                    onSave?.let {
-                        TextButton(onClick = onSave) {
-                            Text(text = stringResource(Res.string.save))
+                    onAction?.let {
+                        TextButton(onClick = onAction) {
+                            Text(text = stringResource(actionTitle ?: Res.string.save))
                         }
                     } ?: WidthSpacer(40.dp)
                     action()

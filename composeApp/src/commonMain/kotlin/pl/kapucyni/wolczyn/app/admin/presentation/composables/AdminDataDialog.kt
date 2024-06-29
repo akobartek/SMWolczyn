@@ -47,7 +47,7 @@ fun AdminDataDialog(
     FullScreenDialog(
         isVisible = isVisible,
         title = title,
-        onSave = null,
+        onAction = null,
         onDismiss = onDismiss,
     ) {
         LazyColumn(

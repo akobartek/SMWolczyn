@@ -12,7 +12,10 @@ import pl.kapucyni.wolczyn.app.core.data.sources.FirestoreHomeSource
 import pl.kapucyni.wolczyn.app.core.data.sources.WolczynApi
 import pl.kapucyni.wolczyn.app.core.domain.repository.CoreRepository
 import pl.kapucyni.wolczyn.app.core.domain.usecases.GetAppStateUseCase
-import pl.kapucyni.wolczyn.app.core.domain.usecases.LoginUseCase
+import pl.kapucyni.wolczyn.app.core.domain.usecases.GetGroupInfoUseCase
+import pl.kapucyni.wolczyn.app.core.domain.usecases.GetUserInfoUseCase
+import pl.kapucyni.wolczyn.app.core.domain.usecases.SignInUseCase
+import pl.kapucyni.wolczyn.app.core.domain.usecases.SignOutUseCase
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreenViewModel
 
 val coreModule = module {
@@ -32,7 +35,10 @@ val coreModule = module {
     single { WolczynApi(get()) }
     single<CoreRepository> { CoreRepositoryImpl(get(), get(), get()) }
     single { GetAppStateUseCase(get()) }
-    single { LoginUseCase(get()) }
+    single { GetUserInfoUseCase(get()) }
+    single { GetGroupInfoUseCase(get()) }
+    single { SignInUseCase(get()) }
+    single { SignOutUseCase(get()) }
 
-    single { HomeScreenViewModel(get(), get()) }
+    single { HomeScreenViewModel(get(), get(), get(), get(), get()) }
 }

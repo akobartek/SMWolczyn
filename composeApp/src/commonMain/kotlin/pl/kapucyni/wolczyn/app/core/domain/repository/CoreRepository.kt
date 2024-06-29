@@ -7,8 +7,9 @@ import pl.kapucyni.wolczyn.app.core.domain.model.WolczynUser
 
 interface CoreRepository {
     fun getAppState(): Flow<AppState>
-    suspend fun login(login: String, password: String): WolczynUser?
-    suspend fun loginWithGoogle(email: String, identifier: String): WolczynUser?
+    suspend fun signIn(login: String, password: String): WolczynUser?
+    suspend fun signInWithGoogle(email: String, identifier: String): WolczynUser?
+    suspend fun signOut()
     suspend fun getUserInfo(): WolczynUser?
     suspend fun getGroupInfo(): WolczynGroup?
 }
