@@ -3,7 +3,6 @@ package pl.kapucyni.wolczyn.app.core.presentation
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,8 +26,6 @@ class HomeScreenViewModel(
     private val signInUseCase: SignInUseCase,
     private val signOutUseCase: SignOutUseCase,
 ) : BasicViewModel<AppState>() {
-
-    private var job: Job? = null
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -104,9 +101,5 @@ class HomeScreenViewModel(
                 } catch (_: Exception) {
                 }
             }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 }
