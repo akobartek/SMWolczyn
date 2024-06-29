@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -76,7 +75,7 @@ fun FullScreenDialog(
                     )
                     onAction?.let {
                         TextButton(onClick = onAction) {
-                            Text(text = stringResource(actionTitle ?: Res.string.save))
+                            WolczynText(text = stringResource(actionTitle ?: Res.string.save))
                         }
                     } ?: WidthSpacer(40.dp)
                     action()

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +25,7 @@ import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminScreenAction
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import smwolczyn.composeapp.generated.resources.Res
@@ -90,14 +90,14 @@ fun AdminScreenContent(
                 onClick = { isKitchenMenuDialogVisible = true },
                 modifier = Modifier.weight(1f),
             ) {
-                Text(stringResource(Res.string.kitchen_menu))
+                WolczynText(stringResource(Res.string.kitchen_menu))
             }
 
             Button(
                 onClick = { isKitchenPromosDialogVisible = true },
                 modifier = Modifier.weight(1f),
             ) {
-                Text(stringResource(Res.string.promotions))
+                WolczynText(stringResource(Res.string.promotions))
             }
 
             Button(
@@ -105,7 +105,7 @@ fun AdminScreenContent(
                 enabled = false,
                 modifier = Modifier.weight(1f),
             ) {
-                Text(stringResource(Res.string.quiz))
+                WolczynText(stringResource(Res.string.quiz))
             }
         }
 
@@ -127,14 +127,14 @@ fun AdminScreenContent(
                 onClick = { isShopProductsDialogVisible = true },
                 modifier = Modifier.weight(1f),
             ) {
-                Text(stringResource(Res.string.shop_products))
+                WolczynText(stringResource(Res.string.shop_products))
             }
 
             Button(
                 onClick = { isShopPromosDialogVisible = true },
                 modifier = Modifier.weight(1f),
             ) {
-                Text(stringResource(Res.string.promotions))
+                WolczynText(stringResource(Res.string.promotions))
             }
         }
     }

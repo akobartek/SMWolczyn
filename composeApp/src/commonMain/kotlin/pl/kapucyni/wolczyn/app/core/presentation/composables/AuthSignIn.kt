@@ -15,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +38,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_clear_field
 import smwolczyn.composeapp.generated.resources.forgot_password
@@ -75,7 +75,7 @@ fun AuthSignIn(
                 value = login,
                 onValueChange = { login = it },
                 singleLine = true,
-                label = { Text(text = stringResource(Res.string.login)) },
+                label = { WolczynText(text = stringResource(Res.string.login)) },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = {
                     focusManager.moveFocus(FocusDirection.Next)
@@ -100,7 +100,7 @@ fun AuthSignIn(
                 value = password,
                 onValueChange = { password = it },
                 singleLine = true,
-                label = { Text(text = stringResource(Res.string.password)) },
+                label = { WolczynText(text = stringResource(Res.string.password)) },
                 visualTransformation =
                 if (passwordHidden) PasswordVisualTransformation()
                 else VisualTransformation.None,
@@ -122,7 +122,7 @@ fun AuthSignIn(
                 },
                 isError = signInError,
                 supportingText = if (signInError) {
-                    { Text(text = stringResource(Res.string.login_error)) }
+                    { WolczynText(text = stringResource(Res.string.login_error)) }
                 } else null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -137,7 +137,7 @@ fun AuthSignIn(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = stringResource(Res.string.sign_in))
+                WolczynText(text = stringResource(Res.string.sign_in))
             }
             HeightSpacer(8.dp)
             // TODO -> GUGIEL
@@ -155,14 +155,14 @@ fun AuthSignIn(
                 onClick = { uriHandler.openUri("https://konto.kapucyni.pl/remind") },
                 modifier = Modifier.fillMaxWidth(0.75f)
             ) {
-                Text(text = stringResource(Res.string.forgot_password))
+                WolczynText(text = stringResource(Res.string.forgot_password))
             }
             HeightSpacer(8.dp)
             OutlinedButton(
                 onClick = { uriHandler.openUri("https://konto.kapucyni.pl/register") },
                 modifier = Modifier.fillMaxWidth(0.75f)
             ) {
-                Text(text = stringResource(Res.string.sign_up))
+                WolczynText(text = stringResource(Res.string.sign_up))
             }
         }
 }
