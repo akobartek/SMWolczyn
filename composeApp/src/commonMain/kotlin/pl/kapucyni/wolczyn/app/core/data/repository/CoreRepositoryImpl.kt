@@ -82,7 +82,8 @@ class CoreRepositoryImpl(
         headers[TOKEN_HEADER_NAME]?.takeIf { it.isNotBlank() }?.let {
             saveUserToken(it)
         }
-        return json.decodeFromString<T>(bodyAsText())
+        val string = bodyAsText()
+        return json.decodeFromString<T>(string)
     }
 
     companion object {

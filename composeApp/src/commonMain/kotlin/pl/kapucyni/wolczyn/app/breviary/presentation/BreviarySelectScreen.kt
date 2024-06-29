@@ -21,6 +21,7 @@ import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.breviary_copyright
 import smwolczyn.composeapp.generated.resources.breviary_list
@@ -56,7 +57,9 @@ fun BreviarySelectScreenContent(
             Column(modifier = Modifier.clickable { onSelected(index) }) {
                 WolczynText(
                     text = elem,
-                    textStyle = MaterialTheme.typography.titleMedium,
+                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = wolczynColors.primary,
+                    ),
                     modifier = Modifier.padding(12.dp)
                 )
                 HorizontalDivider()
@@ -66,7 +69,8 @@ fun BreviarySelectScreenContent(
         WolczynText(
             text = stringResource(Res.string.breviary_copyright),
             textStyle = MaterialTheme.typography.bodySmall.copy(
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = wolczynColors.primary,
             ),
             modifier = Modifier
                 .fillMaxWidth()

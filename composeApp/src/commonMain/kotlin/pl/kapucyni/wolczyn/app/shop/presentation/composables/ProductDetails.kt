@@ -18,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.shop.domain.model.ProductColor
 import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
@@ -55,7 +56,7 @@ fun ProductDetails(
             modifier = Modifier.padding(horizontal = 20.dp)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        HeightSpacer(24.dp)
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

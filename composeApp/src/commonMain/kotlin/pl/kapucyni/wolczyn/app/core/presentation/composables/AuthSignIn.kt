@@ -1,10 +1,8 @@
 package pl.kapucyni.wolczyn.app.core.presentation.composables
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -40,6 +38,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_clear_field
 import smwolczyn.composeapp.generated.resources.forgot_password
@@ -130,7 +129,7 @@ fun AuthSignIn(
                     .padding(top = 8.dp)
                     .focusRequester(passwordRef)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            HeightSpacer(8.dp)
             Button(
                 onClick = {
                     focusManager.clearFocus(true)
@@ -140,7 +139,7 @@ fun AuthSignIn(
             ) {
                 Text(text = stringResource(Res.string.sign_in))
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            HeightSpacer(8.dp)
             // TODO -> GUGIEL
 //        OutlinedButton(
 //            onClick = {
@@ -151,20 +150,19 @@ fun AuthSignIn(
 //        ) {
 //            Text(text = stringResource(id = R.string.sign_up))
 //        }
-//        Spacer(modifier = Modifier.height(8.dp))
+//        HeightSpacer(8.dp)
             OutlinedButton(
                 onClick = { uriHandler.openUri("https://konto.kapucyni.pl/remind") },
                 modifier = Modifier.fillMaxWidth(0.75f)
             ) {
                 Text(text = stringResource(Res.string.forgot_password))
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            HeightSpacer(8.dp)
             OutlinedButton(
                 onClick = { uriHandler.openUri("https://konto.kapucyni.pl/register") },
                 modifier = Modifier.fillMaxWidth(0.75f)
             ) {
                 Text(text = stringResource(Res.string.sign_up))
             }
-            Spacer(modifier = Modifier.height(12.dp))
         }
 }

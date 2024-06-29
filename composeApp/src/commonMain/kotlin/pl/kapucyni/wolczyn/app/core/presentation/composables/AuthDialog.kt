@@ -6,7 +6,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FullScreenDialog
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.core.presentation.model.AuthDialogState
 import smwolczyn.composeapp.generated.resources.Res
@@ -44,6 +46,8 @@ fun AuthDialog(
 
                 else -> UserInfo(user = state.user, group = state.group)
             }
+
+            HeightSpacer(12.dp)
         }
     }
 }

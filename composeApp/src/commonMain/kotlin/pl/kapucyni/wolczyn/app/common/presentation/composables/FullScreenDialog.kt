@@ -22,6 +22,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_close_dialog
 import smwolczyn.composeapp.generated.resources.save
@@ -59,13 +60,15 @@ fun FullScreenDialog(
                     IconButton(onClick = onDismiss) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(Res.string.cd_close_dialog)
+                            tint = wolczynColors.primary,
+                            contentDescription = stringResource(Res.string.cd_close_dialog),
                         )
                     }
                     WolczynText(
                         text = title,
                         textStyle = MaterialTheme.typography.titleLarge.copy(
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = wolczynColors.primary,
                         ),
                         modifier = Modifier
                             .weight(1f)

@@ -3,9 +3,7 @@ package pl.kapucyni.wolczyn.app.breviary.presentation.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.breviary.domain.model.BreviaryPart
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 
 @Composable
 internal fun BreviaryPartHeader(title: String, pages: String, verses: String = "") {
@@ -39,7 +38,7 @@ internal fun BreviaryPartHeader(title: String, pages: String, verses: String = "
         }
         if (pages.isNotBlank())
             Text(text = pages, fontSize = 10.sp)
-        Spacer(modifier = Modifier.height(12.dp))
+        HeightSpacer(12.dp)
     }
 }
 

@@ -1,9 +1,7 @@
 package pl.kapucyni.wolczyn.app.kitchen.presentation
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +14,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -74,7 +73,7 @@ fun KitchenScreenContent(
             )
         }
         if (openPromotions.isNotEmpty())
-            item { Spacer(modifier = Modifier.height(12.dp)) }
+            item { HeightSpacer(12.dp) }
 
         item {
             WolczynTitleText(

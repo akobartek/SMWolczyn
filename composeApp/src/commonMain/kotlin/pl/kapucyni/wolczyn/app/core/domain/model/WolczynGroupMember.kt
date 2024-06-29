@@ -7,5 +7,4 @@ data class WolczynGroupMember(
     val name: String?,
     val age: Int?,
     val city: String?,
-    val bears: Int?
 )
