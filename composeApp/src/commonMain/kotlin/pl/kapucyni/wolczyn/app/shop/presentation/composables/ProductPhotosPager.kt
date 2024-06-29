@@ -25,9 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import pl.kapucyni.wolczyn.app.theme.appColorPrimary
-import pl.kapucyni.wolczyn.app.theme.appColorSecondary
-import pl.kapucyni.wolczyn.app.theme.appColorTertiary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_navigate_up
 
@@ -40,7 +38,7 @@ fun ProductPhotosPager(
 ) {
     val pagerState = rememberPagerState(pageCount = { photos.size })
     val scope = rememberCoroutineScope()
-    val colors = listOf(appColorPrimary, appColorSecondary, appColorTertiary)
+    val colors = wolczynColors.getColors()
 
     Box(modifier = modifier) {
         // TODO() -> replace with image
@@ -57,7 +55,7 @@ fun ProductPhotosPager(
         IconButton(onClick = onBackPressed, modifier = Modifier.padding(top = 20.dp)) {
             Icon(
                 imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                tint = appColorPrimary,
+                tint = wolczynColors.primary,
                 contentDescription = stringResource(Res.string.cd_navigate_up),
                 modifier = Modifier
                     .background(

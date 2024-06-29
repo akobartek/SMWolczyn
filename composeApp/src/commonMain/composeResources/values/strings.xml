@@ -4,7 +4,6 @@
     <string name="cd_navigate_up">Cofnij na poprzedni ekran</string>
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
-    <string name="sign_in">Zaloguj</string>
     <string name="save">Zapisz</string>
     <string name="no_internet_title">Brak Internetu</string>
     <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
@@ -26,6 +25,19 @@
     <string name="weather_title">Pogoda</string>
     <string name="breviary_title">Brewiarz</string>
     <string name="archive_title">Archiwum</string>
+
+    <!-- AUTH STRINGS -->
+    <string name="sign_in">Zaloguj</string>
+    <string name="signed_in">Pomyślnie zalogowano!</string>
+    <string name="sign_up">Rejestracja</string>
+    <string name="sign_out">Wyloguj</string>
+    <string name="signed_out">Pomyślnie wylogowano!</string>
+    <string name="login">Login</string>
+    <string name="login_error">Logowanie nieudane, sprawdź dane oraz połączenie do Internetu</string>
+    <string name="forgot_password">Zapomniane hasło</string>
+    <string name="user_group">Numer grupki:\n%1$d</string>
+    <string name="groups_not_available">Wróć podczas spotkania, a poznasz numer swojej grupki!</string>
+    <string name="group_members_title">Członkowie grupki:</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>

@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
-import pl.kapucyni.wolczyn.app.theme.appColorTertiary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun KitchenSectionHeader(
@@ -25,13 +25,13 @@ fun KitchenSectionHeader(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = appColorTertiary,
+            tint = wolczynColors.accent,
             modifier = Modifier.width(34.dp)
         )
         WidthSpacer(12.dp)
         WolczynTitleText(
             text = title,
-            color = appColorTertiary
+            color = wolczynColors.accent
         )
     }
 }

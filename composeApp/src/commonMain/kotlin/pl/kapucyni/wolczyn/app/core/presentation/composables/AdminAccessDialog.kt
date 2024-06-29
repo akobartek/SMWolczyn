@@ -12,7 +12,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -69,7 +68,7 @@ fun AdminAccessDialog(
                     value = password,
                     onValueChange = { password = it },
                     singleLine = true,
-                    placeholder = { Text(text = stringResource(Res.string.password)) },
+                    placeholder = { WolczynText(text = stringResource(Res.string.password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                     trailingIcon = {
@@ -84,7 +83,7 @@ fun AdminAccessDialog(
                     isError = isError,
                     supportingText = if (isError) {
                         {
-                            Text(text = stringResource(Res.string.admin_password_error))
+                            WolczynText(text = stringResource(Res.string.admin_password_error))
                         }
                     } else null,
                     modifier = Modifier
@@ -98,12 +97,12 @@ fun AdminAccessDialog(
                     if (password == BuildConfig.ADMIN_PASSWORD) onAccess()
                     else isError = true
                 }) {
-                    Text(stringResource(Res.string.sign_in))
+                    WolczynText(stringResource(Res.string.sign_in))
                 }
             },
             dismissButton = {
                 TextButton(onClick = onCancel) {
-                    Text(stringResource(Res.string.cancel))
+                    WolczynText(stringResource(Res.string.cancel))
                 }
             },
         )

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
-import pl.kapucyni.wolczyn.app.theme.appColorPrimary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_navigate_up
 
@@ -34,11 +34,11 @@ fun ScreenHeader(
             IconButton(onClick = it) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    tint = appColorPrimary,
+                    tint = wolczynColors.primary,
                     contentDescription = stringResource(Res.string.cd_navigate_up)
                 )
             }
-        }
+        } ?: WidthSpacer(if (actionIcon == null) 0.dp else 40.dp)
         WolczynTitleText(
             text = title.replace("\n", " "),
             textAlign = TextAlign.Center,

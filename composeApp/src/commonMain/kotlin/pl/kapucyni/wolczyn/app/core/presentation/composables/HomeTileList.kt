@@ -11,8 +11,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.*
 import pl.kapucyni.wolczyn.app.core.domain.model.AppVersion
 import pl.kapucyni.wolczyn.app.core.presentation.getHomeTile
-import pl.kapucyni.wolczyn.app.theme.appColorSecondary
-import pl.kapucyni.wolczyn.app.theme.appColorTertiary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun HomeTileList(
@@ -53,7 +52,7 @@ fun HomeTileList(
 }
 
 private fun getTileBackground(num: Int) =
-    if (num % 2 == 0) appColorTertiary else appColorSecondary
+    if (num % 2 == 0) wolczynColors.accent else wolczynColors.secondary
 
 private fun oneColumn(appVersion: AppVersion) = when (appVersion) {
     AppVersion.MEETING -> {

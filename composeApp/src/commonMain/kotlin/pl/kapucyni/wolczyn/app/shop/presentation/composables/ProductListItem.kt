@@ -9,13 +9,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
-import pl.kapucyni.wolczyn.app.theme.appColorSecondary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun ProductListItem(
@@ -29,17 +28,15 @@ fun ProductListItem(
         // TODO() -> replace with image
         Spacer(
             modifier = Modifier
-                .background(appColorSecondary)
+                .background(wolczynColors.secondary)
                 .fillMaxWidth()
                 .height(220.dp)
         )
+        HeightSpacer(4.dp)
         WolczynText(
             text = product.name,
-            textStyle = TextStyle(
+            textStyle = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 32.sp,
-                color = MaterialTheme.colorScheme.onSurface,
             ),
             isOneLiner = true,
         )

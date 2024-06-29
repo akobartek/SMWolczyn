@@ -23,8 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.theme.appColorPrimary
-import pl.kapucyni.wolczyn.app.theme.appColorSecondary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun RowScope.ScheduleDaySelector(
@@ -33,9 +32,9 @@ fun RowScope.ScheduleDaySelector(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor by animateColorAsState(if (isSelected) appColorPrimary else appColorSecondary)
+    val backgroundColor by animateColorAsState(if (isSelected) wolczynColors.primary else wolczynColors.secondary)
     val contentColor by animateColorAsState(
-        if (isSelected) MaterialTheme.colorScheme.onPrimary else appColorPrimary
+        if (isSelected) MaterialTheme.colorScheme.onPrimary else wolczynColors.primary
     )
     val height by animateDpAsState(if (isSelected) 110.dp else 96.dp)
     val weight by animateFloatAsState(if (isSelected) 1.2f else 1f)
@@ -64,10 +63,8 @@ fun RowScope.ScheduleDaySelector(
             )
             WolczynText(
                 text = name,
-                textStyle = TextStyle(
-                    fontSize = 16.sp,
+                textStyle = MaterialTheme.typography.titleMedium.copy(
                     lineHeight = 16.sp,
-                    fontWeight = FontWeight.Medium,
                     letterSpacing = (-1).sp,
                     color = contentColor,
                     textAlign = TextAlign.Center,

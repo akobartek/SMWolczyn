@@ -3,9 +3,7 @@ package pl.kapucyni.wolczyn.app.breviary.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -24,9 +22,12 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringArrayResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary
-import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.*
-import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
+import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.BreviaryHtml
+import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.Compline
+import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.Invitatory
+import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.MajorHour
+import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.MinorHour
+import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.OfficeOfReadings
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviaryTextViewModel.State
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.BreviaryPartLayout
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.BreviaryPartWithSelectionLayout
@@ -35,8 +36,11 @@ import pl.kapucyni.wolczyn.app.breviary.presentation.composables.HymnLayout
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.MultipleOfficesDialog
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.PsalmLayout
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.PsalmodyLayout
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
+import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
+import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.breviary_list
 
@@ -150,7 +154,7 @@ private fun InvitatoryLayout(invitatory: Invitatory) {
     Column {
         Text(text = invitatory.opening, fontSize = 15.sp)
         PsalmLayout(psalm = invitatory.psalm, isInvitatoryPsalm = true)
-        Spacer(modifier = Modifier.height(16.dp))
+        HeightSpacer(16.dp)
         Text(text = invitatory.ending, fontSize = 15.sp)
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun NotificationBar(
@@ -24,7 +25,7 @@ fun NotificationBar(
 ) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.error
+            containerColor = wolczynColors.alert
         ),
         modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
     ) {

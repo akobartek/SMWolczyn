@@ -2,9 +2,7 @@ package pl.kapucyni.wolczyn.app.admin.presentation.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +20,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FullScreenDialog
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 
 @Composable
 fun AdminDataDialog(
@@ -47,7 +46,7 @@ fun AdminDataDialog(
     FullScreenDialog(
         isVisible = isVisible,
         title = title,
-        onSave = null,
+        onAction = null,
         onDismiss = onDismiss,
     ) {
         LazyColumn(
@@ -89,7 +88,7 @@ fun AdminDataDialog(
                 }
             }
             item {
-                Spacer(modifier = Modifier.height(12.dp))
+                HeightSpacer(12.dp)
             }
         }
     }

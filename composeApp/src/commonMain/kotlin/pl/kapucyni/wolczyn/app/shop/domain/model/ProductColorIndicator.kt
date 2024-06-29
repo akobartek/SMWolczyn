@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
-import pl.kapucyni.wolczyn.app.theme.appColorPrimary
 import pl.kapucyni.wolczyn.app.theme.shopColorBlack
 import pl.kapucyni.wolczyn.app.theme.shopColorBrown
 import pl.kapucyni.wolczyn.app.theme.shopColorGreen
 import pl.kapucyni.wolczyn.app.theme.shopColorWhite
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun ProductColorIndicator(
@@ -28,7 +28,7 @@ fun ProductColorIndicator(
 
     Canvas(modifier = modifier.size(32.dp)) {
         drawCircle(
-            color = appColorPrimary,
+            color = wolczynColors.primary,
             radius = (12.5).dp.toPx(),
             center = Offset(x = size.width / 2, y = size.height / 2)
         )

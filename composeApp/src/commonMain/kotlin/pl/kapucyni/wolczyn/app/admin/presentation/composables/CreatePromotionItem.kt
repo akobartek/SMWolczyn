@@ -10,11 +10,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_save_promotion
 import smwolczyn.composeapp.generated.resources.new_promo_name
@@ -29,7 +29,7 @@ fun CreatePromotionItem(
     OutlinedTextField(
         value = newPromotionName,
         onValueChange = onChangeName,
-        label = { Text(stringResource(Res.string.new_promo_name)) },
+        label = { WolczynText(stringResource(Res.string.new_promo_name)) },
         trailingIcon = {
             if (newPromotionName.isNotBlank())
                 IconButton(onClick = onSave) {
