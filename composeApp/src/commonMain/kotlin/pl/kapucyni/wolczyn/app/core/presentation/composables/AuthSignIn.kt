@@ -47,6 +47,7 @@ import smwolczyn.composeapp.generated.resources.login
 import smwolczyn.composeapp.generated.resources.login_error
 import smwolczyn.composeapp.generated.resources.password
 import smwolczyn.composeapp.generated.resources.sign_in
+import smwolczyn.composeapp.generated.resources.sign_up
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -157,5 +158,13 @@ fun AuthSignIn(
             ) {
                 Text(text = stringResource(Res.string.forgot_password))
             }
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = { uriHandler.openUri("https://konto.kapucyni.pl/register") },
+                modifier = Modifier.fillMaxWidth(0.75f)
+            ) {
+                Text(text = stringResource(Res.string.sign_up))
+            }
+            Spacer(modifier = Modifier.height(12.dp))
         }
 }

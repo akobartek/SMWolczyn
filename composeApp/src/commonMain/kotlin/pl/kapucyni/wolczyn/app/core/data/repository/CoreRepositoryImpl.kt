@@ -53,16 +53,16 @@ class CoreRepositoryImpl(
     override suspend fun signOut() = saveUserToken("")
 
     override suspend fun getUserInfo(): WolczynUser? =
-        getUserToken()?.let { token ->
+        getUserToken().takeIf { it.isNotBlank() }?.let { token ->
             wolczynApi.getUserInfo(token).handleResponse()
         }
 
     override suspend fun getGroupInfo(): WolczynGroup? =
-        getUserToken()?.let { token ->
+        getUserToken().takeIf { it.isNotBlank() }?.let { token ->
             wolczynApi.getGroupInfo(token).handleResponse()
         }
 
-    private suspend fun getUserToken() = userToken.firstOrNull()
+    private suspend fun getUserToken() = userToken.firstOrNull() ?: ""
 
     private suspend fun saveUserToken(token: String) {
         dataStore.edit { it[USER_TOKEN_KEY] = token }
@@ -80,12 +80,14 @@ class CoreRepositoryImpl(
         else getOrNull()?.saveTokenAndReturnBody()
 
     private suspend inline fun <reified T> HttpResponse.saveTokenAndReturnBody(): T? {
-        if (headers.contains(HttpHeaders.Authorization))
-            saveUserToken(headers[HttpHeaders.Authorization] ?: "")
+        headers[TOKEN_HEADER_NAME]?.takeIf { it.isNotBlank() }?.let {
+            saveUserToken(it)
+        }
         return json.decodeFromString<T>(bodyAsText())
     }
 
     companion object {
         private val USER_TOKEN_KEY = stringPreferencesKey("user_token")
+        private val TOKEN_HEADER_NAME = "token"
     }
 }

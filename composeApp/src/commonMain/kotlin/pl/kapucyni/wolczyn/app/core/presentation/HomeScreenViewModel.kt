@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.core.presentation
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,12 +28,22 @@ class HomeScreenViewModel(
     private val signOutUseCase: SignOutUseCase,
 ) : BasicViewModel<AppState>() {
 
+    private var job: Job? = null
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 getAppStateUseCase()
                     .shareIn(this, SharingStarted.Lazily, 1)
                     .collect { homeInfo -> _screenState.update { State.Success(homeInfo) } }
+            } catch (_: Exception) {
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                getUserInfoUseCase()?.let { user ->
+                    _authState.update { it.signedIn(user) }
+                }
             } catch (_: Exception) {
             }
         }
@@ -47,6 +58,13 @@ class HomeScreenViewModel(
 
     fun hideAuthDialog() {
         _authState.update { it.hideDialog() }
+    }
+
+    fun checkDialog() {
+        if (_authState.value.isDialogVisible) {
+            _authState.update { it.hideDialog() }
+            _authState.update { it.showDialog() }
+        }
     }
 
     fun signIn(login: String, password: String) {
@@ -74,5 +92,21 @@ class HomeScreenViewModel(
                 _authState.update { it.signedOut() }
             }
         }
+    }
+
+    fun loadGroupInfo() {
+        if (_authState.value.group == null)
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    getGroupInfoUseCase()?.let { group ->
+                        _authState.update { it.groupLoaded(group) }
+                    }
+                } catch (_: Exception) {
+                }
+            }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

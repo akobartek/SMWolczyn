@@ -1,6 +1,11 @@
 package pl.kapucyni.wolczyn.app.core.presentation.composables
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FullScreenDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.core.presentation.model.AuthDialogState
@@ -13,7 +18,13 @@ fun AuthDialog(
     onSignIn: (String, String) -> Unit,
     onSignOut: () -> Unit,
     onDismiss: () -> Unit,
+    loadGroupInfo: () -> Unit,
 ) {
+    LaunchedEffect(state) {
+        if (state.isDialogVisible && state.user != null && state.user.type == 2)
+            loadGroupInfo()
+    }
+
     FullScreenDialog(
         isVisible = state.isDialogVisible,
         title = "",
@@ -21,15 +32,18 @@ fun AuthDialog(
         onAction = if (state.user != null) onSignOut else null,
         onDismiss = onDismiss,
     ) {
-        if (state.isLoading) LoadingBox()
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            if (state.isLoading) LoadingBox()
 
-        when {
-            state.user == null -> AuthSignIn(
-                isVisible = !state.isLoading,
-                signInError = state.signInError,
-                onSignIn = onSignIn
-            )
-            else -> UserInfo(user = state.user, group = state.group)
+            when {
+                state.user == null -> AuthSignIn(
+                    isVisible = !state.isLoading,
+                    signInError = state.signInError,
+                    onSignIn = onSignIn
+                )
+
+                else -> UserInfo(user = state.user, group = state.group)
+            }
         }
     }
 }
