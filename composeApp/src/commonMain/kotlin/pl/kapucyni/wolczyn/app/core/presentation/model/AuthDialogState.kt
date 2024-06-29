@@ -15,7 +15,7 @@ data class AuthDialogState(
         SIGNED_IN, SIGNED_OUT
     }
 
-    fun showDialog() = copy(isDialogVisible = true)
+    fun showDialog() = copy(isDialogVisible = true, snackbarType = null)
 
     fun hideDialog() = copy(isDialogVisible = false)
 
