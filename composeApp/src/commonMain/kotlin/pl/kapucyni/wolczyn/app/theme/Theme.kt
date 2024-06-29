@@ -234,6 +234,8 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
 
+var wolczynColors = WolczynMainColors.Light
+
 internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 
 @Composable
@@ -247,6 +249,9 @@ internal fun AppTheme(
     ) {
         val isDark by isDarkState
         SystemAppearance(!isDark)
+        wolczynColors =
+            if (isDark) WolczynMainColors.Dark
+            else WolczynMainColors.Light
         MaterialTheme(
             colorScheme = if (isDark) darkScheme else lightScheme,
             content = content

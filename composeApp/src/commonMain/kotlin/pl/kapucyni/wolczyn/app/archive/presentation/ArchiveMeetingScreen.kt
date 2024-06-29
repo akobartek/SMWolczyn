@@ -22,7 +22,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
-import pl.kapucyni.wolczyn.app.theme.appColorPrimary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun ArchiveMeetingScreen(
@@ -51,7 +51,7 @@ fun ArchiveMeetingScreen(
                 IconButton(onClick = { uriHandler.openUri(state.data?.anthem ?: "") }) {
                     Icon(
                         imageVector = Icons.Filled.MusicNote,
-                        tint = appColorPrimary,
+                        tint = wolczynColors.primary,
                         contentDescription = null
                     )
                 }

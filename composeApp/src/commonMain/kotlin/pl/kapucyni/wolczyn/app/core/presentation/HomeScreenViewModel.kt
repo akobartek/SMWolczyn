@@ -91,6 +91,10 @@ class HomeScreenViewModel(
         }
     }
 
+    fun clearSnackBar() {
+        _authState.update { it.clearSnackbar() }
+    }
+
     fun loadGroupInfo() {
         if (_authState.value.group == null)
             viewModelScope.launch(Dispatchers.IO) {

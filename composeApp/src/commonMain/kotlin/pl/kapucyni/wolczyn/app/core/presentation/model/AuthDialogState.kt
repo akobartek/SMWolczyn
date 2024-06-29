@@ -9,7 +9,12 @@ data class AuthDialogState(
     val signInError: Boolean = false,
     val user: WolczynUser? = null,
     val group: WolczynGroup? = null,
+    val snackbarType: AuthSnackBarType? = null,
 ) {
+    enum class AuthSnackBarType {
+        SIGNED_IN, SIGNED_OUT
+    }
+
     fun showDialog() = copy(isDialogVisible = true)
 
     fun hideDialog() = copy(isDialogVisible = false)
@@ -17,10 +22,24 @@ data class AuthDialogState(
     fun loading() = copy(isLoading = true)
 
     fun signedIn(user: WolczynUser) =
-        copy(isDialogVisible = false, isLoading = false, signInError = false, user = user)
+        copy(
+            isDialogVisible = false,
+            isLoading = false,
+            signInError = false,
+            user = user,
+            snackbarType = AuthSnackBarType.SIGNED_IN
+        )
 
     fun signedOut() =
-        copy(isDialogVisible = false, isLoading = false, signInError = false, user = null)
+        copy(
+            isDialogVisible = false,
+            isLoading = false,
+            signInError = false,
+            user = null,
+            snackbarType = AuthSnackBarType.SIGNED_OUT
+        )
+
+    fun clearSnackbar() = copy(snackbarType = null)
 
     fun loginError() = copy(signInError = true, isLoading = false)
 

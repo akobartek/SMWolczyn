@@ -9,7 +9,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,10 +35,14 @@ import pl.kapucyni.wolczyn.app.core.domain.model.AppVersion
 import pl.kapucyni.wolczyn.app.core.presentation.composables.AdminAccessDialog
 import pl.kapucyni.wolczyn.app.core.presentation.composables.AuthDialog
 import pl.kapucyni.wolczyn.app.core.presentation.composables.HomeTileList
-import pl.kapucyni.wolczyn.app.theme.appColorPrimary
+import pl.kapucyni.wolczyn.app.core.presentation.model.AuthDialogState.AuthSnackBarType.*
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_navigate_up
+import smwolczyn.composeapp.generated.resources.empty
 import smwolczyn.composeapp.generated.resources.home_title
+import smwolczyn.composeapp.generated.resources.signed_in
+import smwolczyn.composeapp.generated.resources.signed_out
 
 @Composable
 fun HomeScreen(
@@ -45,6 +52,25 @@ fun HomeScreen(
     val screenState by viewModel.screenState.collectAsStateMultiplatform()
     val authDialogState by viewModel.authState.collectAsStateMultiplatform()
     viewModel.checkDialog()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarMessage = stringResource(
+        when (authDialogState.snackbarType) {
+            SIGNED_IN -> Res.string.signed_in
+            SIGNED_OUT -> Res.string.signed_out
+            else -> Res.string.empty
+        }
+    )
+
+    LaunchedEffect(authDialogState) {
+        authDialogState.snackbarType?.let {
+            val result = snackbarHostState.showSnackbar(
+                message = snackBarMessage,
+                withDismissAction = true,
+            )
+            if (result == SnackbarResult.Dismissed)
+                viewModel.clearSnackBar()
+        }
+    }
 
     ScreenLayout(
         title = stringResource(Res.string.home_title),
@@ -52,11 +78,12 @@ fun HomeScreen(
             IconButton(onClick = viewModel::showAuthDialog) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
-                    tint = appColorPrimary,
+                    tint = wolczynColors.primary,
                     contentDescription = stringResource(Res.string.cd_navigate_up)
                 )
             }
         },
+        snackbarHostState = snackbarHostState,
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         HomeScreenContent(

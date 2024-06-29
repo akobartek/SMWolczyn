@@ -36,7 +36,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.schedule.domain.model.Event
 import pl.kapucyni.wolczyn.app.schedule.domain.model.EventPlace
 import pl.kapucyni.wolczyn.app.schedule.domain.model.EventType
-import pl.kapucyni.wolczyn.app.theme.appColorSecondary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_schedule_breviary
 import smwolczyn.composeapp.generated.resources.ic_schedule_kitchen
@@ -92,7 +92,7 @@ fun EventCard(
 
         Card(
             colors = CardDefaults.cardColors(
-                containerColor = appColorSecondary
+                containerColor = wolczynColors.secondary
             ),
             onClick = {
                 when (event.type) {
@@ -122,7 +122,7 @@ fun EventCard(
                         textStyle = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = MaterialTheme.colorScheme.primary
                         )
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -132,7 +132,7 @@ fun EventCard(
                             textStyle = TextStyle(
                                 fontWeight = FontWeight.Light,
                                 fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onPrimary
+                                color = MaterialTheme.colorScheme.primary
                             )
                         )
                     }
@@ -141,7 +141,7 @@ fun EventCard(
                         Icon(
                             painter = painterResource(Res.drawable.ic_schedule_map_pin),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(24.dp)
                         )
                         WidthSpacer(2.dp)
@@ -159,7 +159,7 @@ fun EventCard(
                                 textStyle = TextStyle(
                                     fontWeight = FontWeight.Normal,
                                     fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.onSecondary
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             )
                         }
@@ -183,7 +183,7 @@ fun EventCard(
                     Icon(
                         painter = painterResource(drawable),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSecondary,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(34.dp)
                     )
                 }

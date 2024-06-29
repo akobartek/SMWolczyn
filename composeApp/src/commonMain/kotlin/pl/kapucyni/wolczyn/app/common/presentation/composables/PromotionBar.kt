@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun PromotionBar(
@@ -25,7 +26,7 @@ fun PromotionBar(
 ) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
+            containerColor = wolczynColors.alert
         ),
         modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
     ) {

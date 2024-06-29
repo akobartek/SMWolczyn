@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
-import pl.kapucyni.wolczyn.app.theme.appColorSecondary
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun ProductListItem(
@@ -29,7 +29,7 @@ fun ProductListItem(
         // TODO() -> replace with image
         Spacer(
             modifier = Modifier
-                .background(appColorSecondary)
+                .background(wolczynColors.secondary)
                 .fillMaxWidth()
                 .height(220.dp)
         )

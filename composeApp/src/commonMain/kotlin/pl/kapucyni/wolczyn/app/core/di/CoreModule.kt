@@ -23,7 +23,7 @@ val coreModule = module {
         HttpClient {
             install(Logging) {
                 logger = Logger.SIMPLE
-                level = LogLevel.ALL
+                level = LogLevel.NONE
             }
             defaultRequest {
                 url("https://api.kapucyni.pl/")

@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,15 +20,26 @@ fun ScreenLayout(
     title: String,
     onBackPressed: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState? = null,
     actionIcon: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxSize()
-    ) {
-        ScreenHeader(title = title, onBackPressed = onBackPressed, actionIcon = actionIcon)
-        content()
-        Spacer(modifier = Modifier.height(12.dp))
+    Scaffold(
+        snackbarHost = {
+            snackbarHostState?.let {
+                SnackbarHost(it)
+            }
+        },
+    ) { paddingValues ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            ScreenHeader(title = title, onBackPressed = onBackPressed, actionIcon = actionIcon)
+            content()
+            Spacer(modifier = Modifier.height(12.dp))
+        }
     }
 }

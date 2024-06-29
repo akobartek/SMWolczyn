@@ -28,7 +28,7 @@ fun WeatherContent(weather: Weather) {
             text = "${weather.dayTemp}°/${weather.nightTemp}°",
             textStyle = TextStyle(
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSecondary,
+                color = MaterialTheme.colorScheme.background,
                 fontSize = 20.sp,
             ),
         )
@@ -42,7 +42,7 @@ fun WeatherContent(weather: Weather) {
                 text = "${weather.precipitationChance}%",
                 textStyle = TextStyle(
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSecondary,
+                    color = MaterialTheme.colorScheme.background,
                     fontSize = 16.sp,
                 ),
                 modifier = Modifier.offset(y = (-16).dp)
