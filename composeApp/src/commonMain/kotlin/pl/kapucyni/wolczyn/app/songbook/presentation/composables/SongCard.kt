@@ -21,8 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -55,9 +53,8 @@ fun SongCard(
                 ) {
                     WolczynText(
                         text = song.title,
-                        textStyle = TextStyle(
+                        textStyle = MaterialTheme.typography.titleMedium.copy(
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Medium
                         ),
                     )
                 }
@@ -75,9 +72,7 @@ fun SongCard(
                     ) {
                         WolczynText(
                             text = song.text,
-                            textStyle = TextStyle(
-                                fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                            ),
+                            textStyle = MaterialTheme.typography.bodyLarge,
                         )
                     }
                 }

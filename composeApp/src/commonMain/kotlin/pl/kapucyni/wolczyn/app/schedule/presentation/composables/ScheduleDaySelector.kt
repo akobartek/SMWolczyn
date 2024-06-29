@@ -63,10 +63,8 @@ fun RowScope.ScheduleDaySelector(
             )
             WolczynText(
                 text = name,
-                textStyle = TextStyle(
-                    fontSize = 16.sp,
+                textStyle = MaterialTheme.typography.titleMedium.copy(
                     lineHeight = 16.sp,
-                    fontWeight = FontWeight.Medium,
                     letterSpacing = (-1).sp,
                     color = contentColor,
                     textAlign = TextAlign.Center,

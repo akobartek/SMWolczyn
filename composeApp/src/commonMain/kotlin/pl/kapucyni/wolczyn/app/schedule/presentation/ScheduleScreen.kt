@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -116,20 +115,18 @@ fun ScheduleScreenContent(
                         ) {
                             WolczynText(
                                 text = stringArrayResource(Res.array.schedule_days)[state.selectedDay].uppercase(),
-                                textStyle = TextStyle(
-                                    fontSize = 32.sp,
+                                textStyle = MaterialTheme.typography.headlineLarge.copy(
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = MaterialTheme.colorScheme.primary,
                                 ),
                             )
                             WidthSpacer(4.dp)
                             WolczynText(
                                 text = scheduleDay.name.replace("\n", ""),
-                                textStyle = TextStyle(
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    color = MaterialTheme.colorScheme.outlineVariant,
-                                    letterSpacing = (0.5).sp
+                                textStyle = MaterialTheme.typography.titleMedium.copy(
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colorScheme.outline,
+                                    letterSpacing = (0.5).sp,
                                 )
                             )
                         }

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +43,7 @@ fun HomeTile(
             ) {
                 WolczynTitleText(
                     text = stringResource(nameRes),
-                    color = MaterialTheme.colorScheme.background,
+                    color = null,
                     modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp)
                 )
                 additionalContent()

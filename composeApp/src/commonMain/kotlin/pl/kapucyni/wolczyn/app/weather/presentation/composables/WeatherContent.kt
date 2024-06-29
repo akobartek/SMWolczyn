@@ -9,10 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.weather.domain.model.Weather
@@ -26,10 +24,8 @@ fun WeatherContent(weather: Weather) {
     ) {
         WolczynText(
             text = "${weather.dayTemp}°/${weather.nightTemp}°",
-            textStyle = TextStyle(
+            textStyle = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.background,
-                fontSize = 20.sp,
             ),
         )
         AsyncImage(
@@ -40,11 +36,7 @@ fun WeatherContent(weather: Weather) {
         if (weather.precipitationChance > 10)
             WolczynText(
                 text = "${weather.precipitationChance}%",
-                textStyle = TextStyle(
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.background,
-                    fontSize = 16.sp,
-                ),
+                textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.offset(y = (-16).dp)
             )
     }

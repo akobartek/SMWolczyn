@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,7 +70,7 @@ fun EventCard(
         if (!hideTime)
             WolczynText(
                 text = "${event.time.hour}.${event.time.minute}".replace(".0", ".00"),
-                textStyle = TextStyle(
+                textStyle = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Medium,
                     fontSize = 20.sp,
                     color = MaterialTheme.colorScheme.primary
@@ -117,20 +116,19 @@ fun EventCard(
                 Column(modifier = Modifier.weight(1f)) {
                     WolczynText(
                         text = event.name,
-                        textStyle = TextStyle(
+                        textStyle = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     )
                     WidthSpacer(4.dp)
                     event.guest?.let { guest ->
                         WolczynText(
                             text = guest,
-                            textStyle = TextStyle(
+                            textStyle = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.Light,
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.primary
+                                color = MaterialTheme.colorScheme.primary,
                             )
                         )
                     }
@@ -154,10 +152,8 @@ fun EventCard(
                         }.let {
                             WolczynText(
                                 text = stringResource(it),
-                                textStyle = TextStyle(
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.primary
+                                textStyle = MaterialTheme.typography.bodyLarge.copy(
+                                    color = MaterialTheme.colorScheme.primary,
                                 )
                             )
                         }

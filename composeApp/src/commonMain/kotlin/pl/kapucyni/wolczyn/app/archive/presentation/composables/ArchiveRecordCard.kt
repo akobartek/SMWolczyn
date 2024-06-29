@@ -14,9 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveRecord
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 
@@ -38,10 +36,7 @@ fun ArchiveRecordCard(record: ArchiveRecord) {
         ) {
             WolczynText(
                 text = record.name,
-                textStyle = TextStyle(
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    fontSize = 16.sp,
-                ),
+                textStyle = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .padding(6.dp)
                     .weight(1f)

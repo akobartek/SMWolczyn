@@ -30,7 +30,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -81,9 +80,7 @@ fun SongBookSearchBar(
                     placeholder = {
                         WolczynText(
                             text = stringResource(Res.string.search),
-                            textStyle = TextStyle(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            ),
+                            textStyle = MaterialTheme.typography.titleMedium,
                         )
                     },
                     leadingIcon = {
@@ -94,7 +91,6 @@ fun SongBookSearchBar(
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     },
@@ -103,7 +99,6 @@ fun SongBookSearchBar(
                             IconButton(onClick = { onQueryChanged("") }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                     contentDescription = null
                                 )
                             }
@@ -115,14 +110,12 @@ fun SongBookSearchBar(
                                 Icon(
                                     imageVector = Icons.Default.Search,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
                     }
                 )
             },
             textStyle = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontFamily = poppinsFontFamily()
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
