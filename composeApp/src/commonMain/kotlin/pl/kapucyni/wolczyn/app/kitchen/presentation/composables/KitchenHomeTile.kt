@@ -23,15 +23,15 @@ fun KitchenHomeTile(
     HomeTile(
         nameRes = Res.string.kitchen_title,
         nameAlignment = Alignment.TopStart,
-        height = 190.dp,
+        height = 180.dp,
         backgroundColor = backgroundColor,
         image = {
             Image(
                 painter = painterResource(Res.drawable.ic_cap_kitchen),
-                contentScale = FixedScale(0.42f),
+                contentScale = FixedScale(0.39f),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.BottomEnd)
-                    .offset(x = 20.dp, y = 25.dp)
+                    .offset(x = 10.dp, y = 25.dp)
             )
         },
         onClick = onClick,

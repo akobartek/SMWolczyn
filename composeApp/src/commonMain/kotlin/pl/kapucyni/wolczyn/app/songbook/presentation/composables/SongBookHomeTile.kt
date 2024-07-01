@@ -32,7 +32,7 @@ fun SongBookHomeTile(
                 contentScale = FixedScale(0.57f),
                 alignment = BiasAlignment(0f, -1f),
                 contentDescription = null,
-                modifier = Modifier.padding(start = 20.dp, top = 8.dp)
+                modifier = Modifier.padding(start = 28.dp, top = 8.dp)
             )
         },
         onClick = onClick,

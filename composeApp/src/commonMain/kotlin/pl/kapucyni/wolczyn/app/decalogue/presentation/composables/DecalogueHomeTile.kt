@@ -34,7 +34,7 @@ fun DecalogueHomeTile(
                 alignment = BiasAlignment(0f, -1f),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.TopEnd)
-                    .padding(end = 16.dp, top = 8.dp)
+                    .padding(end = 28.dp, top = 8.dp)
                     .scale(scaleX = -1f, scaleY = 1f)
             )
         },

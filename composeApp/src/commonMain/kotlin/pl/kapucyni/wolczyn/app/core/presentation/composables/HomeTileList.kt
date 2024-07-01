@@ -61,9 +61,9 @@ private fun oneColumn(appVersion: AppVersion) = when (appVersion) {
             arrayOf(SONG_BOOK),
             arrayOf(KITCHEN),
             arrayOf(SHOP),
+            arrayOf(BREVIARY),
             arrayOf(WEATHER),
             arrayOf(DECALOGUE),
-            arrayOf(BREVIARY),
             arrayOf(ARCHIVE),
         )
     }
