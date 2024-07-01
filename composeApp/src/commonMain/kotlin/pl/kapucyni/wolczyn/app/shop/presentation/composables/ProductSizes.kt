@@ -15,9 +15,12 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.shop_sizes
 
 @Composable
-fun ProductSizes(sizes: String) {
+fun ProductSizes(
+    sizes: String,
+    modifier: Modifier,
+) {
     if (sizes.isNotBlank())
-        Column {
+        Column(modifier = modifier) {
             WolczynText(
                 text = stringResource(Res.string.shop_sizes),
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
@@ -28,6 +31,7 @@ fun ProductSizes(sizes: String) {
             WolczynText(
                 text = sizes,
                 textStyle = MaterialTheme.typography.titleLarge.copy(
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 ),
                 modifier = Modifier.padding(start = 8.dp)

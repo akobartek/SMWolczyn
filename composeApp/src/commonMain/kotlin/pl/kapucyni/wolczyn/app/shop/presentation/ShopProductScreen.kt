@@ -45,7 +45,7 @@ fun ShopProductScreenContent(
                 return
             }
             var selectedColor by rememberSaveable {
-                mutableStateOf(product.photosUrls.keys.firstOrNull())
+                mutableStateOf(product.photoUrls.keys.firstOrNull())
             }
             var isOrientationLandscape by remember { mutableStateOf(false) }
 

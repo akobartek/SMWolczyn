@@ -27,10 +27,11 @@ import smwolczyn.composeapp.generated.resources.shop_color_white
 fun ProductColorsList(
     colors: Set<ProductColor>,
     selectedColor: ProductColor?,
-    onColorSelected: (ProductColor) -> Unit
+    onColorSelected: (ProductColor) -> Unit,
+    modifier: Modifier
 ) {
     if (selectedColor != null && selectedColor != ProductColor.NONE)
-        Column {
+        Column(modifier = modifier) {
             WolczynText(
                 text = stringResource(
                     when (selectedColor) {
@@ -47,7 +48,7 @@ fun ProductColorsList(
             )
             HeightSpacer(4.dp)
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.padding(start = 8.dp)
             ) {
                 colors.forEach {

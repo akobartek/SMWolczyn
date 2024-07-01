@@ -8,14 +8,15 @@ import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
 data class FirestoreShopProduct(
     val id: String = "",
     val name: String = "",
-    val photosUrls: Map<ProductColor, List<String>> = mapOf(),
+    val photoUrls: Map<ProductColor, List<String>> = mapOf(),
     val sizes: String = "",
     val isAvailable: Boolean = true,
+    val importance: Int = 0,
 ) {
     fun toDomainObject() = ShopProduct(
         id = id,
         name = name,
-        photosUrls = photosUrls,
+        photoUrls = photoUrls,
         sizes = sizes,
     )
 }

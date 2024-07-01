@@ -29,13 +29,16 @@ fun ProductDetails(
     onBackPressed: () -> Unit,
     isOrientationLandscape: Boolean
 ) {
-    ProductPhotosPager(
-        photos = listOf("1", "2", "3", "4", "5"),
-        onBackPressed = onBackPressed,
-        modifier =
+    val modifier =
         if (isOrientationLandscape) Modifier.fillMaxHeight().aspectRatio(3 / 4f)
         else Modifier.fillMaxWidth()
-    )
+    product.photoUrls[selectedColor]?.let { urls ->
+        ProductPhotosPager(
+            photos = urls,
+            onBackPressed = onBackPressed,
+            modifier = modifier
+        )
+    } ?: ProductEmptyPhoto(modifier = modifier)
 
     Spacer(
         modifier =
@@ -55,17 +58,21 @@ fun ProductDetails(
         HeightSpacer(24.dp)
 
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 16.dp)
         ) {
             ProductColorsList(
-                colors = product.photosUrls.keys,
+                colors = product.photoUrls.keys.filter { it != ProductColor.NONE }.toSet(),
                 selectedColor = selectedColor,
-                onColorSelected = onColorSelected
+                onColorSelected = onColorSelected,
+                modifier = Modifier.weight(1f),
             )
-            ProductSizes(sizes = product.sizes)
+            ProductSizes(
+                sizes = product.sizes,
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }

@@ -22,7 +22,7 @@ import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ProductListItem
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.empty_shop_list
-import smwolczyn.composeapp.generated.resources.ic_cap_song_book
+import smwolczyn.composeapp.generated.resources.ic_cap_shop
 import smwolczyn.composeapp.generated.resources.shop_title
 
 @Composable
@@ -74,7 +74,7 @@ fun ShopScreenContent(
                     item(span = { GridItemSpan(maxLineSpan) }) {
                         EmptyListInfo(
                             messageRes = Res.string.empty_shop_list,
-                            drawableRes = Res.drawable.ic_cap_song_book // TODO
+                            drawableRes = Res.drawable.ic_cap_shop
                         )
                     }
             }
