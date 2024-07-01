@@ -8,8 +8,6 @@ data class WolczynMainColors(
     val accent: Color,
     val alert: Color,
 ) {
-    fun getColors() = listOf(primary, secondary, accent)
-
     companion object {
         val Light = WolczynMainColors(
             primary = Color(0xFF96551D),
