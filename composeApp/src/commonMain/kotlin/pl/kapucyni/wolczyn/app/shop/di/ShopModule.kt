@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.shop.di
 
+import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.shop.data.repository.ShopRepositoryImpl
 import pl.kapucyni.wolczyn.app.shop.data.sources.BasicShopSource
@@ -14,5 +15,5 @@ val shopModule = module {
     single<ShopRepository> { ShopRepositoryImpl(get(), get()) }
     single { GetShopUseCase(get()) }
 
-    factory { ShopViewModel(get()) }
+    viewModel { ShopViewModel(get()) }
 }

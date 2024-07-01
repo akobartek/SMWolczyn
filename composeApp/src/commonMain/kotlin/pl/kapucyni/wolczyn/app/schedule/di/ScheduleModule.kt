@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.schedule.di
 
+import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.schedule.data.repository.ScheduleRepositoryImpl
 import pl.kapucyni.wolczyn.app.schedule.data.sources.BasicScheduleSource
@@ -14,5 +15,5 @@ val scheduleModule = module {
     single<ScheduleRepository> { ScheduleRepositoryImpl(get(), get()) }
     single { GetScheduleUseCase(get()) }
 
-    factory { ScheduleViewModel(get()) }
+    viewModel { ScheduleViewModel(get()) }
 }

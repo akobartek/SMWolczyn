@@ -2,8 +2,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -11,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import org.koin.compose.KoinApplication
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
@@ -22,7 +21,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BRE
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BREVIARY_POSITION
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_MEETING_NUMBER
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_PRODUCT_ID
-import pl.kapucyni.wolczyn.app.common.utils.getBaseModules
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
@@ -36,15 +34,6 @@ import pl.kapucyni.wolczyn.app.theme.AppTheme
 
 @Composable
 fun App() {
-    KoinApplication(application = {
-        modules(getBaseModules())
-    }) {
-        AppContent()
-    }
-}
-
-@Composable
-fun AppContent() {
     AppTheme {
         val navController = rememberNavController()
 

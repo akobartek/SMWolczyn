@@ -1,6 +1,6 @@
 package pl.kapucyni.wolczyn.app
 
-import AppContent
+import App
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            AppContent()
+            App()
         }
     }
 }
@@ -32,5 +32,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    AppContent()
+    App()
 }

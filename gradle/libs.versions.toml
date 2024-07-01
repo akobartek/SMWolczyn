@@ -15,15 +15,16 @@ kotlin = "2.0.0"
 buildconfig = "5.3.5"
 
 serialization = "1.6.3"
-androidx-navigation = "2.8.0-alpha02"
+navigation = "2.8.0-alpha02"
 kotlinx-datetime = "0.6.0"
 viewmodel = "2.8.0"
 room = "2.7.0-alpha04"
 datastore = "1.1.1"
 ksp = "2.0.0-1.0.22"
 sqlite = "2.5.0-SNAPSHOT"
-ktor = "2.3.9"
-koin = "3.6.0-alpha1"
+ktor = "2.3.12"
+koin = "3.6.0-Beta4"
+koin-multiplatform = "1.2.0-Beta4"
 coil = "3.0.0-alpha06"
 ksoup = "0.1.2"
 
@@ -46,7 +47,7 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
+navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
 viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
@@ -54,8 +55,10 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-multiplatform" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-multiplatform" }
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }

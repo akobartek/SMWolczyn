@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.breviary.di
 
+import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.breviary.data.repository.BreviaryRepositoryImpl
 import pl.kapucyni.wolczyn.app.breviary.data.sources.WebBreviarySource
@@ -15,6 +16,6 @@ val breviaryModule = module {
     single { CheckOfficesUseCase(get()) }
     single { LoadBreviaryUseCase(get()) }
 
-    factory { BreviarySelectViewModel() }
-    factory { BreviaryTextViewModel(get(), get()) }
+    viewModel { BreviarySelectViewModel() }
+    viewModel { BreviaryTextViewModel(get(), get()) }
 }

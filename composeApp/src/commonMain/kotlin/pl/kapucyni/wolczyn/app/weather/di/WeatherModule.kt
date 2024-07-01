@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.weather.di
 
+import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.weather.data.repository.WeatherRepositoryImpl
 import pl.kapucyni.wolczyn.app.weather.data.sources.FirestoreWeatherSource
@@ -12,5 +13,5 @@ val weatherModule = module {
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
     single { GetWeatherUseCase(get()) }
 
-    single { WeatherViewModel(get()) }
+    viewModel { WeatherViewModel(get()) }
 }

@@ -1,7 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.utils
 
 import org.koin.core.context.startKoin
-import org.koin.core.module.Module
+import org.koin.dsl.KoinAppDeclaration
 import pl.kapucyni.wolczyn.app.admin.di.adminModule
 import pl.kapucyni.wolczyn.app.archive.di.archiveModule
 import pl.kapucyni.wolczyn.app.breviary.di.breviaryModule
@@ -13,7 +13,7 @@ import pl.kapucyni.wolczyn.app.shop.di.shopModule
 import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
 import pl.kapucyni.wolczyn.app.weather.di.weatherModule
 
-fun getBaseModules() = listOf(
+private fun getBaseModules() = listOf(
     platformModule,
     coreModule,
     scheduleModule,
@@ -26,8 +26,9 @@ fun getBaseModules() = listOf(
     adminModule,
 )
 
-fun initKoinAndroid(androidModule: Module) {
+fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
-        modules(androidModule + getBaseModules())
+        config?.invoke(this)
+        modules(getBaseModules())
     }
 }
