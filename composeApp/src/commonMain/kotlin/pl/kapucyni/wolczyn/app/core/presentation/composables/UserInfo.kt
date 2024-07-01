@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynLogo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.core.domain.model.WolczynGroup
 import pl.kapucyni.wolczyn.app.core.domain.model.WolczynUser
@@ -31,6 +32,11 @@ fun UserInfo(
             .fillMaxSize()
             .padding(horizontal = 32.dp)
     ) {
+        WolczynLogo(
+            size = 64.dp,
+            modifier = Modifier.padding(bottom = 8.dp),
+        )
+
         WolczynText(
             text =
             "${user.prefix.getOrEmpty()}${user.name.getOrEmpty()}${user.surname.getOrEmpty()}",

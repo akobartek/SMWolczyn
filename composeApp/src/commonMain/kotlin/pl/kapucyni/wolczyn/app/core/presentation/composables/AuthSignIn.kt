@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynLogo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_clear_field
@@ -71,6 +72,8 @@ fun AuthSignIn(
                 .fillMaxSize()
                 .padding(horizontal = 48.dp)
         ) {
+            WolczynLogo()
+
             OutlinedTextField(
                 value = login,
                 onValueChange = { login = it },
@@ -96,6 +99,7 @@ fun AuthSignIn(
                     .focusRequester(loginRef)
                     .focusProperties { next = passwordRef }
             )
+
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -129,7 +133,9 @@ fun AuthSignIn(
                     .padding(top = 8.dp)
                     .focusRequester(passwordRef)
             )
+
             HeightSpacer(8.dp)
+
             Button(
                 onClick = {
                     focusManager.clearFocus(true)
@@ -139,7 +145,9 @@ fun AuthSignIn(
             ) {
                 WolczynText(text = stringResource(Res.string.sign_in))
             }
+
             HeightSpacer(8.dp)
+
             // TODO -> GUGIEL
 //        OutlinedButton(
 //            onClick = {
@@ -151,13 +159,16 @@ fun AuthSignIn(
 //            Text(text = stringResource(id = R.string.sign_up))
 //        }
 //        HeightSpacer(8.dp)
+
             OutlinedButton(
                 onClick = { uriHandler.openUri("https://konto.kapucyni.pl/remind") },
                 modifier = Modifier.fillMaxWidth(0.75f)
             ) {
                 WolczynText(text = stringResource(Res.string.forgot_password))
             }
+
             HeightSpacer(8.dp)
+
             OutlinedButton(
                 onClick = { uriHandler.openUri("https://konto.kapucyni.pl/register") },
                 modifier = Modifier.fillMaxWidth(0.75f)
