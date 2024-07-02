@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
-		0B7AF8782C3350A500C95436 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7555FF8C242A565B00829871 /* Info.plist */; };
 		0B924C072C2367BB00BB593A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B924C062C2367BB00BB593A /* FirebaseAnalytics */; };
 		0B924C092C2367BB00BB593A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B924C082C2367BB00BB593A /* FirebaseCrashlytics */; };
 		0B924C0B2C2367BB00BB593A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B924C0A2C2367BB00BB593A /* FirebaseFirestore */; };
@@ -165,7 +164,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B7AF8782C3350A500C95436 /* Info.plist in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				0B924C192C23708D00BB593A /* GoogleService-Info.plist in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
