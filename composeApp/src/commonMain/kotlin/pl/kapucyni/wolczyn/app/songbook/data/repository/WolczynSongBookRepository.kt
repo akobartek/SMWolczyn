@@ -62,7 +62,22 @@ class WolczynSongBookRepository : SongBookRepository {
     )
 
     private val songTexts = arrayOf(
-        "", // TODO
+        "1. Nie umiem poskładać się\nrozbijam się o swoje ciało\nMoja wojna rozrywa mnie\n" +
+                "nikt nie mówił, że będzie bolało\nżycie ze sobą, czuję się obok\n" +
+                "Czy ktoś mnie tu słyszy\nnie zniosę już ciszy\n\n" +
+                "Ref. Dotknij mnie, może wreszcie dziś poczuję, że\n" +
+                "w moje życie pokój wlewa się\nTy dotknij, Ty dotknij, dotykaj mnie x2\n\n" +
+                "2. Gdzie nie spojrzę tam walka trwa\nW moim domu, za ścianą, na świecie\n" +
+                "Coraz trudniej zdążyć na czas\nNie zostawić nikogo w potrzebie\n" +
+                "W Tobie jest siła, w Tobie jest pomoc\nTy pokazujesz, którą iść drogą\n\n" +
+                "Ref. Dotknij mnie, może wreszcie dziś poczuję, że\n" +
+                "w moje życie pokój wlewa się\nTy dotknij, Ty dotknij, dotykaj mnie x2\n\n" +
+                "Bridge:\nBo Ty zwyciężyłeś walkę o życie wszystkich nas\n" +
+                "I wiem, że gdy jestem z Tobą nie muszę się już bać\n" +
+                "Ty sam, przebaczenia mocą nadzieję dajesz mi\n" +
+                "Że wygram każdą walkę, z Tobą wygram każdą walkę\n\n" +
+                "Ref. Dotknij mnie, może wreszcie dziś poczuję, że\n" +
+                "w moje życie pokój wlewa się\nTy dotknij, Ty dotknij, dotykaj mnie x2\n",
         "Zwrotka:\nWszystko czego chcę to Ty i Twoja łaska\nWszystko czego chcę to Ty x2\n\n" +
                 "Refren:\nJesteś święty, nieskończony, potężny Pan\n" +
                 "Twoja łaska wiecznie trwa, dla Ciebie wszystko możliwe jest x2\n\n" +
