@@ -6,7 +6,16 @@ import androidx.compose.ui.text.buildAnnotatedString
 sealed class Breviary {
     data class BreviaryHtml(
         val html: String = ""
-    ) : Breviary()
+    ) : Breviary() {
+        fun getCorrectedHtml(isDarkMode: Boolean): String =
+            if (isDarkMode) {
+                "<html><head><style type=\"text/css\">body{color: #fff;}" +
+                        "</style></head><body>" +
+                        html +
+                        "</body></html>"
+                            .replace("black", "white")
+            } else html
+    }
 
     data class Invitatory(
         val opening: AnnotatedString = buildAnnotatedString { },

@@ -73,6 +73,7 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.ksoup)
+            api(libs.webview)
 
             implementation(libs.firebase.gitlive.crashlytics)
             implementation(libs.firebase.gitlive.firestore)
