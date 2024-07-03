@@ -117,7 +117,7 @@ class WebBreviarySource {
         onlyHtml: Boolean,
         accentColor: Color,
     ): Result<Breviary> {
-        val document = try {
+        val html = try {
             this.accentColor = accentColor
             val breviaryUrl = buildBaseBreviaryUrl(date, office == "") +
                     "${if (office != "") "$office/" else ""}${breviaryUrlTypes[type.type]}.php3"
@@ -126,10 +126,12 @@ class WebBreviarySource {
             exc.printStackTrace()
             if (exc !is CancellationException) return Result.failure(exc)
             else throw exc
-        }
+        }.html()
+
+        if (onlyHtml) return Result.success(BreviaryHtml(html))
 
         return processBreviaryDocument(
-            document = document,
+            html = html,
             type = type,
             onlyHtml = onlyHtml,
         )
@@ -140,22 +142,22 @@ class WebBreviarySource {
         type: BreviaryType,
     ): Result<Breviary> =
         processBreviaryDocument(
-            document = Ksoup.parse(html = html),
+            html = html,
             type = type,
             onlyHtml = false,
         )
 
     private fun processBreviaryDocument(
-        document: Document,
+        html: String,
         type: BreviaryType,
         onlyHtml: Boolean,
     ): Result<Breviary> {
         return try {
-            Result.success(getProperBreviaryObject(document, type, onlyHtml))
+            Result.success(getProperBreviaryObject(Ksoup.parse(html = html), type, onlyHtml))
         } catch (exc: Exception) {
             exc.printStackTrace()
             if (exc !is CancellationException)
-                Result.success(getProperBreviaryObject(document, type, true))
+                Result.success(getProperBreviaryObject(Ksoup.parse(html = html), type, true))
             else throw exc
         }
     }
@@ -242,7 +244,7 @@ class WebBreviarySource {
             .replace("font-size: 8pt", "")
             .replaceFirst("<br>", "")
 
-        if (onlyHtml) return BreviaryHtml(setBreviaryNightMode(breviaryHtml))
+        if (onlyHtml) return BreviaryHtml(breviaryHtml)
 
         val breviaryChildren =
             if (type == BreviaryType.OFFICE_OF_READINGS) element.children()
@@ -260,7 +262,7 @@ class WebBreviarySource {
 
                 BreviaryType.COMPLINE -> getCompline(breviaryChildren)
             }
-        } ?: BreviaryHtml(setBreviaryNightMode(breviaryHtml))
+        } ?: BreviaryHtml(breviaryHtml)
     }
 
     private fun getInvitatory(elements: Elements): Invitatory {
@@ -866,15 +868,5 @@ class WebBreviarySource {
             ?.lastOrNull { elem -> elem.html().contains("LG skrócone") }?.text()
         val prayerText = processTextDiv(endingDivs?.firstOrNull()?.child(0))
         return BreviaryPart(prayerPages ?: "", prayerText)
-    }
-
-    private fun setBreviaryNightMode(breviaryHtml: String): String {
-        val result = "<html><head>" +
-                "<style type=\"text/css\">body{color: #fff; background-color: #160A01;}" +
-                "</style></head>" +
-                "<body>" +
-                breviaryHtml +
-                "</body></html>"
-        return result.replace("black", "white")
     }
 }

@@ -38,7 +38,7 @@ class CoreRepositoryImpl(
             firestoreSource.getAppConfiguration(),
             firestoreSource.getHomeNotifications(),
         ) { configuration, notifications ->
-            AppState(configuration, notifications)
+            AppState.init(configuration, notifications)
         }
 
     override suspend fun signIn(login: String, password: String): WolczynUser? =

@@ -16,7 +16,7 @@ import kotlinx.datetime.toLocalDateTime
 import pl.kapucyni.wolczyn.app.breviary.domain.usecases.ClearBreviaryDbUseCase
 
 class BreviarySelectViewModel(
-    private val clearBreviaryDbUseCase: ClearBreviaryDbUseCase
+    private val clearBreviaryDbUseCase: ClearBreviaryDbUseCase,
 ) : ViewModel() {
 
     private val _daysFromToday = MutableStateFlow(0)
@@ -33,7 +33,6 @@ class BreviarySelectViewModel(
     }
 
     fun updateDaysFromToday(newValue: Int) {
-        // TODO
         _daysFromToday.update { newValue }
     }
 

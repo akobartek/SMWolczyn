@@ -5,12 +5,25 @@ import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.BreviaryHtml
 data class BreviaryDay(
     val id: Long = 0L,
     val date: String,
-    val invitatory: BreviaryHtml? = null,
-    val officeOfReadings: BreviaryHtml? = null,
-    val lauds: BreviaryHtml? = null,
-    val prayer1: BreviaryHtml? = null,
-    val prayer2: BreviaryHtml? = null,
-    val prayer3: BreviaryHtml? = null,
-    val vespers: BreviaryHtml? = null,
-    val compline: BreviaryHtml? = null,
-)
+    val invitatory: BreviaryHtml? = BreviaryHtml(),
+    val officeOfReadings: BreviaryHtml? = BreviaryHtml(),
+    val lauds: BreviaryHtml? = BreviaryHtml(),
+    val prayer1: BreviaryHtml? = BreviaryHtml(),
+    val prayer2: BreviaryHtml? = BreviaryHtml(),
+    val prayer3: BreviaryHtml? = BreviaryHtml(),
+    val vespers: BreviaryHtml? = BreviaryHtml(),
+    val compline: BreviaryHtml? = BreviaryHtml(),
+) {
+    fun getValueByIndex(index: Int): String? =
+        when (index) {
+            0 -> invitatory
+            1 -> officeOfReadings
+            2 -> lauds
+            3 -> prayer1
+            4 -> prayer2
+            5 -> prayer3
+            6 -> vespers
+            7 -> compline
+            else -> null
+        }?.html
+}

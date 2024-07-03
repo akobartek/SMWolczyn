@@ -25,13 +25,17 @@ buildConfig {
 }
 
 kotlin {
+    sourceSets.commonMain {
+        kotlin.srcDir("build/generated/ksp/metadata")
+    }
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -42,7 +46,7 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -81,13 +85,8 @@ kotlin {
             implementation(libs.koin.androidx.compose)
             implementation(libs.ktor.client.okhttp)
         }
-        iosMain {
-            // Fixes RoomDB Unresolved reference 'instantiateImpl' in iosMain
-            kotlin.srcDir("build/generated/ksp/metadata")
-
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 
@@ -135,7 +134,7 @@ android {
 }
 
 dependencies {
-    add("kspAndroid", libs.room.compiler)
+//    add("kspAndroid", libs.room.compiler)
     add("kspCommonMainMetadata", libs.room.compiler)
 }
 

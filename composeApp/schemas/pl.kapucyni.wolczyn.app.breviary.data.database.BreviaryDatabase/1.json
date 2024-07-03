@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "592249d208344244b7b2ab117f728e8e",
+    "identityHash": "0663f3d32784508592a3b1cc3633e8ff",
     "entities": [
       {
         "tableName": "breviary",
@@ -66,12 +66,23 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_breviary_date",
+            "unique": true,
+            "columnNames": [
+              "date"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_breviary_date` ON `${TABLE_NAME}` (`date`)"
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '592249d208344244b7b2ab117f728e8e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0663f3d32784508592a3b1cc3633e8ff')"
     ]
   }
 }

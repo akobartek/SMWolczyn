@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AppConfiguration(
-    val appVersion: AppVersion,
+    val appVersion: AppVersion = AppVersion.MEETING,
 )

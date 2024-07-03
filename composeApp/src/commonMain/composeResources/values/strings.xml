@@ -9,11 +9,13 @@
     <string name="no_internet_reconnect_message">Wystąpił problem z połączeniem internetowym, chcesz spróbować ponownie?</string>
     <string name="try_again">Spróbuj</string>
     <string name="load">Załaduj</string>
+    <string name="stop">Przerwij</string>
     <string name="restricted_access">Ograniczony dostęp</string>
     <string name="password">Hasło</string>
     <string name="admin_password_error">Wprowadzono złe hasło</string>
     <string name="cd_clear_field">Wyczyść pole</string>
     <string name="cd_close_dialog">Zamknij okno</string>
+    <string name="cd_more_options">Więcej opcji</string>
 
     <!-- HOME SCREEN STRINGS -->
     <string name="home_title">Pokój i Dobro!</string>
@@ -118,6 +120,7 @@
     <string name="breviary_yesterday">Wczorajszy brewiarz</string>
     <string name="breviary_today">Dzisiejszy brewiarz</string>
     <string name="breviary_tomorrow">Jutrzejszy brewiarz</string>
+    <string name="saving_breviary">Zapisywanie brewiarza</string>
     <string name="select_office">Wybierz Oficjum</string>
     <string name="breviary_copyright">Teksty Liturgii Godzin:\n© Copyright by Konferencja Episkopatu Polski i Wydawnictwo Pallottinum</string>
     <string-array name="breviary_list">
@@ -130,6 +133,13 @@
         <item>Nieszpory</item>
         <item>Kompleta</item>
     </string-array>
+    <string name="save_breviary_dialog_msg">Czy chcesz pobrać i zapisać na telefonie brewiarz z wybranego dnia?</string>
+    <string name="save_finished_dialog_msg">Pobrano oraz zapisano brewiarz, załadowane treści zostaną wyświetlone w sytuacji braku internetu.</string>
+    <string name="save_in_memory">Zapis w pamięci telefonu</string>
+    <string name="cd_download_success">%s prawidłowo pobrana</string>
+    <string name="cd_download_error">Wystąpił błąd podczas pobierania %s</string>
+    <string name="stop_action_title">Przerwanie akcji</string>
+    <string name="stop_download_dialog_msg">Jesteś pewny, że chcesz przerwać pobieranie?</string>
 
     <!-- ARCHIVE STRINGS -->
     <string name="no_records_dialog_title">Brak nagrań</string>

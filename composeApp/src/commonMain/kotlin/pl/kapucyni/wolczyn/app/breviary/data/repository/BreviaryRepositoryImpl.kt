@@ -14,14 +14,10 @@ class BreviaryRepositoryImpl(
     private val dbBreviarySource: DbBreviarySource,
 ) : BreviaryRepository {
 
-    override suspend fun checkIfThereAreMultipleOffices(
-        date: String,
-        type: BreviaryType,
-    ): Result<Map<String, String>?> {
+    override suspend fun checkIfThereAreMultipleOffices(date: String): Result<Map<String, String>?> {
         var result = webBreviarySource.checkIfThereAreMultipleOffices(date)
-        if (result.isFailure &&
-            dbBreviarySource.loadBreviary(BreviaryEntity.getDbDate(date), type) != null
-        ) result = Result.success(null)
+        if (result.isFailure && dbBreviarySource.checkIfExists(BreviaryEntity.getDbDate(date)))
+            result = Result.success(null)
 
         return result
     }
@@ -33,14 +29,17 @@ class BreviaryRepositoryImpl(
         onlyHtml: Boolean,
         accentColor: Color
     ): Result<Breviary> {
-        var result = webBreviarySource.loadBreviary(office, date, type, onlyHtml, accentColor)
-        if (result.isFailure) {
-            dbBreviarySource.loadBreviary(BreviaryEntity.getDbDate(date), type)?.let { dbHtml ->
-                result = webBreviarySource.loadBreviaryFromHtml(dbHtml, type)
+        return try {
+            var result = webBreviarySource.loadBreviary(office, date, type, onlyHtml, accentColor)
+            if (result.isFailure) {
+                dbBreviarySource.loadBreviary(BreviaryEntity.getDbDate(date), type)?.let { dbHtml ->
+                    result = webBreviarySource.loadBreviaryFromHtml(dbHtml, type)
+                }
             }
+            result
+        } catch (exc: Exception) {
+            Result.failure(exc)
         }
-
-        return result
     }
 
     override suspend fun saveBreviary(breviaryDay: BreviaryDay): Long =

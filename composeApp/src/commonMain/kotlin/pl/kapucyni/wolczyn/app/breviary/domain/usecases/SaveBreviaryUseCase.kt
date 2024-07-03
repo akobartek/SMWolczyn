@@ -20,7 +20,7 @@ class SaveBreviaryUseCase(private val repository: BreviaryRepository) {
     suspend operator fun invoke(
         office: String,
         date: String,
-        accentColor: Color,
+        accentColor: Color = Color.Unspecified,
     ): Flow<BreviaryDay?> =
         channelFlow<BreviaryDay?> {
             var day = BreviaryDay(date = date)

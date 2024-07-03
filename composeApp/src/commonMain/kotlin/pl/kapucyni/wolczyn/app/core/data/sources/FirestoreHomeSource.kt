@@ -17,7 +17,7 @@ class FirestoreHomeSource {
     fun getHomeNotifications(): Flow<List<HomeNotification>> =
         Firebase.firestore.getFirestoreCollection(HOME_COLLECTION)
 
-    fun getAppConfiguration(): Flow<AppConfiguration> =
+    fun getAppConfiguration(): Flow<AppConfiguration?> =
         Firebase.firestore.getFirestoreDocument(
             CONFIGURATION_COLLECTION, CONFIGURATION_COLLECTION
         )

@@ -21,6 +21,11 @@ sealed class Screen(val route: String) {
                 .replace("{$ARGUMENT_BREVIARY_DATE}", date)
     }
 
+    data object BreviarySave : Screen(BREVIARY_SAVE_ROUTE) {
+        fun breviarySaveRoute(date: String) =
+            BREVIARY_SAVE_ROUTE.replace("{$ARGUMENT_BREVIARY_DATE}", date)
+    }
+
     data object Archive : Screen(ARCHIVE_ROUTE)
     data object ArchiveMeeting : Screen(ARCHIVE_MEETING_ROUTE) {
         fun meetingRoute(number: Int) =
@@ -44,6 +49,7 @@ sealed class Screen(val route: String) {
         const val BREVIARY_SELECT_ROUTE = "breviary_select"
         const val BREVIARY_TEXT_ROUTE =
             "breviary_text/{$ARGUMENT_BREVIARY_POSITION}/{$ARGUMENT_BREVIARY_DATE}"
+        const val BREVIARY_SAVE_ROUTE = "breviary_save/{$ARGUMENT_BREVIARY_DATE}"
         const val ARCHIVE_ROUTE = "archive"
         const val ARCHIVE_MEETING_ROUTE = "archive_meeting/{$ARGUMENT_MEETING_NUMBER}"
     }

@@ -9,3 +9,8 @@ import kotlin.coroutines.CoroutineContext
 @Composable
 actual fun <T> StateFlow<T>.collectAsStateMultiplatform(context: CoroutineContext): State<T> =
     collectAsStateWithLifecycle(context = context)
+
+@Composable
+actual fun BackHandler(onBack: () -> Unit) {
+    androidx.activity.compose.BackHandler(true, onBack)
+}

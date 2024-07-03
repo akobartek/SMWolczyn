@@ -6,7 +6,7 @@ import pl.kapucyni.wolczyn.app.breviary.domain.model.BreviaryType
 
 class DbBreviarySource(private val breviaryDao: BreviaryDao) {
     suspend fun upsertBreviary(entity: BreviaryEntity): Long =
-        breviaryDao.upsertBreviary(entity)
+        breviaryDao.insertBreviary(entity)
 
     suspend fun loadBreviary(date: Long, type: BreviaryType): String? =
         breviaryDao.loadBreviary(date)?.let { entity ->
@@ -21,6 +21,8 @@ class DbBreviarySource(private val breviaryDao: BreviaryDao) {
                 BreviaryType.COMPLINE -> entity.compline
             }
         }
+
+    suspend fun checkIfExists(date: Long): Boolean = breviaryDao.checkIfExists(date)
 
     suspend fun clearBreviary(date: Long) = breviaryDao.clearBreviary(date)
 }

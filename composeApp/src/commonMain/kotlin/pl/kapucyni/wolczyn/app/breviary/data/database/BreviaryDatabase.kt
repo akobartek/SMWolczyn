@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [BreviaryEntity::class],
     version = 1,
+    exportSchema = true,
 )
 abstract class BreviaryDatabase : RoomDatabase(), DB {
     abstract fun breviaryDao(): BreviaryDao

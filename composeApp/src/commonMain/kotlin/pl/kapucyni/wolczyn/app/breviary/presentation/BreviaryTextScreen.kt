@@ -97,24 +97,6 @@ fun BreviaryTextScreenContent(
             }
 
             is State.Failure -> {
-//                if (state.processingFailed)
-//                    ProcessingFailedDialog(
-//                        isVisible = true,
-//                        buttonClicked = state.downloadsClicked,
-//                        onDownloads = {
-//                            if (state.downloadsClicked)
-//                                screenModel.checkIfThereAreMultipleOffices()
-//                            else {
-//                                screenModel.onDownloadsDialogClicked()
-//                                navigator.safePush(BreviarySaveScreen(date))
-//                            }
-//                        },
-//                        onDismiss = {
-//                            screenModel.cancelScreen()
-//                            navigator.safePop(BreviaryTextScreen.KEY)
-//                        }
-//                    )
-//                else
                 NoInternetDialog(
                     isVisible = true,
                     onReconnect = onReconnect,
