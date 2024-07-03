@@ -14,6 +14,7 @@ import androidx.navigation.navArgument
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
+import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySaveScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySelectScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviaryTextScreen
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
@@ -48,27 +49,32 @@ fun App() {
                 composable(Screen.Home.route) {
                     HomeScreen(onTileClick = { navController.navigateSafely(it.navRoute) })
                 }
+
                 composable(Screen.Admin.route) {
                     AdminScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.Admin.route) }
                     )
                 }
+
                 composable(Screen.Schedule.route) {
                     ScheduleScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.Schedule.route) },
                         navigateTo = { navController.navigateSafely(it.navRoute) }
                     )
                 }
+
                 composable(Screen.SongBook.route) {
                     SongBookScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.SongBook.route) }
                     )
                 }
+
                 composable(Screen.Kitchen.route) {
                     KitchenScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.Kitchen.route) }
                     )
                 }
+
                 composable(Screen.Shop.route) {
                     ShopScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.Shop.route) },
@@ -85,11 +91,13 @@ fun App() {
                         onBackPressed = { navController.navigateUpSafely(Screen.ShopProduct.route) }
                     )
                 }
+
                 composable(Screen.Decalogue.route) {
                     DecalogueScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.Decalogue.route) }
                     )
                 }
+
                 composable(Screen.BreviarySelect.route) {
                     BreviarySelectScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.BreviarySelect.route) },
@@ -97,9 +105,13 @@ fun App() {
                             navController.navigateSafely(
                                 Screen.BreviaryText.breviaryTextRoute(position, date)
                             )
-                        }
+                        },
+                        onSaveBreviary = { date ->
+                            navController.navigateSafely(Screen.BreviarySave.breviarySaveRoute(date))
+                        },
                     )
                 }
+
                 composable(
                     route = Screen.BreviaryText.route,
                     arguments = listOf(
@@ -113,17 +125,32 @@ fun App() {
                     BreviaryTextScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.BreviaryText.route) },
                         position = position,
-                        date = date
+                        date = date,
                     )
                 }
+
+                composable(
+                    route = Screen.BreviarySave.route,
+                    arguments =
+                    listOf(navArgument(ARGUMENT_BREVIARY_DATE) { type = NavType.StringType })
+                ) {
+                    val date = it.arguments?.getString(ARGUMENT_BREVIARY_DATE) ?: ""
+
+                    BreviarySaveScreen(
+                        onBackPressed = { navController.navigateUpSafely(Screen.BreviarySave.route) },
+                        date = date,
+                    )
+                }
+
                 composable(Screen.Archive.route) {
                     ArchiveScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.Archive.route) },
                         onMeetingClick = {
                             navController.navigateSafely(Screen.ArchiveMeeting.meetingRoute(it))
-                        }
+                        },
                     )
                 }
+
                 composable(
                     route = Screen.ArchiveMeeting.route,
                     arguments =
@@ -133,7 +160,7 @@ fun App() {
 
                     ArchiveMeetingScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.ArchiveMeeting.route) },
-                        meetingNumber = meetingNumber
+                        meetingNumber = meetingNumber,
                     )
                 }
             }

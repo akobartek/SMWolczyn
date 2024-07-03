@@ -25,9 +25,7 @@ class BreviaryTextViewModel(
         data object Loading : State()
         data class MultipleOffices(val offices: Map<String, String>) : State()
         data class BreviaryAvailable(val breviary: Breviary) : State()
-        data class Failure(val processingFailed: Boolean, val downloadsClicked: Boolean = false) :
-            State()
-
+        data object Failure : State()
         data object Cancelled : State()
     }
 
@@ -52,18 +50,12 @@ class BreviaryTextViewModel(
             _screenState.update { State.Loading }
             val result = checkOfficesUseCase(date)
             if (result.isSuccess) {
-                val offices = result.getOrNull()
-                offices?.forEach { println(it.value) }
-                if (offices == null) loadBreviary()
-                else _screenState.update { State.MultipleOffices(offices) }
-            } else {
-//                val dbResult = dbLoadUseCase(date, type)
-                _screenState.update {
-//                    val value = dbResult.getOrNull()
-//                    if (dbResult.isFailure || value == null || value.html.isBlank())
-                    State.Failure(processingFailed = false)
-//                    else State.BreviaryAvailable(dbResult.getOrNull()!!)
+                result.getOrNull().let { offices ->
+                    if (offices == null) loadBreviary()
+                    else _screenState.update { State.MultipleOffices(offices) }
                 }
+            } else {
+                _screenState.update { State.Failure }
             }
         }
     }
@@ -77,25 +69,15 @@ class BreviaryTextViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _screenState.update { State.Loading }
             val result = loadBreviaryUseCase(office, date, type, color)
-            if (result.isSuccess && result.getOrNull() != null)
-                _screenState.update { State.BreviaryAvailable(result.getOrNull()!!) }
-            else {
-//                val dbResult = dbLoadUseCase(date, type)
-//                _screenState.update {
-//                    val value = dbResult.getOrNull()
-//                    if (dbResult.isFailure || value == null || value.html.isBlank())
-                State.Failure(processingFailed = true)
-//                    else State.BreviaryAvailable(dbResult.getOrNull()!!)
-//                }
+            _screenState.update {
+                result.getOrNull()
+                    ?.let { State.BreviaryAvailable(it) }
+                    ?: State.Failure
             }
         }
     }
 
     fun cancelScreen() {
         _screenState.update { State.Cancelled }
-    }
-
-    fun onDownloadsDialogClicked() {
-        _screenState.update { State.Failure(processingFailed = true, downloadsClicked = true) }
     }
 }

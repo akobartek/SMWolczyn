@@ -117,15 +117,47 @@ class WebBreviarySource {
         onlyHtml: Boolean,
         accentColor: Color,
     ): Result<Breviary> {
-        return try {
+        val html = try {
             this.accentColor = accentColor
             val breviaryUrl = buildBaseBreviaryUrl(date, office == "") +
                     "${if (office != "") "$office/" else ""}${breviaryUrlTypes[type.type]}.php3"
-            val document = getDocumentFromUrl(breviaryUrl)
-            Result.success(getProperBreviaryObject(document, type, onlyHtml))
+            getDocumentFromUrl(breviaryUrl)
         } catch (exc: Exception) {
             exc.printStackTrace()
-            if (exc !is CancellationException) Result.failure(exc)
+            if (exc !is CancellationException) return Result.failure(exc)
+            else throw exc
+        }.html()
+
+        if (onlyHtml) return Result.success(BreviaryHtml(html))
+
+        return processBreviaryDocument(
+            html = html,
+            type = type,
+            onlyHtml = onlyHtml,
+        )
+    }
+
+    fun loadBreviaryFromHtml(
+        html: String,
+        type: BreviaryType,
+    ): Result<Breviary> =
+        processBreviaryDocument(
+            html = html,
+            type = type,
+            onlyHtml = false,
+        )
+
+    private fun processBreviaryDocument(
+        html: String,
+        type: BreviaryType,
+        onlyHtml: Boolean,
+    ): Result<Breviary> {
+        return try {
+            Result.success(getProperBreviaryObject(Ksoup.parse(html = html), type, onlyHtml))
+        } catch (exc: Exception) {
+            exc.printStackTrace()
+            if (exc !is CancellationException)
+                Result.success(getProperBreviaryObject(Ksoup.parse(html = html), type, true))
             else throw exc
         }
     }
@@ -133,7 +165,7 @@ class WebBreviarySource {
     private fun getProperBreviaryObject(
         document: Document,
         type: BreviaryType,
-        onlyHtml: Boolean
+        onlyHtml: Boolean,
     ): Breviary {
         val searchForString = if (type == BreviaryType.INVITATORY) " Psalm " else "Psalmodia"
         val element = document.select("table")
@@ -212,7 +244,7 @@ class WebBreviarySource {
             .replace("font-size: 8pt", "")
             .replaceFirst("<br>", "")
 
-        if (onlyHtml) return BreviaryHtml(setBreviaryNightMode(breviaryHtml))
+        if (onlyHtml) return BreviaryHtml(breviaryHtml)
 
         val breviaryChildren =
             if (type == BreviaryType.OFFICE_OF_READINGS) element.children()
@@ -230,7 +262,7 @@ class WebBreviarySource {
 
                 BreviaryType.COMPLINE -> getCompline(breviaryChildren)
             }
-        } ?: BreviaryHtml(setBreviaryNightMode(breviaryHtml))
+        } ?: BreviaryHtml(breviaryHtml)
     }
 
     private fun getInvitatory(elements: Elements): Invitatory {
@@ -462,6 +494,7 @@ class WebBreviarySource {
 
     private fun getMinorHour(elements: Elements): MinorHour {
         val lastChild = elements.lastOrNull()?.child(0)
+        val reading = processReading(elements)
         val endingDivs = lastChild?.children()?.select(".ww")
         endingDivs?.removeAt(0)
         val prayer = processPrayer(elements, endingDivs)
@@ -474,7 +507,7 @@ class WebBreviarySource {
             opening = processOpening(elements),
             hymn = processHymn(elements),
             psalmody = processPsalmody(elements),
-            reading = processReading(elements),
+            reading = reading,
             prayer = prayer,
             ending = ending
         )
@@ -836,15 +869,5 @@ class WebBreviarySource {
             ?.lastOrNull { elem -> elem.html().contains("LG skrócone") }?.text()
         val prayerText = processTextDiv(endingDivs?.firstOrNull()?.child(0))
         return BreviaryPart(prayerPages ?: "", prayerText)
-    }
-
-    private fun setBreviaryNightMode(breviaryHtml: String): String {
-        val result = "<html><head>" +
-                "<style type=\"text/css\">body{color: #fff; background-color: #160A01;}" +
-                "</style></head>" +
-                "<body>" +
-                breviaryHtml +
-                "</body></html>"
-        return result.replace("black", "white")
     }
 }

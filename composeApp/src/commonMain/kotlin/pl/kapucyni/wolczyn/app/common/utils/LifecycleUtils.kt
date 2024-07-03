@@ -10,3 +10,6 @@ import kotlin.coroutines.EmptyCoroutineContext
 expect fun <T> StateFlow<T>.collectAsStateMultiplatform(
     context: CoroutineContext = EmptyCoroutineContext,
 ): State<T>
+
+@Composable
+expect fun BackHandler(onBack: () -> Unit)

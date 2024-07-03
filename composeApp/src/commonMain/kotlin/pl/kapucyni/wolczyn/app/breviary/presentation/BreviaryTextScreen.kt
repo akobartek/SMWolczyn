@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.breviary.presentation
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import pl.kapucyni.wolczyn.app.breviary.presentation.composables.HymnLayout
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.MultipleOfficesDialog
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.PsalmLayout
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.PsalmodyLayout
+import pl.kapucyni.wolczyn.app.common.presentation.composables.ComposeWebView
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
@@ -97,24 +99,6 @@ fun BreviaryTextScreenContent(
             }
 
             is State.Failure -> {
-//                if (state.processingFailed)
-//                    ProcessingFailedDialog(
-//                        isVisible = true,
-//                        buttonClicked = state.downloadsClicked,
-//                        onDownloads = {
-//                            if (state.downloadsClicked)
-//                                screenModel.checkIfThereAreMultipleOffices()
-//                            else {
-//                                screenModel.onDownloadsDialogClicked()
-//                                navigator.safePush(BreviarySaveScreen(date))
-//                            }
-//                        },
-//                        onDismiss = {
-//                            screenModel.cancelScreen()
-//                            navigator.safePop(BreviaryTextScreen.KEY)
-//                        }
-//                    )
-//                else
                 NoInternetDialog(
                     isVisible = true,
                     onReconnect = onReconnect,
@@ -140,10 +124,8 @@ private fun BreviaryLayout(breviary: Breviary) {
                 is MajorHour -> MajorHourLayout(majorHour = breviary)
                 is MinorHour -> MinorHourLayout(minorHour = breviary)
                 is Compline -> ComplineLayout(compline = breviary)
-                is BreviaryHtml -> {
-                    // TODO
-//                    ComposeWebView(html = breviary.html)
-                }
+                is BreviaryHtml ->
+                    ComposeWebView(html = breviary.getCorrectedHtml(isSystemInDarkTheme()))
             }
         }
     }

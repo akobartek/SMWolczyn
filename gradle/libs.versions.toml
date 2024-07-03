@@ -21,12 +21,13 @@ viewmodel = "2.8.0"
 room = "2.7.0-alpha04"
 datastore = "1.1.1"
 ksp = "2.0.0-1.0.22"
-sqlite = "2.5.0-SNAPSHOT"
+sqlite = "2.5.0-alpha04"
 ktor = "2.3.12"
 koin = "3.6.0-Beta4"
 koin-multiplatform = "1.2.0-Beta4"
 coil = "3.0.0-alpha06"
 ksoup = "0.1.2"
+webview = "1.9.12"
 
 firebase-gitlive-sdk = "1.12.0"
 crashlytics = "3.0.2"
@@ -50,7 +51,6 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
 viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
@@ -66,6 +66,7 @@ ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
+webview = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "webview"}
 
 firebase-gitlive-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-gitlive-sdk" }
 firebase-gitlive-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive-sdk" }

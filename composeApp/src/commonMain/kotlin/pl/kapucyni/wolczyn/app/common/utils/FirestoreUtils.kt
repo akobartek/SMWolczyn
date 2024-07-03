@@ -30,7 +30,7 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
 inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
     collectionName: String,
     documentId: String,
-): Flow<T> =
+): Flow<T?> =
     this.collection(collectionName)
         .document(documentId)
         .snapshots
