@@ -7,12 +7,12 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
     alias(libs.plugins.google.services)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.serialization)
     alias(libs.plugins.buildconfig)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 buildConfig {
@@ -81,8 +81,13 @@ kotlin {
             implementation(libs.koin.androidx.compose)
             implementation(libs.ktor.client.okhttp)
         }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
+        iosMain {
+            // Fixes RoomDB Unresolved reference 'instantiateImpl' in iosMain
+            kotlin.srcDir("build/generated/ksp/metadata")
+
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
     }
 
@@ -111,8 +116,10 @@ android {
     }
     buildTypes {
         getByName("release") {
+            // TODO
             isMinifyEnabled = false
             isShrinkResources = false
+            isDebuggable = false
         }
     }
     compileOptions {
@@ -124,6 +131,18 @@ android {
     }
     dependencies {
         debugImplementation(compose.uiTooling)
+    }
+}
+
+dependencies {
+    add("kspAndroid", libs.room.compiler)
+    add("kspCommonMainMetadata", libs.room.compiler)
+}
+
+// https://github.com/JetBrains/compose-multiplatform/issues/4928
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }
 

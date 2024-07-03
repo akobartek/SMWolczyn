@@ -117,15 +117,45 @@ class WebBreviarySource {
         onlyHtml: Boolean,
         accentColor: Color,
     ): Result<Breviary> {
-        return try {
+        val document = try {
             this.accentColor = accentColor
             val breviaryUrl = buildBaseBreviaryUrl(date, office == "") +
                     "${if (office != "") "$office/" else ""}${breviaryUrlTypes[type.type]}.php3"
-            val document = getDocumentFromUrl(breviaryUrl)
+            getDocumentFromUrl(breviaryUrl)
+        } catch (exc: Exception) {
+            exc.printStackTrace()
+            if (exc !is CancellationException) return Result.failure(exc)
+            else throw exc
+        }
+
+        return processBreviaryDocument(
+            document = document,
+            type = type,
+            onlyHtml = onlyHtml,
+        )
+    }
+
+    fun loadBreviaryFromHtml(
+        html: String,
+        type: BreviaryType,
+    ): Result<Breviary> =
+        processBreviaryDocument(
+            document = Ksoup.parse(html = html),
+            type = type,
+            onlyHtml = false,
+        )
+
+    private fun processBreviaryDocument(
+        document: Document,
+        type: BreviaryType,
+        onlyHtml: Boolean,
+    ): Result<Breviary> {
+        return try {
             Result.success(getProperBreviaryObject(document, type, onlyHtml))
         } catch (exc: Exception) {
             exc.printStackTrace()
-            if (exc !is CancellationException) Result.failure(exc)
+            if (exc !is CancellationException)
+                Result.success(getProperBreviaryObject(document, type, true))
             else throw exc
         }
     }
@@ -133,7 +163,7 @@ class WebBreviarySource {
     private fun getProperBreviaryObject(
         document: Document,
         type: BreviaryType,
-        onlyHtml: Boolean
+        onlyHtml: Boolean,
     ): Breviary {
         val searchForString = if (type == BreviaryType.INVITATORY) " Psalm " else "Psalmodia"
         val element = document.select("table")

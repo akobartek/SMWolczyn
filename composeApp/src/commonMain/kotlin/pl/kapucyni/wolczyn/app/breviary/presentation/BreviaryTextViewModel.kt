@@ -50,7 +50,7 @@ class BreviaryTextViewModel(
     fun checkIfThereAreMultipleOffices() {
         viewModelScope.launch(Dispatchers.IO) {
             _screenState.update { State.Loading }
-            val result = checkOfficesUseCase(date)
+            val result = checkOfficesUseCase(date, type)
             if (result.isSuccess) {
                 val offices = result.getOrNull()
                 offices?.forEach { println(it.value) }

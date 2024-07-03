@@ -1,0 +1,77 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "592249d208344244b7b2ab117f728e8e",
+    "entities": [
+      {
+        "tableName": "breviary",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER NOT NULL, `invitatory` TEXT, `office_of_readings` TEXT, `lauds` TEXT, `prayer1` TEXT, `prayer2` TEXT, `prayer3` TEXT, `vespers` TEXT, `compline` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "invitatory",
+            "columnName": "invitatory",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "officeOfReadings",
+            "columnName": "office_of_readings",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lauds",
+            "columnName": "lauds",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "prayer1",
+            "columnName": "prayer1",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "prayer2",
+            "columnName": "prayer2",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "prayer3",
+            "columnName": "prayer3",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "vespers",
+            "columnName": "vespers",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "compline",
+            "columnName": "compline",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '592249d208344244b7b2ab117f728e8e')"
+    ]
+  }
+}

@@ -21,7 +21,7 @@ viewmodel = "2.8.0"
 room = "2.7.0-alpha04"
 datastore = "1.1.1"
 ksp = "2.0.0-1.0.22"
-sqlite = "2.5.0-SNAPSHOT"
+sqlite = "2.5.0-alpha04"
 ktor = "2.3.12"
 koin = "3.6.0-Beta4"
 koin-multiplatform = "1.2.0-Beta4"
@@ -50,7 +50,6 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
 viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
