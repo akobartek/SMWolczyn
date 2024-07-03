@@ -494,6 +494,7 @@ class WebBreviarySource {
 
     private fun getMinorHour(elements: Elements): MinorHour {
         val lastChild = elements.lastOrNull()?.child(0)
+        val reading = processReading(elements)
         val endingDivs = lastChild?.children()?.select(".ww")
         endingDivs?.removeAt(0)
         val prayer = processPrayer(elements, endingDivs)
@@ -506,7 +507,7 @@ class WebBreviarySource {
             opening = processOpening(elements),
             hymn = processHymn(elements),
             psalmody = processPsalmody(elements),
-            reading = processReading(elements),
+            reading = reading,
             prayer = prayer,
             ending = ending
         )
