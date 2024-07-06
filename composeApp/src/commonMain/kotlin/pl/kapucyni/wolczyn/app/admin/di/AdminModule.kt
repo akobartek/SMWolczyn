@@ -13,11 +13,11 @@ import pl.kapucyni.wolczyn.app.admin.domain.usecases.SavePromotionUseCase
 import pl.kapucyni.wolczyn.app.admin.domain.usecases.SaveQuizUseCase
 import pl.kapucyni.wolczyn.app.admin.domain.usecases.SaveShopProductUseCase
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminViewModel
-import pl.kapucyni.wolczyn.app.kitchen.di.KITCHEN_QUIZ_SOURCE
+import pl.kapucyni.wolczyn.app.quiz.di.KITCHEN_QUIZ
 
 val adminModule = module {
     single<AdminRepository<FirestoreData>> {
-        FirestoreAdminRepository(get(), get(), get(qualifier = named(KITCHEN_QUIZ_SOURCE)))
+        FirestoreAdminRepository(get(), get(), get(qualifier = named(KITCHEN_QUIZ)))
     }
     single { GetAppDataUseCase<FirestoreData>(get()) }
     single { SaveMenuItemUseCase(get()) }

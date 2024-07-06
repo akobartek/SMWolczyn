@@ -32,11 +32,16 @@ sealed class Screen(val route: String) {
             ARCHIVE_MEETING_ROUTE.replace("{$ARGUMENT_MEETING_NUMBER}", number.toString())
     }
 
+    data object Quiz : Screen(QUIZ_ROUTE) {
+        fun quizRoute(type: String) = QUIZ_ROUTE.replace("{$ARGUMENT_QUIZ_TYPE}", type)
+    }
+
     companion object {
         const val ARGUMENT_PRODUCT_ID = "productId"
         const val ARGUMENT_MEETING_NUMBER = "meetingNumber"
         const val ARGUMENT_BREVIARY_DATE = "breviaryDate"
         const val ARGUMENT_BREVIARY_POSITION = "breviaryPosition"
+        const val ARGUMENT_QUIZ_TYPE = "quizType"
 
         const val HOME_ROUTE = "home"
         const val ADMIN_ROUTE = "admin"
@@ -52,5 +57,6 @@ sealed class Screen(val route: String) {
         const val BREVIARY_SAVE_ROUTE = "breviary_save/{$ARGUMENT_BREVIARY_DATE}"
         const val ARCHIVE_ROUTE = "archive"
         const val ARCHIVE_MEETING_ROUTE = "archive_meeting/{$ARGUMENT_MEETING_NUMBER}"
+        const val QUIZ_ROUTE = "quiz/{$ARGUMENT_QUIZ_TYPE}"
     }
 }

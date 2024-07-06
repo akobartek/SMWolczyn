@@ -8,6 +8,7 @@ import pl.kapucyni.wolczyn.app.breviary.di.breviaryModule
 import pl.kapucyni.wolczyn.app.common.di.platformModule
 import pl.kapucyni.wolczyn.app.core.di.coreModule
 import pl.kapucyni.wolczyn.app.kitchen.di.kitchenModule
+import pl.kapucyni.wolczyn.app.quiz.di.quizKitchenModule
 import pl.kapucyni.wolczyn.app.schedule.di.scheduleModule
 import pl.kapucyni.wolczyn.app.shop.di.shopModule
 import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
@@ -18,6 +19,7 @@ private fun getBaseModules() = listOf(
     coreModule,
     scheduleModule,
     songBookModule,
+    quizKitchenModule,
     kitchenModule,
     shopModule,
     weatherModule,

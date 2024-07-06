@@ -23,6 +23,7 @@ import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenuSection
 import pl.kapucyni.wolczyn.app.kitchen.presentation.composables.KitchenMenuItem
 import pl.kapucyni.wolczyn.app.kitchen.presentation.composables.KitchenSectionHeader
+import pl.kapucyni.wolczyn.app.quiz.di.KITCHEN_QUIZ
 import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizState
 import pl.kapucyni.wolczyn.app.quiz.presentation.composables.QuizNotificationBar
 import smwolczyn.composeapp.generated.resources.Res
@@ -38,6 +39,7 @@ import smwolczyn.composeapp.generated.resources.kitchen_title
 @Composable
 fun KitchenScreen(
     onBackPressed: () -> Unit,
+    onOpenQuiz: (String) -> Unit,
     viewModel: KitchenViewModel = koinInject()
 ) {
     val screenState by viewModel.screenState.collectAsStateMultiplatform()
@@ -50,7 +52,7 @@ fun KitchenScreen(
         KitchenScreenContent(
             screenState = screenState,
             openPromotions = openPromotions,
-            onStartQuiz = { /* TODO */ },
+            onStartQuiz = { onOpenQuiz(KITCHEN_QUIZ) },
             onPromotionRemove = viewModel::removePromotion
         )
     }

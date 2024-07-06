@@ -22,11 +22,13 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BRE
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BREVIARY_POSITION
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_MEETING_NUMBER
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_PRODUCT_ID
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_QUIZ_TYPE
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
+import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopProductScreen
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopScreen
@@ -71,7 +73,10 @@ fun App() {
 
                 composable(Screen.Kitchen.route) {
                     KitchenScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Kitchen.route) }
+                        onBackPressed = { navController.navigateUpSafely(Screen.Kitchen.route) },
+                        onOpenQuiz = {
+                            navController.navigateSafely(Screen.Quiz.quizRoute(it))
+                        }
                     )
                 }
 
@@ -161,6 +166,23 @@ fun App() {
                     ArchiveMeetingScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.ArchiveMeeting.route) },
                         meetingNumber = meetingNumber,
+                    )
+                }
+
+                composable(
+                    route = Screen.Quiz.route,
+                    arguments =
+                    listOf(navArgument(ARGUMENT_QUIZ_TYPE) { type = NavType.StringType })
+                ) {
+                    val quizType = it.arguments?.getString(ARGUMENT_QUIZ_TYPE)
+                    if (quizType.isNullOrBlank()) {
+                        navController.navigateUp()
+                        return@composable
+                    }
+
+                    QuizScreen(
+                        quizType = quizType,
+                        onBackPressed = { navController.navigateUpSafely(Screen.ArchiveMeeting.route) },
                     )
                 }
             }
