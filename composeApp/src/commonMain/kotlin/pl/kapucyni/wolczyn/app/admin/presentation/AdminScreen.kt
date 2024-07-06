@@ -20,6 +20,7 @@ import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.admin.data.model.FirestoreData
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminScreenAction.*
 import pl.kapucyni.wolczyn.app.admin.presentation.composables.AdminDataDialog
+import pl.kapucyni.wolczyn.app.admin.presentation.composables.AdminQuizDialog
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminScreenAction
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
@@ -28,12 +29,14 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
+import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizState
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.app_data
 import smwolczyn.composeapp.generated.resources.kitchen
 import smwolczyn.composeapp.generated.resources.kitchen_menu
 import smwolczyn.composeapp.generated.resources.kitchen_menu_title
 import smwolczyn.composeapp.generated.resources.kitchen_promos_title
+import smwolczyn.composeapp.generated.resources.kitchen_quiz_title
 import smwolczyn.composeapp.generated.resources.promotions
 import smwolczyn.composeapp.generated.resources.quiz
 import smwolczyn.composeapp.generated.resources.shop
@@ -68,6 +71,7 @@ fun AdminScreenContent(
 ) {
     var isKitchenMenuDialogVisible by rememberSaveable { mutableStateOf(false) }
     var isKitchenPromosDialogVisible by rememberSaveable { mutableStateOf(false) }
+    var isKitchenQuizDialogVisible by rememberSaveable { mutableStateOf(false) }
     var isShopProductsDialogVisible by rememberSaveable { mutableStateOf(false) }
     var isShopPromosDialogVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -101,8 +105,8 @@ fun AdminScreenContent(
             }
 
             Button(
-                onClick = { /*TODO*/ },
-                enabled = false,
+                onClick = { isKitchenQuizDialogVisible = true },
+                enabled = data.kitchenQuiz?.let { it.state != QuizState.NOT_AVAILABLE } ?: false,
                 modifier = Modifier.weight(1f),
             ) {
                 WolczynText(stringResource(Res.string.quiz))
@@ -166,6 +170,17 @@ fun AdminScreenContent(
         onPromotionDelete = { handleScreenAction(DeletePromotion(it, true)) },
         onDismiss = { isKitchenPromosDialogVisible = false },
     )
+
+    data.kitchenQuiz?.let { quiz ->
+        AdminQuizDialog(
+            isVisible = isKitchenQuizDialogVisible,
+            title = stringResource(Res.string.kitchen_quiz_title),
+            quiz = quiz,
+            quizResults = data.kitchenQuizResults,
+            onQuizStateChanged = { newState -> handleScreenAction(UpdateQuiz(quiz, newState)) },
+            onDismiss = { isKitchenQuizDialogVisible = false }
+        )
+    }
 
     AdminDataDialog(
         isVisible = isShopProductsDialogVisible,

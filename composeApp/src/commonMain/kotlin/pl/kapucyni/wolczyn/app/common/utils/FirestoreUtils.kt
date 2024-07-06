@@ -36,6 +36,15 @@ inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
         .snapshots
         .map { it.data() }
 
+inline fun <reified T> FirebaseFirestore.getFirestoreFirstAvailableDocument(
+    collectionName: String
+): Flow<T?> =
+    this.collection(collectionName)
+        .snapshots
+        .map { querySnapshot ->
+            querySnapshot.documents.firstOrNull()?.data()
+        }
+
 suspend inline fun <reified T> FirebaseFirestore.saveObject(
     collectionName: String,
     id: String,
@@ -52,3 +61,12 @@ suspend inline fun FirebaseFirestore.deleteObject(
     this.collection(collectionName)
         .document(id)
         .delete()
+
+suspend inline fun FirebaseFirestore.checkIfDocumentExists(
+    collectionName: String,
+    documentId: String,
+) =
+    this.collection(collectionName)
+        .document(documentId)
+        .get()
+        .exists

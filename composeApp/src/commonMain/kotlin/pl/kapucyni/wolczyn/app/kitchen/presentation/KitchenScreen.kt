@@ -14,7 +14,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
-import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -24,6 +23,8 @@ import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenuSection
 import pl.kapucyni.wolczyn.app.kitchen.presentation.composables.KitchenMenuItem
 import pl.kapucyni.wolczyn.app.kitchen.presentation.composables.KitchenSectionHeader
+import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizState
+import pl.kapucyni.wolczyn.app.quiz.presentation.composables.QuizNotificationBar
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_kitchen_beverages
 import smwolczyn.composeapp.generated.resources.ic_kitchen_snacks
@@ -49,6 +50,7 @@ fun KitchenScreen(
         KitchenScreenContent(
             screenState = screenState,
             openPromotions = openPromotions,
+            onStartQuiz = { /* TODO */ },
             onPromotionRemove = viewModel::removePromotion
         )
     }
@@ -58,6 +60,7 @@ fun KitchenScreen(
 fun KitchenScreenContent(
     screenState: State<KitchenMenu>,
     openPromotions: List<String>,
+    onStartQuiz: () -> Unit,
     onPromotionRemove: (String) -> Unit,
 ) {
     LazyColumn(
@@ -66,14 +69,22 @@ fun KitchenScreenContent(
             .padding(horizontal = 20.dp)
             .padding(bottom = 12.dp)
     ) {
+        if (screenState is State.Success && screenState.data.quiz?.state == QuizState.ONGOING) {
+            item {
+                QuizNotificationBar(
+                    onStartQuiz = onStartQuiz,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+            }
+        }
+
         items(items = openPromotions, key = { it }) { promo ->
             PromotionBar(
                 name = promo,
-                onRemove = onPromotionRemove
+                onRemove = onPromotionRemove,
+                modifier = Modifier.padding(bottom = 8.dp),
             )
         }
-        if (openPromotions.isNotEmpty())
-            item { HeightSpacer(12.dp) }
 
         item {
             WolczynTitleText(

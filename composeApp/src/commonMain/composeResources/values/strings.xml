@@ -10,9 +10,7 @@
     <string name="try_again">Spróbuj</string>
     <string name="load">Załaduj</string>
     <string name="stop">Przerwij</string>
-    <string name="restricted_access">Ograniczony dostęp</string>
     <string name="password">Hasło</string>
-    <string name="admin_password_error">Wprowadzono złe hasło</string>
     <string name="cd_clear_field">Wyczyść pole</string>
     <string name="cd_close_dialog">Zamknij okno</string>
     <string name="cd_more_options">Więcej opcji</string>
@@ -71,6 +69,8 @@
     </string-array>
 
     <!-- ADMIN STRINGS -->
+    <string name="restricted_access">Ograniczony dostęp</string>
+    <string name="admin_password_error">Wprowadzono złe hasło</string>
     <string name="app_data">Dane aplikacji</string>
     <string name="kitchen">Kuchnia</string>
     <string name="shop">Sklepik</string>
@@ -79,6 +79,7 @@
     <string name="shop_products">Produkty</string>
     <string name="kitchen_menu_title">Kuchnia - menu</string>
     <string name="kitchen_promos_title">Kuchnia - promocje</string>
+    <string name="kitchen_quiz_title">Kuchnia - quiz</string>
     <string name="shop_products_title">Sklepik - produkty</string>
     <string name="shop_promos_title">Sklepik - promocje</string>
     <string name="new_promo_name">Nowa promocja</string>
@@ -140,6 +141,19 @@
     <string name="cd_download_error">Wystąpił błąd podczas pobierania %s</string>
     <string name="stop_action_title">Przerwanie akcji</string>
     <string name="stop_download_dialog_msg">Jesteś pewny, że chcesz przerwać pobieranie?</string>
+
+    <!-- QUIZ STRING -->
+    <string name="quiz_state_waiting">Oczekujący</string>
+    <string name="quiz_state_ongoing">W trakcie</string>
+    <string name="quiz_state_finished">Zakończony</string>
+    <string name="quiz_results">Wyniki quizu:</string>
+    <string name="quiz_available">Dostępny quiz!</string>
+    <string name="user_id_title">Podaj numer swojego ID:</string>
+    <string name="user_id">Identyfikator</string>
+    <string name="quiz_finish_title">Zakończenie quizu</string>
+    <string name="quiz_finish_message">Na pewno chcesz zakończyć swój quiz? Nie będziesz mógł do niego wrócić!</string>
+    <string name="button_finish">Zakończ</string>
+    <string name="quiz_results_ongoing_message">Wyniki zostaną wyświetlone po zakończeniu quizu!</string>
 
     <!-- ARCHIVE STRINGS -->
     <string name="no_records_dialog_title">Brak nagrań</string>

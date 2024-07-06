@@ -27,7 +27,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
-import pl.kapucyni.wolczyn.app.core.presentation.composables.NotificationBar
+import pl.kapucyni.wolczyn.app.common.presentation.composables.NotificationBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.core.domain.model.AppState

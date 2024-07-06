@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.schedule.domain.model.Event
@@ -122,7 +123,7 @@ fun EventCard(
                             color = MaterialTheme.colorScheme.primary,
                         )
                     )
-                    WidthSpacer(4.dp)
+                    HeightSpacer(4.dp)
                     event.guest?.let { guest ->
                         WolczynText(
                             text = guest,
@@ -131,8 +132,8 @@ fun EventCard(
                                 color = MaterialTheme.colorScheme.primary,
                             )
                         )
+                        HeightSpacer(4.dp)
                     }
-                    WidthSpacer(4.dp)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             painter = painterResource(Res.drawable.ic_schedule_map_pin),

@@ -21,12 +21,15 @@ import pl.kapucyni.wolczyn.app.theme.wolczynColors
 fun PromotionBar(
     name: String,
     onRemove: (String) -> Unit,
+    modifier: Modifier,
 ) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = wolczynColors.alert
         ),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(

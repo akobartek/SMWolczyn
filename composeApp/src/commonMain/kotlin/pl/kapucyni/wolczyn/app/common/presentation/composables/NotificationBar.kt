@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.core.presentation.composables
+package pl.kapucyni.wolczyn.app.common.presentation.composables
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,26 +15,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
 fun NotificationBar(
     name: String,
     onIconClick: (() -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = wolczynColors.alert
         ),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
+        modifier = modifier.fillMaxWidth().padding(horizontal = 4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             WolczynText(
                 text = name.uppercase(),
                 textStyle = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onError
                 ),
                 modifier = Modifier
                     .weight(1f)
