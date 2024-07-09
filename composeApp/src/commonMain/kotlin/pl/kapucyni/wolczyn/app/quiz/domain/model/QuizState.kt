@@ -7,5 +7,6 @@ enum class QuizState {
     WAITING,
     ONGOING,
     FINISHED,
-    NOT_AVAILABLE
+    NOT_AVAILABLE,
+    ;
 }

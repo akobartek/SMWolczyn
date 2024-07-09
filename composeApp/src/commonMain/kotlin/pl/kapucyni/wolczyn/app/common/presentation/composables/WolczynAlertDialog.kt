@@ -38,7 +38,9 @@ fun WolczynAlertDialog(
             text = {
                 WolczynText(
                     text = stringResource(dialogTextId),
-                    textStyle = MaterialTheme.typography.labelLarge
+                    textStyle = MaterialTheme.typography.labelLarge.copy(
+                        textAlign = TextAlign.Justify,
+                    )
                 )
             },
             onDismissRequest = { if (dismissible) onDismissRequest() },

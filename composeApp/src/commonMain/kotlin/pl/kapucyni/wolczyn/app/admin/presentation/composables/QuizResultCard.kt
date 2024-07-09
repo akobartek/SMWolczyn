@@ -12,18 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizResult
 
 @Composable
 fun QuizResultCard(result: QuizResult) {
-    val date = Instant.fromEpochMilliseconds(result.submittedAt)
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.padding(8.dp)
@@ -42,7 +36,7 @@ fun QuizResultCard(result: QuizResult) {
                 )
                 WidthSpacer(4.dp)
                 WolczynText(
-                    text = date.toString(),
+                    text = result.getFormattedSubmittedAt(),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Light,
                     )

@@ -11,11 +11,11 @@ class QuizRepositoryImpl(
     private val firestoreQuizSource: FirestoreQuizSource,
 ): QuizRepository {
     override fun getQuiz(): Flow<Quiz?> =
-        firestoreQuizSource.getQuiz().map { it?.toDomainObject() } // TODO Shuffle questions and answers
+        firestoreQuizSource.getQuiz().map { it?.toDomainObject() }
 
     override suspend fun saveResults(result: QuizResult) =
         firestoreQuizSource.saveResult(result)
 
     override suspend fun checkIfUserIsAllowed(userId: String): Boolean =
-        firestoreQuizSource.checkIfUserStartedQuizBefore(userId)
+        firestoreQuizSource.checkIfUserStartedQuizBefore(userId).not()
 }

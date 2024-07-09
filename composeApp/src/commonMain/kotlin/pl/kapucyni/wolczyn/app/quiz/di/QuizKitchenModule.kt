@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.quiz.di
 
-import org.koin.compose.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.quiz.data.repository.QuizRepositoryImpl
@@ -28,7 +27,7 @@ val quizKitchenModule = module {
     single(named(KITCHEN_QUIZ)) {
         SaveResultUseCase(get(qualifier = (named(KITCHEN_QUIZ))))
     }
-    viewModel(named(KITCHEN_QUIZ)) {
+    single(named(KITCHEN_QUIZ)) {
         QuizViewModel(
             get(qualifier = named(KITCHEN_QUIZ)),
             get(qualifier = named(KITCHEN_QUIZ)),

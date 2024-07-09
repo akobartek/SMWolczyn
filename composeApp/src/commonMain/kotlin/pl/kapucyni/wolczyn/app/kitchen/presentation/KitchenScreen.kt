@@ -71,7 +71,9 @@ fun KitchenScreenContent(
             .padding(horizontal = 20.dp)
             .padding(bottom = 12.dp)
     ) {
-        if (screenState is State.Success && screenState.data.quiz?.state == QuizState.ONGOING) {
+        if (screenState is State.Success
+            && screenState.data.quiz?.state in arrayOf(QuizState.ONGOING, QuizState.FINISHED)
+        ) {
             item {
                 QuizNotificationBar(
                     onStartQuiz = onStartQuiz,

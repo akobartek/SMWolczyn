@@ -22,9 +22,9 @@ data class FirestoreQuiz(
                             isCorrect = fsAnswer.startsWith(CORRECT_ANSWER_PREFIX),
                             answer = fsAnswer.removePrefix(CORRECT_ANSWER_PREFIX),
                         )
-                    },
+                    }.shuffled(),
                 )
-            },
+            }.shuffled(),
         )
 
     companion object {

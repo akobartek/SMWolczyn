@@ -148,12 +148,17 @@
     <string name="quiz_state_finished">Zakończony</string>
     <string name="quiz_results">Wyniki quizu:</string>
     <string name="quiz_available">Dostępny quiz!</string>
-    <string name="user_id_title">Podaj numer swojego ID:</string>
+    <string name="user_id_title">Podaj swoje ID:</string>
     <string name="user_id">Identyfikator</string>
+    <string name="start_quiz">Rozpocznij quiz</string>
+    <string name="finish_quiz">Zakończ quiz</string>
     <string name="quiz_finish_title">Zakończenie quizu</string>
     <string name="quiz_finish_message">Na pewno chcesz zakończyć swój quiz? Nie będziesz mógł do niego wrócić!</string>
     <string name="button_finish">Zakończ</string>
     <string name="quiz_results_ongoing_message">Wyniki zostaną wyświetlone po zakończeniu quizu!</string>
+    <string name="quiz_loading_error">Wystąpił błąd w czasie ładowania quizu, sprawdź swoje połączenie!</string>
+    <string name="quiz_user_not_allowed">Akcja niemożliwa, wykorzystałeś swoją próbę lub masz problem z Internetem!</string>
+    <string name="quiz_result">Quiz zakończony, Twój wynik to:\n%1$d punktów!</string>
 
     <!-- ARCHIVE STRINGS -->
     <string name="no_records_dialog_title">Brak nagrań</string>

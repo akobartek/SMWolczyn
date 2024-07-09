@@ -182,7 +182,7 @@ fun App() {
 
                     QuizScreen(
                         quizType = quizType,
-                        onBackPressed = { navController.navigateUpSafely(Screen.ArchiveMeeting.route) },
+                        onBackPressed = { navController.navigateUpSafely(Screen.Quiz.route) },
                     )
                 }
             }
