@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Construction
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,7 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
+import org.jetbrains.compose.resources.vectorResource
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -54,7 +57,7 @@ fun EventCard(
     filledCircle: Boolean,
     hideTime: Boolean,
     isLast: Boolean,
-    onNavClick: (HomeTileType) -> Unit
+    onNavClick: (String) -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
     var mfTauDialogVisible by remember { mutableStateOf(false) }
@@ -94,9 +97,10 @@ fun EventCard(
             ),
             onClick = {
                 when (event.type) {
-                    EventType.MASS -> onNavClick(HomeTileType.SONG_BOOK)
-                    EventType.MEAL -> onNavClick(HomeTileType.KITCHEN)
-                    EventType.BREVIARY -> onNavClick(HomeTileType.BREVIARY)
+                    EventType.MASS -> onNavClick(Screen.SongBook.route)
+                    EventType.MEAL -> onNavClick(Screen.Kitchen.route)
+                    EventType.BREVIARY -> onNavClick(Screen.BreviarySelect.route)
+                    EventType.WORKSHOPS -> onNavClick(Screen.Workshops.route)
                     EventType.MF_TAU -> mfTauDialogVisible = true
                     else -> {
                         if (!event.guestUrl.isNullOrBlank())
@@ -166,17 +170,17 @@ fun EventCard(
                     EventType.DEVOTION,
                     EventType.ORGANIZATION,
                     EventType.GROUPS,
-                    EventType.WORKSHOPS,
                     EventType.PRAYER,
                     EventType.GUEST_TALK,
                     EventType.OTHER -> null
 
-                    EventType.MASS -> Res.drawable.ic_schedule_song_book
-                    EventType.MF_TAU, EventType.MEAL -> Res.drawable.ic_schedule_kitchen
-                    EventType.BREVIARY -> Res.drawable.ic_schedule_breviary
-                }?.let { drawable ->
+                    EventType.WORKSHOPS -> Icons.Rounded.Construction
+                    EventType.MASS -> vectorResource(Res.drawable.ic_schedule_song_book)
+                    EventType.MF_TAU, EventType.MEAL -> vectorResource(Res.drawable.ic_schedule_kitchen)
+                    EventType.BREVIARY -> vectorResource(Res.drawable.ic_schedule_breviary)
+                }?.let { imageVector ->
                     Icon(
-                        painter = painterResource(drawable),
+                        imageVector = imageVector,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(34.dp)

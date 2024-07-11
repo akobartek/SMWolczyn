@@ -142,7 +142,7 @@
     <string name="stop_action_title">Przerwanie akcji</string>
     <string name="stop_download_dialog_msg">Jesteś pewny, że chcesz przerwać pobieranie?</string>
 
-    <!-- QUIZ STRING -->
+    <!-- QUIZ STRINGS -->
     <string name="quiz_state_waiting">Oczekujący</string>
     <string name="quiz_state_ongoing">W trakcie</string>
     <string name="quiz_state_finished">Zakończony</string>
@@ -159,6 +159,13 @@
     <string name="quiz_loading_error">Wystąpił błąd w czasie ładowania quizu, sprawdź swoje połączenie!</string>
     <string name="quiz_user_not_allowed">Akcja niemożliwa, wykorzystałeś swoją próbę lub masz problem z Internetem!</string>
     <string name="quiz_result">Quiz zakończony, Twój wynik to:\n%1$d punktów!</string>
+
+    <!-- WORKSHOPS STRINGS -->
+    <string name="workshops_title">Warsztaty</string>
+    <string name="workshops_subtitle">Dodatkowe materiały z warsztatów:</string>
+    <string name="workshops_prayer_name">Modlitwy</string>
+    <string name="workshops_prayer_title">Warsztaty modlitwy</string>
+    <string name="empty_workshop_tasks_list">Nie dodano jeszcze żadnych materiałów dla tych warsztatów, wróć po warsztatach!</string>
 
     <!-- ARCHIVE STRINGS -->
     <string name="no_records_dialog_title">Brak nagrań</string>

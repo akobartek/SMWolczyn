@@ -13,6 +13,7 @@ import pl.kapucyni.wolczyn.app.schedule.di.scheduleModule
 import pl.kapucyni.wolczyn.app.shop.di.shopModule
 import pl.kapucyni.wolczyn.app.songbook.di.songBookModule
 import pl.kapucyni.wolczyn.app.weather.di.weatherModule
+import pl.kapucyni.wolczyn.app.workshops.prayer.di.workshopsPrayerModule
 
 private fun getBaseModules() = listOf(
     platformModule,
@@ -25,6 +26,7 @@ private fun getBaseModules() = listOf(
     weatherModule,
     breviaryModule,
     archiveModule,
+    workshopsPrayerModule,
     adminModule,
 )
 

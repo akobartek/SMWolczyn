@@ -24,7 +24,6 @@ import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
-import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
@@ -39,8 +38,8 @@ import smwolczyn.composeapp.generated.resources.schedule_title
 @Composable
 fun ScheduleScreen(
     onBackPressed: () -> Unit,
-    navigateTo: (HomeTileType) -> Unit,
-    viewModel: ScheduleViewModel = koinInject()
+    navigateTo: (String) -> Unit,
+    viewModel: ScheduleViewModel = koinInject(),
 ) {
     val screenState by viewModel.screenState.collectAsStateMultiplatform()
 
@@ -51,7 +50,7 @@ fun ScheduleScreen(
         ScheduleScreenContent(
             screenState = screenState,
             onDaySelected = viewModel::onDaySelected,
-            navigateTo = navigateTo
+            navigateTo = navigateTo,
         )
     }
 }
@@ -60,7 +59,7 @@ fun ScheduleScreen(
 fun ScheduleScreenContent(
     screenState: State<ScheduleScreenState>,
     onDaySelected: (Int) -> Unit,
-    navigateTo: (HomeTileType) -> Unit
+    navigateTo: (String) -> Unit,
 ) {
     when (screenState) {
         is State.Loading -> LoadingBox()

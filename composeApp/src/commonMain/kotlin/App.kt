@@ -34,6 +34,7 @@ import pl.kapucyni.wolczyn.app.shop.presentation.ShopProductScreen
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopScreen
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
+import pl.kapucyni.wolczyn.app.workshops.WorkshopsScreen
 
 @Composable
 fun App() {
@@ -61,7 +62,7 @@ fun App() {
                 composable(Screen.Schedule.route) {
                     ScheduleScreen(
                         onBackPressed = { navController.navigateUpSafely(Screen.Schedule.route) },
-                        navigateTo = { navController.navigateSafely(it.navRoute) }
+                        navigateTo = { navController.navigateSafely(it) }
                     )
                 }
 
@@ -183,6 +184,12 @@ fun App() {
                     QuizScreen(
                         quizType = quizType,
                         onBackPressed = { navController.navigateUpSafely(Screen.Quiz.route) },
+                    )
+                }
+
+                composable(route = Screen.Workshops.route) {
+                    WorkshopsScreen(
+                        onBackPressed = { navController.navigateUpSafely(Screen.Workshops.route) }
                     )
                 }
             }

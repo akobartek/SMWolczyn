@@ -36,6 +36,9 @@ sealed class Screen(val route: String) {
         fun quizRoute(type: String) = QUIZ_ROUTE.replace("{$ARGUMENT_QUIZ_TYPE}", type)
     }
 
+    data object Workshops : Screen(WORKSHOPS_ROUTE)
+
+
     companion object {
         const val ARGUMENT_PRODUCT_ID = "productId"
         const val ARGUMENT_MEETING_NUMBER = "meetingNumber"
@@ -58,5 +61,6 @@ sealed class Screen(val route: String) {
         const val ARCHIVE_ROUTE = "archive"
         const val ARCHIVE_MEETING_ROUTE = "archive_meeting/{$ARGUMENT_MEETING_NUMBER}"
         const val QUIZ_ROUTE = "quiz/{$ARGUMENT_QUIZ_TYPE}"
+        const val WORKSHOPS_ROUTE = "workshops"
     }
 }
