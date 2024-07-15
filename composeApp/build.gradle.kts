@@ -106,8 +106,8 @@ android {
         applicationId = "pl.kapucyni.wolczyn.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 29
-        versionName = "2024.0.0"
+        versionCode = 33
+        versionName = "2024.0"
     }
     packaging {
         resources {
