@@ -116,7 +116,6 @@ android {
     }
     buildTypes {
         getByName("release") {
-            // TODO
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = false
