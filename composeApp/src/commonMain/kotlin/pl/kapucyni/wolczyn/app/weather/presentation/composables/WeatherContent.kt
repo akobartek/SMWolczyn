@@ -1,9 +1,9 @@
 package pl.kapucyni.wolczyn.app.weather.presentation.composables
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,9 +19,10 @@ import pl.kapucyni.wolczyn.app.weather.domain.model.Weather
 @Composable
 fun WeatherContent(weather: Weather) {
     Column(
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(top = 2.dp)
     ) {
         WolczynText(
             text = "${weather.dayTemp}°/${weather.nightTemp}°",
