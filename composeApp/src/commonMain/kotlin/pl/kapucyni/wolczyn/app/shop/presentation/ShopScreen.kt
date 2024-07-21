@@ -16,6 +16,7 @@ import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
+import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
@@ -59,6 +60,19 @@ fun ShopScreenContent(
                     .padding(horizontal = 20.dp)
                     .padding(bottom = 12.dp)
             ) {
+                items(
+                    count = shop.promotions.size,
+                    key = { it },
+                    span = { GridItemSpan(maxLineSpan) },
+                ) { index ->
+                    val promo = shop.promotions[index]
+                    PromotionBar(
+                        name = promo,
+                        onRemove = null,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                    )
+                }
+
                 items(
                     count = shop.products.size,
                     key = { shop.products[it].id }

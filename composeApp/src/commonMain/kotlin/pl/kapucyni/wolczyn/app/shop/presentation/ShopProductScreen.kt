@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,20 +54,22 @@ fun ShopProductScreenContent(
             Box(modifier = Modifier.onGloballyPositioned {
                 isOrientationLandscape = it.size.width > it.size.height
             }) {
-                 val details = @Composable {
-                     ProductDetails(
-                         product = product,
-                         selectedColor = selectedColor,
-                         onColorSelected = { selectedColor = it },
-                         onBackPressed = onBackPressed,
-                         isOrientationLandscape = isOrientationLandscape
-                     )
-                 }
+                val details = @Composable {
+                    ProductDetails(
+                        product = product,
+                        selectedColor = selectedColor,
+                        onColorSelected = { selectedColor = it },
+                        onBackPressed = onBackPressed,
+                        isOrientationLandscape = isOrientationLandscape
+                    )
+                }
 
                 if (!isOrientationLandscape)
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
                     ) {
                         details()
                     }

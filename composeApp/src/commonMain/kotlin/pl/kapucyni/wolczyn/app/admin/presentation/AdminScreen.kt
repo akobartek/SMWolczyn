@@ -85,7 +85,7 @@ fun AdminScreenContent(
         )
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp)

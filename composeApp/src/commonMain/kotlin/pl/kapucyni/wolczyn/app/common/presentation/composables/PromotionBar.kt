@@ -20,7 +20,7 @@ import pl.kapucyni.wolczyn.app.theme.wolczynColors
 @Composable
 fun PromotionBar(
     name: String,
-    onRemove: (String) -> Unit,
+    onRemove: ((String) -> Unit)?,
     modifier: Modifier,
 ) {
     Card(
@@ -44,11 +44,13 @@ fun PromotionBar(
                     .weight(1f)
                     .padding(horizontal = 6.dp)
             )
-            IconButton(onClick = { onRemove(name) }) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null
-                )
+            onRemove?.let {
+                IconButton(onClick = { onRemove(name) }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }
