@@ -23,7 +23,7 @@ class FirestoreShopSource {
 
     suspend fun saveShopProduct(product: FirestoreShopProduct) =
         Firebase.firestore.saveObject(
-            collectionName = SHOP_PROMOTIONS_COLLECTION,
+            collectionName = SHOP_PRODUCTS_COLLECTION,
             id = product.id,
             data = product
         )
