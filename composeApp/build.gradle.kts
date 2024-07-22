@@ -106,8 +106,8 @@ android {
         applicationId = "pl.kapucyni.wolczyn.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 35
-        versionName = "2024.2"
+        versionCode = 36
+        versionName = "2024.3"
     }
     packaging {
         resources {
@@ -122,6 +122,8 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -130,6 +132,7 @@ android {
     }
     dependencies {
         debugImplementation(compose.uiTooling)
+        coreLibraryDesugaring(libs.android.desugaring)
     }
 }
 

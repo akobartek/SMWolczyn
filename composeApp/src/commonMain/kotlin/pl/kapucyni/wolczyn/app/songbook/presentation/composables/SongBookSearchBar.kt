@@ -116,7 +116,8 @@ fun SongBookSearchBar(
                 )
             },
             textStyle = MaterialTheme.typography.bodyLarge.copy(
-                fontFamily = poppinsFontFamily()
+                fontFamily = poppinsFontFamily(),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),

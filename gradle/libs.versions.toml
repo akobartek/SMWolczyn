@@ -1,8 +1,9 @@
 [versions]
-agp = "8.3.2"
+agp = "8.4.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
+android-desugaring = "2.0.4"
 androidx-activityCompose = "1.9.0"
 androidx-appcompat = "1.7.0"
 androidx-core-ktx = "1.13.1"
@@ -39,6 +40,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 
+android-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugaring" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
 androidx-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso-core" }
@@ -66,7 +68,7 @@ ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
-webview = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "webview"}
+webview = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "webview" }
 
 firebase-gitlive-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-gitlive-sdk" }
 firebase-gitlive-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive-sdk" }
@@ -84,4 +86,4 @@ room = { id = "androidx.room", version.ref = "room" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig"}
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
