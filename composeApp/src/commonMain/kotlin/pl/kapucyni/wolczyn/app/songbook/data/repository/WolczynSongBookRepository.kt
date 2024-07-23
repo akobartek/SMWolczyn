@@ -349,7 +349,9 @@ class WolczynSongBookRepository : SongBookRepository {
                 "2. W Twej świątyni ujrzeć pragnę\nTwą potęgę, moc i chwałę,\n" +
                 "Bowiem Twoją miłość, Panie,\nBardziej cenię niźli życie.\n\n" +
                 "3. Póki tylko istnieć będę,\nPragnę Ciebie chwalić, Boże.\n" +
-                "Dusza moja pełna szczęścia,\nBędzie śpiewać Ci z radością.\n",
+                "Dusza moja pełna szczęścia,\nBędzie śpiewać Ci z radością.\n\n" +
+                "4. Jesteś mym wspomożycielem,\ncień Twych skrzydeł daje radość,\n" +
+                "całym sercem lgnę do Ciebie,\nTwa prawica mnie prowadzi.\n",
         // stare:
         "Zwrotka:\nKażdy spragniony i słaby dziś\nNiech przyjdzie do źródła\nW Wodzie Życia zanurzy się\n" +
                 "Ból i cierpienie niech odpłyną w dal\nW morzu miłości serca uleczy dzisiaj Pan\n\n" +
