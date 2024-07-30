@@ -126,7 +126,7 @@ fun HomeScreenContent(
                 if (notification.message.isNotBlank())
                     NotificationBar(
                         name = notification.message,
-                        onIconClick = notification.url.takeIf { it.isNotBlank() }
+                        onClick = notification.url.takeIf { it.isNotBlank() }
                             ?.let { url -> { uriHandler.openUri(url) } }
                     )
             }

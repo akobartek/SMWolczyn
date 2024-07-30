@@ -14,7 +14,7 @@ fun QuizNotificationBar(
 ) {
     NotificationBar(
         name = stringResource(Res.string.quiz_available),
-        onIconClick = onStartQuiz,
+        onClick = onStartQuiz,
         modifier = modifier
     )
 }

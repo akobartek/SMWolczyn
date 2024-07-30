@@ -20,13 +20,14 @@ import pl.kapucyni.wolczyn.app.theme.wolczynColors
 @Composable
 fun NotificationBar(
     name: String,
-    onIconClick: (() -> Unit)?,
+    onClick: (() -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = wolczynColors.alert
         ),
+        onClick = { onClick?.invoke() },
         modifier = modifier.fillMaxWidth().padding(horizontal = 4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -39,8 +40,8 @@ fun NotificationBar(
                     .weight(1f)
                     .padding(16.dp)
             )
-            onIconClick?.let {
-                IconButton(onClick = onIconClick) {
+            onClick?.let {
+                IconButton(onClick = onClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowForward,
                         contentDescription = null

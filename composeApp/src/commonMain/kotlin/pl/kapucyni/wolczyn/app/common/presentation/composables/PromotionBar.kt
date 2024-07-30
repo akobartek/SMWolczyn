@@ -30,6 +30,7 @@ fun PromotionBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp)
+            .padding(vertical = if (onRemove != null) 6.dp else 0.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(

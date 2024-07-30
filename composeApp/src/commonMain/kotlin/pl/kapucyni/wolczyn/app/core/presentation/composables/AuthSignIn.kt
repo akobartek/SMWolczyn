@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
@@ -49,7 +48,6 @@ import smwolczyn.composeapp.generated.resources.password
 import smwolczyn.composeapp.generated.resources.sign_in
 import smwolczyn.composeapp.generated.resources.sign_up
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AuthSignIn(
     isVisible: Boolean,
@@ -139,6 +137,8 @@ fun AuthSignIn(
             Button(
                 onClick = {
                     focusManager.clearFocus(true)
+                    login = login.trim()
+                    password = password.trim()
                     onSignIn(login, password)
                 },
                 modifier = Modifier.fillMaxWidth()
