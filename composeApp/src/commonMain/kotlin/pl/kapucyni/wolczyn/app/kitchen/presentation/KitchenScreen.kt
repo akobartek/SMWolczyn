@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -18,7 +19,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenu
 import pl.kapucyni.wolczyn.app.kitchen.domain.model.KitchenMenuSection
 import pl.kapucyni.wolczyn.app.kitchen.presentation.composables.KitchenMenuItem
@@ -42,8 +42,8 @@ fun KitchenScreen(
     onOpenQuiz: (String) -> Unit,
     viewModel: KitchenViewModel = koinInject()
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
-    val openPromotions by viewModel.openPromotions.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val openPromotions by viewModel.openPromotions.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.kitchen_title),

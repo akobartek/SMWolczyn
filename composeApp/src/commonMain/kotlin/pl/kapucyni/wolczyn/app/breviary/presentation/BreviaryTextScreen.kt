@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringArrayResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary
@@ -42,7 +43,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.breviary_list
 
@@ -53,7 +53,7 @@ fun BreviaryTextScreen(
     date: String,
     viewModel: BreviaryTextViewModel = koinInject()
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val accentColor = MaterialTheme.colorScheme.primary
 
     LaunchedEffect(Unit) {

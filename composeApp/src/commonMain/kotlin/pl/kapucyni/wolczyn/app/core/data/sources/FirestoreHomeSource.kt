@@ -19,6 +19,7 @@ class FirestoreHomeSource {
 
     fun getAppConfiguration(): Flow<AppConfiguration?> =
         Firebase.firestore.getFirestoreDocument(
-            CONFIGURATION_COLLECTION, CONFIGURATION_COLLECTION
+            collectionName = CONFIGURATION_COLLECTION,
+            documentId = CONFIGURATION_COLLECTION,
         )
 }

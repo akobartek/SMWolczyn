@@ -4,6 +4,7 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import pl.kapucyni.wolczyn.app.admin.di.adminModule
 import pl.kapucyni.wolczyn.app.archive.di.archiveModule
+import pl.kapucyni.wolczyn.app.auth.di.authModule
 import pl.kapucyni.wolczyn.app.breviary.di.breviaryModule
 import pl.kapucyni.wolczyn.app.common.di.platformModule
 import pl.kapucyni.wolczyn.app.core.di.coreModule
@@ -17,6 +18,7 @@ import pl.kapucyni.wolczyn.app.workshops.prayer.di.workshopsPrayerModule
 
 private fun getBaseModules() = listOf(
     platformModule,
+    authModule,
     coreModule,
     scheduleModule,
     songBookModule,

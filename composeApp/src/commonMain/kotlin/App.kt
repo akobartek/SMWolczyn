@@ -4,27 +4,38 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
+import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreen
+import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySaveScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySelectScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviaryTextScreen
-import pl.kapucyni.wolczyn.app.common.presentation.Screen
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BREVIARY_DATE
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_BREVIARY_POSITION
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_MEETING_NUMBER
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_PRODUCT_ID
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.Companion.ARGUMENT_QUIZ_TYPE
+import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.*
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
+import pl.kapucyni.wolczyn.app.core.presentation.AppViewModel
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
@@ -37,159 +48,192 @@ import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.workshops.WorkshopsScreen
 
 @Composable
-fun App() {
+fun App(viewModel: AppViewModel = koinInject()) {
+    val user by viewModel.user.collectAsStateWithLifecycle()
+
     AppTheme {
         val navController = rememberNavController()
+        val snackbarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
 
-        Scaffold {
+        ObserveAsEvents(
+            flow = SnackbarController.events,
+            key1 = snackbarHostState,
+        ) { event ->
+            scope.launch {
+                snackbarHostState.currentSnackbarData?.dismiss()
+
+                val result = snackbarHostState.showSnackbar(
+                    message = getString(event.message),
+                    actionLabel = event.action?.let { getString(it.name) },
+                    withDismissAction = event.action == null,
+                    duration = SnackbarDuration.Short,
+                )
+
+                if (result == SnackbarResult.ActionPerformed) {
+                    event.action?.action?.invoke()
+                }
+            }
+        }
+
+        Scaffold(
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        ) {
             NavHost(
                 navController = navController,
-                startDestination = Screen.Home.route,
+                startDestination = Home,
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.surface)
                     .windowInsetsPadding(WindowInsets.safeDrawing)
             ) {
-                composable(Screen.Home.route) {
-                    HomeScreen(onTileClick = { navController.navigateSafely(it.navRoute) })
-                }
-
-                composable(Screen.Admin.route) {
-                    AdminScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Admin.route) }
+                composable<Home> {
+                    HomeScreen(
+                        onTileClick = { navController.navigateSafely(it.navRoute) },
+                        openAccountScreen = {
+                            if (user == null)
+                                navController.navigateSafely(SignIn())
+                            // TODO: else
+                        },
                     )
                 }
 
-                composable(Screen.Schedule.route) {
-                    ScheduleScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Schedule.route) },
-                        navigateTo = { navController.navigateSafely(it) }
+                composable<SignIn> {
+                    val screen = it.toRoute<SignIn>()
+
+                    SignInScreen(
+                        navigateUp = { navController.navigateUpSafely(screen) },
+                        openSignUp = { email -> navController.navigateSafely(SignUp(email)) },
+                        viewModel = koinInject { parametersOf(screen.email) },
                     )
                 }
 
-                composable(Screen.SongBook.route) {
-                    SongBookScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.SongBook.route) }
-                    )
-                }
+                composable<SignUp> {
+                    val screen = it.toRoute<SignUp>()
 
-                composable(Screen.Kitchen.route) {
-                    KitchenScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Kitchen.route) },
-                        onOpenQuiz = {
-                            navController.navigateSafely(Screen.Quiz.quizRoute(it))
-                        }
-                    )
-                }
-
-                composable(Screen.Shop.route) {
-                    ShopScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Shop.route) },
-                        onProductClick = {
-                            navController.navigateSafely(Screen.ShopProduct.productRoute(it))
-                        }
-                    )
-                }
-                composable(Screen.ShopProduct.route) {
-                    val productId = it.arguments?.getString(ARGUMENT_PRODUCT_ID)
-
-                    ShopProductScreen(
-                        productId = productId,
-                        onBackPressed = { navController.navigateUpSafely(Screen.ShopProduct.route) }
-                    )
-                }
-
-                composable(Screen.Decalogue.route) {
-                    DecalogueScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Decalogue.route) }
-                    )
-                }
-
-                composable(Screen.BreviarySelect.route) {
-                    BreviarySelectScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.BreviarySelect.route) },
-                        onSelected = { position, date ->
+                    SignUpScreen(
+                        navigateUp = { navController.navigateUpSafely(screen) },
+                        openSignIn = { email ->
                             navController.navigateSafely(
-                                Screen.BreviaryText.breviaryTextRoute(position, date)
+                                route = SignIn(email),
+                                popUpTo = SignIn::class,
                             )
                         },
+                        viewModel = koinInject { parametersOf(screen.email) },
+                    )
+                }
+
+                composable<Admin> {
+                    AdminScreen(
+                        onBackPressed = { navController.navigateUpSafely(Admin) },
+                    )
+                }
+
+                composable<Schedule> {
+                    ScheduleScreen(
+                        onBackPressed = { navController.navigateUpSafely(Schedule) },
+                        navigateTo = { navController.navigateSafely(it) },
+                    )
+                }
+
+                composable<SongBook> {
+                    SongBookScreen(
+                        onBackPressed = { navController.navigateUpSafely(SongBook) },
+                    )
+                }
+
+                composable<Kitchen> {
+                    KitchenScreen(
+                        onBackPressed = { navController.navigateUpSafely(Kitchen) },
+                        onOpenQuiz = { navController.navigateSafely(Quiz(it)) },
+                    )
+                }
+
+                composable<Shop> {
+                    ShopScreen(
+                        onBackPressed = { navController.navigateUpSafely(Shop) },
+                        onProductClick = { navController.navigateSafely(ShopProduct(it)) },
+                    )
+                }
+                composable<ShopProduct> {
+                    val screen = it.toRoute<ShopProduct>()
+
+                    ShopProductScreen(
+                        productId = screen.productId,
+                        onBackPressed = { navController.navigateUpSafely(screen) },
+                    )
+                }
+
+                composable<Decalogue> {
+                    DecalogueScreen(
+                        onBackPressed = { navController.navigateUpSafely(Decalogue) },
+                    )
+                }
+
+                composable<BreviarySelect> {
+                    BreviarySelectScreen(
+                        onBackPressed = { navController.navigateUpSafely(BreviarySelect) },
+                        onSelected = { position, date ->
+                            navController.navigateSafely(BreviaryText(position, date))
+                        },
                         onSaveBreviary = { date ->
-                            navController.navigateSafely(Screen.BreviarySave.breviarySaveRoute(date))
+                            navController.navigateSafely(BreviarySave(date))
                         },
                     )
                 }
 
-                composable(
-                    route = Screen.BreviaryText.route,
-                    arguments = listOf(
-                        navArgument(ARGUMENT_BREVIARY_POSITION) { type = NavType.IntType },
-                        navArgument(ARGUMENT_BREVIARY_DATE) { type = NavType.StringType }
-                    )
-                ) {
-                    val position = it.arguments?.getInt(ARGUMENT_BREVIARY_POSITION) ?: 0
-                    val date = it.arguments?.getString(ARGUMENT_BREVIARY_DATE) ?: ""
+                composable<BreviaryText> {
+                    val screen = it.toRoute<BreviaryText>()
 
                     BreviaryTextScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.BreviaryText.route) },
-                        position = position,
-                        date = date,
+                        onBackPressed = { navController.navigateUpSafely(screen) },
+                        position = screen.position,
+                        date = screen.date,
                     )
                 }
 
-                composable(
-                    route = Screen.BreviarySave.route,
-                    arguments =
-                    listOf(navArgument(ARGUMENT_BREVIARY_DATE) { type = NavType.StringType })
-                ) {
-                    val date = it.arguments?.getString(ARGUMENT_BREVIARY_DATE) ?: ""
+                composable<BreviarySave> {
+                    val screen = it.toRoute<BreviarySave>()
 
                     BreviarySaveScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.BreviarySave.route) },
-                        date = date,
+                        onBackPressed = { navController.navigateUpSafely(screen) },
+                        date = screen.date,
                     )
                 }
 
-                composable(Screen.Archive.route) {
+                composable<Archive> {
                     ArchiveScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Archive.route) },
+                        onBackPressed = { navController.navigateUpSafely(Archive) },
                         onMeetingClick = {
-                            navController.navigateSafely(Screen.ArchiveMeeting.meetingRoute(it))
+                            navController.navigateSafely(ArchiveMeeting(meetingNumber = it))
                         },
                     )
                 }
 
-                composable(
-                    route = Screen.ArchiveMeeting.route,
-                    arguments =
-                    listOf(navArgument(ARGUMENT_MEETING_NUMBER) { type = NavType.IntType })
-                ) {
-                    val meetingNumber = it.arguments?.getInt(ARGUMENT_MEETING_NUMBER) ?: 0
+                composable<ArchiveMeeting> {
+                    val screen = it.toRoute<ArchiveMeeting>()
 
                     ArchiveMeetingScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.ArchiveMeeting.route) },
-                        meetingNumber = meetingNumber,
+                        onBackPressed = { navController.navigateUpSafely(screen) },
+                        meetingNumber = screen.meetingNumber,
                     )
                 }
 
-                composable(
-                    route = Screen.Quiz.route,
-                    arguments =
-                    listOf(navArgument(ARGUMENT_QUIZ_TYPE) { type = NavType.StringType })
-                ) {
-                    val quizType = it.arguments?.getString(ARGUMENT_QUIZ_TYPE)
-                    if (quizType.isNullOrBlank()) {
+                composable<Quiz> {
+                    val screen = it.toRoute<Quiz>()
+                    if (screen.type.isBlank()) {
                         navController.navigateUp()
                         return@composable
                     }
 
                     QuizScreen(
-                        quizType = quizType,
-                        onBackPressed = { navController.navigateUpSafely(Screen.Quiz.route) },
+                        quizType = screen.type,
+                        onBackPressed = { navController.navigateUpSafely(screen) },
                     )
                 }
 
-                composable(route = Screen.Workshops.route) {
+                composable<Workshops> {
                     WorkshopsScreen(
-                        onBackPressed = { navController.navigateUpSafely(Screen.Workshops.route) }
+                        onBackPressed = { navController.navigateUpSafely(Workshops) },
                     )
                 }
             }

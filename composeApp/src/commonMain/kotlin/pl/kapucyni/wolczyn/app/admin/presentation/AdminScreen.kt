@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.admin.data.model.FirestoreData
@@ -28,7 +29,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizState
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.app_data
@@ -49,7 +49,7 @@ fun AdminScreen(
     onBackPressed: () -> Unit,
     viewModel: AdminViewModel = koinInject()
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.app_data),

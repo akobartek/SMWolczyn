@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.weather.domain.model.Weather
 import pl.kapucyni.wolczyn.app.weather.presentation.WeatherViewModel
 import smwolczyn.composeapp.generated.resources.Res
@@ -32,7 +32,7 @@ fun WeatherHomeTile(
     modifier: Modifier = Modifier,
     weatherViewModel: WeatherViewModel = koinInject()
 ) {
-    val weather by weatherViewModel.screenState.collectAsStateMultiplatform()
+    val weather by weatherViewModel.screenState.collectAsStateWithLifecycle()
     WeatherHomeTileContent(
         backgroundColor = backgroundColor,
         weather = weather,

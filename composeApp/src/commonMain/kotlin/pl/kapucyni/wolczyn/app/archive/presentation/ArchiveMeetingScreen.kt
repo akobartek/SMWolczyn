@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.archive.presentation.composables.ArchiveRecordCard
@@ -21,7 +22,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
@@ -30,7 +30,7 @@ fun ArchiveMeetingScreen(
     meetingNumber: Int,
     viewModel: ArchiveMeetingViewModel = koinInject()
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val state = screenState
     if (state is State.Success && state.data == null)
         onBackPressed()

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -18,9 +20,7 @@ plugins {
 buildConfig {
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").inputStream())
-    val apiKey = properties.getProperty("kapucyni_api_key") ?: ""
     val password = properties.getProperty("admin_password") ?: ""
-    buildConfigField<String>(name = "KAPUCYNI_API_KEY", value = apiKey)
     buildConfigField<String>(name = "ADMIN_PASSWORD", value = password)
 }
 
@@ -78,6 +78,7 @@ kotlin {
             implementation(libs.firebase.gitlive.crashlytics)
             implementation(libs.firebase.gitlive.firestore)
             implementation(libs.firebase.gitlive.common)
+            implementation(libs.firebase.gitlive.auth)
         }
         androidMain.dependencies {
             implementation(compose.preview)
@@ -106,8 +107,8 @@ android {
         applicationId = "pl.kapucyni.wolczyn.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 38
-        versionName = "2024.5"
+        versionCode = 39
+        versionName = "2025.0"
     }
     packaging {
         resources {

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
@@ -18,7 +19,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ProductListItem
 import smwolczyn.composeapp.generated.resources.Res
@@ -32,7 +32,7 @@ fun ShopScreen(
     onProductClick: (String) -> Unit,
     viewModel: ShopViewModel = koinInject(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.shop_title),

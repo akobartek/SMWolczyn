@@ -20,15 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.schedule.presentation.composables.EventCard
 import pl.kapucyni.wolczyn.app.schedule.presentation.composables.ScheduleDaySelector
 import smwolczyn.composeapp.generated.resources.Res
@@ -38,14 +39,14 @@ import smwolczyn.composeapp.generated.resources.schedule_title
 @Composable
 fun ScheduleScreen(
     onBackPressed: () -> Unit,
-    navigateTo: (String) -> Unit,
+    navigateTo: (Screen) -> Unit,
     viewModel: ScheduleViewModel = koinInject(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.schedule_title),
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
     ) {
         ScheduleScreenContent(
             screenState = screenState,
@@ -59,7 +60,7 @@ fun ScheduleScreen(
 fun ScheduleScreenContent(
     screenState: State<ScheduleScreenState>,
     onDaySelected: (Int) -> Unit,
-    navigateTo: (String) -> Unit,
+    navigateTo: (Screen) -> Unit,
 ) {
     when (screenState) {
         is State.Loading -> LoadingBox()
@@ -142,7 +143,7 @@ fun ScheduleScreenContent(
                             if (index > 0) scheduleDay.events[index - 1].time == event.time
                             else false,
                             isLast = index == scheduleDay.events.lastIndex,
-                            onNavClick = navigateTo
+                            onNavClick = navigateTo,
                         )
                     }
                 }

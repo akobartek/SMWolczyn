@@ -57,7 +57,7 @@ fun EventCard(
     filledCircle: Boolean,
     hideTime: Boolean,
     isLast: Boolean,
-    onNavClick: (String) -> Unit
+    onNavClick: (Screen) -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
     var mfTauDialogVisible by remember { mutableStateOf(false) }
@@ -97,10 +97,10 @@ fun EventCard(
             ),
             onClick = {
                 when (event.type) {
-                    EventType.MASS -> onNavClick(Screen.SongBook.route)
-                    EventType.MEAL -> onNavClick(Screen.Kitchen.route)
-                    EventType.BREVIARY -> onNavClick(Screen.BreviarySelect.route)
-                    EventType.WORKSHOPS -> onNavClick(Screen.Workshops.route)
+                    EventType.MASS -> onNavClick(Screen.SongBook)
+                    EventType.MEAL -> onNavClick(Screen.Kitchen)
+                    EventType.BREVIARY -> onNavClick(Screen.BreviarySelect)
+                    EventType.WORKSHOPS -> onNavClick(Screen.Workshops)
                     EventType.MF_TAU -> mfTauDialogVisible = true
                     else -> {
                         if (!event.guestUrl.isNullOrBlank())

@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
@@ -13,7 +14,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FullScreenDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.workshops.prayer.domain.model.PrayerWorkshopTask
 import pl.kapucyni.wolczyn.app.workshops.prayer.presentation.composables.PrayerTaskCard
 import smwolczyn.composeapp.generated.resources.Res
@@ -27,7 +27,7 @@ fun PrayerWorkshopDialog(
     onDismiss: () -> Unit,
     viewModel: PrayerWorkshopViewModel = koinInject(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     PrayerWorkshopDialogContent(
         isVisible = isVisible,

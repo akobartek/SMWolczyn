@@ -10,6 +10,7 @@
     <string name="try_again">Spróbuj</string>
     <string name="load">Załaduj</string>
     <string name="stop">Przerwij</string>
+    <string name="email">Email</string>
     <string name="password">Hasło</string>
     <string name="cd_clear_field">Wyczyść pole</string>
     <string name="cd_close_dialog">Zamknij okno</string>
@@ -27,17 +28,51 @@
     <string name="archive_title">Archiwum</string>
 
     <!-- AUTH STRINGS -->
+    <string name="user_name">Imię i nazwisko</string>
+    <string name="user_city">Miasto</string>
+    <string name="user_gender">Płeć</string>
+    <string name="user_gender_man">Mężczyzna</string>
+    <string name="user_gender_woman">Kobieta</string>
+    <string name="user_birthday">Data urodzenia</string>
     <string name="sign_in">Zaloguj</string>
-    <string name="signed_in">Pomyślnie zalogowano!</string>
     <string name="sign_up">Rejestracja</string>
     <string name="sign_out">Wyloguj</string>
     <string name="signed_out">Pomyślnie wylogowano!</string>
-    <string name="login">Login</string>
-    <string name="login_error">Logowanie nieudane, sprawdź dane oraz połączenie do Internetu</string>
+    <string name="clear_email">Wyczyść email</string>
+    <string name="show_password">Pokaż hasło</string>
+    <string name="hide_password">Ukryj hasło</string>
     <string name="forgot_password">Zapomniane hasło</string>
+    <string name="create_account">Utwórz konto</string>
+    <string name="email_error_invalid">Nieprawidłowy adres mailowy.</string>
+    <string name="email_error_no_user">Nie znaleziono konta powiązanego z tym adresem!</string>
+    <string name="password_error_empty">Podaj hasło!</string>
+    <string name="password_error_too_short">Hasło musi mieć co najmniej 8 znaków.</string>
+    <string name="password_error_wrong">Hasło musi składać się z małych i dużych liter oraz cyfr.</string>
+    <string name="password_error_invalid">Wpisano złe hasło!</string>
+    <string name="send">Wyślij</string>
+    <string name="message_sent">Wysłano wiadomość</string>
+    <string name="sign_up_error">Błąd w trakcie rejestracji, sprawdź swoje połączenie i spróbuj ponownie za kilka minut!</string>
+    <string name="sign_up_user_exists_dialog_title">Błąd w trakcie rejestracji</string>
+    <string name="sign_up_user_exists_dialog_message">Istnieje już konto przypisane do tego adresu! Chcesz się zalogować czy wpisać nowy adres?</string>
+    <string name="sign_up_successful_dialog_title">Zarejestrowano</string>
+    <string name="sign_up_successful_dialog_message">Aby korzystać z konta musisz zatwierdzić je poprzez kliknięcie linku w wiadomości na mailu.</string>
+    <string name="signed_in">Zalogowano</string>
+    <string name="sign_in_error">Błąd w trakcie logowania, sprawdź swoje połączenie i spróbuj ponownie za kilka minut!</string>
+    <string name="verify_email_dialog_title">Weryfikacja maila</string>
+    <string name="verify_email_dialog_message">Aby korzystać z konta musisz zatwierdzić adres mailowy. Jeśli chcesz, możesz ponowić wysłanie wiadomości.</string>
+    <string name="verify_email_send_again">Ponów</string>
     <string name="user_group">Numer grupki:\n%1$d</string>
     <string name="groups_not_available">Wróć podczas spotkania, a poznasz numer swojej grupki!</string>
     <string name="group_members_title">Członkowie grupki:</string>
+    <string name="reset_password">Resetuj hasło</string>
+    <string name="reset_password_dialog_msg">Na Twój adres mailowy została wiadomość z linkiem do zmiany hasła.</string>
+    <string name="reset_password_dialog_title">Resetowanie hasła</string>
+    <string name="reset_password_dialog_message">Wpisz adres mailowy:</string>
+    <string name="reset_password_error">Resetowanie nieudane, sprawdź połączenie i poprawność adresu!</string>
+    <string name="delete_account">Usuń konto</string>
+    <string name="delete_account_dialog_title">Usuwanie konta</string>
+    <string name="delete_account_dialog_msg">Jesteś pewny, że chcesz usunąć konto z systemu?</string>
+    <string name="delete_account_success">Konto zostało usunięte</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>

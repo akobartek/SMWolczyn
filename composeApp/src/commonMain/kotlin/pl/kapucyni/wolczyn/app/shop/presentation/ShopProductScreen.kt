@@ -15,10 +15,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ProductDetails
 
@@ -28,7 +28,7 @@ fun ShopProductScreen(
     onBackPressed: () -> Unit,
     viewModel: ShopViewModel = koinInject(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     ShopProductScreenContent(productId, screenState, onBackPressed)
 }
 

@@ -13,13 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizState
 import pl.kapucyni.wolczyn.app.quiz.presentation.composables.QuizQuestionsList
 import pl.kapucyni.wolczyn.app.quiz.presentation.composables.QuizTitle
@@ -40,7 +40,7 @@ fun QuizScreen(
     onBackPressed: () -> Unit,
     viewModel: QuizViewModel = koinInject(qualifier = named(quizType)),
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.quiz),

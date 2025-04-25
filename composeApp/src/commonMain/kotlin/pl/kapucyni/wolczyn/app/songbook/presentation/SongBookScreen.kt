@@ -19,11 +19,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.songbook.domain.model.Song
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongBookSearchBar
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongCard
@@ -37,8 +37,8 @@ fun SongBookScreen(
     onBackPressed: () -> Unit,
     viewModel: SongBookViewModel = koinInject()
 ) {
-    val screenState by viewModel.screenState.collectAsStateMultiplatform()
-    val searchQuery by viewModel.searchQuery.collectAsStateMultiplatform()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
 
     SongBookScreenContent(
         state = screenState,

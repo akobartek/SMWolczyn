@@ -254,7 +254,7 @@ internal fun AppTheme(
             else WolczynMainColors.Light
         MaterialTheme(
             colorScheme = if (isDark) darkScheme else lightScheme,
-            content = content
+            content = content,
         )
     }
 }

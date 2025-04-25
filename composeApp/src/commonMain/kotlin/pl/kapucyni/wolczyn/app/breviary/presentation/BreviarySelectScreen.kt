@@ -22,13 +22,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.BreviarySelectOptionsMenu
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.common.utils.collectAsStateMultiplatform
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.breviary_copyright
@@ -44,7 +44,7 @@ fun BreviarySelectScreen(
     viewModel: BreviarySelectViewModel = koinInject()
 ) {
     var dropDownMenuExpanded by rememberSaveable { mutableStateOf(false) }
-    val daysFromToday by viewModel.daysFromToday.collectAsStateMultiplatform()
+    val daysFromToday by viewModel.daysFromToday.collectAsStateWithLifecycle()
     val dateString = viewModel.getCorrectDaysString(daysFromToday)
 
     ScreenLayout(
