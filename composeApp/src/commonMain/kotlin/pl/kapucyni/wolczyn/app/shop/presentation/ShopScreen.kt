@@ -13,7 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
@@ -26,11 +27,12 @@ import smwolczyn.composeapp.generated.resources.empty_shop_list
 import smwolczyn.composeapp.generated.resources.ic_cap_shop
 import smwolczyn.composeapp.generated.resources.shop_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun ShopScreen(
     onBackPressed: () -> Unit,
     onProductClick: (String) -> Unit,
-    viewModel: ShopViewModel = koinInject(),
+    viewModel: ShopViewModel = koinViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 

@@ -20,7 +20,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
@@ -32,10 +33,11 @@ import smwolczyn.composeapp.generated.resources.empty_search_list
 import smwolczyn.composeapp.generated.resources.ic_cap_song_book
 import kotlin.math.roundToInt
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun SongBookScreen(
     onBackPressed: () -> Unit,
-    viewModel: SongBookViewModel = koinInject()
+    viewModel: SongBookViewModel = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()

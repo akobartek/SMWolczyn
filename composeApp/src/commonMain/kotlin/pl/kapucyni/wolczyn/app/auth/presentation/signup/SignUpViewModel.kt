@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
+import pl.kapucyni.wolczyn.app.auth.domain.usecase.SignUpUseCase
+import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.*
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreenState.PasswordErrorType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
@@ -19,45 +20,82 @@ import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 
 class SignUpViewModel(
     email: String,
-    private val authRepository: AuthRepository,
+    private val signUpUseCase: SignUpUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SignUpScreenState(email = email))
     val state: StateFlow<SignUpScreenState> = _state.asStateFlow()
 
-    fun updateEmail(value: String) {
-        _state.update { it.copy(email = value) }
+    fun handleAction(action: SignUpAction) {
+        when (action) {
+            is UpdateEmail -> updateEmail(action.email)
+            is UpdatePassword -> updatePassword(action.password)
+            is TogglePasswordHidden -> updatePasswordHidden()
+            is UpdateFirstName -> updateFirstName(action.firstName)
+            is UpdateLastName -> updateLastName(action.lastName)
+            is UpdateCity -> updateCity(action.city)
+            is UpdateBirthday -> updateBirthdayDate(action.millis)
+            is SignUp -> signUp()
+            is ToggleSignUpSuccessDialog -> toggleSignUpSuccessVisibility()
+            is ToggleAccountExistsDialog -> toggleAccountExistsVisibility()
+            is ToggleNoInternetDialog -> hideNoInternetDialog()
+        }
     }
 
-    fun updatePassword(value: String) {
-        _state.update { it.copy(password = value) }
+    private fun updateEmail(value: String) {
+        _state.update { it.copy(email = value, emailError = false) }
     }
 
-    fun updatePasswordHidden() {
+    private fun updatePassword(value: String) {
+        _state.update { it.copy(password = value, passwordError = null) }
+    }
+
+    private fun updatePasswordHidden() {
         _state.update { it.copy(passwordHidden = !it.passwordHidden) }
     }
 
-    fun updateBirthdayDate(value: Long) {
-        _state.update { it.copy(birthdayDate = value) }
+    private fun updateFirstName(firstName: String) {
+        _state.update { it.copy(firstName = firstName, firstNameError = false) }
     }
 
-    fun hideNoInternetDialog() {
-        _state.update { it.copy(noInternetDialogVisible = false) }
+    private fun updateLastName(lastName: String) {
+        _state.update { it.copy(lastName = lastName, lastNameError = false) }
     }
 
-    fun toggleSignUpSuccessVisibility() {
+    private fun updateCity(city: String) {
+        _state.update { it.copy(city = city, cityError = false) }
+    }
+
+    private fun updateBirthdayDate(value: Long) {
+        _state.update { it.copy(birthdayDate = value, birthdayError = false) }
+    }
+
+    private fun toggleSignUpSuccessVisibility() {
         _state.update { it.copy(isSignedUpDialogVisible = !it.isSignedUpDialogVisible) }
     }
 
-    fun toggleAccountExistsVisibility() {
+    private fun toggleAccountExistsVisibility() {
         _state.update { it.copy(accountExistsDialogVisible = !it.accountExistsDialogVisible) }
     }
 
-    fun signUp() {
+    private fun hideNoInternetDialog() {
+        _state.update { it.copy(noInternetDialogVisible = false) }
+    }
+
+    private fun signUp() {
         if (validateInput().not()) return
         toggleLoading(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = authRepository.signUp(state.value.email, state.value.password)
+            val result = with(state.value) {
+                signUpUseCase(
+                    email = email,
+                    password = password,
+                    firstName = firstName,
+                    lastName = lastName,
+                    city = city,
+                    birthday = birthdayDate,
+                )
+            }
             toggleLoading(false)
             _state.update {
                 if (result.isSuccess && result.getOrDefault(false))
@@ -83,18 +121,30 @@ class SignUpViewModel(
     private fun toggleLoading(value: Boolean) = _state.update { it.copy(loading = value) }
 
     private fun validateInput(): Boolean {
-        val newState = _state.value.let { state ->
-            state.copy(
-                emailError = state.email.isValidEmail().not(),
+        val newState = with(state.value) {
+            copy(
+                email = email.trim(),
+                emailError = email.trim().isValidEmail().not(),
                 passwordError = when {
-                    state.password.length < 8 -> PasswordErrorType.TOO_SHORT
-                    !state.password.isValidPassword() -> PasswordErrorType.WRONG
+                    password.length < 8 -> PasswordErrorType.TOO_SHORT
+                    password.isValidPassword().not() -> PasswordErrorType.WRONG
                     else -> null
-                }
+                },
+                firstName = firstName.trim(),
+                firstNameError = firstName.trim().isBlank(),
+                lastName = lastName.trim(),
+                lastNameError = lastName.trim().isBlank(),
+                city = city.trim(),
+                cityError = city.trim().isBlank(),
+                birthdayError = birthdayDate == null,
             )
         }
         _state.update { newState }
-        return newState.emailError.not() && newState.passwordError == null
+        return newState.emailError.not()
+                && newState.passwordError == null
+                && newState.firstNameError.not()
+                && newState.lastNameError.not()
+                && newState.birthdayError.not()
     }
 
     private fun CharSequence.isValidPassword(): Boolean {

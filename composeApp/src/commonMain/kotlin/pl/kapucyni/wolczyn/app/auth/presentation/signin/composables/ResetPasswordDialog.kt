@@ -34,11 +34,12 @@ import smwolczyn.composeapp.generated.resources.send
 
 @Composable
 fun ResetPasswordDialog(
+    signInEmail: String,
     onReset: (String) -> Unit,
     onCancel: () -> Unit,
     isError: Boolean,
 ) {
-    var email by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf(signInEmail) }
 
     AlertDialog(
         icon = {

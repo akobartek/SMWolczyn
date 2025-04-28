@@ -25,7 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.BreviarySelectOptionsMenu
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -36,12 +37,13 @@ import smwolczyn.composeapp.generated.resources.breviary_list
 import smwolczyn.composeapp.generated.resources.breviary_title
 import smwolczyn.composeapp.generated.resources.cd_more_options
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun BreviarySelectScreen(
     onBackPressed: () -> Unit,
     onSelected: (Int, String) -> Unit,
     onSaveBreviary: (String) -> Unit,
-    viewModel: BreviarySelectViewModel = koinInject()
+    viewModel: BreviarySelectViewModel = koinViewModel()
 ) {
     var dropDownMenuExpanded by rememberSaveable { mutableStateOf(false) }
     val daysFromToday by viewModel.daysFromToday.collectAsStateWithLifecycle()

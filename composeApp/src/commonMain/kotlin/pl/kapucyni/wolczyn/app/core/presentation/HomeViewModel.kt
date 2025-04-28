@@ -11,7 +11,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.core.domain.model.AppState
 import pl.kapucyni.wolczyn.app.core.domain.usecases.GetAppStateUseCase
 
-class HomeScreenViewModel(
+class HomeViewModel(
     private val getAppStateUseCase: GetAppStateUseCase,
 ) : BasicViewModel<AppState>() {
 

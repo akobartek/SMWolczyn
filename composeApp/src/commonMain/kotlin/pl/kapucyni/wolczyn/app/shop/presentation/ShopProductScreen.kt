@@ -16,17 +16,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ProductDetails
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun ShopProductScreen(
     productId: String?,
     onBackPressed: () -> Unit,
-    viewModel: ShopViewModel = koinInject(),
+    viewModel: ShopViewModel = koinViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     ShopProductScreenContent(productId, screenState, onBackPressed)

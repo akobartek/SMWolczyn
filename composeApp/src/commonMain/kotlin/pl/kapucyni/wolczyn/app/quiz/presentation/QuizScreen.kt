@@ -15,7 +15,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.qualifier.named
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -34,11 +35,12 @@ import smwolczyn.composeapp.generated.resources.start_quiz
 import smwolczyn.composeapp.generated.resources.user_id
 import smwolczyn.composeapp.generated.resources.user_id_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun QuizScreen(
     quizType: String,
     onBackPressed: () -> Unit,
-    viewModel: QuizViewModel = koinInject(qualifier = named(quizType)),
+    viewModel: QuizViewModel = koinViewModel(qualifier = named(quizType)),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 

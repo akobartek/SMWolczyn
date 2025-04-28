@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
@@ -36,11 +37,12 @@ import smwolczyn.composeapp.generated.resources.kitchen_section_snacks
 import smwolczyn.composeapp.generated.resources.kitchen_section_sweets
 import smwolczyn.composeapp.generated.resources.kitchen_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun KitchenScreen(
     onBackPressed: () -> Unit,
     onOpenQuiz: (String) -> Unit,
-    viewModel: KitchenViewModel = koinInject()
+    viewModel: KitchenViewModel = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val openPromotions by viewModel.openPromotions.collectAsStateWithLifecycle()

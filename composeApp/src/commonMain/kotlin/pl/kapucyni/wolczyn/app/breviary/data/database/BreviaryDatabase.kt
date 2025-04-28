@@ -1,25 +1,19 @@
 package pl.kapucyni.wolczyn.app.breviary.data.database
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
     entities = [BreviaryEntity::class],
     version = 1,
-    exportSchema = true,
+    exportSchema = false,
 )
-abstract class BreviaryDatabase : RoomDatabase(), DB {
+@ConstructedBy(BreviaryDatabaseCtor::class)
+abstract class BreviaryDatabase : RoomDatabase() {
     abstract fun breviaryDao(): BreviaryDao
-
-    override fun clearAllTables() {
-        super.clearAllTables()
-    }
 
     companion object {
         const val DATABASE_NAME = "breviary.db"
     }
-}
-
-interface DB {
-    fun clearAllTables() {}
 }

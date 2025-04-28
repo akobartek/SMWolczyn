@@ -11,7 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.archive.presentation.composables.ArchiveMeetingCard
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
@@ -20,11 +21,12 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.archive_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun ArchiveScreen(
     onBackPressed: () -> Unit,
     onMeetingClick: (Int) -> Unit,
-    viewModel: ArchiveViewModel = koinInject()
+    viewModel: ArchiveViewModel = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 

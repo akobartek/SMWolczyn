@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
 import pl.kapucyni.wolczyn.app.weather.domain.model.Weather
 import pl.kapucyni.wolczyn.app.weather.presentation.WeatherViewModel
@@ -25,12 +26,13 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_cap_weather
 import smwolczyn.composeapp.generated.resources.weather_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun WeatherHomeTile(
     backgroundColor: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    weatherViewModel: WeatherViewModel = koinInject()
+    weatherViewModel: WeatherViewModel = koinViewModel()
 ) {
     val weather by weatherViewModel.screenState.collectAsStateWithLifecycle()
     WeatherHomeTileContent(

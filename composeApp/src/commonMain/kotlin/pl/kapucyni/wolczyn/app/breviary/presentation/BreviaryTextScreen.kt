@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringArrayResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary
 import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.BreviaryHtml
 import pl.kapucyni.wolczyn.app.breviary.domain.model.Breviary.Compline
@@ -46,12 +47,13 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.breviary_list
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun BreviaryTextScreen(
     onBackPressed: () -> Unit,
     position: Int,
     date: String,
-    viewModel: BreviaryTextViewModel = koinInject()
+    viewModel: BreviaryTextViewModel = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val accentColor = MaterialTheme.colorScheme.primary

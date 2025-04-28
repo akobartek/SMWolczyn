@@ -4,19 +4,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.stringResource
-import pl.kapucyni.wolczyn.app.theme.wolczynColors
-import smwolczyn.composeapp.generated.resources.Res
-import smwolczyn.composeapp.generated.resources.cd_navigate_up
 
 @Composable
 fun ScreenHeader(
@@ -31,13 +23,7 @@ fun ScreenHeader(
             .padding(vertical = 16.dp)
     ) {
         onBackPressed?.let {
-            IconButton(onClick = it) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    tint = wolczynColors.primary,
-                    contentDescription = stringResource(Res.string.cd_navigate_up)
-                )
-            }
+            NavigateUpIcon(navigateUp = it)
         } ?: WidthSpacer(if (actionIcon == null) 0.dp else 40.dp)
         WolczynTitleText(
             text = title.replace("\n", " "),

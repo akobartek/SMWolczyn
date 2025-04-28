@@ -9,8 +9,8 @@ import pl.kapucyni.wolczyn.app.core.data.repository.CoreRepositoryImpl
 import pl.kapucyni.wolczyn.app.core.data.sources.FirestoreHomeSource
 import pl.kapucyni.wolczyn.app.core.domain.repository.CoreRepository
 import pl.kapucyni.wolczyn.app.core.domain.usecases.GetAppStateUseCase
-import pl.kapucyni.wolczyn.app.core.presentation.AppViewModel
-import pl.kapucyni.wolczyn.app.core.presentation.HomeScreenViewModel
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthViewModel
+import pl.kapucyni.wolczyn.app.core.presentation.HomeViewModel
 
 val coreModule = module {
     single { Firebase.auth }
@@ -20,6 +20,6 @@ val coreModule = module {
     single<CoreRepository> { CoreRepositoryImpl(get()) }
     single { GetAppStateUseCase(get()) }
 
-    viewModel { AppViewModel(get()) }
-    single { HomeScreenViewModel(get()) }
+    viewModel { AuthViewModel(get()) }
+    viewModel { HomeViewModel(get()) }
 }

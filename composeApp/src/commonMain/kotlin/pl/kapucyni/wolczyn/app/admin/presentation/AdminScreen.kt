@@ -17,7 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.admin.data.model.FirestoreData
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminScreenAction.*
 import pl.kapucyni.wolczyn.app.admin.presentation.composables.AdminDataDialog
@@ -44,10 +45,11 @@ import smwolczyn.composeapp.generated.resources.shop_products
 import smwolczyn.composeapp.generated.resources.shop_products_title
 import smwolczyn.composeapp.generated.resources.shop_promos_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun AdminScreen(
     onBackPressed: () -> Unit,
-    viewModel: AdminViewModel = koinInject()
+    viewModel: AdminViewModel = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 

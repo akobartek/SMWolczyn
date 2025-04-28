@@ -20,7 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
@@ -35,7 +36,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.*
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
-import pl.kapucyni.wolczyn.app.core.presentation.AppViewModel
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthViewModel
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
@@ -47,9 +48,10 @@ import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.workshops.WorkshopsScreen
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
-fun App(viewModel: AppViewModel = koinInject()) {
-    val user by viewModel.user.collectAsStateWithLifecycle()
+fun App(authViewModel: AuthViewModel = koinViewModel()) {
+    val user by authViewModel.user.collectAsStateWithLifecycle()
 
     AppTheme {
         val navController = rememberNavController()
@@ -88,12 +90,10 @@ fun App(viewModel: AppViewModel = koinInject()) {
             ) {
                 composable<Home> {
                     HomeScreen(
+                        user = user,
+                        openSignIn = { navController.navigateSafely(SignIn()) },
+                        handleAuthAction = { authViewModel.handleAction(it) },
                         onTileClick = { navController.navigateSafely(it.navRoute) },
-                        openAccountScreen = {
-                            if (user == null)
-                                navController.navigateSafely(SignIn())
-                            // TODO: else
-                        },
                     )
                 }
 
@@ -102,8 +102,10 @@ fun App(viewModel: AppViewModel = koinInject()) {
 
                     SignInScreen(
                         navigateUp = { navController.navigateUpSafely(screen) },
-                        openSignUp = { email -> navController.navigateSafely(SignUp(email)) },
-                        viewModel = koinInject { parametersOf(screen.email) },
+                        openSignUp = { email ->
+                            navController.navigateSafely(SignUp(email))
+                        },
+                        viewModel = koinViewModel { parametersOf(screen.email) },
                     )
                 }
 
@@ -118,7 +120,7 @@ fun App(viewModel: AppViewModel = koinInject()) {
                                 popUpTo = SignIn::class,
                             )
                         },
-                        viewModel = koinInject { parametersOf(screen.email) },
+                        viewModel = koinViewModel { parametersOf(screen.email) },
                     )
                 }
 

@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -47,6 +45,10 @@ kotlin {
         }
     }
 
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -61,6 +63,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
+            implementation(libs.window.size)
             implementation(libs.viewmodel)
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
@@ -89,6 +92,9 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+        }
+        dependencies {
+            ksp(libs.room.compiler)
         }
     }
 
@@ -135,20 +141,4 @@ android {
         debugImplementation(compose.uiTooling)
         coreLibraryDesugaring(libs.android.desugaring)
     }
-}
-
-dependencies {
-//    add("kspAndroid", libs.room.compiler)
-    add("kspCommonMainMetadata", libs.room.compiler)
-}
-
-// https://github.com/JetBrains/compose-multiplatform/issues/4928
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
 }

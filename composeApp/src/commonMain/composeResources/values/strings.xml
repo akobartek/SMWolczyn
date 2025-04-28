@@ -10,6 +10,7 @@
     <string name="try_again">Spróbuj</string>
     <string name="load">Załaduj</string>
     <string name="stop">Przerwij</string>
+    <string name="delete">Usuń</string>
     <string name="email">Email</string>
     <string name="password">Hasło</string>
     <string name="cd_clear_field">Wyczyść pole</string>
@@ -17,7 +18,7 @@
     <string name="cd_more_options">Więcej opcji</string>
 
     <!-- HOME SCREEN STRINGS -->
-    <string name="home_title">Pokój i Dobro!</string>
+    <string name="home_title">Pokój i Dobro</string>
     <string name="schedule_title">Plan\nspotkania</string>
     <string name="song_book_title">Śpiewnik</string>
     <string name="kitchen_title">Kuchnia\nWasyla</string>
@@ -26,18 +27,22 @@
     <string name="weather_title">Pogoda</string>
     <string name="breviary_title">Brewiarz</string>
     <string name="archive_title">Archiwum</string>
+    <string name="cd_sign_in">Otwórz panel logowania</string>
+    <string name="cd_account_details">Otwórz dane użytkownika</string>
 
     <!-- AUTH STRINGS -->
-    <string name="user_name">Imię i nazwisko</string>
+    <string name="user_first_name">Imię</string>
+    <string name="first_name_error">Imię nie może być puste!</string>
+    <string name="user_last_name">Nazwisko</string>
+    <string name="last_name_error">Nazwisko nie może być puste!</string>
     <string name="user_city">Miasto</string>
-    <string name="user_gender">Płeć</string>
-    <string name="user_gender_man">Mężczyzna</string>
-    <string name="user_gender_woman">Kobieta</string>
+    <string name="city_error">Podanie miasta jest wymagane!</string>
     <string name="user_birthday">Data urodzenia</string>
+    <string name="birthday_error">Podanie daty jest wymagane!</string>
     <string name="sign_in">Zaloguj</string>
     <string name="sign_up">Rejestracja</string>
     <string name="sign_out">Wyloguj</string>
-    <string name="signed_out">Pomyślnie wylogowano!</string>
+    <string name="signed_out">Wylogowano użytkownika, do zobaczenia!</string>
     <string name="clear_email">Wyczyść email</string>
     <string name="show_password">Pokaż hasło</string>
     <string name="hide_password">Ukryj hasło</string>
@@ -61,6 +66,7 @@
     <string name="verify_email_dialog_title">Weryfikacja maila</string>
     <string name="verify_email_dialog_message">Aby korzystać z konta musisz zatwierdzić adres mailowy. Jeśli chcesz, możesz ponowić wysłanie wiadomości.</string>
     <string name="verify_email_send_again">Ponów</string>
+    <string name="verify_email_email_sent">Wysłano wiadomość na podany adres mailowy</string>
     <string name="user_group">Numer grupki:\n%1$d</string>
     <string name="groups_not_available">Wróć podczas spotkania, a poznasz numer swojej grupki!</string>
     <string name="group_members_title">Członkowie grupki:</string>

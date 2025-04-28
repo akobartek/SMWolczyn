@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ScreenLayout(
-    title: String,
+    title: String?,
     onBackPressed: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     actionIcon: (@Composable RowScope.() -> Unit)? = null,
@@ -37,7 +37,9 @@ fun ScreenLayout(
                     indication = null
                 ) { focusManager.clearFocus(true) },
         ) {
-            ScreenHeader(title = title, onBackPressed = onBackPressed, actionIcon = actionIcon)
+            title?.let {
+                ScreenHeader(title = title, onBackPressed = onBackPressed, actionIcon = actionIcon)
+            }
             content()
             HeightSpacer(12.dp)
         }

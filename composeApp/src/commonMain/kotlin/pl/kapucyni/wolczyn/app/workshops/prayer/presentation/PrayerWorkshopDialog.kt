@@ -8,7 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FullScreenDialog
@@ -21,11 +22,12 @@ import smwolczyn.composeapp.generated.resources.empty_workshop_tasks_list
 import smwolczyn.composeapp.generated.resources.ic_cap_schedule
 import smwolczyn.composeapp.generated.resources.workshops_prayer_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun PrayerWorkshopDialog(
     isVisible: Boolean,
     onDismiss: () -> Unit,
-    viewModel: PrayerWorkshopViewModel = koinInject(),
+    viewModel: PrayerWorkshopViewModel = koinViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 

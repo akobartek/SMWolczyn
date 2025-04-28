@@ -57,7 +57,10 @@ class SignInViewModel(
     fun toggleEmailUnverifiedDialogVisibility(resend: Boolean) {
         _state.update { it.copy(emailUnverifiedDialogVisible = !it.emailUnverifiedDialogVisible) }
         viewModelScope.launch {
-            if (resend) authRepository.sendVerificationEmail()
+            if (resend) {
+                authRepository.sendVerificationEmail()
+                SnackbarController.sendEvent(SnackbarEvent.VerifyEmailMessageSent)
+            }
             authRepository.signOut()
         }
     }

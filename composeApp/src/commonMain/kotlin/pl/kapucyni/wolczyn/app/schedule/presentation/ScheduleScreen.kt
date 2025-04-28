@@ -23,7 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
@@ -36,11 +37,12 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.schedule_days
 import smwolczyn.composeapp.generated.resources.schedule_title
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun ScheduleScreen(
     onBackPressed: () -> Unit,
     navigateTo: (Screen) -> Unit,
-    viewModel: ScheduleViewModel = koinInject(),
+    viewModel: ScheduleViewModel = koinViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 

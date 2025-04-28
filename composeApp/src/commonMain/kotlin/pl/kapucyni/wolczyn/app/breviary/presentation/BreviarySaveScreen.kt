@@ -18,7 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySaveViewModel.State
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.DownloadLayout
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.MultipleOfficesDialog
@@ -37,11 +38,12 @@ import smwolczyn.composeapp.generated.resources.stop
 import smwolczyn.composeapp.generated.resources.stop_action_title
 import smwolczyn.composeapp.generated.resources.stop_download_dialog_msg
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun BreviarySaveScreen(
     onBackPressed: () -> Unit,
     date: String,
-    viewModel: BreviarySaveViewModel = koinInject()
+    viewModel: BreviarySaveViewModel = koinViewModel()
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     var exitDialogVisible by rememberSaveable { mutableStateOf(false) }

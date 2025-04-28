@@ -7,6 +7,8 @@ import smwolczyn.composeapp.generated.resources.message_sent
 import smwolczyn.composeapp.generated.resources.sign_in_error
 import smwolczyn.composeapp.generated.resources.sign_up_error
 import smwolczyn.composeapp.generated.resources.signed_in
+import smwolczyn.composeapp.generated.resources.signed_out
+import smwolczyn.composeapp.generated.resources.verify_email_email_sent
 
 sealed class SnackbarEvent(
     val message: StringResource,
@@ -18,7 +20,11 @@ sealed class SnackbarEvent(
 
     data object SignUpError : SnackbarEvent(message = Res.string.sign_up_error)
 
+    data object SignedOut : SnackbarEvent(message = Res.string.signed_out)
+
     data object ResetPasswordMessageSent : SnackbarEvent(message = Res.string.message_sent)
+
+    data object VerifyEmailMessageSent : SnackbarEvent(message = Res.string.verify_email_email_sent)
 
     data object AccountDeleted : SnackbarEvent(message = Res.string.delete_account_success)
 }

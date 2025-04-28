@@ -1,5 +1,8 @@
 package pl.kapucyni.wolczyn.app.common.presentation.composables
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -7,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
@@ -21,7 +26,11 @@ fun DatePickDialog(
     onDateSelected: (Long) -> Unit,
 ) {
     if (isVisible) {
-        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = dateMillis)
+        val datePickerState =
+            rememberDatePickerState(
+                initialSelectedDateMillis = dateMillis,
+                initialDisplayedMonthMillis = dateMillis ?: 1112470620000,
+            )
         DatePickerDialog(
             onDismissRequest = onDismiss,
             confirmButton = {
@@ -39,8 +48,13 @@ fun DatePickDialog(
                     Text(stringResource(Res.string.cancel))
                 }
             },
+            modifier = Modifier.verticalScroll(rememberScrollState()),
         ) {
-            DatePicker(state = datePickerState)
+            DatePicker(
+                title = null,
+                state = datePickerState,
+                modifier = Modifier.padding(top = 12.dp),
+            )
         }
     }
 }

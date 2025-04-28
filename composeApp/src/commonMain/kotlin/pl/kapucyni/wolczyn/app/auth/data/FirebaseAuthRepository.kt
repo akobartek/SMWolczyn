@@ -4,12 +4,11 @@ import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreDocument
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.EmailNotVerifiedException
-import pl.kapucyni.wolczyn.app.auth.domain.model.FirestoreUser
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.common.utils.deleteObject
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
@@ -19,13 +18,14 @@ class FirebaseAuthRepository(
     private val firestore: FirebaseFirestore
 ) : AuthRepository {
 
-    override fun getCurrentUser(): Flow<User?> =
-        auth.currentUser?.let { authUser ->
-            firestore.getFirestoreDocument<User?>(
-                collectionName = COLLECTION_USERS,
-                documentId = authUser.uid,
-            )
-        } ?: flowOf(null)
+    override fun getUserIdentifier() =
+        auth.authStateChanged.map { it?.uid }
+
+    override fun getCurrentUser(userId: String): Flow<User?> =
+        firestore.getFirestoreDocument<User?>(
+            collectionName = COLLECTION_USERS,
+            documentId = userId,
+        )
 
     override suspend fun signIn(email: String, password: String): Result<Boolean> {
         return try {
@@ -41,16 +41,16 @@ class FirebaseAuthRepository(
         }
     }
 
-    override suspend fun signUp(email: String, password: String): Result<Boolean> {
+    override suspend fun signUp(user: User, password: String): Result<Boolean> {
         return try {
-            val authResult = auth.createUserWithEmailAndPassword(email, password)
-            authResult.user?.let { user ->
+            val authResult = auth.createUserWithEmailAndPassword(user.email, password)
+            authResult.user?.let { authUser ->
                 withContext(NonCancellable) {
-                    user.sendEmailVerification()
+                    authUser.sendEmailVerification()
                     firestore.saveObject(
                         collectionName = COLLECTION_USERS,
-                        id = user.uid,
-                        data = FirestoreUser.createUser(email),
+                        id = authUser.uid,
+                        data = user.copy(id = authUser.uid),
                     )
                     signOut()
                     Result.success(true)
