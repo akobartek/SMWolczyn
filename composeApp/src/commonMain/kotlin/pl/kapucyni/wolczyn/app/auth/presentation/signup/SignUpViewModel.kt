@@ -35,6 +35,7 @@ class SignUpViewModel(
             is UpdateLastName -> updateLastName(action.lastName)
             is UpdateCity -> updateCity(action.city)
             is UpdateBirthday -> updateBirthdayDate(action.millis)
+            is UpdateConsents -> updateConsents(action.value)
             is SignUp -> signUp()
             is ToggleSignUpSuccessDialog -> toggleSignUpSuccessVisibility()
             is ToggleAccountExistsDialog -> toggleAccountExistsVisibility()
@@ -70,6 +71,10 @@ class SignUpViewModel(
         _state.update { it.copy(birthdayDate = value, birthdayError = false) }
     }
 
+    private fun updateConsents(value: Boolean) {
+        _state.update { it.copy(consentsChecked = value) }
+    }
+
     private fun toggleSignUpSuccessVisibility() {
         _state.update { it.copy(isSignedUpDialogVisible = !it.isSignedUpDialogVisible) }
     }
@@ -83,7 +88,7 @@ class SignUpViewModel(
     }
 
     private fun signUp() {
-        if (validateInput().not()) return
+        if (validateInput().not() || state.value.consentsChecked.not()) return
         toggleLoading(true)
         viewModelScope.launch(Dispatchers.IO) {
             val result = with(state.value) {

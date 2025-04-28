@@ -13,6 +13,7 @@
     <string name="delete">Usuń</string>
     <string name="email">Email</string>
     <string name="password">Hasło</string>
+    <string name="data_save_error">Wystąpił błąd podczas zapisywania danych!</string>
     <string name="cd_clear_field">Wyczyść pole</string>
     <string name="cd_close_dialog">Zamknij okno</string>
     <string name="cd_more_options">Więcej opcji</string>
@@ -48,12 +49,16 @@
     <string name="hide_password">Ukryj hasło</string>
     <string name="forgot_password">Zapomniane hasło</string>
     <string name="create_account">Utwórz konto</string>
+    <string name="sign_up_consents">Wyrażam zgodę na %data_processing% oraz akceptuję %privacy_policy%.</string>
+    <string name="sign_up_data_processing">przetwarzanie moich danych osobowych</string>
+    <string name="sign_up_privacy_policy">politykę prywatności</string>
     <string name="email_error_invalid">Nieprawidłowy adres mailowy.</string>
     <string name="email_error_no_user">Nie znaleziono konta powiązanego z tym adresem!</string>
     <string name="password_error_empty">Podaj hasło!</string>
     <string name="password_error_too_short">Hasło musi mieć co najmniej 8 znaków.</string>
     <string name="password_error_wrong">Hasło musi składać się z małych i dużych liter oraz cyfr.</string>
     <string name="password_error_invalid">Wpisano złe hasło!</string>
+    <string name="password_error_unknown">Wpisano zły email lub hasło, upewnij się, że wprowadzono poprawne dane!</string>
     <string name="send">Wyślij</string>
     <string name="message_sent">Wysłano wiadomość</string>
     <string name="sign_up_error">Błąd w trakcie rejestracji, sprawdź swoje połączenie i spróbuj ponownie za kilka minut!</string>
@@ -79,6 +84,9 @@
     <string name="delete_account_dialog_title">Usuwanie konta</string>
     <string name="delete_account_dialog_msg">Jesteś pewny, że chcesz usunąć konto z systemu?</string>
     <string name="delete_account_success">Konto zostało usunięte</string>
+    <string name="edit_profile_title">Edycja profilu</string>
+    <string name="edit_profile_success">Zapisano zmiany w profilu!</string>
+    <string name="cd_save_profile">Zapisz profil</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>

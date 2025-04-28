@@ -13,6 +13,7 @@
 		0B924C092C2367BB00BB593A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0B924C082C2367BB00BB593A /* FirebaseCrashlytics */; };
 		0B924C0B2C2367BB00BB593A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0B924C0A2C2367BB00BB593A /* FirebaseFirestore */; };
 		0B924C192C23708D00BB593A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0B924C182C23708D00BB593A /* GoogleService-Info.plist */; };
+		0BAEB94F2DC043C4003B0707 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0BAEB94E2DC043C4003B0707 /* FirebaseAuth */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +37,7 @@
 				0B924C072C2367BB00BB593A /* FirebaseAnalytics in Frameworks */,
 				0B924C092C2367BB00BB593A /* FirebaseCrashlytics in Frameworks */,
 				0B924C0B2C2367BB00BB593A /* FirebaseFirestore in Frameworks */,
+				0BAEB94F2DC043C4003B0707 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +119,7 @@
 				0B924C062C2367BB00BB593A /* FirebaseAnalytics */,
 				0B924C082C2367BB00BB593A /* FirebaseCrashlytics */,
 				0B924C0A2C2367BB00BB593A /* FirebaseFirestore */,
+				0BAEB94E2DC043C4003B0707 /* FirebaseAuth */,
 			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* SM Wolczyn.app */;
@@ -448,6 +451,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0B924C052C2367BB00BB593A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		0BAEB94E2DC043C4003B0707 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B924C052C2367BB00BB593A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.auth.presentation.signin
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.gitlive.firebase.FirebaseNetworkException
+import dev.gitlive.firebase.auth.FirebaseAuthException
 import dev.gitlive.firebase.auth.FirebaseAuthInvalidCredentialsException
 import dev.gitlive.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.Dispatchers
@@ -88,6 +89,9 @@ class SignInViewModel(
 
                         is FirebaseAuthInvalidCredentialsException ->
                             it.copy(passwordError = PasswordErrorType.INVALID)
+
+                        is FirebaseAuthException ->
+                            it.copy(passwordError = PasswordErrorType.UNKNOWN)
 
                         else -> {
                             SnackbarController.sendEvent(SnackbarEvent.SignInError)

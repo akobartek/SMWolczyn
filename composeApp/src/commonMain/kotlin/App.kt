@@ -37,6 +37,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthViewModel
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
@@ -91,9 +92,8 @@ fun App(authViewModel: AuthViewModel = koinViewModel()) {
                 composable<Home> {
                     HomeScreen(
                         user = user,
-                        openSignIn = { navController.navigateSafely(SignIn()) },
+                        navigate = { navController.navigateSafely(it) },
                         handleAuthAction = { authViewModel.handleAction(it) },
-                        onTileClick = { navController.navigateSafely(it.navRoute) },
                     )
                 }
 
@@ -121,6 +121,13 @@ fun App(authViewModel: AuthViewModel = koinViewModel()) {
                             )
                         },
                         viewModel = koinViewModel { parametersOf(screen.email) },
+                    )
+                }
+
+                composable<EditProfile> {
+                    EditProfileScreen(
+                        navigateUp = { navController.navigateUpSafely(EditProfile) },
+                        viewModel = koinViewModel { parametersOf(user) },
                     )
                 }
 

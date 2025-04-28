@@ -63,6 +63,7 @@ import smwolczyn.composeapp.generated.resources.hide_password
 import smwolczyn.composeapp.generated.resources.password
 import smwolczyn.composeapp.generated.resources.password_error_empty
 import smwolczyn.composeapp.generated.resources.password_error_invalid
+import smwolczyn.composeapp.generated.resources.password_error_unknown
 import smwolczyn.composeapp.generated.resources.show_password
 import smwolczyn.composeapp.generated.resources.sign_in
 import smwolczyn.composeapp.generated.resources.sign_up
@@ -180,7 +181,9 @@ private fun SignInScreenContent(
                     onValueChange = updatePassword,
                     singleLine = true,
                     label = { WolczynText(text = stringResource(Res.string.password)) },
-                    visualTransformation = if (state.passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
+                    visualTransformation =
+                        if (state.passwordHidden) PasswordVisualTransformation()
+                        else VisualTransformation.None,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     keyboardActions = KeyboardActions(
                         onDone = {
@@ -210,6 +213,7 @@ private fun SignInScreenContent(
                                     when (state.passwordError) {
                                         PasswordErrorType.EMPTY -> Res.string.password_error_empty
                                         PasswordErrorType.INVALID -> Res.string.password_error_invalid
+                                        PasswordErrorType.UNKNOWN -> Res.string.password_error_unknown
                                     }
                                 )
                             )

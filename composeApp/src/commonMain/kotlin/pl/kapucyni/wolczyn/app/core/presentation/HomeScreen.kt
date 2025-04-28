@@ -25,6 +25,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NotificationBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.core.domain.model.AppState
@@ -39,9 +40,8 @@ import smwolczyn.composeapp.generated.resources.home_title
 @Composable
 fun HomeScreen(
     user: User?,
-    openSignIn: () -> Unit,
+    navigate: (Screen) -> Unit,
     handleAuthAction: (AuthAction) -> Unit,
-    onTileClick: (HomeTileType) -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
@@ -52,17 +52,17 @@ fun HomeScreen(
         actionIcon = {
             ProfileOptions(
                 user = user,
-                openSignIn = openSignIn,
+                navigate = navigate,
                 handleAuthAction = handleAuthAction,
             )
         },
         modifier = Modifier
             .animateContentSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         HomeScreenContent(
             state = screenState,
-            onTileClick = onTileClick
+            onTileClick = { navigate(it.navRoute) },
         )
     }
 }

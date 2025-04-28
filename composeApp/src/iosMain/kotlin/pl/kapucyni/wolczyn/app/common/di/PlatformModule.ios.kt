@@ -6,7 +6,6 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.breviary.data.database.BreviaryDatabase
-import pl.kapucyni.wolczyn.app.breviary.data.database.instantiateImpl
 import pl.kapucyni.wolczyn.app.common.utils.dataStore
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -27,9 +26,6 @@ actual val platformModule: Module = module {
         )?.path ?: NSHomeDirectory()
         val dbFilePath = "$documentsDirectory/${BreviaryDatabase.DATABASE_NAME}"
 
-        Room.databaseBuilder<BreviaryDatabase>(
-            name = dbFilePath,
-            factory = { BreviaryDatabase::class.instantiateImpl() },
-        )
+        Room.databaseBuilder<BreviaryDatabase>(name = dbFilePath)
     }
 }

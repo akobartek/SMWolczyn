@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.LockReset
+import androidx.compose.material.icons.outlined.ManageAccounts
 import androidx.compose.material.icons.outlined.NoAccounts
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -31,6 +32,7 @@ import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.DeleteAccount
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.ResetPassword
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.SignOut
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
@@ -39,6 +41,7 @@ import smwolczyn.composeapp.generated.resources.delete
 import smwolczyn.composeapp.generated.resources.delete_account
 import smwolczyn.composeapp.generated.resources.delete_account_dialog_msg
 import smwolczyn.composeapp.generated.resources.delete_account_dialog_title
+import smwolczyn.composeapp.generated.resources.edit_profile_title
 import smwolczyn.composeapp.generated.resources.message_sent
 import smwolczyn.composeapp.generated.resources.ok
 import smwolczyn.composeapp.generated.resources.reset_password
@@ -48,7 +51,7 @@ import smwolczyn.composeapp.generated.resources.sign_out
 @Composable
 fun ProfileOptions(
     user: User?,
-    openSignIn: () -> Unit,
+    navigate: (Screen) -> Unit,
     handleAuthAction: (AuthAction) -> Unit,
 ) {
     var dropdownExpanded by rememberSaveable { mutableStateOf(false) }
@@ -56,7 +59,9 @@ fun ProfileOptions(
     var deleteAccountDialogVisible by remember { mutableStateOf(false) }
 
     Box {
-        IconButton(onClick = { user?.let { dropdownExpanded = true } ?: openSignIn() }) {
+        IconButton(onClick = {
+            user?.let { dropdownExpanded = true } ?: navigate(Screen.SignIn())
+        }) {
             ProfilePicture(user = user)
         }
 
@@ -75,6 +80,19 @@ fun ProfileOptions(
             }
             HorizontalDivider()
             Column(modifier = Modifier.padding(horizontal = 4.dp)) {
+                DropdownMenuItem(
+                    text = { WolczynText(text = stringResource(Res.string.edit_profile_title)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.ManageAccounts,
+                            contentDescription = null
+                        )
+                    },
+                    onClick = {
+                        dropdownExpanded = false
+                        navigate(Screen.EditProfile)
+                    },
+                )
                 DropdownMenuItem(
                     text = { WolczynText(text = stringResource(Res.string.sign_out)) },
                     leadingIcon = {

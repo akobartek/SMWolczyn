@@ -21,6 +21,7 @@ data class SignInScreenState(
     enum class PasswordErrorType {
         EMPTY,
         INVALID,
+        UNKNOWN,
     }
 
     enum class NoInternetAction {

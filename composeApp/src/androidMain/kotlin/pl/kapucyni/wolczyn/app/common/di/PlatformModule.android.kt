@@ -16,7 +16,7 @@ actual val platformModule: Module = module {
         val dbFile = context.getDatabasePath(BreviaryDatabase.DATABASE_NAME)
         Room.databaseBuilder<BreviaryDatabase>(
             context = context,
-            name = dbFile.absolutePath
+            name = dbFile.absolutePath,
         )
     }
 }

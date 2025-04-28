@@ -61,6 +61,14 @@ class FirebaseAuthRepository(
         }
     }
 
+    override suspend fun updateUser(user: User): Result<Unit> = kotlin.runCatching {
+        firestore.saveObject(
+            collectionName = COLLECTION_USERS,
+            id = user.id,
+            data = user,
+        )
+    }
+
     override suspend fun sendRecoveryEmail(email: String): Result<Boolean> {
         return try {
             auth.sendPasswordResetEmail(email)

@@ -8,6 +8,7 @@ sealed interface SignUpAction {
     data class UpdateLastName(val lastName: String) : SignUpAction
     data class UpdateCity(val city: String) : SignUpAction
     data class UpdateBirthday(val millis: Long): SignUpAction
+    data class UpdateConsents(val value: Boolean): SignUpAction
     data object SignUp : SignUpAction
     data object ToggleSignUpSuccessDialog : SignUpAction
     data object ToggleAccountExistsDialog : SignUpAction

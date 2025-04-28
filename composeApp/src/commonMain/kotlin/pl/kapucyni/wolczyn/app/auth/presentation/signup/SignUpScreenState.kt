@@ -15,6 +15,7 @@ data class SignUpScreenState(
     val passwordError: PasswordErrorType? = null,
     val birthdayDate: Long? = null,
     val birthdayError: Boolean = false,
+    val consentsChecked: Boolean = false,
     val isSignedUpDialogVisible: Boolean = false,
     val accountExistsDialogVisible: Boolean = false,
     val noInternetDialogVisible: Boolean = false,

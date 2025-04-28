@@ -1,8 +1,10 @@
 package pl.kapucyni.wolczyn.app.auth.presentation.signup
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ManageAccounts
 import androidx.compose.material.icons.outlined.PersonSearch
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,11 +41,16 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
@@ -56,6 +64,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.birthday_error
 import smwolczyn.composeapp.generated.resources.cancel
@@ -73,6 +82,9 @@ import smwolczyn.composeapp.generated.resources.password_error_wrong
 import smwolczyn.composeapp.generated.resources.show_password
 import smwolczyn.composeapp.generated.resources.sign_in
 import smwolczyn.composeapp.generated.resources.sign_up
+import smwolczyn.composeapp.generated.resources.sign_up_consents
+import smwolczyn.composeapp.generated.resources.sign_up_data_processing
+import smwolczyn.composeapp.generated.resources.sign_up_privacy_policy
 import smwolczyn.composeapp.generated.resources.sign_up_successful_dialog_message
 import smwolczyn.composeapp.generated.resources.sign_up_successful_dialog_title
 import smwolczyn.composeapp.generated.resources.sign_up_user_exists_dialog_message
@@ -107,6 +119,7 @@ private fun SignUpScreenContent(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+
     val (firstNameRef, lastNameRef, cityRef, emailRef, passwordRef) = remember { FocusRequester.createRefs() }
     var dateDialogVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -302,7 +315,55 @@ private fun SignUpScreenContent(
                     .fillMaxWidth(),
             )
 
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .widthIn(max = 420.dp)
+                    .fillMaxWidth()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) { handleAction(UpdateConsents(state.consentsChecked.not())) },
+            ) {
+                Checkbox(
+                    checked = state.consentsChecked,
+                    onCheckedChange = { handleAction(UpdateConsents(it)) },
+                )
+                WolczynText(
+                    text = buildAnnotatedString {
+                        stringResource(Res.string.sign_up_consents)
+                            .split(DATA_PROCESSING, PRIVACY_POLICY)
+                            .let {
+                                append(it[0])
+                                withLink(
+                                    LinkAnnotation.Url(
+                                        url = DATA_PROCESSING_LINK,
+                                        styles = TextLinkStyles(style = SpanStyle(color = wolczynColors.primary)),
+                                    )
+                                ) {
+                                    append(stringResource(Res.string.sign_up_data_processing))
+                                }
+                                append(it[1])
+                                withLink(
+                                    LinkAnnotation.Url(
+                                        url = PRIVACY_POLICY_LINK,
+                                        styles = TextLinkStyles(style = SpanStyle(color = wolczynColors.primary)),
+                                    )
+                                ) {
+                                    append(stringResource(Res.string.sign_up_privacy_policy))
+                                }
+                                append(it[2])
+                            }
+                    },
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(end = 8.dp),
+                )
+            }
+
             Button(
+                enabled = state.consentsChecked,
                 onClick = {
                     focusManager.clearFocus(true)
                     handleAction(SignUp)
@@ -366,3 +427,9 @@ private fun SignUpScreenContent(
         onDismiss = { handleAction(ToggleNoInternetDialog) },
     )
 }
+
+private const val DATA_PROCESSING = "%data_processing%"
+private const val DATA_PROCESSING_LINK =
+    "https://wolczyn.kapucyni.pl/przetwarzanie-danych-osobowych/"
+private const val PRIVACY_POLICY = "%privacy_policy%"
+private const val PRIVACY_POLICY_LINK = "https://wolczyn.kapucyni.pl/polityka-prywatnosci/"

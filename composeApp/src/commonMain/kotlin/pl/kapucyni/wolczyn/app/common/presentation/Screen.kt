@@ -15,6 +15,9 @@ sealed interface Screen {
     data class SignUp(val email: String = "") : Screen
 
     @Serializable
+    data object EditProfile : Screen
+
+    @Serializable
     data object Admin : Screen
 
     @Serializable
