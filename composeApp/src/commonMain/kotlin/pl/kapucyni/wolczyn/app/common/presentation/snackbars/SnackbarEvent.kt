@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.common.presentation.snackbars
 import org.jetbrains.compose.resources.StringResource
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.data_save_error
+import smwolczyn.composeapp.generated.resources.delete_account_failure
 import smwolczyn.composeapp.generated.resources.delete_account_success
 import smwolczyn.composeapp.generated.resources.edit_profile_success
 import smwolczyn.composeapp.generated.resources.message_sent
@@ -33,4 +34,6 @@ sealed class SnackbarEvent(
     data object VerifyEmailMessageSent : SnackbarEvent(message = Res.string.verify_email_email_sent)
 
     data object AccountDeleted : SnackbarEvent(message = Res.string.delete_account_success)
+
+    data object AccountDeleteFailed : SnackbarEvent(message = Res.string.delete_account_failure)
 }

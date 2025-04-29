@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AppConfiguration(
-    val appVersion: AppVersion = AppVersion.MEETING,
+    val appVersion: AppVersion = AppVersion.NO_MEETING,
+    val openSigning: Int? = null,
 )

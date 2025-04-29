@@ -9,6 +9,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.*
 import pl.kapucyni.wolczyn.app.decalogue.presentation.composables.DecalogueHomeTile
 import pl.kapucyni.wolczyn.app.kitchen.presentation.composables.KitchenHomeTile
+import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.composables.MeetingsHomeTile
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsHomeTile
 import pl.kapucyni.wolczyn.app.schedule.presentation.composables.ScheduleHomeTile
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ShopHomeTile
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongBookHomeTile
@@ -22,6 +24,8 @@ fun getHomeTile(
     modifier: Modifier = Modifier
 ) {
     when (tileType) {
+        SIGNING -> SigningsHomeTile(backgroundColor, onClick, modifier)
+        MEETINGS -> MeetingsHomeTile(backgroundColor, onClick, modifier)
         SCHEDULE -> ScheduleHomeTile(backgroundColor, onClick, modifier)
         SONG_BOOK -> SongBookHomeTile(backgroundColor, onClick, modifier)
         KITCHEN -> KitchenHomeTile(backgroundColor, onClick, modifier)

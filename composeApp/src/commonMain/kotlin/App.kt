@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -36,11 +37,11 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.*
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
-import pl.kapucyni.wolczyn.app.auth.presentation.AuthViewModel
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopProductScreen
@@ -51,8 +52,9 @@ import pl.kapucyni.wolczyn.app.workshops.WorkshopsScreen
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun App(authViewModel: AuthViewModel = koinViewModel()) {
-    val user by authViewModel.user.collectAsStateWithLifecycle()
+fun App(appViewModel: AppViewModel = koinViewModel()) {
+    val appConfiguration by appViewModel.appConfiguration.collectAsStateWithLifecycle()
+    val user by appViewModel.user.collectAsStateWithLifecycle()
 
     AppTheme {
         val navController = rememberNavController()
@@ -91,37 +93,60 @@ fun App(authViewModel: AuthViewModel = koinViewModel()) {
             ) {
                 composable<Home> {
                     HomeScreen(
+                        appConfiguration = appConfiguration,
                         user = user,
                         navigate = { navController.navigateSafely(it) },
-                        handleAuthAction = { authViewModel.handleAction(it) },
+                        handleAuthAction = { appViewModel.handleAction(it) },
                     )
                 }
 
-                composable<SignIn> {
-                    val screen = it.toRoute<SignIn>()
+                navigation<Auth>(startDestination = SignIn()) {
+                    composable<SignIn> {
+                        val screen = it.toRoute<SignIn>()
 
-                    SignInScreen(
-                        navigateUp = { navController.navigateUpSafely(screen) },
-                        openSignUp = { email ->
-                            navController.navigateSafely(SignUp(email))
-                        },
-                        viewModel = koinViewModel { parametersOf(screen.email) },
-                    )
+                        SignInScreen(
+                            navigateUp = { navController.navigateUpSafely(screen) },
+                            openSignUp = { email ->
+                                navController.navigateSafely(SignUp(email))
+                            },
+                            viewModel = koinViewModel { parametersOf(screen.email) },
+                        )
+                    }
+
+                    composable<SignUp> {
+                        val screen = it.toRoute<SignUp>()
+
+                        SignUpScreen(
+                            navigateUp = { navController.navigateUpSafely(screen) },
+                            openSignIn = { email ->
+                                navController.navigateSafely(
+                                    route = SignIn(email),
+                                    popUpTo = Auth,
+                                )
+                            },
+                            viewModel = koinViewModel { parametersOf(screen.email) },
+                        )
+                    }
                 }
 
-                composable<SignUp> {
-                    val screen = it.toRoute<SignUp>()
+                composable<Signing> {
+                    val screen = it.toRoute<Signing>()
 
-                    SignUpScreen(
-                        navigateUp = { navController.navigateUpSafely(screen) },
-                        openSignIn = { email ->
-                            navController.navigateSafely(
-                                route = SignIn(email),
-                                popUpTo = SignIn::class,
-                            )
-                        },
-                        viewModel = koinViewModel { parametersOf(screen.email) },
-                    )
+                    appConfiguration?.openSigning?.let { meetingId ->
+                        SigningsScreen(
+                            navigateUp = { navController.navigateUpSafely(screen) },
+                            viewModel = koinViewModel {
+                                parametersOf(
+                                    meetingId,
+                                    if (screen.canChangeUserInfo.not()) user else null,
+                                )
+                            }
+                        )
+                    } ?: navController.popBackStack()
+                }
+
+                composable<Meetings> {
+                    // TODO
                 }
 
                 composable<EditProfile> {

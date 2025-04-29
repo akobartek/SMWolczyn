@@ -1,5 +1,3 @@
-package pl.kapucyni.wolczyn.app.auth.presentation
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.gitlive.firebase.firestore.FirebaseFirestoreException
@@ -12,11 +10,15 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.*
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
+import pl.kapucyni.wolczyn.app.core.domain.usecases.GetAppConfigurationUseCase
 
-class AuthViewModel(
+class AppViewModel(
+    private val getAppConfigurationUseCase: GetAppConfigurationUseCase,
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
@@ -24,7 +26,16 @@ class AuthViewModel(
     private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> = _user.asStateFlow()
 
+    private val _appConfiguration = MutableStateFlow<AppConfiguration?>(null)
+    val appConfiguration: StateFlow<AppConfiguration?> = _appConfiguration.asStateFlow()
+
     init {
+        viewModelScope.launch {
+            getAppConfigurationUseCase().collect {
+                _appConfiguration.value = it
+            }
+        }
+
         viewModelScope.launch {
             authRepository.getUserIdentifier().collect { userId ->
                 userId?.let { startObservingUser(it) }
@@ -77,7 +88,11 @@ class AuthViewModel(
         userJob?.cancel()
         viewModelScope.launch {
             authRepository.deleteAccount()
-            SnackbarController.sendEvent(SnackbarEvent.AccountDeleted)
+                .onSuccess { SnackbarController.sendEvent(SnackbarEvent.AccountDeleted) }
+                .onFailure {
+                    SnackbarController.sendEvent(SnackbarEvent.AccountDeleteFailed)
+                    user.value?.let { authRepository.updateUser(it) }
+                }
         }
     }
 }

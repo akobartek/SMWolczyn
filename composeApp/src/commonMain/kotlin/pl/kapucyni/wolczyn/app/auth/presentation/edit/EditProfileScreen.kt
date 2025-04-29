@@ -46,6 +46,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_save_profile
 import smwolczyn.composeapp.generated.resources.city_error
@@ -90,6 +91,7 @@ private fun EditProfileScreenContent(
             IconButton(onClick = { handleAction(SaveData) }) {
                 Icon(
                     imageVector = Icons.Filled.Save,
+                    tint = wolczynColors.primary,
                     contentDescription = stringResource(Res.string.cd_save_profile),
                 )
             }

@@ -9,6 +9,9 @@ sealed interface Screen {
     data object Home : Screen
 
     @Serializable
+    data object Auth : Screen
+
+    @Serializable
     data class SignIn(val email: String = "") : Screen
 
     @Serializable
@@ -16,6 +19,12 @@ sealed interface Screen {
 
     @Serializable
     data object EditProfile : Screen
+
+    @Serializable
+    data class Signing(val canChangeUserInfo: Boolean = false) : Screen
+
+    @Serializable
+    data object Meetings : Screen
 
     @Serializable
     data object Admin : Screen

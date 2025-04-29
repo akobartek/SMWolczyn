@@ -6,12 +6,18 @@ import dev.gitlive.firebase.firestore.where
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-inline fun <reified T> FirebaseFirestore.getFirestoreCollection(collectionName: String): Flow<List<T>> =
+inline fun <reified T> FirebaseFirestore.getFirestoreCollectionFlow(collectionName: String): Flow<List<T>> =
     this.collection(collectionName)
         .snapshots
         .map { querySnapshot ->
             querySnapshot.documents.map { it.data() }
         }
+
+suspend inline fun <reified T> FirebaseFirestore.getFirestoreCollection(collectionName: String): List<T> =
+    this.collection(collectionName)
+        .get()
+        .documents
+        .map { it.data() }
 
 inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
     collectionName: String,

@@ -5,7 +5,7 @@ import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import pl.kapucyni.wolczyn.app.common.data.model.FirestorePromotion
 import pl.kapucyni.wolczyn.app.common.utils.deleteObject
-import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
 import pl.kapucyni.wolczyn.app.kitchen.data.model.FirestoreMenuItem
 
@@ -17,10 +17,10 @@ class FirestoreKitchenSource {
     }
 
     fun getKitchenMenu(): Flow<List<FirestoreMenuItem>> =
-        Firebase.firestore.getFirestoreCollection(KITCHEN_MENU_COLLECTION)
+        Firebase.firestore.getFirestoreCollectionFlow(KITCHEN_MENU_COLLECTION)
 
     fun getKitchenPromotions(): Flow<List<FirestorePromotion>> =
-        Firebase.firestore.getFirestoreCollection(KITCHEN_PROMOTIONS_COLLECTION)
+        Firebase.firestore.getFirestoreCollectionFlow(KITCHEN_PROMOTIONS_COLLECTION)
 
     suspend fun saveMenuItem(item: FirestoreMenuItem) =
         Firebase.firestore.saveObject(

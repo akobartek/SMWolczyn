@@ -20,6 +20,8 @@
 
     <!-- HOME SCREEN STRINGS -->
     <string name="home_title">Pokój i Dobro</string>
+    <string name="meetings_title">Spotkania</string>
+    <string name="signings_title">Zapisz\nsię na\nWołczyn!</string>
     <string name="schedule_title">Plan\nspotkania</string>
     <string name="song_book_title">Śpiewnik</string>
     <string name="kitchen_title">Kuchnia\nWasyla</string>
@@ -84,9 +86,20 @@
     <string name="delete_account_dialog_title">Usuwanie konta</string>
     <string name="delete_account_dialog_msg">Jesteś pewny, że chcesz usunąć konto z systemu?</string>
     <string name="delete_account_success">Konto zostało usunięte</string>
+    <string name="delete_account_failure">Podczas usuwania konta wystąpił błąd, spróbuj jeszcze raz po ponownym zalogowaniu się!</string>
     <string name="edit_profile_title">Edycja profilu</string>
     <string name="edit_profile_success">Zapisano zmiany w profilu!</string>
     <string name="cd_save_profile">Zapisz profil</string>
+
+    <!-- MEETINGS STRINGS -->
+    <string name="meetings">Spotkania</string>
+    <string name="signings">Zapisy</string>
+    <string name="participant_type_member">Uczestnik</string>
+    <string name="participant_type_scout">Harcerz</string>
+    <string name="participant_type_animator">Animator</string>
+    <string name="participant_type_priest">Kapłan</string>
+    <string name="participant_type_monk">Brat/Siostra zakonna</string>
+    <string name="participant_type_organisation">Organizator</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>

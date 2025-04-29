@@ -3,7 +3,7 @@ package pl.kapucyni.wolczyn.app.core.data.sources
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
-import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreDocument
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
 import pl.kapucyni.wolczyn.app.core.domain.model.HomeNotification
@@ -15,7 +15,7 @@ class FirestoreHomeSource {
     }
 
     fun getHomeNotifications(): Flow<List<HomeNotification>> =
-        Firebase.firestore.getFirestoreCollection(HOME_COLLECTION)
+        Firebase.firestore.getFirestoreCollectionFlow(HOME_COLLECTION)
 
     fun getAppConfiguration(): Flow<AppConfiguration?> =
         Firebase.firestore.getFirestoreDocument(

@@ -4,7 +4,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
-import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionByField
 
 class FirestoreArchiveSource {
@@ -14,7 +14,7 @@ class FirestoreArchiveSource {
     }
 
     fun getArchive(): Flow<List<ArchiveMeeting>> =
-        Firebase.firestore.getFirestoreCollection(ARCHIVE_COLLECTION)
+        Firebase.firestore.getFirestoreCollectionFlow(ARCHIVE_COLLECTION)
 
     fun getArchiveMeetingByNumber(number: Int): Flow<ArchiveMeeting?> =
         Firebase.firestore.getFirestoreCollectionByField(

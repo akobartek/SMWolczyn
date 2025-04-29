@@ -15,11 +15,10 @@ import pl.kapucyni.wolczyn.app.common.utils.saveObject
 
 class FirebaseAuthRepository(
     private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
 ) : AuthRepository {
 
-    override fun getUserIdentifier() =
-        auth.authStateChanged.map { it?.uid }
+    override fun getUserIdentifier() = auth.authStateChanged.map { it?.uid }
 
     override fun getCurrentUser(userId: String): Flow<User?> =
         firestore.getFirestoreDocument<User?>(
@@ -90,19 +89,15 @@ class FirebaseAuthRepository(
         auth.signOut()
     }
 
-    override suspend fun deleteAccount() {
-        try {
-            withContext(NonCancellable) {
-                auth.currentUser?.let { user ->
-                    firestore.deleteObject(
-                        collectionName = COLLECTION_USERS,
-                        id = user.uid,
-                    )
-                    user.delete()
-                }
+    override suspend fun deleteAccount() = kotlin.runCatching {
+        withContext(NonCancellable) {
+            auth.currentUser?.let { user ->
+                firestore.deleteObject(
+                    collectionName = COLLECTION_USERS,
+                    id = user.uid,
+                )
+                user.delete()
             }
-        } catch (exc: Exception) {
-            exc.printStackTrace()
         }
     }
 

@@ -4,7 +4,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import pl.kapucyni.wolczyn.app.common.utils.checkIfDocumentExists
-import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreFirstAvailableDocument
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
 import pl.kapucyni.wolczyn.app.quiz.data.model.FirestoreQuiz
@@ -17,7 +17,7 @@ class FirestoreQuizSource(
         Firebase.firestore.getFirestoreFirstAvailableDocument(quizType.quizCollection)
 
     fun getResults(): Flow<List<QuizResult>> =
-        Firebase.firestore.getFirestoreCollection(quizType.resultsCollection)
+        Firebase.firestore.getFirestoreCollectionFlow(quizType.resultsCollection)
 
     suspend fun saveQuiz(quiz: FirestoreQuiz) =
         Firebase.firestore.saveObject(

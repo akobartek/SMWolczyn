@@ -9,6 +9,7 @@ import pl.kapucyni.wolczyn.app.breviary.di.breviaryModule
 import pl.kapucyni.wolczyn.app.common.di.platformModule
 import pl.kapucyni.wolczyn.app.core.di.coreModule
 import pl.kapucyni.wolczyn.app.kitchen.di.kitchenModule
+import pl.kapucyni.wolczyn.app.meetings.di.meetingsModule
 import pl.kapucyni.wolczyn.app.quiz.di.quizKitchenModule
 import pl.kapucyni.wolczyn.app.schedule.di.scheduleModule
 import pl.kapucyni.wolczyn.app.shop.di.shopModule
@@ -20,6 +21,7 @@ private fun getBaseModules() = listOf(
     platformModule,
     authModule,
     coreModule,
+    meetingsModule,
     scheduleModule,
     songBookModule,
     quizKitchenModule,

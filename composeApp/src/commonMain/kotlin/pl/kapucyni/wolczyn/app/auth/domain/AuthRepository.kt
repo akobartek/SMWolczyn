@@ -12,5 +12,5 @@ interface AuthRepository {
     suspend fun sendRecoveryEmail(email: String): Result<Boolean>
     suspend fun sendVerificationEmail()
     suspend fun signOut()
-    suspend fun deleteAccount()
+    suspend fun deleteAccount(): Result<Unit?>
 }

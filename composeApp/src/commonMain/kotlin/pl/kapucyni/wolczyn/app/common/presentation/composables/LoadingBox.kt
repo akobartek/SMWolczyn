@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 @Composable
 fun LoadingBox() {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
     }
