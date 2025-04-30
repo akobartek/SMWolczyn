@@ -32,7 +32,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -108,7 +107,6 @@ private fun SignInScreenContent(
     hideNoInternetDialog: () -> Unit,
     toggleEmailUnverifiedDialogVisibility: (Boolean) -> Unit,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val (emailRef, passwordRef) = remember { FocusRequester.createRefs() }
 
@@ -187,7 +185,7 @@ private fun SignInScreenContent(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            keyboardController?.hide()
+                            focusManager.clearFocus()
                             signIn()
                         },
                     ),

@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-abstract class BasicViewModel<T>: ViewModel() {
+abstract class BasicViewModel<T> : ViewModel() {
 
     sealed class State<out X> {
         data object Loading : State<Nothing>()

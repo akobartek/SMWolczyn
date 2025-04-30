@@ -40,7 +40,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -117,9 +116,7 @@ private fun SignUpScreenContent(
     state: SignUpScreenState,
     handleAction: (SignUpAction) -> Unit,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-
     val (firstNameRef, lastNameRef, cityRef, emailRef, passwordRef) = remember { FocusRequester.createRefs() }
     var dateDialogVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -242,7 +239,7 @@ private fun SignUpScreenContent(
                 label = { WolczynText(text = stringResource(Res.string.password)) },
                 visualTransformation = if (state.passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 trailingIcon = {
                     IconButton(onClick = { handleAction(TogglePasswordHidden) }) {
                         if (state.passwordHidden)

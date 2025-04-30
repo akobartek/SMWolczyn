@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.gitlive.firebase.FirebaseNetworkException
 import dev.gitlive.firebase.auth.FirebaseAuthUserCollisionException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -90,7 +88,7 @@ class SignUpViewModel(
     private fun signUp() {
         if (validateInput().not() || state.value.consentsChecked.not()) return
         toggleLoading(true)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val result = with(state.value) {
                 signUpUseCase(
                     email = email,
@@ -149,6 +147,7 @@ class SignUpViewModel(
                 && newState.passwordError == null
                 && newState.firstNameError.not()
                 && newState.lastNameError.not()
+                && newState.cityError.not()
                 && newState.birthdayError.not()
     }
 

@@ -6,6 +6,8 @@ import smwolczyn.composeapp.generated.resources.data_save_error
 import smwolczyn.composeapp.generated.resources.delete_account_failure
 import smwolczyn.composeapp.generated.resources.delete_account_success
 import smwolczyn.composeapp.generated.resources.edit_profile_success
+import smwolczyn.composeapp.generated.resources.meeting_signing_saved
+import smwolczyn.composeapp.generated.resources.meeting_signing_updated
 import smwolczyn.composeapp.generated.resources.message_sent
 import smwolczyn.composeapp.generated.resources.sign_in_error
 import smwolczyn.composeapp.generated.resources.sign_up_error
@@ -36,4 +38,8 @@ sealed class SnackbarEvent(
     data object AccountDeleted : SnackbarEvent(message = Res.string.delete_account_success)
 
     data object AccountDeleteFailed : SnackbarEvent(message = Res.string.delete_account_failure)
+
+    data object MeetingSigningSaved : SnackbarEvent(message = Res.string.meeting_signing_saved)
+
+    data object MeetingSigningUpdated : SnackbarEvent(message = Res.string.meeting_signing_updated)
 }
