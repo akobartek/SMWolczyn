@@ -2,12 +2,10 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.signings
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -15,30 +13,21 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.LinkAnnotation
@@ -62,9 +51,21 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PeselTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
+import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextView
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.*
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideNoInternetDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideSuccessDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.SaveData
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateBirthday
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateCity
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateEmail
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateFirstName
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateLastName
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdatePesel
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateStatuteConsent
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateType
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsSubtitle
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
@@ -136,8 +137,6 @@ private fun SigningsScreenContent(
     val focusManager = LocalFocusManager.current
     val (firstNameRef, lastNameRef, cityRef, emailRef, birthdayRef, peselRef, typeRef) =
         remember { FocusRequester.createRefs() }
-    var typeDropDownVisible by rememberSaveable { mutableStateOf(false) }
-    var workshopsDropDownVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -222,125 +221,25 @@ private fun SigningsScreenContent(
                 .focusProperties { next = typeRef },
         )
 
-        BoxWithConstraints(
-            modifier = Modifier
-                .widthIn(max = 420.dp)
-                .fillMaxWidth(),
-        ) {
-            OutlinedTextField(
-                value = state.type?.let { stringResource(it.stringRes) }.orEmpty(),
-                onValueChange = {},
-                label = { WolczynText(stringResource(Res.string.participant_type)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.FollowTheSigns,
-                        contentDescription = null,
-                    )
-                },
-                trailingIcon = {
-                    Icon(
-                        imageVector =
-                            if (typeDropDownVisible) Icons.Default.ArrowDropUp
-                            else Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                    )
-                },
-                readOnly = true,
-                singleLine = true,
-                isError = state.typeError,
-                supportingText = if (state.typeError) {
-                    {
-                        WolczynText(text = stringResource(Res.string.participant_type_error))
-                    }
-                } else null,
-                modifier = Modifier
-                    .onFocusChanged {
-                        if (it.isFocused) typeDropDownVisible = true
-                    }
-                    .fillMaxWidth()
-                    .focusRequester(typeRef),
+        SelectableTextView(
+            value = state.type?.let { stringResource(it.stringRes) }.orEmpty(),
+            label = Res.string.participant_type,
+            items = state.availableTypes.map { it to stringResource(it.stringRes) },
+            onItemSelected = { handleAction(UpdateType(it)) },
+            leadingIcon = Icons.AutoMirrored.Filled.FollowTheSigns,
+            error = if (state.typeError) Res.string.participant_type_error else null,
+            modifier = Modifier.focusRequester(typeRef),
+        )
+
+        AnimatedVisibility(state.type?.canSelectWorkshops() ?: false) {
+            SelectableTextView(
+                value = state.selectedWorkshop.orEmpty(),
+                label = Res.string.workshops,
+                items = state.availableWorkshops.map { it to it },
+                onItemSelected = { handleAction(UpdateWorkshop(it)) },
+                leadingIcon = Icons.Default.Construction,
+                error = if (state.workshopError) Res.string.workshops_error else null,
             )
-
-            DropdownMenu(
-                expanded = typeDropDownVisible,
-                onDismissRequest = {
-                    focusManager.clearFocus()
-                    typeDropDownVisible = false
-                },
-                modifier = Modifier.width(maxWidth),
-            ) {
-                state.availableTypes.forEach {
-                    DropdownMenuItem(
-                        text = { WolczynText(text = stringResource(it.stringRes)) },
-                        onClick = {
-                            focusManager.clearFocus()
-                            typeDropDownVisible = false
-                            handleAction(UpdateType(it))
-                        },
-                    )
-                }
-            }
-        }
-
-        AnimatedVisibility(state.workshopsVisible) {
-            BoxWithConstraints(
-                modifier = Modifier
-                    .widthIn(max = 420.dp)
-                    .fillMaxWidth(),
-            ) {
-                OutlinedTextField(
-                    value = state.selectedWorkshop.orEmpty(),
-                    onValueChange = {},
-                    label = { WolczynText(stringResource(Res.string.workshops)) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Construction,
-                            contentDescription = null,
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            imageVector =
-                                if (typeDropDownVisible) Icons.Default.ArrowDropUp
-                                else Icons.Default.ArrowDropDown,
-                            contentDescription = null,
-                        )
-                    },
-                    readOnly = true,
-                    singleLine = true,
-                    isError = state.workshopError,
-                    supportingText = if (state.workshopError) {
-                        {
-                            WolczynText(text = stringResource(Res.string.workshops_error))
-                        }
-                    } else null,
-                    modifier = Modifier
-                        .onFocusChanged {
-                            if (it.isFocused) workshopsDropDownVisible = true
-                        }
-                        .fillMaxWidth(),
-                )
-
-                DropdownMenu(
-                    expanded = workshopsDropDownVisible,
-                    onDismissRequest = {
-                        focusManager.clearFocus()
-                        workshopsDropDownVisible = false
-                    },
-                    modifier = Modifier.width(maxWidth),
-                ) {
-                    state.availableWorkshops.forEach {
-                        DropdownMenuItem(
-                            text = { WolczynText(text = it) },
-                            onClick = {
-                                focusManager.clearFocus()
-                                workshopsDropDownVisible = false
-                                handleAction(UpdateWorkshop(it))
-                            },
-                        )
-                    }
-                }
-            }
         }
 
         CheckableField(
@@ -419,4 +318,5 @@ private fun buildStatuteString() = buildAnnotatedString {
 
 private const val ESSENTIALS_LINK = "https://wolczyn.kapucyni.pl/niezbednik/"
 private const val STATUTE = "%statute%"
-private const val STATUTE_LINK = "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Regulamin-Spotkania.pdf"
+private const val STATUTE_LINK =
+    "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Regulamin-Spotkania.pdf"

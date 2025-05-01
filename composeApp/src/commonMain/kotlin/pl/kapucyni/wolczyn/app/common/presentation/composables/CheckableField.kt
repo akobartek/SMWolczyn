@@ -2,7 +2,6 @@ package pl.kapucyni.wolczyn.app.common.presentation.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -23,7 +22,6 @@ fun CheckableField(
     text: AnnotatedString,
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .padding(vertical = 8.dp)

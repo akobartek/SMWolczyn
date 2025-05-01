@@ -59,7 +59,6 @@ class SigningsViewModel(
                                 }
                             },
                             type = participant?.type,
-                            workshopsVisible = participant?.type?.canSelectWorkshops() ?: false,
                             availableWorkshops = workshops.await().map { it.name },
                             selectedWorkshop = participant?.workshop,
                             createdAt = participant?.createdAt,
@@ -146,7 +145,6 @@ class SigningsViewModel(
                 data.copy(
                     type = type,
                     typeError = false,
-                    workshopsVisible = type.canSelectWorkshops(),
                     selectedWorkshop = if (type.canSelectWorkshops()) data.selectedWorkshop else null,
                     workshopError = data.workshopError && type.canSelectWorkshops(),
                 )

@@ -25,7 +25,6 @@ data class SigningsScreenState(
     val availableTypes: List<ParticipantType>,
     val type: ParticipantType?,
     val typeError: Boolean = false,
-    val workshopsVisible: Boolean = false,
     val availableWorkshops: List<String>,
     val selectedWorkshop: String?,
     val workshopError: Boolean = false,
