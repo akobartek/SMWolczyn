@@ -11,6 +11,8 @@ sealed interface SigningsAction {
     data class UpdatePesel(val pesel: String) : SigningsAction
     data class UpdateType(val type: ParticipantType) : SigningsAction
     data class UpdateWorkshop(val workshop: String) : SigningsAction
+    data class UpdateStatuteConsent(val checked: Boolean) : SigningsAction
     data object SaveData : SigningsAction
-    data object ToggleNoInternetDialog : SigningsAction
+    data object HideSuccessDialog : SigningsAction
+    data object HideNoInternetDialog : SigningsAction
 }

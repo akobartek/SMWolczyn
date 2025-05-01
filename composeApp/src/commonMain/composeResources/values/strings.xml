@@ -111,8 +111,13 @@
     <string name="participant_type_organisation">Organizator</string>
     <string name="workshops">Warsztaty</string>
     <string name="workshops_error">Proszę wybrać warsztaty!</string>
+    <string name="meeting_statute_title">Akceptuję %statute%.</string>
+    <string name="meeting_statute_value">Regulamin Spotkania</string>
     <string name="meeting_signing_saved">Pomyślnie zapisano na Spotkanie Młodych!</string>
     <string name="meeting_signing_updated">Pomyślnie zaktualizowano zgłoszenie na Spotkanie Młodych!</string>
+    <string name="meeting_signing_success_dialog_title">Zapisano na Spotkanie Młodych!</string>
+    <string name="meeting_signing_success_dialog_message">Twoje zgłoszenie zostało zapisane! Zapraszamy do sprawdzenia niezbędnika, w którym dowiesz się więcej jak przygotować się do Wołczyna!</string>
+    <string name="meeting_signing_essentials">Niezbędnik</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>

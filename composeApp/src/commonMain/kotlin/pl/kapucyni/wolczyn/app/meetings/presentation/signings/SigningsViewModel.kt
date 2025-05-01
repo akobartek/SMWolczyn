@@ -81,8 +81,10 @@ class SigningsViewModel(
             is UpdatePesel -> updatePesel(action.pesel)
             is UpdateType -> updateType(action.type)
             is UpdateWorkshop -> updateWorkshop(action.workshop)
+            is UpdateStatuteConsent -> updateStatuteConsent(action.checked)
             is SaveData -> saveData()
-            is ToggleNoInternetDialog -> hideNoInternetDialog()
+            is HideSuccessDialog -> toggleSuccessDialog(visible = false)
+            is HideNoInternetDialog -> hideNoInternetDialog()
         }
     }
 
@@ -159,6 +161,20 @@ class SigningsViewModel(
         }
     }
 
+    private fun updateStatuteConsent(checked: Boolean) {
+        val data = (screenState.value as? State.Success)?.data ?: return
+        _screenState.update {
+            State.Success(data.copy(statuteChecked = checked))
+        }
+    }
+
+    private fun toggleSuccessDialog(visible: Boolean) {
+        val data = (screenState.value as? State.Success)?.data ?: return
+        _screenState.update {
+            State.Success(data.copy(successDialogVisible = visible))
+        }
+    }
+
     private fun hideNoInternetDialog() {
         val data = (screenState.value as? State.Success)?.data ?: return
         _screenState.update {
@@ -167,8 +183,8 @@ class SigningsViewModel(
     }
 
     private fun saveData() {
-        if (validateInput().not()) return
         val state = (screenState.value as? State.Success)?.data ?: return
+        if (validateInput(state).not() || state.statuteChecked.not()) return
 
         toggleLoading(state, true)
         viewModelScope.launch {
@@ -195,11 +211,20 @@ class SigningsViewModel(
             toggleLoading(state, false)
             result
                 .onSuccess {
-                    SnackbarController.sendEvent(
-                        event = state.createdAt?.let { SnackbarEvent.MeetingSigningUpdated }
-                            ?: SnackbarEvent.MeetingSigningSaved,
-                    )
-                    _screenState.update { State.Success(state.copy(saveSuccess = true)) }
+                    when {
+                        state.createdAt != null -> {
+                            SnackbarController.sendEvent(event = SnackbarEvent.MeetingSigningUpdated)
+                        }
+
+                        user == null -> {
+                            SnackbarController.sendEvent(event = SnackbarEvent.MeetingSigningSaved)
+                            _screenState.update { State.Success(state.copy(saveSuccess = true)) }
+                        }
+
+                        else -> {
+                            toggleSuccessDialog(visible = true)
+                        }
+                    }
                 }
                 .onFailure { SnackbarController.sendEvent(SnackbarEvent.DataSaveError) }
         }
@@ -208,8 +233,7 @@ class SigningsViewModel(
     private fun toggleLoading(state: SigningsScreenState, value: Boolean) =
         _screenState.update { State.Success(state.copy(loading = value)) }
 
-    private fun validateInput(): Boolean {
-        val state = (screenState.value as? State.Success)?.data ?: return false
+    private fun validateInput(state: SigningsScreenState): Boolean {
         val newState = with(state) {
             copy(
                 email = email.trim(),

@@ -29,9 +29,11 @@ data class SigningsScreenState(
     val availableWorkshops: List<String>,
     val selectedWorkshop: String?,
     val workshopError: Boolean = false,
+    val statuteChecked: Boolean = false,
     val contactNumber: String = "",
     val consentChecked: Boolean = false,
     val underageConsentChecked: Boolean = false,
+    val successDialogVisible: Boolean = false,
     val noInternetDialogVisible: Boolean = false,
     val createdAt: Timestamp? = null,
 )
