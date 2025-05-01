@@ -9,4 +9,5 @@ interface MeetingsRepository {
     suspend fun getAvailableWorkshops(): List<Workshop>
     suspend fun checkPreviousSigning(meetingId: Int, email: String): Participant?
     suspend fun saveParticipant(meetingId: Int, participant: Participant): Result<Unit>
+    suspend fun removeParticipant(meetingId: Int, email: String): Result<Unit>
 }

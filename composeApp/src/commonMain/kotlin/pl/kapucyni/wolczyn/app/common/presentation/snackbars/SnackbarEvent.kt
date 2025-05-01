@@ -6,6 +6,7 @@ import smwolczyn.composeapp.generated.resources.data_save_error
 import smwolczyn.composeapp.generated.resources.delete_account_failure
 import smwolczyn.composeapp.generated.resources.delete_account_success
 import smwolczyn.composeapp.generated.resources.edit_profile_success
+import smwolczyn.composeapp.generated.resources.meeting_signing_remove_success
 import smwolczyn.composeapp.generated.resources.meeting_signing_saved
 import smwolczyn.composeapp.generated.resources.meeting_signing_updated
 import smwolczyn.composeapp.generated.resources.message_sent
@@ -42,4 +43,6 @@ sealed class SnackbarEvent(
     data object MeetingSigningSaved : SnackbarEvent(message = Res.string.meeting_signing_saved)
 
     data object MeetingSigningUpdated : SnackbarEvent(message = Res.string.meeting_signing_updated)
+
+    data object MeetingSigningRemoved : SnackbarEvent(message = Res.string.meeting_signing_remove_success)
 }

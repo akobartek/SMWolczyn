@@ -1,6 +1,7 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.gitlive.firebase.firestore.FirebaseFirestoreException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,13 +31,13 @@ class AppViewModel(
     val appConfiguration: StateFlow<AppConfiguration?> = _appConfiguration.asStateFlow()
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             getAppConfigurationUseCase().collect {
                 _appConfiguration.value = it
             }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             authRepository.getUserIdentifier().collect { userId ->
                 userId?.let { startObservingUser(it) }
                     ?: clearUser()

@@ -52,6 +52,15 @@ class FirebaseMeetingsRepository(
             .set(participant)
     }
 
+    override suspend fun removeParticipant(meetingId: Int, email: String) = runCatching {
+        firestore
+            .collection(COLLECTION_MEETINGS)
+            .document(meetingId.toString())
+            .collection(COLLECTION_SIGNINGS)
+            .document(email)
+            .delete()
+    }
+
     private companion object {
         const val COLLECTION_MEETINGS = "meetings"
         const val COLLECTION_SIGNINGS = "signings"

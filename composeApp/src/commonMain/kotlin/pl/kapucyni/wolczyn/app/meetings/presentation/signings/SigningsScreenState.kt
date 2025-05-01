@@ -6,7 +6,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 
 data class SigningsScreenState(
     val loading: Boolean = false,
-    val saveSuccess: Boolean = false,
+    val operationFinished: Boolean = false,
     val meeting: Meeting,
     val isEditing: Boolean,
     val isUserInfoEditable: Boolean,
@@ -28,7 +28,7 @@ data class SigningsScreenState(
     val availableWorkshops: List<String>,
     val selectedWorkshop: String?,
     val workshopError: Boolean = false,
-    val statuteChecked: Boolean = false,
+    val statuteChecked: Boolean,
     val contactNumber: String = "",
     val consentChecked: Boolean = false,
     val underageConsentChecked: Boolean = false,

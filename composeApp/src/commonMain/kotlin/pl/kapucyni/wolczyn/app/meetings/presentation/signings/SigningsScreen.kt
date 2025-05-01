@@ -15,13 +15,17 @@ import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material.icons.outlined.Celebration
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -56,6 +60,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideNoInternetDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideSuccessDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.SaveData
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateCity
@@ -73,6 +78,10 @@ import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_save_profile
 import smwolczyn.composeapp.generated.resources.email_error_invalid
 import smwolczyn.composeapp.generated.resources.meeting_signing_essentials
+import smwolczyn.composeapp.generated.resources.meeting_signing_remove
+import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_btn
+import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_message
+import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_title
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_message
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_title
 import smwolczyn.composeapp.generated.resources.meeting_statute_title
@@ -94,7 +103,7 @@ fun SigningsScreen(
     val state by viewModel.screenState.collectAsStateWithLifecycle()
 
     LaunchedEffect(state) {
-        if ((state as? State.Success)?.data?.saveSuccess == true)
+        if ((state as? State.Success)?.data?.operationFinished == true)
             navigateUp()
     }
 
@@ -137,6 +146,7 @@ private fun SigningsScreenContent(
     val focusManager = LocalFocusManager.current
     val (firstNameRef, lastNameRef, cityRef, emailRef, birthdayRef, peselRef, typeRef) =
         remember { FocusRequester.createRefs() }
+    var removeSigningDialogVisible by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -242,11 +252,12 @@ private fun SigningsScreenContent(
             )
         }
 
-        CheckableField(
-            checked = state.statuteChecked,
-            onCheckedChange = { handleAction(UpdateStatuteConsent(it)) },
-            text = buildStatuteString(),
-        )
+        if (state.isUserInfoEditable.not() && state.isEditing.not())
+            CheckableField(
+                checked = state.statuteChecked,
+                onCheckedChange = { handleAction(UpdateStatuteConsent(it)) },
+                text = buildStatuteString(),
+            )
 
         Button(
             onClick = {
@@ -265,6 +276,19 @@ private fun SigningsScreenContent(
                 ),
             )
         }
+
+        if (state.isEditing)
+            OutlinedButton(
+                onClick = {
+                    focusManager.clearFocus(true)
+                    removeSigningDialogVisible = true
+                },
+                modifier = Modifier
+                    .widthIn(max = 420.dp)
+                    .fillMaxWidth(0.75f),
+            ) {
+                WolczynText(text = stringResource(Res.string.meeting_signing_remove))
+            }
     }
 
     LoadingDialog(visible = state.loading)
@@ -286,6 +310,18 @@ private fun SigningsScreenContent(
             navigateUp()
         },
         dismissible = false,
+    )
+
+    WolczynAlertDialog(
+        isVisible = removeSigningDialogVisible,
+        imageVector = Icons.Outlined.Delete,
+        dialogTitleId = Res.string.meeting_signing_remove_dialog_title,
+        dialogTextId = Res.string.meeting_signing_remove_dialog_message,
+        confirmBtnTextId = Res.string.meeting_signing_remove_dialog_btn,
+        onConfirm = { handleAction(RemoveSigning) },
+        dismissBtnTextId = Res.string.cancel,
+        onDismissRequest = { removeSigningDialogVisible = false },
+        dismissible = true,
     )
 
     NoInternetDialog(

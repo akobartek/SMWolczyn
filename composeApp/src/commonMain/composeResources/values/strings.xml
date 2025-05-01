@@ -13,7 +13,7 @@
     <string name="delete">Usuń</string>
     <string name="email">Email</string>
     <string name="password">Hasło</string>
-    <string name="data_save_error">Wystąpił błąd podczas zapisywania danych!</string>
+    <string name="data_save_error">Wystąpił błąd podczas zapisywania danych, sprawdź swoje łącze i spróbuj ponownie!</string>
     <string name="cd_clear_field">Wyczyść pole</string>
     <string name="cd_close_dialog">Zamknij okno</string>
     <string name="cd_more_options">Więcej opcji</string>
@@ -118,6 +118,11 @@
     <string name="meeting_signing_success_dialog_title">Zapisano na Spotkanie Młodych!</string>
     <string name="meeting_signing_success_dialog_message">Twoje zgłoszenie zostało zapisane! Zapraszamy do sprawdzenia niezbędnika, w którym dowiesz się więcej jak przygotować się do Wołczyna!</string>
     <string name="meeting_signing_essentials">Niezbędnik</string>
+    <string name="meeting_signing_remove">Wycofaj zgłoszenie</string>
+    <string name="meeting_signing_remove_dialog_title">Usuwanie zgłoszenia</string>
+    <string name="meeting_signing_remove_dialog_message">Jesteś pewny, że chcesz wycofać swoje zgłoszenie na Wołczyn?</string>
+    <string name="meeting_signing_remove_dialog_btn">Wycofaj</string>
+    <string name="meeting_signing_remove_success">Zgłoszenie zostało usunięte z systemu</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>

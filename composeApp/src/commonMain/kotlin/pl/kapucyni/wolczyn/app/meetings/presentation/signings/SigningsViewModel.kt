@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.toMilliseconds
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
@@ -62,6 +63,7 @@ class SigningsViewModel(
                             availableWorkshops = workshops.await().map { it.name },
                             selectedWorkshop = participant?.workshop,
                             createdAt = participant?.createdAt,
+                            statuteChecked = participant != null,
                         )
                     )
                     _screenState.update { state }
@@ -82,6 +84,7 @@ class SigningsViewModel(
             is UpdateWorkshop -> updateWorkshop(action.workshop)
             is UpdateStatuteConsent -> updateStatuteConsent(action.checked)
             is SaveData -> saveData()
+            is RemoveSigning -> removeSigning()
             is HideSuccessDialog -> toggleSuccessDialog(visible = false)
             is HideNoInternetDialog -> hideNoInternetDialog()
         }
@@ -185,7 +188,7 @@ class SigningsViewModel(
         if (validateInput(state).not() || state.statuteChecked.not()) return
 
         toggleLoading(state, true)
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             val result = meetingsRepository.saveParticipant(
                 meetingId = meetingId,
                 participant = Participant(
@@ -216,7 +219,7 @@ class SigningsViewModel(
 
                         user == null -> {
                             SnackbarController.sendEvent(event = SnackbarEvent.MeetingSigningSaved)
-                            _screenState.update { State.Success(state.copy(saveSuccess = true)) }
+                            _screenState.update { State.Success(state.copy(operationFinished = true)) }
                         }
 
                         else -> {
@@ -226,6 +229,21 @@ class SigningsViewModel(
                 }
                 .onFailure { SnackbarController.sendEvent(SnackbarEvent.DataSaveError) }
         }
+    }
+
+    private fun removeSigning() {
+        val state = (screenState.value as? State.Success)?.data ?: return
+
+        toggleLoading(state, true)
+        viewModelScope.launch {
+            meetingsRepository.removeParticipant(meetingId, state.email)
+                .onSuccess {
+                    SnackbarController.sendEvent(event = SnackbarEvent.MeetingSigningRemoved)
+                    _screenState.update { State.Success(state.copy(operationFinished = true)) }
+                }
+                .onFailure { SnackbarController.sendEvent(SnackbarEvent.DataSaveError) }
+        }
+        toggleLoading(state, false)
     }
 
     private fun toggleLoading(state: SigningsScreenState, value: Boolean) =
