@@ -50,11 +50,14 @@ class SigningsViewModel(
                             email = participant?.email ?: user?.email.orEmpty(),
                             pesel =
                                 participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
+                            peselIsWoman = participant?.pesel?.peselIsWoman() ?: false,
                             birthdayDate = birthday,
                             isUnderAge = birthday?.isUnderAge() ?: false,
                             availableTypes = getAvailableTypes(birthday),
                             type = participant?.type,
                             availableWorkshops = workshops.await().map { it.name },
+                            workshopsEnabled =
+                                workshopsEnabled(participant?.type, participant?.pesel.orEmpty()),
                             selectedWorkshop = participant?.workshop,
                             createdAt = participant?.createdAt,
                             statuteChecked = participant != null,
@@ -144,19 +147,28 @@ class SigningsViewModel(
             return
 
         _screenState.update {
-            State.Success(data.copy(pesel = pesel, peselError = false))
+            State.Success(
+                data.copy(
+                    pesel = pesel,
+                    peselError = false,
+                    peselIsWoman = pesel.peselIsWoman(),
+                    workshopsEnabled = workshopsEnabled(data.type, pesel),
+                )
+            )
         }
     }
 
     private fun updateType(type: ParticipantType) {
         val data = (screenState.value as? State.Success)?.data ?: return
+        val workshopsEnabled = workshopsEnabled(type, data.pesel)
         _screenState.update {
             State.Success(
                 data.copy(
                     type = type,
                     typeError = false,
-                    selectedWorkshop = if (type.canSelectWorkshops()) data.selectedWorkshop else null,
-                    workshopError = data.workshopError && type.canSelectWorkshops(),
+                    selectedWorkshop = if (workshopsEnabled) data.selectedWorkshop else null,
+                    workshopsEnabled = workshopsEnabled,
+                    workshopError = data.workshopError && workshopsEnabled,
                 )
             )
         }
@@ -271,7 +283,7 @@ class SigningsViewModel(
                 pesel = pesel.trim(),
                 peselError = pesel.trim().isValidPesel().not(),
                 typeError = type == null,
-                workshopError = type?.canSelectWorkshops() == true && selectedWorkshop == null,
+                workshopError = workshopsEnabled(type, pesel) && selectedWorkshop == null,
             )
         }
         _screenState.update { State.Success(newState) }
@@ -297,11 +309,17 @@ class SigningsViewModel(
             val calculatedNumber = digits.take(10)
                 .zip(wages)
                 .sumOf { (digit, wage) -> digit * wage % 10 }
-                .let { sum -> 10 - sum % 10 }
+                .let { sum -> (10 - sum % 10) % 10 }
             controlNumber == calculatedNumber
         }
     } catch (exc: Exception) {
         false
     }
 
+    private fun workshopsEnabled(type: ParticipantType?, pesel: String) =
+        type?.canSelectWorkshops() == true && pesel.isValidPesel()
+
+    private fun CharSequence.peselIsWoman() = getOrNull(10)?.let {
+        it.isDigit() && (it.digitToInt()) % 2 == 0
+    } ?: false
 }

@@ -241,11 +241,14 @@ private fun SigningsScreenContent(
             modifier = Modifier.focusRequester(typeRef),
         )
 
-        AnimatedVisibility(state.type?.canSelectWorkshops() ?: false) {
+        AnimatedVisibility(state.workshopsEnabled) {
+            val workshops =
+                if (state.peselIsWoman) state.availableWorkshops
+                else state.availableWorkshops - COSMETIC_WORKSHOP
             SelectableTextView(
                 value = state.selectedWorkshop.orEmpty(),
                 label = Res.string.workshops,
-                items = state.availableWorkshops.map { it to it },
+                items = workshops.map { it to it },
                 onItemSelected = { handleAction(UpdateWorkshop(it)) },
                 leadingIcon = Icons.Default.Construction,
                 error = if (state.workshopError) Res.string.workshops_error else null,
@@ -365,3 +368,4 @@ private const val STATUTE_LINK =
 private const val UNDER_AGE = "%consent%"
 private const val UNDER_AGE_LINK =
     "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Zgoda-rodzica-2025.pdf"
+private const val COSMETIC_WORKSHOP = "Kosmetyczne"
