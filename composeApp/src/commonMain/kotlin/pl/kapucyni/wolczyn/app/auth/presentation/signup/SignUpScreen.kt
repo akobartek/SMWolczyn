@@ -23,11 +23,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
@@ -56,7 +51,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.PasswordTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.theme.wolczynColors
+import pl.kapucyni.wolczyn.app.common.utils.buildLinkableString
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.create_account
@@ -192,7 +187,21 @@ private fun SignUpScreenContent(
             CheckableField(
                 checked = state.consentsChecked,
                 onCheckedChange = { handleAction(UpdateConsents(it)) },
-                text = buildConsentsString(),
+                text = buildLinkableString(
+                    text = Res.string.sign_up_consents,
+                    links = listOf(
+                        Triple(
+                            DATA_PROCESSING,
+                            DATA_PROCESSING_LINK,
+                            Res.string.sign_up_data_processing,
+                        ),
+                        Triple(
+                            PRIVACY_POLICY,
+                            PRIVACY_POLICY_LINK,
+                            Res.string.sign_up_privacy_policy,
+                        ),
+                    ),
+                ),
             )
 
             Button(
@@ -252,33 +261,6 @@ private fun SignUpScreenContent(
         },
         onDismiss = { handleAction(ToggleNoInternetDialog) },
     )
-}
-
-@Composable
-private fun buildConsentsString() = buildAnnotatedString {
-    stringResource(Res.string.sign_up_consents)
-        .split(DATA_PROCESSING, PRIVACY_POLICY)
-        .let {
-            append(it[0])
-            withLink(
-                LinkAnnotation.Url(
-                    url = DATA_PROCESSING_LINK,
-                    styles = TextLinkStyles(style = SpanStyle(color = wolczynColors.primary)),
-                )
-            ) {
-                append(stringResource(Res.string.sign_up_data_processing))
-            }
-            append(it[1])
-            withLink(
-                LinkAnnotation.Url(
-                    url = PRIVACY_POLICY_LINK,
-                    styles = TextLinkStyles(style = SpanStyle(color = wolczynColors.primary)),
-                )
-            ) {
-                append(stringResource(Res.string.sign_up_privacy_policy))
-            }
-            append(it[2])
-        }
 }
 
 private const val DATA_PROCESSING = "%data_processing%"

@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.utils
 
 import dev.gitlive.firebase.firestore.Timestamp
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -9,6 +10,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.yearsUntil
 
 fun LocalDateTime.getFormattedDateTime() = format(
     LocalDateTime.Format {
@@ -52,6 +54,13 @@ fun Long.getFormattedDate() =
     Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .getFormattedDate()
+
+fun Long.isUnderAge() =
+    Instant.fromEpochMilliseconds(this)
+        .yearsUntil(
+            other = Clock.System.now(),
+            timeZone = TimeZone.currentSystemDefault(),
+        ) < 18
 
 fun Timestamp.getPeselBeginning() =
     Instant.fromEpochSeconds(this.seconds, this.nanoseconds)

@@ -42,9 +42,7 @@ fun SigningsSubtitle(
                         }
                 }
             },
-        textStyle = MaterialTheme.typography.bodyMedium.copy(
-            textAlign = TextAlign.Justify,
-        ),
+        textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
         modifier = modifier,
     )
 }

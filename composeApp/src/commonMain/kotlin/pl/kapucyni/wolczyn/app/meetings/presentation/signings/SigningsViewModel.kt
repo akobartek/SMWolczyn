@@ -14,6 +14,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
 import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
+import pl.kapucyni.wolczyn.app.common.utils.isUnderAge
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -36,6 +37,8 @@ class SigningsViewModel(
                 }
 
                 previousSigning.await().let { participant ->
+                    val birthday =
+                        (participant?.birthday ?: user?.birthday)?.toMilliseconds()?.toLong()
                     val state = State.Success(
                         data = SigningsScreenState(
                             meeting = meeting.await(),
@@ -47,18 +50,9 @@ class SigningsViewModel(
                             email = participant?.email ?: user?.email.orEmpty(),
                             pesel =
                                 participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
-                            birthdayDate = (participant?.birthday ?: user?.birthday)
-                                ?.toMilliseconds()?.toLong(),
-                            availableTypes = ParticipantType.entries.let {
-                                when {
-                                    user == null -> it
-
-                                    user.isUnderAge() ->
-                                        listOf(ParticipantType.MEMBER, ParticipantType.SCOUT)
-
-                                    else -> it - ParticipantType.ORGANISATION
-                                }
-                            },
+                            birthdayDate = birthday,
+                            isUnderAge = birthday?.isUnderAge() ?: false,
+                            availableTypes = getAvailableTypes(birthday),
                             type = participant?.type,
                             availableWorkshops = workshops.await().map { it.name },
                             selectedWorkshop = participant?.workshop,
@@ -90,6 +84,17 @@ class SigningsViewModel(
         }
     }
 
+    private fun getAvailableTypes(birthday: Long?) = ParticipantType.entries.let {
+        when {
+            user == null -> it
+
+            birthday?.isUnderAge() == true ->
+                listOf(ParticipantType.MEMBER, ParticipantType.SCOUT)
+
+            else -> it - ParticipantType.ORGANISATION
+        }
+    }
+
     private fun updateFirstName(firstName: String) {
         val data = (screenState.value as? State.Success)?.data ?: return
         _screenState.update {
@@ -118,7 +123,9 @@ class SigningsViewModel(
                 data.copy(
                     birthdayDate = value,
                     birthdayError = false,
+                    isUnderAge = value.isUnderAge(),
                     pesel = value.getPeselBeginning(),
+                    availableTypes = getAvailableTypes(value),
                 )
             )
         }

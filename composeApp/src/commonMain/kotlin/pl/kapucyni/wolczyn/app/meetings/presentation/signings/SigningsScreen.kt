@@ -19,6 +19,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,11 +35,7 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
@@ -58,6 +55,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextView
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.common.utils.buildLinkableString
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideNoInternetDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideSuccessDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.RemoveSigning
@@ -84,6 +82,8 @@ import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_me
 import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_title
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_message
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_title
+import smwolczyn.composeapp.generated.resources.meeting_signing_underage_consent
+import smwolczyn.composeapp.generated.resources.meeting_signing_underage_info
 import smwolczyn.composeapp.generated.resources.meeting_statute_title
 import smwolczyn.composeapp.generated.resources.meeting_statute_value
 import smwolczyn.composeapp.generated.resources.participant_type
@@ -256,7 +256,31 @@ private fun SigningsScreenContent(
             CheckableField(
                 checked = state.statuteChecked,
                 onCheckedChange = { handleAction(UpdateStatuteConsent(it)) },
-                text = buildStatuteString(),
+                text = buildLinkableString(
+                    text = Res.string.meeting_statute_title,
+                    links = listOf(
+                        Triple(
+                            STATUTE,
+                            STATUTE_LINK,
+                            Res.string.meeting_statute_value,
+                        ),
+                    ),
+                ),
+            )
+
+        if (state.isUnderAge)
+            WolczynText(
+                text = buildLinkableString(
+                    text = Res.string.meeting_signing_underage_info,
+                    links = listOf(
+                        Triple(
+                            UNDER_AGE,
+                            UNDER_AGE_LINK,
+                            Res.string.meeting_signing_underage_consent,
+                        ),
+                    ),
+                ),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
             )
 
         Button(
@@ -334,25 +358,10 @@ private fun SigningsScreenContent(
     )
 }
 
-@Composable
-private fun buildStatuteString() = buildAnnotatedString {
-    stringResource(Res.string.meeting_statute_title)
-        .split(STATUTE)
-        .let {
-            append(it[0])
-            withLink(
-                LinkAnnotation.Url(
-                    url = STATUTE_LINK,
-                    styles = TextLinkStyles(style = SpanStyle(color = wolczynColors.primary)),
-                )
-            ) {
-                append(stringResource(Res.string.meeting_statute_value))
-            }
-            append(it[1])
-        }
-}
-
 private const val ESSENTIALS_LINK = "https://wolczyn.kapucyni.pl/niezbednik/"
 private const val STATUTE = "%statute%"
 private const val STATUTE_LINK =
     "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Regulamin-Spotkania.pdf"
+private const val UNDER_AGE = "%consent%"
+private const val UNDER_AGE_LINK =
+    "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Zgoda-rodzica-2025.pdf"

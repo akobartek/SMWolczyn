@@ -123,6 +123,8 @@
     <string name="meeting_signing_remove_dialog_message">Jesteś pewny, że chcesz wycofać swoje zgłoszenie na Wołczyn?</string>
     <string name="meeting_signing_remove_dialog_btn">Wycofaj</string>
     <string name="meeting_signing_remove_success">Zgłoszenie zostało usunięte z systemu</string>
+    <string name="meeting_signing_underage_info">Pamiętaj, że jako osoba niepełnoletnia, na spotkanie musisz zabrać podpisaną %consent% oraz przyjechać na Wołczyn pod opieką opiekuna indywidualnego lub grupowego.</string>
+    <string name="meeting_signing_underage_consent">zgodę rodzica lub opiekuna prawnego</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>
