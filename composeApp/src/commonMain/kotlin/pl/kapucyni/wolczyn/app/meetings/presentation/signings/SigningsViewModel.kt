@@ -222,7 +222,22 @@ class SigningsViewModel(
     }
 
     private fun CharSequence.isValidPesel(): Boolean {
-        val regex = Regex("^[0-9]{2}([02468]1|[13579][012])(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{5}\$")
-        return this.matches(regex)
+        val regex = Regex("\\b[0-9]{2}([02468][1-9]|[13579][0-2])(0[1-9]|[1,2][0-9]|3[0-1])\\d{5}")
+        return this.matches(regex) && peselControlNumberValidation()
     }
+
+    private fun CharSequence.peselControlNumberValidation(): Boolean = try {
+        map { it.digitToInt() }.let { digits ->
+            val wages = listOf(1, 3, 7, 9, 1, 3, 7, 9, 1, 3)
+            val controlNumber = digits.last()
+            val calculatedNumber = digits.take(10)
+                .zip(wages)
+                .sumOf { (digit, wage) -> digit * wage % 10 }
+                .let { sum -> 10 - sum % 10 }
+            controlNumber == calculatedNumber
+        }
+    } catch (exc: Exception) {
+        false
+    }
+
 }
