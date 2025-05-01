@@ -1,7 +1,6 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.signings
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -17,16 +16,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +37,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -67,10 +65,8 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.Upd
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsSubtitle
-import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.birthday_error
-import smwolczyn.composeapp.generated.resources.cd_save_profile
 import smwolczyn.composeapp.generated.resources.city_error
 import smwolczyn.composeapp.generated.resources.email
 import smwolczyn.composeapp.generated.resources.email_error_invalid
@@ -80,6 +76,8 @@ import smwolczyn.composeapp.generated.resources.participant_type
 import smwolczyn.composeapp.generated.resources.participant_type_error
 import smwolczyn.composeapp.generated.resources.pesel
 import smwolczyn.composeapp.generated.resources.pesel_error
+import smwolczyn.composeapp.generated.resources.signing_save
+import smwolczyn.composeapp.generated.resources.signing_send
 import smwolczyn.composeapp.generated.resources.signings
 import smwolczyn.composeapp.generated.resources.user_birthday
 import smwolczyn.composeapp.generated.resources.user_city
@@ -103,17 +101,11 @@ fun SigningsScreen(
     ScreenLayout(
         title = stringResource(Res.string.signings),
         onBackPressed = navigateUp,
-        actionIcon = if (state is State.Success) {
+        actionIcon = (state as? State.Success)?.let {
             {
-                IconButton(onClick = { viewModel.handleAction(SaveData) }) {
-                    Icon(
-                        imageVector = Icons.Filled.Save,
-                        tint = wolczynColors.primary,
-                        contentDescription = stringResource(Res.string.cd_save_profile),
-                    )
-                }
+
             }
-        } else null,
+        },
     ) {
         when (state) {
             is State.Loading -> LoadingBox()
@@ -133,7 +125,7 @@ private fun SigningsScreenContent(
     handleAction: (SigningsAction) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val (firstNameRef, lastNameRef, cityRef, emailRef, peselRef) =
+    val (firstNameRef, lastNameRef, cityRef, emailRef, birthdayRef, peselRef, typeRef) =
         remember { FocusRequester.createRefs() }
     var dateDialogVisible by rememberSaveable { mutableStateOf(false) }
     var typeDropDownVisible by rememberSaveable { mutableStateOf(false) }
@@ -149,7 +141,7 @@ private fun SigningsScreenContent(
     ) {
         if (state.isUserInfoEditable.not()) {
             SigningsSubtitle(state = state)
-            HeightSpacer(8.dp)
+            HeightSpacer(4.dp)
         } else {
             OutlinedTextField(
                 value = state.firstName,
@@ -247,7 +239,7 @@ private fun SigningsScreenContent(
                     .widthIn(max = 420.dp)
                     .fillMaxWidth()
                     .focusRequester(emailRef)
-                    .focusProperties { next = peselRef },
+                    .focusProperties { next = birthdayRef },
             )
 
             OutlinedTextField(
@@ -266,17 +258,8 @@ private fun SigningsScreenContent(
                         contentDescription = null,
                     )
                 },
-                enabled = false,
+                readOnly = true,
                 singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                    disabledBorderColor = MaterialTheme.colorScheme.outline,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSupportingTextColor = MaterialTheme.colorScheme.error,
-                ),
                 isError = state.birthdayError,
                 supportingText = if (state.birthdayError) {
                     {
@@ -285,31 +268,40 @@ private fun SigningsScreenContent(
                 } else null,
                 modifier = Modifier
                     .widthIn(max = 420.dp)
-                    .clickable { dateDialogVisible = true }
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .onFocusChanged {
+                        if (it.isFocused) dateDialogVisible = true
+                    }
+                    .focusRequester(birthdayRef),
             )
         }
 
-        OutlinedTextField(
-            value = state.pesel,
-            onValueChange = { handleAction(UpdatePesel(it)) },
-            singleLine = true,
-            label = { WolczynText(text = stringResource(Res.string.pesel)) },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-            ),
-            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-            isError = state.peselError,
-            supportingText = if (state.peselError) {
-                {
-                    WolczynText(text = stringResource(Res.string.pesel_error))
-                }
-            } else null,
-            modifier = Modifier
-                .widthIn(max = 420.dp)
-                .fillMaxWidth()
-                .focusRequester(peselRef),
-        )
+        AnimatedVisibility(state.birthdayDate != null) {
+            OutlinedTextField(
+                value = state.pesel,
+                onValueChange = { handleAction(UpdatePesel(it)) },
+                singleLine = true,
+                label = { WolczynText(text = stringResource(Res.string.pesel)) },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next,
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
+                ),
+                isError = state.peselError,
+                supportingText = if (state.peselError) {
+                    {
+                        WolczynText(text = stringResource(Res.string.pesel_error))
+                    }
+                } else null,
+                modifier = Modifier
+                    .widthIn(max = 420.dp)
+                    .fillMaxWidth()
+                    .focusRequester(peselRef)
+                    .focusProperties { next = typeRef },
+            )
+        }
 
         BoxWithConstraints(
             modifier = Modifier
@@ -328,21 +320,14 @@ private fun SigningsScreenContent(
                 },
                 trailingIcon = {
                     Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
+                        imageVector =
+                            if (typeDropDownVisible) Icons.Default.ArrowDropUp
+                            else Icons.Default.ArrowDropDown,
                         contentDescription = null,
                     )
                 },
-                enabled = false,
+                readOnly = true,
                 singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                    disabledBorderColor = MaterialTheme.colorScheme.outline,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSupportingTextColor = MaterialTheme.colorScheme.error,
-                ),
                 isError = state.typeError,
                 supportingText = if (state.typeError) {
                     {
@@ -350,22 +335,26 @@ private fun SigningsScreenContent(
                     }
                 } else null,
                 modifier = Modifier
-                    .clickable {
-                        focusManager.clearFocus()
-                        typeDropDownVisible = true
+                    .onFocusChanged {
+                        if (it.isFocused) typeDropDownVisible = true
                     }
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .focusRequester(typeRef),
             )
 
             DropdownMenu(
                 expanded = typeDropDownVisible,
-                onDismissRequest = { typeDropDownVisible = false },
+                onDismissRequest = {
+                    focusManager.clearFocus()
+                    typeDropDownVisible = false
+                },
                 modifier = Modifier.width(maxWidth),
             ) {
                 state.availableTypes.forEach {
                     DropdownMenuItem(
                         text = { WolczynText(text = stringResource(it.stringRes)) },
                         onClick = {
+                            focusManager.clearFocus()
                             typeDropDownVisible = false
                             handleAction(UpdateType(it))
                         },
@@ -392,21 +381,14 @@ private fun SigningsScreenContent(
                     },
                     trailingIcon = {
                         Icon(
-                            imageVector = Icons.Default.ArrowDropDown,
+                            imageVector =
+                                if (typeDropDownVisible) Icons.Default.ArrowDropUp
+                                else Icons.Default.ArrowDropDown,
                             contentDescription = null,
                         )
                     },
-                    enabled = false,
+                    readOnly = true,
                     singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                        disabledBorderColor = MaterialTheme.colorScheme.outline,
-                        disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledSupportingTextColor = MaterialTheme.colorScheme.error,
-                    ),
                     isError = state.workshopError,
                     supportingText = if (state.workshopError) {
                         {
@@ -414,22 +396,25 @@ private fun SigningsScreenContent(
                         }
                     } else null,
                     modifier = Modifier
-                        .clickable {
-                            focusManager.clearFocus()
-                            workshopsDropDownVisible = true
+                        .onFocusChanged {
+                            if (it.isFocused) workshopsDropDownVisible = true
                         }
                         .fillMaxWidth(),
                 )
 
                 DropdownMenu(
                     expanded = workshopsDropDownVisible,
-                    onDismissRequest = { workshopsDropDownVisible = false },
+                    onDismissRequest = {
+                        focusManager.clearFocus()
+                        workshopsDropDownVisible = false
+                    },
                     modifier = Modifier.width(maxWidth),
                 ) {
                     state.availableWorkshops.forEach {
                         DropdownMenuItem(
                             text = { WolczynText(text = it) },
                             onClick = {
+                                focusManager.clearFocus()
                                 workshopsDropDownVisible = false
                                 handleAction(UpdateWorkshop(it))
                             },
@@ -438,12 +423,32 @@ private fun SigningsScreenContent(
                 }
             }
         }
+
+        Button(
+            onClick = {
+                focusManager.clearFocus(true)
+                handleAction(SaveData)
+            },
+            modifier = Modifier
+                .widthIn(max = 420.dp)
+                .fillMaxWidth(),
+        ) {
+            WolczynText(
+                text = stringResource(
+                    if (state.isEditing) Res.string.signing_save
+                    else Res.string.signing_send
+                ),
+            )
+        }
     }
 
     DatePickDialog(
         isVisible = dateDialogVisible,
         dateMillis = state.birthdayDate,
-        onDismiss = { dateDialogVisible = false },
+        onDismiss = {
+            focusManager.clearFocus()
+            dateDialogVisible = false
+        },
         onDateSelected = { handleAction(UpdateBirthday(it)) },
     )
 

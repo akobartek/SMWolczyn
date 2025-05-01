@@ -26,11 +26,7 @@ fun DatePickDialog(
     onDateSelected: (Long) -> Unit,
 ) {
     if (isVisible) {
-        val datePickerState =
-            rememberDatePickerState(
-                initialSelectedDateMillis = dateMillis,
-                initialDisplayedMonthMillis = dateMillis ?: 1112470620000,
-            )
+        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = dateMillis)
         DatePickerDialog(
             onDismissRequest = onDismiss,
             confirmButton = {

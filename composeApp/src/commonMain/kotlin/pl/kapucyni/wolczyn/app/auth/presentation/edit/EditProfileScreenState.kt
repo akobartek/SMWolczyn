@@ -9,5 +9,6 @@ data class EditProfileScreenState(
     val city: String,
     val cityError: Boolean = false,
     val birthdayDate: Long,
+    val birthdayError: Boolean = false,
     val noInternetDialogVisible: Boolean = false,
 )

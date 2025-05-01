@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.UpdateUserUseCase
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.SaveData
@@ -61,7 +62,7 @@ class EditProfileViewModel(
     }
 
     private fun updateBirthdayDate(value: Long) {
-        _state.update { it.copy(birthdayDate = value) }
+        _state.update { it.copy(birthdayDate = value, birthdayError = false) }
     }
 
     private fun hideNoInternetDialog() {
@@ -111,6 +112,7 @@ class EditProfileViewModel(
                 lastNameError = lastName.trim().isBlank(),
                 city = city.trim(),
                 cityError = city.trim().isBlank(),
+                birthdayError = birthdayDate > Clock.System.now().toEpochMilliseconds(),
             )
         }
         _state.update { newState }
@@ -118,6 +120,10 @@ class EditProfileViewModel(
                 || user.lastName != newState.lastName
                 || user.city != newState.city
                 || user.birthday.toMilliseconds().toLong() != newState.birthdayDate
-        return newState.firstNameError.not() && newState.lastNameError.not() && userChanged
+        return newState.firstNameError.not()
+                && newState.lastNameError.not()
+                && newState.cityError.not()
+                && newState.birthdayError.not()
+                && userChanged
     }
 }

@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.auth.presentation.edit
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,9 +16,7 @@ import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,13 +29,19 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
-import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.*
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.SaveData
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.ToggleNoInternetDialog
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateBirthday
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateCity
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateFirstName
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateLastName
 import pl.kapucyni.wolczyn.app.common.presentation.composables.DatePickDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
@@ -47,6 +50,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.birthday_error
 import smwolczyn.composeapp.generated.resources.cd_save_profile
 import smwolczyn.composeapp.generated.resources.city_error
 import smwolczyn.composeapp.generated.resources.edit_profile_title
@@ -78,7 +82,8 @@ private fun EditProfileScreenContent(
     handleAction: (EditProfileAction) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val (firstNameRef, lastNameRef, cityRef) = remember { FocusRequester.createRefs() }
+    val (firstNameRef, lastNameRef, cityRef, birthdayRef) =
+        remember { FocusRequester.createRefs() }
     var dateDialogVisible by rememberSaveable { mutableStateOf(false) }
 
     ScreenLayout(
@@ -161,7 +166,9 @@ private fun EditProfileScreenContent(
                     imeAction = ImeAction.Next,
                     capitalization = KeyboardCapitalization.Words,
                 ),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
+                ),
                 isError = state.cityError,
                 supportingText = if (state.cityError) {
                     {
@@ -171,7 +178,8 @@ private fun EditProfileScreenContent(
                 modifier = Modifier
                     .widthIn(max = 420.dp)
                     .fillMaxWidth()
-                    .focusRequester(cityRef),
+                    .focusRequester(cityRef)
+                    .focusProperties { next = birthdayRef },
             )
 
             OutlinedTextField(
@@ -190,21 +198,21 @@ private fun EditProfileScreenContent(
                         contentDescription = null,
                     )
                 },
-                enabled = false,
+                readOnly = true,
                 singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                    disabledBorderColor = MaterialTheme.colorScheme.outline,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSupportingTextColor = MaterialTheme.colorScheme.error,
-                ),
+                isError = state.birthdayError,
+                supportingText = if (state.birthdayError) {
+                    {
+                        WolczynText(text = stringResource(Res.string.birthday_error))
+                    }
+                } else null,
                 modifier = Modifier
                     .widthIn(max = 420.dp)
-                    .clickable { dateDialogVisible = true }
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .onFocusChanged {
+                        if (it.isFocused) dateDialogVisible = true
+                    }
+                    .focusRequester(birthdayRef),
             )
         }
     }
@@ -212,7 +220,10 @@ private fun EditProfileScreenContent(
     DatePickDialog(
         isVisible = dateDialogVisible,
         dateMillis = state.birthdayDate,
-        onDismiss = { dateDialogVisible = false },
+        onDismiss = {
+            focusManager.clearFocus()
+            dateDialogVisible = false
+        },
         onDateSelected = { handleAction(UpdateBirthday(it)) },
     )
 

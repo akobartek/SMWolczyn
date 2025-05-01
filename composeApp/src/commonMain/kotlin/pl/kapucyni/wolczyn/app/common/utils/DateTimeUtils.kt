@@ -53,4 +53,26 @@ fun Long.getFormattedDate() =
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .getFormattedDate()
 
-fun Timestamp.getFormattedDate() = (seconds * 1000L).getFormattedDate()
+fun Timestamp.getPeselBeginning() =
+    Instant.fromEpochSeconds(this.seconds, this.nanoseconds)
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .getPeselBeginning()
+
+fun Long.getPeselBeginning() =
+    Instant.fromEpochMilliseconds(this)
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .getPeselBeginning()
+
+private fun LocalDateTime.getPeselBeginning() = format(
+    LocalDateTime.Format {
+        yearTwoDigits(year)
+        when (year) {
+            in (1800..1899) -> chars((monthNumber + 80).toString())
+            in (2000..2099) -> chars((monthNumber + 20).toString())
+            in (2100..2199) -> chars((monthNumber + 40).toString())
+            in (2200..2299) -> chars((monthNumber + 60).toString())
+            else -> monthNumber()
+        }
+        dayOfMonth()
+    }
+)

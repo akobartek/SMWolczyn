@@ -1,6 +1,10 @@
 package pl.kapucyni.wolczyn.app.auth.domain.model
 
 import dev.gitlive.firebase.firestore.Timestamp
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.yearsUntil
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,4 +19,10 @@ data class User(
     val birthday: Timestamp = Timestamp.now(),
     val createdAt: Timestamp = Timestamp.now(),
     val photoUrl: String? = null,
-)
+) {
+    fun isUnderAge() =
+        Instant.fromEpochSeconds(birthday.seconds, birthday.nanoseconds).yearsUntil(
+            other = Clock.System.now(),
+            timeZone = TimeZone.currentSystemDefault(),
+        ) < 18
+}

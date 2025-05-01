@@ -39,9 +39,9 @@
     <string name="user_last_name">Nazwisko</string>
     <string name="last_name_error">Nazwisko nie może być puste!</string>
     <string name="user_city">Miasto</string>
-    <string name="city_error">Podanie miasta jest wymagane!</string>
+    <string name="city_error">Miasto nie może być puste!</string>
     <string name="user_birthday">Data urodzenia</string>
-    <string name="birthday_error">Podanie daty jest wymagane!</string>
+    <string name="birthday_error">Proszę podać prawidłową datę!</string>
     <string name="sign_in">Zaloguj</string>
     <string name="sign_up">Rejestracja</string>
     <string name="sign_out">Wyloguj</string>
@@ -94,7 +94,9 @@
     <!-- MEETINGS STRINGS -->
     <string name="meetings">Spotkania</string>
     <string name="signings">Zapisy</string>
-    <string name="signings_subtitle">Witaj, %1$s, aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie pod hasłem %meeting_title%, musisz wypełnić poniższy formularz zgłoszeniowy:</string>
+    <string name="signing_send">Wyślij zgłoszenie</string>
+    <string name="signing_save">Zapisz zgłoszenie</string>
+    <string name="signings_subtitle">Witaj, %1$s, aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie pod hasłem %meeting_title%, wypełnij poniższy formularz zgłoszeniowy:</string>
     <string name="signings_subtitle_edit">Cześć, %1$s, Twoje zgłoszenie jest już zapisane w systemie. Jeśli chcesz, możesz je edytować poniżej:</string>
     <string name="pesel">PESEL</string>
     <string name="pesel_error">Podany numer PESEL jest nieprawidłowy!</string>

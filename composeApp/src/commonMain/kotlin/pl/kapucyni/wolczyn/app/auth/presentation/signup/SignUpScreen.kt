@@ -26,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +38,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -117,7 +117,8 @@ private fun SignUpScreenContent(
     handleAction: (SignUpAction) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val (firstNameRef, lastNameRef, cityRef, emailRef, passwordRef) = remember { FocusRequester.createRefs() }
+    val (firstNameRef, lastNameRef, cityRef, emailRef, passwordRef, birthdayRef) =
+        remember { FocusRequester.createRefs() }
     var dateDialogVisible by rememberSaveable { mutableStateOf(false) }
 
     ScreenLayout(
@@ -238,8 +239,13 @@ private fun SignUpScreenContent(
                 singleLine = true,
                 label = { WolczynText(text = stringResource(Res.string.password)) },
                 visualTransformation = if (state.passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Next,
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
+                ),
                 trailingIcon = {
                     IconButton(onClick = { handleAction(TogglePasswordHidden) }) {
                         if (state.passwordHidden)
@@ -270,7 +276,8 @@ private fun SignUpScreenContent(
                 modifier = Modifier
                     .widthIn(max = 420.dp)
                     .fillMaxWidth()
-                    .focusRequester(passwordRef),
+                    .focusRequester(passwordRef)
+                    .focusProperties { next = birthdayRef },
             )
 
             OutlinedTextField(
@@ -289,17 +296,8 @@ private fun SignUpScreenContent(
                         contentDescription = null,
                     )
                 },
-                enabled = false,
+                readOnly = true,
                 singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                    disabledBorderColor = MaterialTheme.colorScheme.outline,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledSupportingTextColor = MaterialTheme.colorScheme.error,
-                ),
                 isError = state.birthdayError,
                 supportingText = if (state.birthdayError) {
                     {
@@ -308,8 +306,11 @@ private fun SignUpScreenContent(
                 } else null,
                 modifier = Modifier
                     .widthIn(max = 420.dp)
-                    .clickable { dateDialogVisible = true }
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .onFocusChanged {
+                        if (it.isFocused) dateDialogVisible = true
+                    }
+                    .focusRequester(birthdayRef),
             )
 
             Row(
@@ -379,7 +380,10 @@ private fun SignUpScreenContent(
     DatePickDialog(
         isVisible = dateDialogVisible,
         dateMillis = state.birthdayDate,
-        onDismiss = { dateDialogVisible = false },
+        onDismiss = {
+            focusManager.clearFocus()
+            dateDialogVisible = false
+        },
         onDateSelected = { handleAction(UpdateBirthday(it)) },
     )
 

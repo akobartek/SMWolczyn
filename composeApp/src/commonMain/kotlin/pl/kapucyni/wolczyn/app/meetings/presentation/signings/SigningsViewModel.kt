@@ -12,6 +12,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -43,12 +44,19 @@ class SigningsViewModel(
                             lastName = participant?.lastName ?: user?.lastName.orEmpty(),
                             city = participant?.city ?: user?.city.orEmpty(),
                             email = participant?.email ?: user?.email.orEmpty(),
-                            pesel = participant?.pesel.orEmpty(),
+                            pesel =
+                                participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
                             birthdayDate = (participant?.birthday ?: user?.birthday)
                                 ?.toMilliseconds()?.toLong(),
                             availableTypes = ParticipantType.entries.let {
-                                if (user == null) it
-                                else it - ParticipantType.ORGANISATION
+                                when {
+                                    user == null -> it
+
+                                    user.isUnderAge() ->
+                                        listOf(ParticipantType.MEMBER, ParticipantType.SCOUT)
+
+                                    else -> it - ParticipantType.ORGANISATION
+                                }
                             },
                             type = participant?.type,
                             workshopsVisible = participant?.type?.canSelectWorkshops() ?: false,
@@ -102,7 +110,13 @@ class SigningsViewModel(
     private fun updateBirthdayDate(value: Long) {
         val data = (screenState.value as? State.Success)?.data ?: return
         _screenState.update {
-            State.Success(data.copy(birthdayDate = value, birthdayError = false))
+            State.Success(
+                data.copy(
+                    birthdayDate = value,
+                    birthdayError = false,
+                    pesel = value.getPeselBeginning(),
+                )
+            )
         }
     }
 
@@ -115,6 +129,9 @@ class SigningsViewModel(
 
     private fun updatePesel(pesel: String) {
         val data = (screenState.value as? State.Success)?.data ?: return
+        user?.let {
+            if (pesel.startsWith(user.birthday.getPeselBeginning()).not()) return
+        }
         _screenState.update {
             State.Success(data.copy(pesel = pesel, peselError = false))
         }
