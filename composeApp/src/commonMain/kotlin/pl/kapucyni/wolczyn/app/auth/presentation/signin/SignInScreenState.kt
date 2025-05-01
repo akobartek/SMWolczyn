@@ -5,7 +5,6 @@ data class SignInScreenState(
     val email: String = "",
     val emailError: EmailErrorType? = null,
     val password: String = "",
-    val passwordHidden: Boolean = true,
     val passwordError: PasswordErrorType? = null,
     val isSignedIn: Boolean = false,
     val noInternetAction: NoInternetAction? = null,

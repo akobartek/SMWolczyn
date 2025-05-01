@@ -29,7 +29,6 @@ class SignUpViewModel(
         when (action) {
             is UpdateEmail -> updateEmail(action.email)
             is UpdatePassword -> updatePassword(action.password)
-            is TogglePasswordHidden -> updatePasswordHidden()
             is UpdateFirstName -> updateFirstName(action.firstName)
             is UpdateLastName -> updateLastName(action.lastName)
             is UpdateCity -> updateCity(action.city)
@@ -48,10 +47,6 @@ class SignUpViewModel(
 
     private fun updatePassword(value: String) {
         _state.update { it.copy(password = value, passwordError = null) }
-    }
-
-    private fun updatePasswordHidden() {
-        _state.update { it.copy(passwordHidden = !it.passwordHidden) }
     }
 
     private fun updateFirstName(firstName: String) {

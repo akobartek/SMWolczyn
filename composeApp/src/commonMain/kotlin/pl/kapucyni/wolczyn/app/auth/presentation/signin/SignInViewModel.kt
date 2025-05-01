@@ -38,10 +38,6 @@ class SignInViewModel(
         _state.update { it.copy(password = value) }
     }
 
-    fun updatePasswordHidden() {
-        _state.update { it.copy(passwordHidden = !it.passwordHidden) }
-    }
-
     fun hideNoInternetDialog() {
         _state.update { it.copy(noInternetAction = null) }
     }

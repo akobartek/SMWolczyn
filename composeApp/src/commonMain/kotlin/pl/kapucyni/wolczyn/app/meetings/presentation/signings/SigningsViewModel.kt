@@ -129,9 +129,9 @@ class SigningsViewModel(
 
     private fun updatePesel(pesel: String) {
         val data = (screenState.value as? State.Success)?.data ?: return
-        user?.let {
-            if (pesel.startsWith(user.birthday.getPeselBeginning()).not()) return
-        }
+        if (pesel.startsWith(data.birthdayDate?.getPeselBeginning().orEmpty()).not())
+            return
+
         _screenState.update {
             State.Success(data.copy(pesel = pesel, peselError = false))
         }

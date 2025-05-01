@@ -3,63 +3,44 @@ package pl.kapucyni.wolczyn.app.auth.presentation.edit
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.common.presentation.composables.BirthdayTextField
+import pl.kapucyni.wolczyn.app.common.presentation.composables.CityTextField
+import pl.kapucyni.wolczyn.app.common.presentation.composables.FirstNameTextField
+import pl.kapucyni.wolczyn.app.common.presentation.composables.LastNameTextField
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.SaveData
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.ToggleNoInternetDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateCity
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateLastName
-import pl.kapucyni.wolczyn.app.common.presentation.composables.DatePickDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
-import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
-import smwolczyn.composeapp.generated.resources.birthday_error
 import smwolczyn.composeapp.generated.resources.cd_save_profile
-import smwolczyn.composeapp.generated.resources.city_error
 import smwolczyn.composeapp.generated.resources.edit_profile_title
-import smwolczyn.composeapp.generated.resources.first_name_error
-import smwolczyn.composeapp.generated.resources.last_name_error
-import smwolczyn.composeapp.generated.resources.user_birthday
-import smwolczyn.composeapp.generated.resources.user_city
-import smwolczyn.composeapp.generated.resources.user_first_name
-import smwolczyn.composeapp.generated.resources.user_last_name
 
 @Composable
 fun EditProfileScreen(
@@ -84,7 +65,6 @@ private fun EditProfileScreenContent(
     val focusManager = LocalFocusManager.current
     val (firstNameRef, lastNameRef, cityRef, birthdayRef) =
         remember { FocusRequester.createRefs() }
-    var dateDialogVisible by rememberSaveable { mutableStateOf(false) }
 
     ScreenLayout(
         title = stringResource(Res.string.edit_profile_title),
@@ -107,125 +87,50 @@ private fun EditProfileScreenContent(
                 .padding(horizontal = 24.dp)
                 .verticalScroll(rememberScrollState()),
         ) {
-            OutlinedTextField(
+            FirstNameTextField(
                 value = state.firstName,
                 onValueChange = { handleAction(UpdateFirstName(it)) },
-                singleLine = true,
-                label = { WolczynText(text = stringResource(Res.string.user_first_name)) },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next,
-                    capitalization = KeyboardCapitalization.Words,
-                ),
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.moveFocus(FocusDirection.Next) },
                 ),
-                isError = state.firstNameError,
-                supportingText = if (state.firstNameError) {
-                    {
-                        WolczynText(text = stringResource(Res.string.first_name_error))
-                    }
-                } else null,
+                error = state.firstNameError,
                 modifier = Modifier
-                    .widthIn(max = 420.dp)
-                    .fillMaxWidth()
                     .focusRequester(firstNameRef)
                     .focusProperties { next = lastNameRef },
             )
 
-            OutlinedTextField(
+            LastNameTextField(
                 value = state.lastName,
                 onValueChange = { handleAction(UpdateLastName(it)) },
-                singleLine = true,
-                label = { WolczynText(text = stringResource(Res.string.user_last_name)) },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next,
-                    capitalization = KeyboardCapitalization.Words,
-                ),
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.moveFocus(FocusDirection.Next) },
                 ),
-                isError = state.lastNameError,
-                supportingText = if (state.lastNameError) {
-                    {
-                        WolczynText(text = stringResource(Res.string.last_name_error))
-                    }
-                } else null,
+                error = state.lastNameError,
                 modifier = Modifier
-                    .widthIn(max = 420.dp)
-                    .fillMaxWidth()
                     .focusRequester(lastNameRef)
                     .focusProperties { next = cityRef },
             )
 
-            OutlinedTextField(
+            CityTextField(
                 value = state.city,
                 onValueChange = { handleAction(UpdateCity(it)) },
-                singleLine = true,
-                label = { WolczynText(text = stringResource(Res.string.user_city)) },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next,
-                    capitalization = KeyboardCapitalization.Words,
-                ),
+                error = state.cityError,
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.moveFocus(FocusDirection.Next) },
                 ),
-                isError = state.cityError,
-                supportingText = if (state.cityError) {
-                    {
-                        WolczynText(text = stringResource(Res.string.city_error))
-                    }
-                } else null,
                 modifier = Modifier
-                    .widthIn(max = 420.dp)
-                    .fillMaxWidth()
                     .focusRequester(cityRef)
                     .focusProperties { next = birthdayRef },
             )
 
-            OutlinedTextField(
-                value = state.birthdayDate.getFormattedDate(),
-                onValueChange = {},
-                label = { WolczynText(stringResource(Res.string.user_birthday)) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Event,
-                        contentDescription = null,
-                    )
-                },
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                    )
-                },
-                readOnly = true,
-                singleLine = true,
-                isError = state.birthdayError,
-                supportingText = if (state.birthdayError) {
-                    {
-                        WolczynText(text = stringResource(Res.string.birthday_error))
-                    }
-                } else null,
-                modifier = Modifier
-                    .widthIn(max = 420.dp)
-                    .fillMaxWidth()
-                    .onFocusChanged {
-                        if (it.isFocused) dateDialogVisible = true
-                    }
-                    .focusRequester(birthdayRef),
+            BirthdayTextField(
+                value = state.birthdayDate,
+                onDateSelected = { handleAction(UpdateBirthday(it)) },
+                error = state.birthdayError,
+                modifier = Modifier.focusRequester(birthdayRef),
             )
         }
     }
-
-    DatePickDialog(
-        isVisible = dateDialogVisible,
-        dateMillis = state.birthdayDate,
-        onDismiss = {
-            focusManager.clearFocus()
-            dateDialogVisible = false
-        },
-        onDateSelected = { handleAction(UpdateBirthday(it)) },
-    )
 
     LoadingDialog(visible = state.loading)
 

@@ -9,18 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,10 +28,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
@@ -43,10 +35,12 @@ import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.EmailE
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.NoInternetAction
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.PasswordErrorType
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.composables.ResetPasswordDialog
+import pl.kapucyni.wolczyn.app.common.presentation.composables.EmailTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NavigateUpIcon
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
+import pl.kapucyni.wolczyn.app.common.presentation.composables.PasswordTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynLogo
@@ -54,16 +48,12 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_clear_field
-import smwolczyn.composeapp.generated.resources.email
 import smwolczyn.composeapp.generated.resources.email_error_invalid
 import smwolczyn.composeapp.generated.resources.email_error_no_user
 import smwolczyn.composeapp.generated.resources.forgot_password
-import smwolczyn.composeapp.generated.resources.hide_password
-import smwolczyn.composeapp.generated.resources.password
 import smwolczyn.composeapp.generated.resources.password_error_empty
 import smwolczyn.composeapp.generated.resources.password_error_invalid
 import smwolczyn.composeapp.generated.resources.password_error_unknown
-import smwolczyn.composeapp.generated.resources.show_password
 import smwolczyn.composeapp.generated.resources.sign_in
 import smwolczyn.composeapp.generated.resources.sign_up
 import smwolczyn.composeapp.generated.resources.verify_email_dialog_message
@@ -83,7 +73,6 @@ fun SignInScreen(
         state = state,
         updateEmail = viewModel::updateEmail,
         updatePassword = viewModel::updatePassword,
-        updatePasswordHidden = viewModel::updatePasswordHidden,
         signIn = viewModel::signIn,
         signUp = openSignUp,
         sendResetPasswordEmail = viewModel::sendResetPasswordEmail,
@@ -99,7 +88,6 @@ private fun SignInScreenContent(
     state: SignInScreenState,
     updateEmail: (String) -> Unit,
     updatePassword: (String) -> Unit,
-    updatePasswordHidden: () -> Unit,
     signIn: () -> Unit,
     signUp: (String) -> Unit,
     sendResetPasswordEmail: (String) -> Unit,
@@ -132,15 +120,17 @@ private fun SignInScreenContent(
             ) {
                 WolczynLogo(modifier = Modifier.padding(top = if (isCompactHeight) 16.dp else 60.dp))
 
-                OutlinedTextField(
+                EmailTextField(
                     value = state.email,
                     onValueChange = updateEmail,
-                    singleLine = true,
-                    label = { WolczynText(text = stringResource(Res.string.email)) },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next,
-                    ),
+                    errorMessage = state.emailError?.let {
+                        stringResource(
+                            when (state.emailError) {
+                                EmailErrorType.INVALID -> Res.string.email_error_invalid
+                                EmailErrorType.NO_USER -> Res.string.email_error_no_user
+                            }
+                        )
+                    },
                     keyboardActions = KeyboardActions(
                         onNext = { focusManager.moveFocus(FocusDirection.Next) },
                     ),
@@ -153,74 +143,31 @@ private fun SignInScreenContent(
                                 )
                             }
                     },
-                    isError = state.emailError != null,
-                    supportingText = if (state.emailError != null) {
-                        {
-                            WolczynText(
-                                text = stringResource(
-                                    when (state.emailError) {
-                                        EmailErrorType.INVALID -> Res.string.email_error_invalid
-                                        EmailErrorType.NO_USER -> Res.string.email_error_no_user
-                                    }
-                                )
-                            )
-                        }
-                    } else null,
                     modifier = Modifier
-                        .widthIn(max = 420.dp)
-                        .fillMaxWidth()
                         .padding(top = 16.dp)
                         .focusRequester(emailRef)
                         .focusProperties { next = passwordRef }
                 )
 
-                OutlinedTextField(
+                PasswordTextField(
                     value = state.password,
                     onValueChange = updatePassword,
-                    singleLine = true,
-                    label = { WolczynText(text = stringResource(Res.string.password)) },
-                    visualTransformation =
-                        if (state.passwordHidden) PasswordVisualTransformation()
-                        else VisualTransformation.None,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
                             signIn()
                         },
                     ),
-                    trailingIcon = {
-                        IconButton(onClick = updatePasswordHidden) {
-                            if (state.passwordHidden)
-                                Icon(
-                                    imageVector = Icons.Filled.Visibility,
-                                    contentDescription = stringResource(Res.string.show_password)
-                                )
-                            else
-                                Icon(
-                                    imageVector = Icons.Filled.VisibilityOff,
-                                    contentDescription = stringResource(Res.string.hide_password)
-                                )
-                        }
+                    errorMessage = state.passwordError?.let {
+                        stringResource(
+                            when (state.passwordError) {
+                                PasswordErrorType.EMPTY -> Res.string.password_error_empty
+                                PasswordErrorType.INVALID -> Res.string.password_error_invalid
+                                PasswordErrorType.UNKNOWN -> Res.string.password_error_unknown
+                            }
+                        )
                     },
-                    isError = state.passwordError != null,
-                    supportingText = if (state.passwordError != null) {
-                        {
-                            WolczynText(
-                                text = stringResource(
-                                    when (state.passwordError) {
-                                        PasswordErrorType.EMPTY -> Res.string.password_error_empty
-                                        PasswordErrorType.INVALID -> Res.string.password_error_invalid
-                                        PasswordErrorType.UNKNOWN -> Res.string.password_error_unknown
-                                    }
-                                )
-                            )
-                        }
-                    } else null,
-                    modifier = Modifier
-                        .widthIn(max = 420.dp)
-                        .fillMaxWidth()
-                        .focusRequester(passwordRef)
+                    modifier = Modifier.focusRequester(passwordRef)
                 )
 
                 Button(
@@ -235,7 +182,7 @@ private fun SignInScreenContent(
                     WolczynText(text = stringResource(Res.string.sign_in))
                 }
 
-                HeightSpacer(4.dp)
+                HeightSpacer(2.dp)
 
                 OutlinedButton(
                     onClick = toggleForgottenPasswordDialogVisibility,
