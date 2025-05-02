@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
+private val appVersion = "2025.0"
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
@@ -20,6 +22,7 @@ buildConfig {
     properties.load(project.rootProject.file("local.properties").inputStream())
     val password = properties.getProperty("admin_password") ?: ""
     buildConfigField<String>(name = "ADMIN_PASSWORD", value = password)
+    buildConfigField<String>(name = "APP_VERSION", value = appVersion)
 }
 
 kotlin {
@@ -114,7 +117,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 39
-        versionName = "2025.0"
+        versionName = appVersion
     }
     packaging {
         resources {

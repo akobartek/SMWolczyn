@@ -17,6 +17,9 @@
     <string name="cd_clear_field">Wyczyść pole</string>
     <string name="cd_close_dialog">Zamknij okno</string>
     <string name="cd_more_options">Więcej opcji</string>
+    <string name="force_update_dialog_title">Wymagana aktualizacja</string>
+    <string name="force_update_dialog_message">Dostępna jest nowa wersja naszej apki! Aby dalej korzystać z aplikacji, musisz ją zaktualizować!</string>
+    <string name="force_update_dialog_btn">Sklep</string>
 
     <!-- HOME SCREEN STRINGS -->
     <string name="home_title">Pokój i Dobro</string>

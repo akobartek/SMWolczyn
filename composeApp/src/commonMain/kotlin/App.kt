@@ -1,3 +1,4 @@
+import SMWolczyn.composeApp.BuildConfig
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
@@ -9,9 +10,12 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -27,18 +31,39 @@ import org.koin.core.parameter.parametersOf
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySaveScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySelectScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviaryTextScreen
 import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.*
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Admin
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Archive
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.ArchiveMeeting
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Auth
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.BreviarySave
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.BreviarySelect
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.BreviaryText
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Decalogue
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.EditProfile
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Home
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Kitchen
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Meetings
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Quiz
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Schedule
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Shop
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.ShopProduct
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignIn
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignUp
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Signing
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.SongBook
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Workshops
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
-import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
 import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
+import pl.kapucyni.wolczyn.app.core.presentation.composables.ForceUpdateDialog
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
@@ -60,6 +85,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
         val navController = rememberNavController()
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
+        var forceUpdateDialogVisible by remember { mutableStateOf(false) }
 
         ObserveAsEvents(
             flow = SnackbarController.events,
@@ -78,6 +104,29 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 if (result == SnackbarResult.ActionPerformed) {
                     event.action?.action?.invoke()
                 }
+            }
+        }
+
+        LaunchedEffect(appConfiguration?.forceUpdate) {
+            appConfiguration?.forceUpdate?.let { force ->
+                var updateNeeded = false
+                BuildConfig.APP_VERSION
+                    .split(".")
+                    .zip(force.split("."))
+                    .map { (version, forceUpdate) ->
+                        version.toIntOrNull() to forceUpdate.toIntOrNull()
+                    }
+                    .filter { it.first != null && it.second != null }
+                    .forEach { (version, forceUpdate) ->
+                        when {
+                            version == null || forceUpdate == null -> return@forEach
+                            version < forceUpdate -> {
+                                updateNeeded = true
+                                return@forEach
+                            }
+                        }
+                    }
+                forceUpdateDialogVisible = updateNeeded
             }
         }
 
@@ -272,5 +321,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 }
             }
         }
+
+        ForceUpdateDialog(isVisible = forceUpdateDialogVisible)
     }
 }
