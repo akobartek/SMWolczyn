@@ -116,7 +116,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     .map { (version, forceUpdate) ->
                         version.toIntOrNull() to forceUpdate.toIntOrNull()
                     }
-                    .filter { it.first != null && it.second != null }
                     .forEach { (version, forceUpdate) ->
                         when {
                             version == null || forceUpdate == null -> return@forEach
