@@ -110,7 +110,7 @@
     <string name="participant_type_monk">Brat/Siostra zakonna</string>
     <string name="participant_type_organisation">Organizator</string>
     <string name="workshops">Warsztaty</string>
-    <string name="workshops_error">Proszę wybrać warsztaty!</string>
+    <string name="workshops_error">Proszę wybrać dostępne warsztaty!</string>
     <string name="meeting_statute_title">Akceptuję %statute%.</string>
     <string name="meeting_statute_value">Regulamin Spotkania</string>
     <string name="meeting_signing_saved">Pomyślnie zapisano na Spotkanie Młodych!</string>

@@ -69,6 +69,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.Upd
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateStatuteConsent
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateWorkshop
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsViewModel.Companion.COSMETIC_WORKSHOP
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsSubtitle
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
@@ -368,4 +369,3 @@ private const val STATUTE_LINK =
 private const val UNDER_AGE = "%consent%"
 private const val UNDER_AGE_LINK =
     "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Zgoda-rodzica-2025.pdf"
-private const val COSMETIC_WORKSHOP = "Kosmetyczne"

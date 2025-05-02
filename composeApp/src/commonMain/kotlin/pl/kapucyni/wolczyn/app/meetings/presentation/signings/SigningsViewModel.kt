@@ -152,7 +152,9 @@ class SigningsViewModel(
                     pesel = pesel,
                     peselError = false,
                     peselIsWoman = pesel.peselIsWoman(),
+                    selectedWorkshop = null,
                     workshopsEnabled = workshopsEnabled(data.type, pesel),
+                    workshopError = false,
                 )
             )
         }
@@ -283,7 +285,12 @@ class SigningsViewModel(
                 pesel = pesel.trim(),
                 peselError = pesel.trim().isValidPesel().not(),
                 typeError = type == null,
-                workshopError = workshopsEnabled(type, pesel) && selectedWorkshop == null,
+                workshopError = when {
+                    workshopsEnabled(type, pesel).not() -> false
+                    selectedWorkshop == null -> true
+                    selectedWorkshop == COSMETIC_WORKSHOP -> pesel.peselIsWoman().not()
+                    else -> false
+                },
             )
         }
         _screenState.update { State.Success(newState) }
@@ -319,7 +326,11 @@ class SigningsViewModel(
     private fun workshopsEnabled(type: ParticipantType?, pesel: String) =
         type?.canSelectWorkshops() == true && pesel.isValidPesel()
 
-    private fun CharSequence.peselIsWoman() = getOrNull(10)?.let {
+    private fun CharSequence.peselIsWoman() = getOrNull(9)?.let {
         it.isDigit() && (it.digitToInt()) % 2 == 0
     } ?: false
+
+    companion object {
+        const val COSMETIC_WORKSHOP = "Kosmetyczne"
+    }
 }
