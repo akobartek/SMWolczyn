@@ -1,4 +1,3 @@
-import SMWolczyn.composeApp.BuildConfig
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
@@ -10,12 +9,9 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -85,7 +81,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
         val navController = rememberNavController()
         val snackbarHostState = remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
-        var forceUpdateDialogVisible by remember { mutableStateOf(false) }
 
         ObserveAsEvents(
             flow = SnackbarController.events,
@@ -107,29 +102,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
             }
         }
 
-        LaunchedEffect(appConfiguration?.forceUpdate) {
-            appConfiguration?.forceUpdate?.let { force ->
-                var updateNeeded = false
-                BuildConfig.APP_VERSION
-                    .split(".")
-                    .zip(force.split("."))
-                    .map { (version, forceUpdate) ->
-                        version.toIntOrNull() to forceUpdate.toIntOrNull()
-                    }
-                    .forEach { (version, forceUpdate) ->
-                        when {
-                            version == null || forceUpdate == null -> return@forEach
-                            version < forceUpdate -> {
-                                updateNeeded = true
-                                return@forEach
-                            }
-                        }
-                    }
-                forceUpdateDialogVisible = updateNeeded
-            }
-        }
-
-        ForceUpdateDialog(isVisible = forceUpdateDialogVisible)
+        ForceUpdateDialog(appConfiguration = appConfiguration)
 
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
