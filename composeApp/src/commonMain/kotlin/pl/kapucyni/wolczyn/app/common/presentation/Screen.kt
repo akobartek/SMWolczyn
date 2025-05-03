@@ -27,6 +27,12 @@ sealed interface Screen {
     data object Meetings : Screen
 
     @Serializable
+    data class MeetingParticipants(val meetingNumber: Int) : Screen
+
+    @Serializable
+    data class MeetingGroups(val meetingNumber: Int) : Screen
+
+    @Serializable
     data object Admin : Screen
 
     @Serializable

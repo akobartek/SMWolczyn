@@ -1,7 +1,10 @@
 package pl.kapucyni.wolczyn.app.meetings.data
 
 import dev.gitlive.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -60,6 +63,19 @@ class FirebaseMeetingsRepository(
             .document(email)
             .delete()
     }
+
+    override fun getAllMeetings(): Flow<List<Meeting>> =
+        firestore.getFirestoreCollectionFlow<Meeting>(COLLECTION_MEETINGS)
+            .map { meetings -> meetings.sortedByDescending { it.id } }
+
+    override fun getMeetingParticipants(meetingId: Int): Flow<List<Participant>> =
+        firestore.collection(COLLECTION_MEETINGS)
+            .document(meetingId.toString())
+            .collection(COLLECTION_SIGNINGS)
+            .snapshots
+            .map { querySnapshot ->
+                querySnapshot.documents.map { it.data() }
+            }
 
     private companion object {
         const val COLLECTION_MEETINGS = "meetings"

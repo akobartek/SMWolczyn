@@ -45,6 +45,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.Decalogue
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.EditProfile
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Home
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Kitchen
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.MeetingGroups
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.MeetingParticipants
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Meetings
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Quiz
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Schedule
@@ -62,6 +64,7 @@ import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.core.presentation.composables.ForceUpdateDialog
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
@@ -152,6 +155,13 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     }
                 }
 
+                composable<EditProfile> {
+                    EditProfileScreen(
+                        navigateUp = { navController.navigateUpSafely(EditProfile) },
+                        viewModel = koinViewModel { parametersOf(user) },
+                    )
+                }
+
                 composable<Signing> {
                     val screen = it.toRoute<Signing>()
 
@@ -169,14 +179,22 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 }
 
                 composable<Meetings> {
-                    // TODO
+                    user?.userType?.let { userType ->
+                        MeetingsScreen(
+                            navigateUp = { navController.navigateUpSafely(Meetings) },
+                            navigate = { navController.navigateSafely(it) },
+                            userType = userType,
+                            openSigningMeeting = appConfiguration?.openSigning,
+                        )
+                    } ?: navController.popBackStack()
                 }
 
-                composable<EditProfile> {
-                    EditProfileScreen(
-                        navigateUp = { navController.navigateUpSafely(EditProfile) },
-                        viewModel = koinViewModel { parametersOf(user) },
-                    )
+                composable<MeetingParticipants> {
+                    val screen = it.toRoute<MeetingParticipants>()
+                }
+
+                composable<MeetingGroups> {
+                    val screen = it.toRoute<MeetingGroups>()
                 }
 
                 composable<Admin> {

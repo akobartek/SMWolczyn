@@ -97,6 +97,12 @@
 
     <!-- MEETINGS STRINGS -->
     <string name="meetings">Spotkania</string>
+    <string name="meeting_name">%1$d. Wołczyn - %2$s</string>
+    <string name="empty_meetings_list">Wystąpił błąd podczas ładowania listy spotkań, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
+    <string name="meeting_participants">Uczestnicy</string>
+    <string name="meeting_groups">Grupki</string>
+
+    <!-- SIGNINGS STRINGS -->
     <string name="signings">Zapisy</string>
     <string name="signing_send">Wyślij zgłoszenie</string>
     <string name="signing_save">Zapisz zgłoszenie</string>

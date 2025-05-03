@@ -7,4 +7,5 @@ data class Meeting(
     val id: Int = 0,
     val name: String = "",
     val date: String = "",
+    val photoUrl: String = "",
 )
