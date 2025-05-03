@@ -28,6 +28,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
@@ -152,6 +153,7 @@ private fun SignInScreenContent(
                 PasswordTextField(
                     value = state.password,
                     onValueChange = updatePassword,
+                    imeAction = ImeAction.Done,
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()

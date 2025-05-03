@@ -35,6 +35,7 @@ fun PasswordTextField(
     errorMessage: String?,
     enabled: Boolean = true,
     keyboardActions: KeyboardActions? = null,
+    imeAction: ImeAction = keyboardActions?.let { ImeAction.Next } ?: ImeAction.Done,
 ) {
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
 
@@ -47,7 +48,7 @@ fun PasswordTextField(
             else VisualTransformation.None,
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Password,
-            imeAction = keyboardActions?.let { ImeAction.Next } ?: ImeAction.Done,
+            imeAction = imeAction,
         ),
         keyboardActions = keyboardActions ?: KeyboardActions.Default,
         trailingIcon = {

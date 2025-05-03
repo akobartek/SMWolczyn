@@ -31,11 +31,11 @@ class SignInViewModel(
     val state: StateFlow<SignInScreenState> = _state.asStateFlow()
 
     fun updateEmail(value: String) {
-        _state.update { it.copy(email = value) }
+        _state.update { it.copy(email = value, emailError = null) }
     }
 
     fun updatePassword(value: String) {
-        _state.update { it.copy(password = value) }
+        _state.update { it.copy(password = value, passwordError = null) }
     }
 
     fun hideNoInternetDialog() {
