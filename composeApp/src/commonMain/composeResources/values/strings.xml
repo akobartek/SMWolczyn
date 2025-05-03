@@ -11,6 +11,7 @@
     <string name="load">Załaduj</string>
     <string name="stop">Przerwij</string>
     <string name="delete">Usuń</string>
+    <string name="close">Zamknij</string>
     <string name="email">Email</string>
     <string name="password">Hasło</string>
     <string name="data_save_error">Wystąpił błąd podczas zapisywania danych, sprawdź swoje łącze i spróbuj ponownie!</string>
@@ -19,7 +20,7 @@
     <string name="cd_more_options">Więcej opcji</string>
     <string name="force_update_dialog_title">Wymagana aktualizacja</string>
     <string name="force_update_dialog_message">Dostępna jest nowa wersja naszej apki! Aby dalej korzystać z aplikacji, musisz ją zaktualizować!</string>
-    <string name="force_update_dialog_btn">Sklep</string>
+    <string name="force_update_dialog_btn">Aktualizuj</string>
 
     <!-- HOME SCREEN STRINGS -->
     <string name="home_title">Pokój i Dobro</string>

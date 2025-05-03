@@ -6,6 +6,8 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.breviary.data.database.BreviaryDatabase
+import pl.kapucyni.wolczyn.app.common.presentation.AppleLifecycleManager
+import pl.kapucyni.wolczyn.app.common.presentation.LifecycleManager
 import pl.kapucyni.wolczyn.app.common.utils.dataStore
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -28,4 +30,6 @@ actual val platformModule: Module = module {
 
         Room.databaseBuilder<BreviaryDatabase>(name = dbFilePath)
     }
+
+    factory<LifecycleManager> { AppleLifecycleManager() }
 }

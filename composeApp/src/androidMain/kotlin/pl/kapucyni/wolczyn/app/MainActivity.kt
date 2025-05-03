@@ -27,6 +27,16 @@ class MainActivity : ComponentActivity() {
             App()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        (application as? WolczynApplication)?.currentActivity = this@MainActivity
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (application as? WolczynApplication)?.currentActivity = null
+    }
 }
 
 @Preview
