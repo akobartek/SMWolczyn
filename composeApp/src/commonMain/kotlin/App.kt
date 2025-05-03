@@ -129,6 +129,8 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
             }
         }
 
+        ForceUpdateDialog(isVisible = forceUpdateDialogVisible)
+
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         ) {
@@ -320,7 +322,5 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 }
             }
         }
-
-        ForceUpdateDialog(isVisible = forceUpdateDialogVisible)
     }
 }
