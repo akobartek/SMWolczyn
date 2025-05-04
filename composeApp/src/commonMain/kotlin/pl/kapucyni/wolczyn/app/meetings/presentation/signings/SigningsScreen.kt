@@ -210,14 +210,15 @@ private fun SigningsScreenContent(
                     .focusRequester(emailRef)
                     .focusProperties { next = birthdayRef },
             )
-
-            BirthdayTextField(
-                value = state.birthdayDate,
-                onDateSelected = { handleAction(UpdateBirthday(it)) },
-                error = state.birthdayError,
-                modifier = Modifier.focusRequester(birthdayRef),
-            )
         }
+
+        BirthdayTextField(
+            value = state.birthdayDate,
+            onDateSelected = { handleAction(UpdateBirthday(it)) },
+            error = state.birthdayError,
+            visible = state.birthdayVisible,
+            modifier = Modifier.focusRequester(birthdayRef),
+        )
 
         PeselTextField(
             value = state.pesel,

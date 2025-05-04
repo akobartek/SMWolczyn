@@ -9,6 +9,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
@@ -51,6 +52,7 @@ class SigningsViewModel(
                             pesel =
                                 participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
                             peselIsWoman = participant?.pesel?.peselIsWoman() ?: false,
+                            birthdayVisible = user?.birthday == null,
                             birthdayDate = birthday,
                             isUnderAge = birthday?.isUnderAge() ?: false,
                             availableTypes = getAvailableTypes(birthday),
@@ -125,7 +127,7 @@ class SigningsViewModel(
             State.Success(
                 data.copy(
                     birthdayDate = value,
-                    birthdayError = false,
+                    birthdayError = value > Clock.System.now().toEpochMilliseconds(),
                     isUnderAge = value.isUnderAge(),
                     pesel = value.getPeselBeginning(),
                     availableTypes = getAvailableTypes(value),
@@ -281,7 +283,8 @@ class SigningsViewModel(
                 lastNameError = lastName.trim().isBlank(),
                 city = city.trim(),
                 cityError = city.trim().isBlank(),
-                birthdayError = birthdayDate == null,
+                birthdayError =
+                    birthdayDate == null || birthdayDate > Clock.System.now().toEpochMilliseconds(),
                 pesel = pesel.trim(),
                 peselError = pesel.trim().isValidPesel().not(),
                 typeError = type == null,

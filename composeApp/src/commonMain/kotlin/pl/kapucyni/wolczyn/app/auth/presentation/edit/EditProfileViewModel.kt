@@ -33,7 +33,7 @@ class EditProfileViewModel(
             firstName = user.firstName,
             lastName = user.lastName,
             city = user.city,
-            birthdayDate = user.birthday.seconds * 1000,
+            birthdayDate = user.birthday?.let { it.seconds * 1000 },
         )
     )
     val state: StateFlow<EditProfileScreenState> = _state.asStateFlow()
@@ -112,14 +112,15 @@ class EditProfileViewModel(
                 lastNameError = lastName.trim().isBlank(),
                 city = city.trim(),
                 cityError = city.trim().isBlank(),
-                birthdayError = birthdayDate > Clock.System.now().toEpochMilliseconds(),
+                birthdayError =
+                    birthdayDate?.let { it > Clock.System.now().toEpochMilliseconds() } ?: false,
             )
         }
         _state.update { newState }
         val userChanged = user.firstName != newState.firstName
                 || user.lastName != newState.lastName
                 || user.city != newState.city
-                || user.birthday.toMilliseconds().toLong() != newState.birthdayDate
+                || user.birthday?.toMilliseconds()?.toLong() != newState.birthdayDate
         return newState.firstNameError.not()
                 && newState.lastNameError.not()
                 && newState.cityError.not()

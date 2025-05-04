@@ -28,42 +28,44 @@ fun BirthdayTextField(
     value: Long?,
     onDateSelected: (Long) -> Unit,
     error: Boolean,
+    visible: Boolean = true,
 ) {
     val focusManager = LocalFocusManager.current
     var dateDialogVisible by rememberSaveable { mutableStateOf(false) }
 
-    OutlinedTextField(
-        value = value?.getFormattedDate().orEmpty(),
-        onValueChange = {},
-        label = { WolczynText(text = stringResource(Res.string.user_birthday)) },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Event,
-                contentDescription = null,
-            )
-        },
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = null,
-            )
-        },
-        readOnly = true,
-        singleLine = true,
-        isError = error,
-        supportingText = if (error) {
-            {
-                WolczynText(text = stringResource(Res.string.birthday_error))
-            }
-        } else null,
-        modifier = Modifier
-            .widthIn(max = 420.dp)
-            .fillMaxWidth()
-            .onFocusChanged {
-                if (it.isFocused) dateDialogVisible = true
-            }
-            .then(modifier),
-    )
+    if (visible)
+        OutlinedTextField(
+            value = value?.getFormattedDate().orEmpty(),
+            onValueChange = {},
+            label = { WolczynText(text = stringResource(Res.string.user_birthday)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Event,
+                    contentDescription = null,
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null,
+                )
+            },
+            readOnly = true,
+            singleLine = true,
+            isError = error,
+            supportingText = if (error) {
+                {
+                    WolczynText(text = stringResource(Res.string.birthday_error))
+                }
+            } else null,
+            modifier = Modifier
+                .widthIn(max = 420.dp)
+                .fillMaxWidth()
+                .onFocusChanged {
+                    if (it.isFocused) dateDialogVisible = true
+                }
+                .then(modifier),
+        )
 
     DatePickDialog(
         isVisible = dateDialogVisible,

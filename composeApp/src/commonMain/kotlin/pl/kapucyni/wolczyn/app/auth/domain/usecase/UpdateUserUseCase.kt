@@ -12,14 +12,14 @@ class UpdateUserUseCase(private val authRepository: AuthRepository) {
         firstName: String,
         lastName: String,
         city: String,
-        birthday: Long,
+        birthday: Long?,
         userType: UserType,
     ) = authRepository.updateUser(
         user = user.copy(
             firstName = firstName,
             lastName = lastName,
             city = city,
-            birthday = Timestamp.fromMilliseconds(birthday.toDouble()),
+            birthday = birthday?.let { Timestamp.fromMilliseconds(birthday.toDouble()) },
             userType = userType,
         ),
     )

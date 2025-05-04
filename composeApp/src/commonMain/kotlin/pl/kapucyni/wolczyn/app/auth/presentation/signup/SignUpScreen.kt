@@ -148,7 +148,7 @@ private fun SignUpScreenContent(
                 value = state.email,
                 onValueChange = { handleAction(UpdateEmail(it)) },
                 errorMessage =
-                    if (state.birthdayError) stringResource(Res.string.email_error_invalid)
+                    if (state.emailError) stringResource(Res.string.email_error_invalid)
                     else null,
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.moveFocus(FocusDirection.Next) },

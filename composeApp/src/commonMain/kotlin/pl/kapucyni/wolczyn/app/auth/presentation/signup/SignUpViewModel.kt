@@ -136,7 +136,7 @@ class SignUpViewModel(
                 city = city.trim(),
                 cityError = city.trim().isBlank(),
                 birthdayError =
-                    birthdayDate == null || birthdayDate > Clock.System.now().toEpochMilliseconds(),
+                    birthdayDate?.let { it > Clock.System.now().toEpochMilliseconds() } ?: false,
             )
         }
         _state.update { newState }

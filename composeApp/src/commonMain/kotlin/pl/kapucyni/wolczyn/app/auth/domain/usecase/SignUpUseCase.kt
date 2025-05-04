@@ -19,8 +19,7 @@ class SignUpUseCase(private val authRepository: AuthRepository) {
             firstName = firstName,
             lastName = lastName,
             city = city,
-            birthday = birthday?.let { Timestamp.fromMilliseconds(it.toDouble()) }
-                ?: Timestamp.now(),
+            birthday = birthday?.let { Timestamp.fromMilliseconds(it.toDouble()) },
         ),
         password = password,
     )

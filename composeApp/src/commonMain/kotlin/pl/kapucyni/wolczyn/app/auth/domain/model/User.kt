@@ -12,7 +12,7 @@ data class User(
     val firstName: String = "",
     val lastName: String = "",
     val city: String = "",
-    val birthday: Timestamp = Timestamp.now(),
+    val birthday: Timestamp? = null,
     val createdAt: Timestamp = Timestamp.now(),
     val photoUrl: String? = null,
 )

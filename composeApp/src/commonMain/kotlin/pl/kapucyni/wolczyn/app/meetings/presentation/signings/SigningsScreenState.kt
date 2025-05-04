@@ -21,6 +21,7 @@ data class SigningsScreenState(
     val pesel: String,
     val peselError: Boolean = false,
     val peselIsWoman: Boolean,
+    val birthdayVisible: Boolean,
     val birthdayDate: Long?,
     val birthdayError: Boolean = false,
     val isUnderAge: Boolean,
