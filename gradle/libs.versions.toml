@@ -30,7 +30,7 @@ coil = "3.0.0"
 ksoup = "0.1.2"
 webview = "1.9.12"
 
-firebase-gitlive-sdk = "1.12.0"
+firebase-gitlive-sdk = "2.0.0"
 crashlytics = "3.0.3"
 google-services = "4.4.2"
 
