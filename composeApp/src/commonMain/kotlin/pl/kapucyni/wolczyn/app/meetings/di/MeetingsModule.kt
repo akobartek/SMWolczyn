@@ -6,6 +6,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.meetings.data.FirebaseMeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsViewModel
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsViewModel
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsViewModel
 
 val meetingsModule = module {
@@ -13,4 +14,5 @@ val meetingsModule = module {
 
     viewModel { (meetingId: Int, user: User?) -> SigningsViewModel(meetingId, user, get()) }
     viewModel { MeetingsViewModel(get()) }
+    viewModel { (meetingId: Int) -> ParticipantsViewModel(meetingId, get()) }
 }

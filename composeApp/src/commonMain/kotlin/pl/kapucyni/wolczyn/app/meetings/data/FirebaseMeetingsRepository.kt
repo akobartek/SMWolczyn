@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.meetings.data
 
 import dev.gitlive.firebase.firestore.FirebaseFirestore
+import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
@@ -73,8 +74,11 @@ class FirebaseMeetingsRepository(
             .document(meetingId.toString())
             .collection(COLLECTION_SIGNINGS)
             .snapshots
-            .map { querySnapshot ->
+            .map<QuerySnapshot, List<Participant>> { querySnapshot ->
                 querySnapshot.documents.map { it.data() }
+            }
+            .map { list ->
+                list.sortedWith(compareBy({ it.firstName }, { it.lastName }))
             }
 
     private companion object {

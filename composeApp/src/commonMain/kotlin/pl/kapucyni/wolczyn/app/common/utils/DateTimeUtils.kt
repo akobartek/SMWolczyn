@@ -50,6 +50,11 @@ fun LocalDateTime.getFormattedDate() = format(
     }
 )
 
+fun Timestamp.getFormattedDate() =
+    Instant.fromEpochSeconds(this.seconds, this.nanoseconds)
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .getFormattedDate()
+
 fun Long.getFormattedDate() =
     Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.currentSystemDefault())
