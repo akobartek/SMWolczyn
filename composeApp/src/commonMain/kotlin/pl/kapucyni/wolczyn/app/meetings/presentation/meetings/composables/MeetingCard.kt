@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -66,7 +67,7 @@ fun MeetingCard(
                         contentDescription = stringResource(Res.string.meeting_participants),
                     )
                 }
-                if (userType == UserType.ADMIN)
+                if (userType == UserType.ADMIN && meeting.start.seconds <= Clock.System.now().epochSeconds)
                     IconButton(onClick = { openGroupsScreen(meeting.id) }) {
                         Icon(
                             imageVector = Icons.Outlined.Hub,

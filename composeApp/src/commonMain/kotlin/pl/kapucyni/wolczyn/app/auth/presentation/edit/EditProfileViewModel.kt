@@ -3,6 +3,8 @@ package pl.kapucyni.wolczyn.app.auth.presentation.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.gitlive.firebase.FirebaseNetworkException
+import dev.gitlive.firebase.firestore.Timestamp
+import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -24,10 +26,11 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
 
 class EditProfileViewModel(
-    private val user: User,
+    user: User,
     private val updateUserUseCase: UpdateUserUseCase,
 ) : ViewModel() {
 
+    private var currentUser: User = user
     private val _state = MutableStateFlow(
         EditProfileScreenState(
             firstName = user.firstName,
@@ -75,17 +78,25 @@ class EditProfileViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             with(state.value) {
                 updateUserUseCase(
-                    user = user,
+                    user = currentUser,
                     firstName = firstName,
                     lastName = lastName,
                     city = city,
                     birthday = birthdayDate,
-                    userType = user.userType,
+                    userType = currentUser.userType,
                 )
             }.apply {
                 toggleLoading(false)
                 onSuccess {
                     SnackbarController.sendEvent(SnackbarEvent.EditProfileSuccess)
+                    with(state.value) {
+                        currentUser = currentUser.copy(
+                            firstName = firstName,
+                            lastName = lastName,
+                            city = city,
+                            birthday = birthdayDate?.let { Timestamp.fromMilliseconds(it.toDouble()) },
+                        )
+                    }
                 }
                 onFailure { throwable ->
                     when (throwable) {
@@ -117,10 +128,10 @@ class EditProfileViewModel(
             )
         }
         _state.update { newState }
-        val userChanged = user.firstName != newState.firstName
-                || user.lastName != newState.lastName
-                || user.city != newState.city
-                || user.birthday?.toMilliseconds()?.toLong() != newState.birthdayDate
+        val userChanged = currentUser.firstName != newState.firstName
+                || currentUser.lastName != newState.lastName
+                || currentUser.city != newState.city
+                || currentUser.birthday?.toMilliseconds()?.toLong() != newState.birthdayDate
         return newState.firstNameError.not()
                 && newState.lastNameError.not()
                 && newState.cityError.not()
