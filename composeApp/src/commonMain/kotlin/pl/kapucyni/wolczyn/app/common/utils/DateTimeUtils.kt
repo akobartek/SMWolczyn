@@ -55,12 +55,12 @@ fun Long.getFormattedDate() =
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .getFormattedDate()
 
-fun Long.isUnderAge() =
+fun Long.isAgeBelow(age: Int, other: Instant = Clock.System.now()) =
     Instant.fromEpochMilliseconds(this)
         .yearsUntil(
-            other = Clock.System.now(),
+            other = other,
             timeZone = TimeZone.currentSystemDefault(),
-        ) < 18
+        ) < age
 
 fun Timestamp.getPeselBeginning() =
     Instant.fromEpochSeconds(this.seconds, this.nanoseconds)

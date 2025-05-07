@@ -37,6 +37,7 @@ data class SigningsScreenState(
     val consentChecked: Boolean = false,
     val underageConsentChecked: Boolean = false,
     val successDialogVisible: Boolean = false,
+    val tooYoungDialogVisible: Boolean = false,
     val noInternetDialogVisible: Boolean = false,
     val createdAt: Timestamp? = null,
 )

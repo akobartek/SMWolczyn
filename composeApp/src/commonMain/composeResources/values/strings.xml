@@ -128,6 +128,8 @@
     <string name="meeting_signing_success_dialog_title">Zapisano na Spotkanie Młodych!</string>
     <string name="meeting_signing_success_dialog_message">Twoje zgłoszenie zostało zapisane! Zapraszamy do sprawdzenia niezbędnika, w którym dowiesz się, jak przygotować się do Wołczyna!</string>
     <string name="meeting_signing_essentials">Niezbędnik</string>
+    <string name="meeting_signing_too_young_dialog_title">Złe wieści!</string>
+    <string name="meeting_signing_too_young_dialog_message">W Spotkaniu Młodych w Wołczynie mogą wziąć udział osoby, które ukończyły 15 rok życia. Do zobaczenia na przyszłych Spotkaniach!</string>
     <string name="meeting_signing_remove">Wycofaj zgłoszenie</string>
     <string name="meeting_signing_remove_dialog_title">Usuwanie zgłoszenia</string>
     <string name="meeting_signing_remove_dialog_message">Jesteś pewny, że chcesz wycofać swoje zgłoszenie na Wołczyn?</string>

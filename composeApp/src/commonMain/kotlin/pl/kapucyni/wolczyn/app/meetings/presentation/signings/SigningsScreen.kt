@@ -16,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,6 +59,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.buildLinkableString
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideNoInternetDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideSuccessDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideTooYoungDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.SaveData
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateBirthday
@@ -75,6 +77,7 @@ import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_save_profile
+import smwolczyn.composeapp.generated.resources.close
 import smwolczyn.composeapp.generated.resources.email_error_invalid
 import smwolczyn.composeapp.generated.resources.meeting_signing_essentials
 import smwolczyn.composeapp.generated.resources.meeting_signing_remove
@@ -83,6 +86,8 @@ import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_me
 import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_title
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_message
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_title
+import smwolczyn.composeapp.generated.resources.meeting_signing_too_young_dialog_message
+import smwolczyn.composeapp.generated.resources.meeting_signing_too_young_dialog_title
 import smwolczyn.composeapp.generated.resources.meeting_signing_underage_consent
 import smwolczyn.composeapp.generated.resources.meeting_signing_underage_info
 import smwolczyn.composeapp.generated.resources.meeting_statute_title
@@ -351,6 +356,19 @@ private fun SigningsScreenContent(
         dismissBtnTextId = Res.string.cancel,
         onDismissRequest = { removeSigningDialogVisible = false },
         dismissible = true,
+    )
+
+    WolczynAlertDialog(
+        isVisible = state.tooYoungDialogVisible,
+        imageVector = Icons.Outlined.Error,
+        dialogTitleId = Res.string.meeting_signing_too_young_dialog_title,
+        dialogTextId = Res.string.meeting_signing_too_young_dialog_message,
+        confirmBtnTextId = Res.string.close,
+        onConfirm = {
+            handleAction(HideTooYoungDialog)
+            navigateUp()
+        },
+        dismissible = false,
     )
 
     NoInternetDialog(

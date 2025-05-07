@@ -15,5 +15,6 @@ sealed interface SigningsAction {
     data object SaveData : SigningsAction
     data object RemoveSigning : SigningsAction
     data object HideSuccessDialog : SigningsAction
+    data object HideTooYoungDialog : SigningsAction
     data object HideNoInternetDialog : SigningsAction
 }

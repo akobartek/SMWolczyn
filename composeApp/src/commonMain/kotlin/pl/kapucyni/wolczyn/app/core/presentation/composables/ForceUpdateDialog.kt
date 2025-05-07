@@ -15,6 +15,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.LifecycleManager
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.storeLink
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
+import pl.kapucyni.wolczyn.app.core.domain.model.platformForceUpdate
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.close
 import smwolczyn.composeapp.generated.resources.force_update_dialog_btn
@@ -29,8 +30,8 @@ fun ForceUpdateDialog(
     val uriHandler = LocalUriHandler.current
     var forceUpdateDialogVisible by remember { mutableStateOf(false) }
 
-    LaunchedEffect(appConfiguration?.forceUpdate) {
-        appConfiguration?.forceUpdate?.let { force ->
+    LaunchedEffect(appConfiguration?.androidForceUpdate) {
+        appConfiguration?.platformForceUpdate()?.let { force ->
             var updateNeeded = false
             BuildConfig.APP_VERSION
                 .split(".")

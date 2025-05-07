@@ -10,12 +10,13 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
 import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
-import pl.kapucyni.wolczyn.app.common.utils.isUnderAge
+import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -54,7 +55,7 @@ class SigningsViewModel(
                             peselIsWoman = participant?.pesel?.peselIsWoman() ?: false,
                             birthdayVisible = user?.birthday == null,
                             birthdayDate = birthday,
-                            isUnderAge = birthday?.isUnderAge() ?: false,
+                            isUnderAge = birthday?.isAgeBelow(age = 18) ?: false,
                             availableTypes = getAvailableTypes(birthday),
                             type = participant?.type,
                             availableWorkshops = workshops.await().map { it.name },
@@ -85,6 +86,7 @@ class SigningsViewModel(
             is SaveData -> saveData()
             is RemoveSigning -> removeSigning()
             is HideSuccessDialog -> toggleSuccessDialog(visible = false)
+            is HideTooYoungDialog -> hideTooYoungDialog()
             is HideNoInternetDialog -> hideNoInternetDialog()
         }
     }
@@ -93,7 +95,7 @@ class SigningsViewModel(
         when {
             user == null -> it
 
-            birthday?.isUnderAge() == true ->
+            birthday?.isAgeBelow(18) == true ->
                 listOf(ParticipantType.MEMBER, ParticipantType.SCOUT)
 
             else -> it - ParticipantType.ORGANISATION
@@ -128,7 +130,7 @@ class SigningsViewModel(
                 data.copy(
                     birthdayDate = value,
                     birthdayError = value > Clock.System.now().toEpochMilliseconds(),
-                    isUnderAge = value.isUnderAge(),
+                    isUnderAge = value.isAgeBelow(18),
                     pesel = value.getPeselBeginning(),
                     availableTypes = getAvailableTypes(value),
                 )
@@ -196,6 +198,13 @@ class SigningsViewModel(
         val data = (screenState.value as? State.Success)?.data ?: return
         _screenState.update {
             State.Success(data.copy(successDialogVisible = visible))
+        }
+    }
+
+    private fun hideTooYoungDialog() {
+        val data = (screenState.value as? State.Success)?.data ?: return
+        _screenState.update {
+            State.Success(data.copy(tooYoungDialogVisible = false))
         }
     }
 
@@ -294,6 +303,10 @@ class SigningsViewModel(
                     selectedWorkshop == COSMETIC_WORKSHOP -> pesel.peselIsWoman().not()
                     else -> false
                 },
+                tooYoungDialogVisible = birthdayDate?.isAgeBelow(
+                    age = 15,
+                    other = Instant.fromEpochMilliseconds(meeting.start.toMilliseconds().toLong()),
+                ) == true,
             )
         }
         _screenState.update { State.Success(newState) }
@@ -305,6 +318,7 @@ class SigningsViewModel(
                 && newState.peselError.not()
                 && newState.typeError.not()
                 && newState.workshopError.not()
+                && newState.tooYoungDialogVisible.not()
     }
 
     private fun CharSequence.isValidPesel(): Boolean {
