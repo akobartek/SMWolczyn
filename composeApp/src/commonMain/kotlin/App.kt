@@ -194,7 +194,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     val screen = it.toRoute<MeetingParticipants>()
 
                     ParticipantsScreen(
-                        navigateUp = { navController.navigateUpSafely(Meetings) },
+                        navigateUp = { navController.navigateUpSafely(screen) },
                         navigate = { destination -> navController.navigateSafely(destination) },
                         openSigningMeeting = appConfiguration?.openSigning,
                         viewModel = koinViewModel { parametersOf(screen.meetingId) },
