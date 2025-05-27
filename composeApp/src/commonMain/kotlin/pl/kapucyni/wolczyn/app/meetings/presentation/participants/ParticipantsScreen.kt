@@ -32,7 +32,8 @@ fun ParticipantsScreen(
     val state by viewModel.screenState.collectAsStateWithLifecycle()
 
     ScreenLayout(
-        title = stringResource(Res.string.meeting_participants),
+        title = stringResource(Res.string.meeting_participants)
+                + ((state as? State.Success)?.data?.let { " (${it.size})" } ?: ""),
         onBackPressed = navigateUp,
     ) {
         when (state) {

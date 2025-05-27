@@ -39,7 +39,7 @@ class AppViewModel(
 
         viewModelScope.launch(Dispatchers.Default) {
             authRepository.getUserIdentifier().collect { userId ->
-                userId?.let { startObservingUser(it) }
+                userId?.takeIf { it.isNotBlank() }?.let { startObservingUser(it) }
                     ?: clearUser()
             }
         }

@@ -165,63 +165,62 @@ private fun SigningsScreenContent(
         if (state.isUserInfoEditable.not()) {
             SigningsSubtitle(state = state)
             HeightSpacer(4.dp)
-        } else {
-            FirstNameTextField(
-                value = state.firstName,
-                onValueChange = { handleAction(UpdateFirstName(it)) },
-                error = state.firstNameError,
-                keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
-                ),
-                modifier = Modifier
-                    .focusRequester(firstNameRef)
-                    .focusProperties { next = lastNameRef },
-            )
-
-            LastNameTextField(
-                value = state.lastName,
-                onValueChange = { handleAction(UpdateLastName(it)) },
-                error = state.lastNameError,
-                keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
-                ),
-                modifier = Modifier
-                    .focusRequester(lastNameRef)
-                    .focusProperties { next = cityRef },
-            )
-
-            CityTextField(
-                value = state.city,
-                onValueChange = { handleAction(UpdateCity(it)) },
-                error = state.cityError,
-                keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
-                ),
-                modifier = Modifier
-                    .focusRequester(cityRef)
-                    .focusProperties { next = emailRef },
-            )
-
-            EmailTextField(
-                value = state.email,
-                onValueChange = { handleAction(UpdateEmail(it)) },
-                errorMessage =
-                    if (state.birthdayError) stringResource(Res.string.email_error_invalid)
-                    else null,
-                keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Next) },
-                ),
-                modifier = Modifier
-                    .focusRequester(emailRef)
-                    .focusProperties { next = birthdayRef },
-            )
         }
+
+        FirstNameTextField(
+            value = state.firstName,
+            onValueChange = { handleAction(UpdateFirstName(it)) },
+            error = state.firstNameError,
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Next) },
+            ),
+            modifier = Modifier
+                .focusRequester(firstNameRef)
+                .focusProperties { next = lastNameRef },
+        )
+
+        LastNameTextField(
+            value = state.lastName,
+            onValueChange = { handleAction(UpdateLastName(it)) },
+            error = state.lastNameError,
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Next) },
+            ),
+            modifier = Modifier
+                .focusRequester(lastNameRef)
+                .focusProperties { next = cityRef },
+        )
+
+        CityTextField(
+            value = state.city,
+            onValueChange = { handleAction(UpdateCity(it)) },
+            error = state.cityError,
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Next) },
+            ),
+            modifier = Modifier
+                .focusRequester(cityRef)
+                .focusProperties { next = emailRef },
+        )
+
+        EmailTextField(
+            value = state.email,
+            onValueChange = { handleAction(UpdateEmail(it)) },
+            errorMessage =
+                if (state.birthdayError) stringResource(Res.string.email_error_invalid)
+                else null,
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Next) },
+            ),
+            modifier = Modifier
+                .focusRequester(emailRef)
+                .focusProperties { next = birthdayRef },
+        )
 
         BirthdayTextField(
             value = state.birthdayDate,
             onDateSelected = { handleAction(UpdateBirthday(it)) },
             error = state.birthdayError,
-            visible = state.birthdayVisible,
             modifier = Modifier.focusRequester(birthdayRef),
         )
 

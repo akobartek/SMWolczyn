@@ -42,10 +42,7 @@ class FirebaseMeetingsRepository(
                 if (it.exists) it.data<Participant>()
                 else null
             }
-    }.getOrElse {
-        println(it)
-        null
-    }
+    }.getOrDefault(null)
 
     override suspend fun saveParticipant(meetingId: Int, participant: Participant) = runCatching {
         firestore

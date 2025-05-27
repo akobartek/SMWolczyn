@@ -30,7 +30,7 @@ class FirebaseAuthRepository(
         return try {
             val authResult = auth.signInWithEmailAndPassword(email, password)
             authResult.user?.let { user ->
-                if (user.isEmailVerified || user.email == TEST_EMAIL)
+                if (user.isEmailVerified)
                     Result.success(true)
                 else
                     Result.failure(EmailNotVerifiedException())
@@ -42,9 +42,9 @@ class FirebaseAuthRepository(
 
     override suspend fun signUp(user: User, password: String): Result<Boolean> {
         return try {
-            val authResult = auth.createUserWithEmailAndPassword(user.email, password)
-            authResult.user?.let { authUser ->
-                withContext(NonCancellable) {
+            withContext(NonCancellable) {
+                val authResult = auth.createUserWithEmailAndPassword(user.email, password)
+                authResult.user?.let { authUser ->
                     authUser.sendEmailVerification()
                     firestore.saveObject(
                         collectionName = COLLECTION_USERS,
@@ -53,8 +53,8 @@ class FirebaseAuthRepository(
                     )
                     signOut()
                     Result.success(true)
-                }
-            } ?: Result.failure(Exception())
+                } ?: Result.failure(Exception())
+            }
         } catch (exc: Exception) {
             Result.failure(exc)
         }
@@ -103,6 +103,5 @@ class FirebaseAuthRepository(
 
     private companion object {
         const val COLLECTION_USERS = "users"
-        const val TEST_EMAIL = "example@mftau.pl"
     }
 }

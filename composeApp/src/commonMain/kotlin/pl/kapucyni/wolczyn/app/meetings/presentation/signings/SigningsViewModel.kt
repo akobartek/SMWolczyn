@@ -35,7 +35,9 @@ class SigningsViewModel(
                 val meeting = async { meetingsRepository.getMeeting(meetingId) }
                 val workshops = async { meetingsRepository.getAvailableWorkshops() }
                 val previousSigning = async {
-                    user?.let { meetingsRepository.checkPreviousSigning(meetingId, it.email) }
+                    user?.email?.takeIf { it.isNotBlank() }?.let { email ->
+                        meetingsRepository.checkPreviousSigning(meetingId, email)
+                    }
                 }
 
                 previousSigning.await().let { participant ->
@@ -53,7 +55,6 @@ class SigningsViewModel(
                             pesel =
                                 participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
                             peselIsWoman = participant?.pesel?.peselIsWoman() ?: false,
-                            birthdayVisible = user?.birthday == null,
                             birthdayDate = birthday,
                             isUnderAge = birthday?.isAgeBelow(age = 18) ?: false,
                             availableTypes = getAvailableTypes(birthday),
