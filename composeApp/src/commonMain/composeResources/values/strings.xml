@@ -101,6 +101,7 @@
     <string name="empty_meetings_list">Wystąpił błąd podczas ładowania listy spotkań, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="empty_participants_list">Nie znaleziono żadnych uczestników, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="meeting_participants">Uczestnicy</string>
+    <string name="filter_participants">Filtruj uczestników</string>
     <string name="add_participant">Dodaj uczestnika</string>
     <string name="meeting_groups">Grupki</string>
 
