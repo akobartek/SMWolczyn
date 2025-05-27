@@ -123,7 +123,7 @@ fun SigningsScreen(
         onBackPressed = navigateUp,
         actionIcon = (state as? State.Success)?.let { success ->
             {
-                if (success.data.isSigningByAdmin.not())
+                if (success.data.isSigningByAdmin.not() && success.data.isEditing)
                     IconButton(onClick = { qrCodeEmail = success.data.email }) {
                         Icon(
                             imageVector = Icons.Default.QrCode2,
