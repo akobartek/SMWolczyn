@@ -9,11 +9,12 @@ import androidx.compose.runtime.Composable
 fun WolczynBottomSheet(
     isVisible: Boolean,
     onDismiss: () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     if (isVisible)
         ModalBottomSheet(
             onDismissRequest = onDismiss,
         ) {
-            WolczynText("xD")
+            content()
         }
 }

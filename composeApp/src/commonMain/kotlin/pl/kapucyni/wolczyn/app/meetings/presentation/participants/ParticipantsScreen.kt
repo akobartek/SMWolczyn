@@ -75,7 +75,9 @@ fun ParticipantsScreen(
     WolczynBottomSheet(
         isVisible = filterSheetVisible,
         onDismiss = { filterSheetVisible = false },
-    )
+    ) {
+
+    }
 }
 
 @Composable
