@@ -4,11 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,7 +20,7 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.close
 import smwolczyn.composeapp.generated.resources.signings_qr_code_msg
 
-private const val BASIC_URL = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="
+private const val BASIC_URL = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="
 
 @Composable
 fun SigningsQrCodeDialog(
@@ -32,15 +29,13 @@ fun SigningsQrCodeDialog(
 ) {
     email?.let {
         AlertDialog(
-            icon = {
-                Icon(imageVector = Icons.Default.QrCode2, contentDescription = null)
-            },
             title = {
                 WolczynText(
                     text = stringResource(Res.string.signings_qr_code_msg),
                     textStyle = MaterialTheme.typography.headlineSmall.copy(
                         textAlign = TextAlign.Center,
                     ),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             },
             text = {
