@@ -101,14 +101,19 @@
     <string name="empty_meetings_list">Wystąpił błąd podczas ładowania listy spotkań, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="empty_participants_list">Nie znaleziono żadnych uczestników, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="meeting_participants">Uczestnicy</string>
+    <string name="add_participant">Dodaj uczestnika</string>
     <string name="meeting_groups">Grupki</string>
 
     <!-- SIGNINGS STRINGS -->
     <string name="signings">Zapisy</string>
     <string name="signing_send">Wyślij zgłoszenie</string>
     <string name="signing_save">Zapisz zgłoszenie</string>
+    <string name="cd_save_signing">Zapisz zgłoszenie</string>
+    <string name="cd_scan_signing">Okazanie kodu na zapisy</string>
+    <string name="signings_qr_code_msg">Twój kod QR:</string>
     <string name="signings_subtitle">Witaj, %1$s, aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie pod hasłem %meeting_title%, wypełnij poniższy formularz zgłoszeniowy:</string>
     <string name="signings_subtitle_edit">Cześć, %1$s, Twoje zgłoszenie jest już zapisane w systemie. Jeśli chcesz, możesz je edytować poniżej:</string>
+    <string name="signings_subtitle_admin">Zapisywanie nowego uczestnika na Wołczyn:</string>
     <string name="pesel">PESEL</string>
     <string name="pesel_error">Podany numer PESEL jest nieprawidłowy!</string>
     <string name="participant_type">Przyjeżdżam jako</string>

@@ -50,7 +50,7 @@ fun MeetingsScreen(
         onBackPressed = navigateUp,
         actionIcon = openSigningMeeting?.let {
             {
-                IconButton(onClick = { navigate(Screen.Signing()) }) {
+                IconButton(onClick = { navigate(Screen.Signings()) }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.NoteAdd,
                         tint = wolczynColors.primary,

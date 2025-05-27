@@ -24,7 +24,9 @@ class FirebaseAuthRepository(
         firestore.getFirestoreDocument<User?>(
             collectionName = COLLECTION_USERS,
             documentId = userId,
-        )
+        ).map { user ->
+            user ?: auth.currentUser?.let { User(id = it.uid, email = it.email.orEmpty()) }
+        }
 
     override suspend fun signIn(email: String, password: String): Result<Boolean> {
         return try {

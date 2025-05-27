@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.Construction
+import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Error
@@ -27,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +48,6 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CityTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmailTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FirstNameTextField
-import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LastNameTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
@@ -72,11 +73,13 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.Upd
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsViewModel.Companion.COSMETIC_WORKSHOP
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsQrCodeDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsSubtitle
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
-import smwolczyn.composeapp.generated.resources.cd_save_profile
+import smwolczyn.composeapp.generated.resources.cd_save_signing
+import smwolczyn.composeapp.generated.resources.cd_scan_signing
 import smwolczyn.composeapp.generated.resources.close
 import smwolczyn.composeapp.generated.resources.email_error_invalid
 import smwolczyn.composeapp.generated.resources.meeting_signing_essentials
@@ -97,6 +100,7 @@ import smwolczyn.composeapp.generated.resources.participant_type_error
 import smwolczyn.composeapp.generated.resources.signing_save
 import smwolczyn.composeapp.generated.resources.signing_send
 import smwolczyn.composeapp.generated.resources.signings
+import smwolczyn.composeapp.generated.resources.signings_subtitle_admin
 import smwolczyn.composeapp.generated.resources.workshops
 import smwolczyn.composeapp.generated.resources.workshops_error
 
@@ -107,6 +111,7 @@ fun SigningsScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     val state by viewModel.screenState.collectAsStateWithLifecycle()
+    var qrCodeEmail by rememberSaveable { mutableStateOf<String?>(null) }
 
     LaunchedEffect(state) {
         if ((state as? State.Success)?.data?.operationFinished == true)
@@ -116,13 +121,21 @@ fun SigningsScreen(
     ScreenLayout(
         title = stringResource(Res.string.signings),
         onBackPressed = navigateUp,
-        actionIcon = (state as? State.Success)?.let {
+        actionIcon = (state as? State.Success)?.let { success ->
             {
+                if (success.data.isSigningByAdmin.not())
+                    IconButton(onClick = { qrCodeEmail = success.data.email }) {
+                        Icon(
+                            imageVector = Icons.Default.QrCode2,
+                            tint = wolczynColors.primary,
+                            contentDescription = stringResource(Res.string.cd_scan_signing),
+                        )
+                    }
                 IconButton(onClick = { uriHandler.openUri(ESSENTIALS_LINK) }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.HelpOutline,
                         tint = wolczynColors.primary,
-                        contentDescription = stringResource(Res.string.cd_save_profile),
+                        contentDescription = stringResource(Res.string.cd_save_signing),
                     )
                 }
             }
@@ -140,6 +153,11 @@ fun SigningsScreen(
             } ?: LoadingBox()
         }
     }
+
+    SigningsQrCodeDialog(
+        email = qrCodeEmail,
+        onCancel = { qrCodeEmail = null },
+    )
 }
 
 @Composable
@@ -162,9 +180,13 @@ private fun SigningsScreenContent(
             .padding(horizontal = 24.dp)
             .verticalScroll(rememberScrollState()),
     ) {
-        if (state.isUserInfoEditable.not()) {
+        if (state.isSigningByAdmin.not()) {
             SigningsSubtitle(state = state)
-            HeightSpacer(4.dp)
+        } else {
+            WolczynText(
+                text = stringResource(Res.string.signings_subtitle_admin),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
+            )
         }
 
         FirstNameTextField(
@@ -206,6 +228,7 @@ private fun SigningsScreenContent(
         EmailTextField(
             value = state.email,
             onValueChange = { handleAction(UpdateEmail(it)) },
+            enabled = state.isSigningByAdmin,
             errorMessage =
                 if (state.birthdayError) stringResource(Res.string.email_error_invalid)
                 else null,
@@ -261,7 +284,7 @@ private fun SigningsScreenContent(
             )
         }
 
-        if (state.isUserInfoEditable.not() && state.isEditing.not())
+        if (state.isSigningByAdmin.not() && state.isEditing.not())
             CheckableField(
                 checked = state.statuteChecked,
                 onCheckedChange = { handleAction(UpdateStatuteConsent(it)) },

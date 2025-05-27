@@ -3,7 +3,7 @@ package pl.kapucyni.wolczyn.app.common.presentation
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.*
 
 enum class HomeTileType(val navRoute: Screen) {
-    SIGNING(Signing()),
+    SIGNING(Signings()),
     MEETINGS(Meetings),
     SCHEDULE(Schedule),
     SONG_BOOK(SongBook),

@@ -47,7 +47,7 @@ class SigningsViewModel(
                         data = SigningsScreenState(
                             meeting = meeting.await(),
                             isEditing = participant != null,
-                            isUserInfoEditable = user == null,
+                            isSigningByAdmin = user == null,
                             firstName = participant?.firstName ?: user?.firstName.orEmpty(),
                             lastName = participant?.lastName ?: user?.lastName.orEmpty(),
                             city = participant?.city ?: user?.city.orEmpty(),
@@ -288,7 +288,8 @@ class SigningsViewModel(
         val newState = with(state) {
             copy(
                 email = email.trim(),
-                emailError = email.trim().isValidEmail().not(),
+                emailError =
+                    email.trim().isValidEmail().not() || user?.let { it.email != email } ?: true,
                 firstName = firstName.trim(),
                 firstNameError = firstName.trim().isBlank(),
                 lastName = lastName.trim(),

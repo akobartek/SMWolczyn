@@ -21,12 +21,15 @@ fun ScreenLayout(
     onBackPressed: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     actionIcon: (@Composable RowScope.() -> Unit)? = null,
+    floatingActionButton: (@Composable () -> Unit) = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    Scaffold{ paddingValues ->
+    Scaffold(
+        floatingActionButton = floatingActionButton,
+    ) { paddingValues ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier

@@ -31,14 +31,14 @@ fun WolczynAlertDialog(
                 WolczynText(
                     text = stringResource(dialogTitleId),
                     textStyle = MaterialTheme.typography.headlineSmall.copy(
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     ),
                 )
             },
             text = {
                 WolczynText(
                     text = stringResource(dialogTextId),
-                    textStyle = MaterialTheme.typography.labelLarge
+                    textStyle = MaterialTheme.typography.labelLarge,
                 )
             },
             onDismissRequest = { if (dismissible) onDismissRequest() },

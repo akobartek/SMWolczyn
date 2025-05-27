@@ -54,7 +54,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.Shop
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.ShopProduct
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignIn
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignUp
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.Signing
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.Signings
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SongBook
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Workshops
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
@@ -163,8 +163,8 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     )
                 }
 
-                composable<Signing> {
-                    val screen = it.toRoute<Signing>()
+                composable<Signings> {
+                    val screen = it.toRoute<Signings>()
 
                     appConfiguration?.openSigning?.let { meetingId ->
                         SigningsScreen(
@@ -172,7 +172,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                             viewModel = koinViewModel {
                                 parametersOf(
                                     meetingId,
-                                    if (screen.canChangeUserInfo.not()) user else null,
+                                    if (screen.isAdmin.not()) user else null,
                                 )
                             }
                         )
