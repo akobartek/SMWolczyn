@@ -7,6 +7,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 
 interface MeetingsRepository {
     suspend fun getMeeting(id: Int): Meeting
+    suspend fun getAllWorkshops(): List<Workshop>
     suspend fun getAvailableWorkshops(): List<Workshop>
     suspend fun checkPreviousSigning(meetingId: Int, email: String): Participant?
     suspend fun saveParticipant(meetingId: Int, participant: Participant): Result<Unit>

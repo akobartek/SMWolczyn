@@ -22,10 +22,10 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
-import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynBottomSheet
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynFloatingActionButton
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.composables.ParticipantCard
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.composables.ParticipantsFilteringBottomSheet
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.add_participant
 import smwolczyn.composeapp.generated.resources.empty_participants_list
@@ -41,6 +41,7 @@ fun ParticipantsScreen(
     viewModel: ParticipantsViewModel,
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val filterState by viewModel.filterState.collectAsStateWithLifecycle()
     var filterSheetVisible by remember { mutableStateOf(false) }
 
     ScreenLayout(
@@ -72,12 +73,12 @@ fun ParticipantsScreen(
         }
     }
 
-    WolczynBottomSheet(
+    ParticipantsFilteringBottomSheet(
+        state = filterState,
+        handleAction = viewModel::handleAction,
         isVisible = filterSheetVisible,
         onDismiss = { filterSheetVisible = false },
-    ) {
-
-    }
+    )
 }
 
 @Composable

@@ -23,10 +23,12 @@ class FirebaseMeetingsRepository(
             .data<Meeting>()
     }.getOrDefault(Meeting(id = id))
 
-    override suspend fun getAvailableWorkshops() = runCatching {
+    override suspend fun getAllWorkshops() = runCatching {
         firestore.getFirestoreCollection<Workshop>(COLLECTION_WORKSHOPS)
     }.getOrDefault(listOf())
-        .filter { it.available }
+
+    override suspend fun getAvailableWorkshops() =
+        getAllWorkshops().filter { it.available }
 
     override suspend fun checkPreviousSigning(
         meetingId: Int,
