@@ -196,7 +196,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     ParticipantsScreen(
                         navigateUp = { navController.navigateUpSafely(screen) },
                         navigate = { destination -> navController.navigateSafely(destination) },
-                        openSigningMeeting = appConfiguration?.openSigning,
                         viewModel = koinViewModel { parametersOf(screen.meetingId) },
                     )
                 }
