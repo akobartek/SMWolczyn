@@ -65,7 +65,7 @@ import pl.kapucyni.wolczyn.app.core.presentation.composables.ForceUpdateDialog
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsScreen
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen

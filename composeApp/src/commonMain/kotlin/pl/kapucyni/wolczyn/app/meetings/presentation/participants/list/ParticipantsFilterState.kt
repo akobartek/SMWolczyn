@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.participants
+package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list
 
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 

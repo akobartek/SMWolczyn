@@ -33,6 +33,7 @@ webview = "1.9.12"
 firebase-gitlive-sdk = "2.0.0"
 crashlytics = "3.0.3"
 google-services = "4.4.2"
+google-code-scanner = "16.1.0"
 
 
 [libraries]
@@ -75,6 +76,7 @@ firebase-gitlive-crashlytics = { module = "dev.gitlive:firebase-crashlytics", ve
 firebase-gitlive-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive-sdk" }
 firebase-gitlive-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase-gitlive-sdk" }
 firebase-gitlive-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-gitlive-sdk" }
+google-code-scanner = { module = "com.google.android.gms:play-services-code-scanner", version.ref = "google-code-scanner" }
 
 
 [plugins]

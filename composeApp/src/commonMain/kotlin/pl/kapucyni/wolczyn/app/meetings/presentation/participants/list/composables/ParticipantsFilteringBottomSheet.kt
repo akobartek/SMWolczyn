@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.participants.composables
+package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,11 +26,11 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.SearchTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynBottomSheet
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsFilterState
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreenAction
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreenAction.UpdateSearchQuery
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreenAction.UpdateTypesFilter
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreenAction.UpdateWorkshopsFilter
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsFilterState
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.filter_empty
 import smwolczyn.composeapp.generated.resources.participant_type_title

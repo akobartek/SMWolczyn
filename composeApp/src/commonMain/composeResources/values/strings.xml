@@ -101,6 +101,10 @@
     <string name="empty_meetings_list">Wystąpił błąd podczas ładowania listy spotkań, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="empty_participants_list">Nie znaleziono żadnych uczestników dla podanych wartości!</string>
     <string name="meeting_participants">Uczestnicy</string>
+    <string name="cd_qr_scanner">Otwórz skaner kodów QR</string>
+    <string name="qr_scan_success">Otwieram stronę uczestnika...</string>
+    <string name="qr_scan_failed">Wystąpił błąd podczas skanowania kodu QR, spróbuj ponownie!</string>
+    <string name="qr_scan_user_not_found">Nie znaleziono uczestnika, spróbuj ponownie!</string>
     <string name="cd_send_email">Wyślij email</string>
     <string name="filter_participants">Filtruj uczestników</string>
     <string name="filter_empty">Brak</string>

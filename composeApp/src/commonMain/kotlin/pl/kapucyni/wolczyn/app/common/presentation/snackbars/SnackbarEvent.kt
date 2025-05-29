@@ -10,6 +10,9 @@ import smwolczyn.composeapp.generated.resources.meeting_signing_remove_success
 import smwolczyn.composeapp.generated.resources.meeting_signing_saved
 import smwolczyn.composeapp.generated.resources.meeting_signing_updated
 import smwolczyn.composeapp.generated.resources.message_sent
+import smwolczyn.composeapp.generated.resources.qr_scan_failed
+import smwolczyn.composeapp.generated.resources.qr_scan_success
+import smwolczyn.composeapp.generated.resources.qr_scan_user_not_found
 import smwolczyn.composeapp.generated.resources.sign_in_error
 import smwolczyn.composeapp.generated.resources.sign_up_error
 import smwolczyn.composeapp.generated.resources.signed_in
@@ -45,4 +48,10 @@ sealed class SnackbarEvent(
     data object MeetingSigningUpdated : SnackbarEvent(message = Res.string.meeting_signing_updated)
 
     data object MeetingSigningRemoved : SnackbarEvent(message = Res.string.meeting_signing_remove_success)
+
+    data object QrCodeScanningSuccess : SnackbarEvent(message = Res.string.qr_scan_success)
+
+    data object QrCodeScanningFailed : SnackbarEvent(message = Res.string.qr_scan_failed)
+
+    data object QrCodeUserNotFound : SnackbarEvent(message = Res.string.qr_scan_user_not_found)
 }

@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.participants
+package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +26,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
@@ -30,10 +34,15 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynFabMenu
 import pl.kapucyni.wolczyn.app.common.presentation.fab.FloatingButtonData
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.composables.ParticipantCard
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.composables.ParticipantsFilteringBottomSheet
+import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantCard
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantsFilteringBottomSheet
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.add_participant
+import smwolczyn.composeapp.generated.resources.cd_qr_scanner
 import smwolczyn.composeapp.generated.resources.cd_send_email
 import smwolczyn.composeapp.generated.resources.empty_participants_list
 import smwolczyn.composeapp.generated.resources.filter_participants
@@ -45,6 +54,7 @@ fun ParticipantsScreen(
     navigateUp: () -> Unit,
     navigate: (Screen) -> Unit,
     viewModel: ParticipantsViewModel,
+    codeScanner: CodeScanner = koinInject(),
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -58,6 +68,23 @@ fun ParticipantsScreen(
         title = stringResource(Res.string.meeting_participants)
                 + ((state as? State.Success)?.data?.let { " (${it.size})" } ?: ""),
         onBackPressed = navigateUp,
+        actionIcon =
+            if (codeScanner.available) {
+                {
+                    IconButton(onClick = {
+                        codeScanner.startScanning(
+                            onSuccess = { viewModel.handleAction(QrScanSuccess(it)) },
+                            onFailure = { viewModel.handleAction(QrScanFailure) },
+                        )
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.QrCodeScanner,
+                            tint = wolczynColors.primary,
+                            contentDescription = stringResource(Res.string.cd_qr_scanner),
+                        )
+                    }
+                }
+            } else null,
         floatingActionButton = {
             val successData = (state as? State.Success)?.data
             WolczynFabMenu(

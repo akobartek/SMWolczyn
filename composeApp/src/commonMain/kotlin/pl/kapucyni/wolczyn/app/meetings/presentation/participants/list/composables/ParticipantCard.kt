@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.participants.composables
+package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

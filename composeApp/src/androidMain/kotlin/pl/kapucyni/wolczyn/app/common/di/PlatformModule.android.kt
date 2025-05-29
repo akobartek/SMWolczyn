@@ -9,6 +9,8 @@ import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.breviary.data.database.BreviaryDatabase
 import pl.kapucyni.wolczyn.app.common.presentation.AndroidLifecycleManager
 import pl.kapucyni.wolczyn.app.common.presentation.LifecycleManager
+import pl.kapucyni.wolczyn.app.common.utils.AndroidCodeScanner
+import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
 import pl.kapucyni.wolczyn.app.common.utils.dataStore
 
 actual val platformModule: Module = module {
@@ -24,4 +26,6 @@ actual val platformModule: Module = module {
     }
 
     factory<LifecycleManager> { AndroidLifecycleManager(androidApplication()) }
+
+    factory<CodeScanner> { AndroidCodeScanner(androidContext()) }
 }

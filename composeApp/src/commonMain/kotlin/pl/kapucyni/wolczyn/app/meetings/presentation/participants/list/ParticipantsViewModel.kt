@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.participants
+package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -13,12 +13,16 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreenAction.UpdateSearchQuery
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreenAction.UpdateTypesFilter
-import pl.kapucyni.wolczyn.app.meetings.presentation.participants.ParticipantsScreenAction.UpdateWorkshopsFilter
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
 
 @OptIn(FlowPreview::class)
 class ParticipantsViewModel(
@@ -81,6 +85,8 @@ class ParticipantsViewModel(
             is UpdateSearchQuery -> updateSearchQuery(action.query)
             is UpdateTypesFilter -> updateTypesFilter(action.elementSelected)
             is UpdateWorkshopsFilter -> updateWorkshopsFilter(action.elementSelected)
+            is QrScanSuccess -> handleQrScanSuccess(action.email)
+            is QrScanFailure -> handleQrScanFailure()
         }
     }
 
@@ -132,6 +138,20 @@ class ParticipantsViewModel(
                         state.selectedTypes + elementSelected
                     },
             )
+        }
+    }
+
+    private fun handleQrScanSuccess(email: String) {
+        viewModelScope.launch {
+            allParticipants.firstOrNull { it.email == email }?.let { participant ->
+                SnackbarController.sendEvent(SnackbarEvent.QrCodeScanningSuccess)
+            } ?: SnackbarController.sendEvent(SnackbarEvent.QrCodeUserNotFound)
+        }
+    }
+
+    private fun handleQrScanFailure() {
+        viewModelScope.launch {
+            SnackbarController.sendEvent(SnackbarEvent.QrCodeScanningFailed)
         }
     }
 }

@@ -8,6 +8,8 @@ import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.breviary.data.database.BreviaryDatabase
 import pl.kapucyni.wolczyn.app.common.presentation.AppleLifecycleManager
 import pl.kapucyni.wolczyn.app.common.presentation.LifecycleManager
+import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
+import pl.kapucyni.wolczyn.app.common.utils.NativeCodeScanner
 import pl.kapucyni.wolczyn.app.common.utils.dataStore
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -32,4 +34,6 @@ actual val platformModule: Module = module {
     }
 
     factory<LifecycleManager> { AppleLifecycleManager() }
+
+    factory<CodeScanner> { NativeCodeScanner() }
 }

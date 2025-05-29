@@ -92,6 +92,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.google.code.scanner)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
