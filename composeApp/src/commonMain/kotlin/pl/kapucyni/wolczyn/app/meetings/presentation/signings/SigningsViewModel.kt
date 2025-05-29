@@ -307,7 +307,7 @@ class SigningsViewModel(
                     selectedWorkshop == COSMETIC_WORKSHOP -> pesel.peselIsWoman().not()
                     else -> false
                 },
-                tooYoungDialogVisible = birthdayDate?.isAgeBelow(
+                tooYoungDialogVisible = isSigningByAdmin.not() && birthdayDate?.isAgeBelow(
                     age = 15,
                     other = Instant.fromEpochMilliseconds(meeting.start.toMilliseconds().toLong()),
                 ) == true,
