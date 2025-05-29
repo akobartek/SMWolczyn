@@ -17,6 +17,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -76,7 +77,10 @@ fun ProfileOptions(
             ) {
                 ProfilePicture(user = user)
                 Spacer(modifier = Modifier.width(12.dp))
-                WolczynText(text = user?.email ?: "")
+                WolczynText(
+                    text = user?.email ?: "",
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                )
             }
             HorizontalDivider()
             Column(modifier = Modifier.padding(horizontal = 4.dp)) {
