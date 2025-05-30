@@ -48,6 +48,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CityTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmailTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FirstNameTextField
+import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LastNameTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
@@ -335,6 +336,8 @@ private fun SigningsScreenContent(
             ) {
                 WolczynText(text = stringResource(Res.string.meeting_signing_remove))
             }
+
+        HeightSpacer(12.dp)
     }
 
     LoadingDialog(visible = state.loading)
