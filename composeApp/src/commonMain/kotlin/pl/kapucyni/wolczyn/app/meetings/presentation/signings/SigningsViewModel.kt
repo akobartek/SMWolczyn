@@ -94,10 +94,10 @@ class SigningsViewModel(
 
     private fun getAvailableTypes(birthday: Long?) = ParticipantType.entries.let {
         when {
-            user == null -> it
-
             birthday?.isAgeBelow(18) == true ->
                 listOf(ParticipantType.MEMBER, ParticipantType.SCOUT)
+
+            user == null -> it
 
             else -> it - ParticipantType.ORGANISATION
         }
@@ -220,7 +220,8 @@ class SigningsViewModel(
 
     private fun saveData() {
         val state = (screenState.value as? State.Success)?.data ?: return
-        if (validateInput(state).not() || state.statuteChecked.not()) return
+        if (validateInput(state).not() || (state.statuteChecked.not() && user != null))
+            return
 
         toggleLoading(state, true)
         viewModelScope.launch(Dispatchers.Default) {
@@ -289,7 +290,7 @@ class SigningsViewModel(
             copy(
                 email = email.trim(),
                 emailError =
-                    email.trim().isValidEmail().not() || user?.let { it.email != email } ?: true,
+                    email.trim().isValidEmail().not() || user?.let { it.email != email } ?: false,
                 firstName = firstName.trim(),
                 firstNameError = firstName.trim().isBlank(),
                 lastName = lastName.trim(),

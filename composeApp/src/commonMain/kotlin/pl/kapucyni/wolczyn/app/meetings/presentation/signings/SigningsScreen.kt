@@ -231,7 +231,7 @@ private fun SigningsScreenContent(
             onValueChange = { handleAction(UpdateEmail(it)) },
             enabled = state.isSigningByAdmin,
             errorMessage =
-                if (state.birthdayError) stringResource(Res.string.email_error_invalid)
+                if (state.emailError) stringResource(Res.string.email_error_invalid)
                 else null,
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Next) },
@@ -261,15 +261,17 @@ private fun SigningsScreenContent(
                 .focusProperties { next = typeRef },
         )
 
-        SelectableTextView(
-            value = state.type?.let { stringResource(it.stringRes) }.orEmpty(),
-            label = Res.string.participant_type,
-            items = state.availableTypes.map { it to stringResource(it.stringRes) },
-            onItemSelected = { handleAction(UpdateType(it)) },
-            leadingIcon = Icons.AutoMirrored.Filled.FollowTheSigns,
-            error = if (state.typeError) Res.string.participant_type_error else null,
-            modifier = Modifier.focusRequester(typeRef),
-        )
+        AnimatedVisibility(state.birthdayDate != null) {
+            SelectableTextView(
+                value = state.type?.let { stringResource(it.stringRes) }.orEmpty(),
+                label = Res.string.participant_type,
+                items = state.availableTypes.map { it to stringResource(it.stringRes) },
+                onItemSelected = { handleAction(UpdateType(it)) },
+                leadingIcon = Icons.AutoMirrored.Filled.FollowTheSigns,
+                error = if (state.typeError) Res.string.participant_type_error else null,
+                modifier = Modifier.focusRequester(typeRef),
+            )
+        }
 
         AnimatedVisibility(state.workshopsEnabled) {
             val workshops =
@@ -295,7 +297,7 @@ private fun SigningsScreenContent(
                 ),
             )
 
-        if (state.isUnderAge)
+        if (state.isSigningByAdmin.not() && state.isUnderAge)
             WolczynText(
                 text = buildLinkableString(
                     text = Res.string.meeting_signing_underage_info,
@@ -311,7 +313,7 @@ private fun SigningsScreenContent(
                 focusManager.clearFocus(true)
                 handleAction(SaveData)
             },
-            enabled = state.statuteChecked,
+            enabled = state.statuteChecked || state.isSigningByAdmin,
             modifier = Modifier
                 .widthIn(max = 420.dp)
                 .fillMaxWidth(),
