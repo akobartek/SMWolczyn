@@ -101,6 +101,8 @@
     <string name="empty_meetings_list">Wystąpił błąd podczas ładowania listy spotkań, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="empty_participants_list">Nie znaleziono żadnych uczestników dla podanych wartości!</string>
     <string name="meeting_participants">Uczestnicy</string>
+    <string name="meeting_scouts">Harcerze</string>
+    <string name="meeting_animators">Animatorzy</string>
     <string name="cd_qr_scanner">Otwórz skaner kodów QR</string>
     <string name="qr_scan_success">Otwieram stronę uczestnika...</string>
     <string name="qr_scan_failed">Wystąpił błąd podczas skanowania kodu QR, spróbuj ponownie!</string>
@@ -118,8 +120,8 @@
     <string name="cd_save_signing">Zapisz zgłoszenie</string>
     <string name="cd_scan_signing">Okazanie kodu na zapisy</string>
     <string name="signings_qr_code_msg">Twój kod QR:</string>
-    <string name="signings_subtitle">Witaj, %1$s, aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie pod hasłem %meeting_title%, wypełnij poniższy formularz zgłoszeniowy:</string>
-    <string name="signings_subtitle_edit">Cześć, %1$s, Twoje zgłoszenie jest już zapisane w systemie. Jeśli chcesz, możesz je edytować poniżej:</string>
+    <string name="signings_subtitle">Aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie pod hasłem %meeting_title%, wypełnij poniższy formularz zgłoszeniowy:</string>
+    <string name="signings_subtitle_edit">Twoje zgłoszenie jest już zapisane w systemie. Jeśli chcesz, możesz je edytować poniżej:</string>
     <string name="signings_subtitle_admin">Zapisywanie nowego uczestnika na Wołczyn:</string>
     <string name="pesel">PESEL</string>
     <string name="pesel_error">Podany numer PESEL jest nieprawidłowy!</string>
@@ -150,7 +152,7 @@
     <string name="meeting_signing_remove_dialog_btn">Wycofaj</string>
     <string name="meeting_signing_remove_success">Zgłoszenie zostało usunięte z systemu</string>
     <string name="meeting_signing_underage_info">Pamiętaj, że jako osoba niepełnoletnia, na spotkanie musisz zabrać podpisaną %consent% oraz przyjechać na Wołczyn pod opieką opiekuna indywidualnego lub grupowego.</string>
-    <string name="meeting_signing_underage_consent">zgodę rodzica lub opiekuna prawnego</string>
+    <string name="meeting_underage_consent">zgodę rodzica lub opiekuna prawnego</string>
 
     <!-- SCHEDULE STRINGS -->
     <string name="video_image_description">Link do nagrania</string>

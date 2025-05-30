@@ -3,12 +3,19 @@ package pl.kapucyni.wolczyn.app.meetings.data
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
+import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.ANIMATOR
+import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.SCOUT
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 
 class FirebaseMeetingsRepository(
@@ -68,7 +75,10 @@ class FirebaseMeetingsRepository(
         firestore.getFirestoreCollectionFlow<Meeting>(COLLECTION_MEETINGS)
             .map { meetings -> meetings.sortedByDescending { it.id } }
 
-    override fun getMeetingParticipants(meetingId: Int): Flow<List<Participant>> =
+    override fun getMeetingParticipants(
+        meetingId: Int,
+        userType: UserType,
+    ): Flow<List<Participant>> = kotlin.runCatching {
         firestore.collection(COLLECTION_MEETINGS)
             .document(meetingId.toString())
             .collection(COLLECTION_SIGNINGS)
@@ -77,8 +87,17 @@ class FirebaseMeetingsRepository(
                 querySnapshot.documents.map { it.data() }
             }
             .map { list ->
+                when (userType) {
+                    ADMIN -> list
+                    SCOUTS_MANAGER -> list.filter { it.type == SCOUT }
+                    ANIMATORS_MANAGER -> list.filter { it.type == ANIMATOR }
+                    else -> emptyList()
+                }
+            }
+            .map { list ->
                 list.sortedWith(compareBy({ it.firstName }, { it.lastName }))
             }
+    }.getOrDefault(emptyFlow())
 
     private companion object {
         const val COLLECTION_MEETINGS = "meetings"

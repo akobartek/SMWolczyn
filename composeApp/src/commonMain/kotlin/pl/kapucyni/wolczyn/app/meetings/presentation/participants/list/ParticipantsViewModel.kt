@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
@@ -27,6 +28,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 @OptIn(FlowPreview::class)
 class ParticipantsViewModel(
     private val meetingId: Int,
+    private val userType: UserType,
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<List<Participant>>() {
 
@@ -38,7 +40,7 @@ class ParticipantsViewModel(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
-                meetingsRepository.getMeetingParticipants(meetingId)
+                meetingsRepository.getMeetingParticipants(meetingId, userType)
                     .shareIn(this, SharingStarted.Lazily, 1)
                     .collect { participants ->
                         allParticipants = participants

@@ -44,8 +44,9 @@ fun WolczynFabMenu(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.End,
     ) {
-        items.filter { it.enabled }.forEachIndexed { index, buttonData ->
-            val multiplier = items.size - index
+        val filteredItems = items.filter { it.enabled }
+        filteredItems.forEachIndexed { index, buttonData ->
+            val multiplier = filteredItems.size - index
             AnimatedVisibility(
                 visible = fabListVisible,
                 enter = fadeIn() + slideInVertically(initialOffsetY = { it * multiplier }),

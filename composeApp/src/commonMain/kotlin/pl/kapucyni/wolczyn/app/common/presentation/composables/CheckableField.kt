@@ -24,7 +24,6 @@ fun CheckableField(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .padding(vertical = 8.dp)
             .widthIn(max = 420.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

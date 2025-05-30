@@ -27,6 +27,7 @@ import org.koin.core.parameter.parametersOf
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreen
@@ -193,11 +194,14 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 composable<MeetingParticipants> {
                     val screen = it.toRoute<MeetingParticipants>()
 
-                    ParticipantsScreen(
-                        navigateUp = { navController.navigateUpSafely(screen) },
-                        navigate = { destination -> navController.navigateSafely(destination) },
-                        viewModel = koinViewModel { parametersOf(screen.meetingId) },
-                    )
+                    user?.userType?.takeIf { type -> type != UserType.MEMBER }?.let { userType ->
+                        ParticipantsScreen(
+                            navigateUp = { navController.navigateUpSafely(screen) },
+                            navigate = { destination -> navController.navigateSafely(destination) },
+                            userType = userType,
+                            viewModel = koinViewModel { parametersOf(screen.meetingId, userType) },
+                        )
+                    } ?: navController.popBackStack()
                 }
 
                 composable<MeetingGroups> {

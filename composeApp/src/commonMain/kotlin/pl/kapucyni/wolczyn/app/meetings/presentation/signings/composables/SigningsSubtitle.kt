@@ -20,16 +20,15 @@ fun SigningsSubtitle(
     modifier: Modifier = Modifier,
     state: SigningsScreenState,
 ) {
-    val userName = "${state.firstName} ${state.lastName}"
     WolczynText(
         text =
             if (state.isEditing) {
                 buildAnnotatedString {
-                    append(stringResource(Res.string.signings_subtitle_edit, userName))
+                    append(stringResource(Res.string.signings_subtitle_edit))
                 }
             } else {
                 buildAnnotatedString {
-                    stringResource(Res.string.signings_subtitle, userName)
+                    stringResource(Res.string.signings_subtitle)
                         .split(MEETING_TITLE)
                         .let {
                             append(it.first())

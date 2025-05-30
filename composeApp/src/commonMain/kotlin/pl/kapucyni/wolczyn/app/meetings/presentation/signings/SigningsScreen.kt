@@ -91,10 +91,10 @@ import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_m
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_title
 import smwolczyn.composeapp.generated.resources.meeting_signing_too_young_dialog_message
 import smwolczyn.composeapp.generated.resources.meeting_signing_too_young_dialog_title
-import smwolczyn.composeapp.generated.resources.meeting_signing_underage_consent
 import smwolczyn.composeapp.generated.resources.meeting_signing_underage_info
 import smwolczyn.composeapp.generated.resources.meeting_statute_title
 import smwolczyn.composeapp.generated.resources.meeting_statute_value
+import smwolczyn.composeapp.generated.resources.meeting_underage_consent
 import smwolczyn.composeapp.generated.resources.participant_type
 import smwolczyn.composeapp.generated.resources.participant_type_error
 import smwolczyn.composeapp.generated.resources.signing_save
@@ -290,13 +290,7 @@ private fun SigningsScreenContent(
                 onCheckedChange = { handleAction(UpdateStatuteConsent(it)) },
                 text = buildLinkableString(
                     text = Res.string.meeting_statute_title,
-                    links = listOf(
-                        Triple(
-                            STATUTE,
-                            STATUTE_LINK,
-                            Res.string.meeting_statute_value,
-                        ),
-                    ),
+                    links = listOf(Triple(STATUTE, STATUTE_LINK, Res.string.meeting_statute_value)),
                 ),
             )
 
@@ -305,11 +299,7 @@ private fun SigningsScreenContent(
                 text = buildLinkableString(
                     text = Res.string.meeting_signing_underage_info,
                     links = listOf(
-                        Triple(
-                            UNDER_AGE,
-                            UNDER_AGE_LINK,
-                            Res.string.meeting_signing_underage_consent,
-                        ),
+                        Triple(UNDER_AGE, UNDER_AGE_LINK, Res.string.meeting_underage_consent),
                     ),
                 ),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),

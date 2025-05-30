@@ -27,6 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
@@ -47,12 +50,15 @@ import smwolczyn.composeapp.generated.resources.cd_send_email
 import smwolczyn.composeapp.generated.resources.empty_participants_list
 import smwolczyn.composeapp.generated.resources.filter_participants
 import smwolczyn.composeapp.generated.resources.ic_cap_archive
+import smwolczyn.composeapp.generated.resources.meeting_animators
 import smwolczyn.composeapp.generated.resources.meeting_participants
+import smwolczyn.composeapp.generated.resources.meeting_scouts
 
 @Composable
 fun ParticipantsScreen(
     navigateUp: () -> Unit,
     navigate: (Screen) -> Unit,
+    userType: UserType,
     viewModel: ParticipantsViewModel,
     codeScanner: CodeScanner = koinInject(),
 ) {
@@ -65,11 +71,16 @@ fun ParticipantsScreen(
     var fabVisible by remember { mutableStateOf(true) }
 
     ScreenLayout(
-        title = stringResource(Res.string.meeting_participants)
-                + ((state as? State.Success)?.data?.let { " (${it.size})" } ?: ""),
+        title = stringResource(
+            when (userType) {
+                SCOUTS_MANAGER -> Res.string.meeting_scouts
+                ANIMATORS_MANAGER -> Res.string.meeting_animators
+                else -> Res.string.meeting_participants
+            }
+        ) + ((state as? State.Success)?.data?.let { " (${it.size})" } ?: ""),
         onBackPressed = navigateUp,
         actionIcon =
-            if (codeScanner.available) {
+            if (codeScanner.available && userType.canManageParticipants()) {
                 {
                     IconButton(onClick = {
                         codeScanner.startScanning(
@@ -108,12 +119,14 @@ fun ParticipantsScreen(
                         contentDescription = Res.string.filter_participants,
                         onClick = { filterSheetVisible = true },
                         isSmall = true,
+                        enabled = userType.canManageParticipants(),
                     ),
                     FloatingButtonData(
                         icon = Icons.Default.Add,
                         contentDescription = Res.string.add_participant,
                         onClick = { navigate(Screen.Signings(isAdmin = true)) },
                         isSmall = true,
+                        enabled = userType.canManageParticipants(),
                     ),
                 ),
             )
