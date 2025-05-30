@@ -1,5 +1,7 @@
 package pl.kapucyni.wolczyn.app.meetings.data
 
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toLowerCase
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
@@ -95,7 +97,17 @@ class FirebaseMeetingsRepository(
                 }
             }
             .map { list ->
-                list.sortedWith(compareBy({ it.firstName }, { it.lastName }))
+                val locale = Locale.current
+                list.sortedWith(
+                    compareBy(
+                        {
+                            it.firstName.toLowerCase(locale)
+                                .replace("br. ", "")
+                                .replace("s. ", "")
+                        },
+                        { it.lastName.toLowerCase(locale) },
+                    )
+                )
             }
     }.getOrDefault(emptyFlow())
 
