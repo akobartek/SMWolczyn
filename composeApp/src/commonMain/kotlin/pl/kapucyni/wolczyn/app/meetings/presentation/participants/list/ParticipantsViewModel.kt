@@ -4,11 +4,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,6 +38,9 @@ class ParticipantsViewModel(
 
     private val _filterState = MutableStateFlow(ParticipantsFilterState())
     val filterState = _filterState.asStateFlow()
+
+    private val _events = Channel<ParticipantsScreenEvent>()
+    val events = _events.receiveAsFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -147,6 +152,7 @@ class ParticipantsViewModel(
         viewModelScope.launch {
             allParticipants.firstOrNull { it.email == email }?.let { participant ->
                 SnackbarController.sendEvent(SnackbarEvent.QrCodeScanningSuccess)
+                _events.send(ParticipantsScreenEvent.QrScanSuccess(participant))
             } ?: SnackbarController.sendEvent(SnackbarEvent.QrCodeUserNotFound)
         }
     }

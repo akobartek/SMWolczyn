@@ -26,6 +26,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.*
 class SigningsViewModel(
     private val meetingId: Int,
     private val user: User?,
+    private val email: String?,
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<SigningsScreenState>() {
 
@@ -35,7 +36,8 @@ class SigningsViewModel(
                 val meeting = async { meetingsRepository.getMeeting(meetingId) }
                 val workshops = async { meetingsRepository.getAvailableWorkshops() }
                 val previousSigning = async {
-                    user?.email?.takeIf { it.isNotBlank() }?.let { email ->
+                    val signingEmail = email ?: user?.email
+                    signingEmail?.takeIf { it.isNotBlank() }?.let { email ->
                         meetingsRepository.checkPreviousSigning(meetingId, email)
                     }
                 }
@@ -54,9 +56,9 @@ class SigningsViewModel(
                             email = participant?.email ?: user?.email.orEmpty(),
                             pesel =
                                 participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
-                            peselIsWoman = participant?.pesel?.peselIsWoman() ?: false,
+                            peselIsWoman = participant?.pesel?.peselIsWoman() == true,
                             birthdayDate = birthday,
-                            isUnderAge = birthday?.isAgeBelow(age = 18) ?: false,
+                            isUnderAge = birthday?.isAgeBelow(age = 18) == true,
                             availableTypes = getAvailableTypes(birthday),
                             type = participant?.type,
                             availableWorkshops = workshops.await().map { it.name },
@@ -290,7 +292,7 @@ class SigningsViewModel(
             copy(
                 email = email.trim(),
                 emailError =
-                    email.trim().isValidEmail().not() || user?.let { it.email != email } ?: false,
+                    email.trim().isValidEmail().not() || user?.let { it.email != email } == true,
                 firstName = firstName.trim(),
                 firstNameError = firstName.trim().isBlank(),
                 lastName = lastName.trim(),
@@ -341,7 +343,7 @@ class SigningsViewModel(
                 .let { sum -> (10 - sum % 10) % 10 }
             controlNumber == calculatedNumber
         }
-    } catch (exc: Exception) {
+    } catch (_: Exception) {
         false
     }
 
@@ -350,7 +352,7 @@ class SigningsViewModel(
 
     private fun CharSequence.peselIsWoman() = getOrNull(9)?.let {
         it.isDigit() && (it.digitToInt()) % 2 == 0
-    } ?: false
+    } == true
 
     companion object {
         const val COSMETIC_WORKSHOP = "Kosmetyczne"

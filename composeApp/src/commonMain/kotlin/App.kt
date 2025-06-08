@@ -158,10 +158,12 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 }
 
                 composable<EditProfile> {
-                    EditProfileScreen(
-                        navigateUp = { navController.navigateUpSafely(EditProfile) },
-                        viewModel = koinViewModel { parametersOf(user) },
-                    )
+                    user?.let {
+                        EditProfileScreen(
+                            navigateUp = { navController.navigateUpSafely(EditProfile) },
+                            viewModel = koinViewModel { parametersOf(user) },
+                        )
+                    } ?: navController.popBackStack()
                 }
 
                 composable<Signings> {
@@ -174,6 +176,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                                 parametersOf(
                                     meetingId,
                                     if (screen.isAdmin.not()) user else null,
+                                    screen.email,
                                 )
                             }
                         )

@@ -13,7 +13,9 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsViewModel
 val meetingsModule = module {
     factory<MeetingsRepository> { FirebaseMeetingsRepository(get()) }
 
-    viewModel { (meetingId: Int, user: User?) -> SigningsViewModel(meetingId, user, get()) }
+    viewModel { (meetingId: Int, user: User?, email: String?) ->
+        SigningsViewModel(meetingId, user, email, get())
+    }
     viewModel { MeetingsViewModel(get()) }
     viewModel { (meetingId: Int, userType: UserType) ->
         ParticipantsViewModel(meetingId, userType, get())

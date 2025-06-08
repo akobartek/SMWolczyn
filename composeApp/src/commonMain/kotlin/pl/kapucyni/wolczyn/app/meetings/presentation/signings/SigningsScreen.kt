@@ -181,10 +181,9 @@ private fun SigningsScreenContent(
             .padding(horizontal = 24.dp)
             .verticalScroll(rememberScrollState()),
     ) {
-        if (state.isSigningByAdmin.not()) {
-            SigningsSubtitle(state = state)
-        } else {
-            WolczynText(
+        when {
+            state.isSigningByAdmin.not() -> SigningsSubtitle(state = state)
+            state.isEditing.not() -> WolczynText(
                 text = stringResource(Res.string.signings_subtitle_admin),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
             )
@@ -229,7 +228,7 @@ private fun SigningsScreenContent(
         EmailTextField(
             value = state.email,
             onValueChange = { handleAction(UpdateEmail(it)) },
-            enabled = state.isSigningByAdmin,
+            enabled = (state.isSigningByAdmin && state.isEditing.not()) || state.email.isEmpty(),
             errorMessage =
                 if (state.emailError) stringResource(Res.string.email_error_invalid)
                 else null,

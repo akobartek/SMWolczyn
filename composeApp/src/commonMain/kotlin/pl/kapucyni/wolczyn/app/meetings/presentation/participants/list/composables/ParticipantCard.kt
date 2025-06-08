@@ -22,9 +22,11 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 @Composable
 fun ParticipantCard(
     participant: Participant,
+    onClick: () -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
+        onClick = onClick,
     ) {
         Column(
             verticalArrangement = Arrangement.Center,

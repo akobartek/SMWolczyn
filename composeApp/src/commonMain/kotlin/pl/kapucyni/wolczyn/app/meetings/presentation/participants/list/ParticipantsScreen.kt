@@ -31,6 +31,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
+import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
@@ -38,6 +39,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynFabMenu
 import pl.kapucyni.wolczyn.app.common.presentation.fab.FloatingButtonData
 import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantCard
@@ -69,6 +71,16 @@ fun ParticipantsScreen(
 
     var filterSheetVisible by remember { mutableStateOf(false) }
     var fabVisible by remember { mutableStateOf(true) }
+    val openDetails = { participant: Participant ->
+        if (userType == UserType.ADMIN)
+            navigate(Screen.Signings(isAdmin = true, email = participant.email))
+    }
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is ParticipantsScreenEvent.QrScanSuccess -> openDetails(event.participant)
+        }
+    }
 
     ScreenLayout(
         title = stringResource(
@@ -156,6 +168,10 @@ fun ParticipantsScreen(
                     items(items = participants, key = { it.pesel }) { participant ->
                         ParticipantCard(
                             participant = participant,
+                            onClick = {
+                                if (userType.canManageParticipants())
+                                    openDetails(participant)
+                            },
                         )
                     }
 
