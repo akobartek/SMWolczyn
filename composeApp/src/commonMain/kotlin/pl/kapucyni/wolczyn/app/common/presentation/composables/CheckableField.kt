@@ -41,3 +41,18 @@ fun CheckableField(
         )
     }
 }
+
+@Composable
+fun CheckableField(
+    modifier: Modifier = Modifier,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    text: String,
+) {
+    CheckableField(
+        modifier = modifier,
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        text = AnnotatedString(text),
+    )
+}

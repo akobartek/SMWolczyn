@@ -23,13 +23,18 @@ fun ParticipantDetailsScreen(
     }
 
     ScreenLayout(
-        title = null,
+        title = (state as? State.Success)?.data?.let { participant ->
+            "${participant.firstName} ${participant.lastName}"
+        }.orEmpty(),
         onBackPressed = navigateUp,
     ) {
         when (state) {
             is State.Loading -> LoadingBox()
             is State.Success -> (state as? State.Success)?.data?.let { participant ->
-
+                ParticipantDetailsScreenContent(
+                    participant = participant,
+                    confirmUserSigning = viewModel::confirmUserSigning,
+                )
             } ?: LoadingBox()
         }
     }

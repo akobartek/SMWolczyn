@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Icon
@@ -37,6 +38,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynFabMenu
 import pl.kapucyni.wolczyn.app.common.presentation.fab.FloatingButtonData
 import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
@@ -49,6 +51,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composabl
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.add_participant
+import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_qr_scanner
 import smwolczyn.composeapp.generated.resources.cd_send_email
 import smwolczyn.composeapp.generated.resources.empty_participants_list
@@ -57,6 +60,8 @@ import smwolczyn.composeapp.generated.resources.ic_cap_archive
 import smwolczyn.composeapp.generated.resources.meeting_animators
 import smwolczyn.composeapp.generated.resources.meeting_participants
 import smwolczyn.composeapp.generated.resources.meeting_scouts
+import smwolczyn.composeapp.generated.resources.signing_confirmed_message
+import smwolczyn.composeapp.generated.resources.signing_confirmed_title
 
 @Composable
 fun ParticipantsScreen(
@@ -73,7 +78,9 @@ fun ParticipantsScreen(
     val filterState by viewModel.filterState.collectAsStateWithLifecycle()
 
     var filterSheetVisible by remember { mutableStateOf(false) }
+    var signingConfirmedDialogVisible by remember { mutableStateOf(false) }
     var fabVisible by remember { mutableStateOf(true) }
+
     val openDetails = { participant: Participant ->
         when (userType) {
             ADMIN ->
@@ -86,12 +93,14 @@ fun ParticipantsScreen(
                 )
 
             else ->
-                navigate(
-                    Screen.ParticipantDetails(
-                        meetingId = meetingId,
-                        email = participant.email,
+                if (participant.paid.not())
+                    navigate(
+                        Screen.ParticipantDetails(
+                            meetingId = meetingId,
+                            email = participant.email,
+                        )
                     )
-                )
+                else signingConfirmedDialogVisible = true
         }
     }
 
@@ -211,5 +220,15 @@ fun ParticipantsScreen(
         handleAction = viewModel::handleAction,
         isVisible = filterSheetVisible,
         onDismiss = { filterSheetVisible = false },
+    )
+
+    WolczynAlertDialog(
+        isVisible = signingConfirmedDialogVisible,
+        imageVector = Icons.Default.ErrorOutline,
+        dialogTitleId = Res.string.signing_confirmed_title,
+        dialogTextId = Res.string.signing_confirmed_message,
+        confirmBtnTextId = Res.string.cancel,
+        onConfirm = { signingConfirmedDialogVisible = false },
+        onDismissRequest = { signingConfirmedDialogVisible = false },
     )
 }

@@ -112,6 +112,12 @@
     <string name="filter_confirmed">Tylko uczestnicy na miejscu</string>
     <string name="filter_empty">Brak</string>
     <string name="add_participant">Dodaj uczestnika</string>
+    <string name="signing_confirmed_title">Napotkano błąd</string>
+    <string name="signing_confirmed_message">Uczestnik został już zarejestrowany na Spotkaniu, jeśli uważasz że jest to błąd, skontaktuj się z adminem!</string>
+    <string name="signing_confirm_consent">Odebrałem zgodę na przetwarzanie danych</string>
+    <string name="signing_confirm_underage_consent">Odebrałem zgodę rodzica/opiekuna</string>
+    <string name="signing_confirm_paid">Odebrałem pieniądze za uczestnictwo</string>
+    <string name="signing_confirm">Potwierdź przybycie uczestnika</string>
     <string name="signing_confirm_success">Potwierdzono zapis uczestnika!</string>
     <string name="signing_confirm_failure">Nie udało się zapisać, spróbuj ponownie później!</string>
     <string name="meeting_groups">Grupki</string>
