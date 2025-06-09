@@ -109,6 +109,7 @@
     <string name="qr_scan_user_not_found">Nie znaleziono uczestnika, spróbuj ponownie!</string>
     <string name="cd_send_email">Wyślij email</string>
     <string name="filter_participants">Filtruj uczestników</string>
+    <string name="filter_confirmed">Tylko uczestnicy na miejscu</string>
     <string name="filter_empty">Brak</string>
     <string name="add_participant">Dodaj uczestnika</string>
     <string name="signing_confirm_success">Potwierdzono zapis uczestnika!</string>

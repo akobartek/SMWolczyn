@@ -4,6 +4,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 
 data class ParticipantsFilterState(
     val query: String = "",
+    val onlyConfirmedParticipants: Boolean = false,
     val participantTypes: List<ParticipantType> = ParticipantType.entries.toList(),
     val selectedTypes: List<ParticipantType> = ParticipantType.entries.toList(),
     val workshops: List<String> = emptyList(),

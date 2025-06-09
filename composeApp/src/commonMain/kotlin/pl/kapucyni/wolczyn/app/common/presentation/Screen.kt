@@ -22,7 +22,7 @@ sealed interface Screen {
 
     @Serializable
     data class Signings(
-        val meetingId: Int? = null,
+        val meetingId: Int = -1,
         val isAdmin: Boolean = false,
         val email: String? = null,
     ) : Screen

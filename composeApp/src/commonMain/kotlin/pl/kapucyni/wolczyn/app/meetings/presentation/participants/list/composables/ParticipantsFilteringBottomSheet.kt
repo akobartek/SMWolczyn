@@ -2,6 +2,7 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composab
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -28,10 +29,12 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynBottomShee
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsFilterState
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.ToggleAllUsers
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.filter_confirmed
 import smwolczyn.composeapp.generated.resources.filter_empty
 import smwolczyn.composeapp.generated.resources.participant_type_title
 import smwolczyn.composeapp.generated.resources.workshops
@@ -53,32 +56,58 @@ fun ParticipantsFilteringBottomSheet(
                 onValueChange = { handleAction(UpdateSearchQuery(it)) },
             )
 
-            FilterList(
-                title = Res.string.participant_type_title,
-                imageVector = Icons.AutoMirrored.Filled.FollowTheSigns,
-                allElements = state.participantTypes.map {
-                    it to stringResource(it.stringRes)
-                },
-                selectedElements = state.selectedTypes,
-                onElementSelected = { handleAction(UpdateTypesFilter(it)) },
-            )
+            FilterSection {
+                FilterChip(
+                    label = {
+                        WolczynText(
+                            text = stringResource(Res.string.filter_confirmed),
+                            textStyle = MaterialTheme.typography.bodySmall,
+                        )
+                    },
+                    selected = state.onlyConfirmedParticipants,
+                    onClick = { handleAction(ToggleAllUsers(state.onlyConfirmedParticipants.not())) },
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                )
+            }
+
+            FilterSection {
+                FilterList(
+                    title = Res.string.participant_type_title,
+                    imageVector = Icons.AutoMirrored.Filled.FollowTheSigns,
+                    allElements = state.participantTypes.map {
+                        it to stringResource(it.stringRes)
+                    },
+                    selectedElements = state.selectedTypes,
+                    onElementSelected = { handleAction(UpdateTypesFilter(it)) },
+                )
+            }
 
             if (state.workshops.isNotEmpty()) {
-                FilterList(
-                    title = Res.string.workshops,
-                    imageVector = Icons.Default.Construction,
-                    allElements = state.workshops.map {
-                        it to (it.takeIf { it.isNotBlank() }
-                            ?: stringResource(Res.string.filter_empty))
-                    },
-                    selectedElements = state.selectedWorkshops,
-                    onElementSelected = { handleAction(UpdateWorkshopsFilter(it)) },
-                )
+                FilterSection {
+                    FilterList(
+                        title = Res.string.workshops,
+                        imageVector = Icons.Default.Construction,
+                        allElements = state.workshops.map {
+                            it to (it.takeIf { it.isNotBlank() }
+                                ?: stringResource(Res.string.filter_empty))
+                        },
+                        selectedElements = state.selectedWorkshops,
+                        onElementSelected = { handleAction(UpdateWorkshopsFilter(it)) },
+                    )
+                }
             }
 
             HeightSpacer(24.dp)
         }
     }
+}
+
+@Composable
+private fun ColumnScope.FilterSection(content: @Composable () -> Unit) {
+    HeightSpacer(16.dp)
+    HorizontalDivider(modifier = Modifier.fillMaxWidth())
+    HeightSpacer(16.dp)
+    content()
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -90,9 +119,6 @@ private fun <T> FilterList(
     selectedElements: List<T>,
     onElementSelected: (T) -> Unit,
 ) {
-    HeightSpacer(16.dp)
-    HorizontalDivider(modifier = Modifier.fillMaxWidth())
-    HeightSpacer(16.dp)
     Row(verticalAlignment = Alignment.CenterVertically) {
         WidthSpacer(12.dp)
         Icon(

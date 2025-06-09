@@ -25,6 +25,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.ToggleAllUsers
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
@@ -93,6 +94,7 @@ class ParticipantsViewModel(
     fun handleAction(action: ParticipantsScreenAction) {
         when (action) {
             is UpdateSearchQuery -> updateSearchQuery(action.query)
+            is ToggleAllUsers -> toggleAllUsers(action.checked)
             is UpdateTypesFilter -> updateTypesFilter(action.elementSelected)
             is UpdateWorkshopsFilter -> updateWorkshopsFilter(action.elementSelected)
             is QrScanSuccess -> handleQrScanSuccess(action.email)
@@ -105,6 +107,7 @@ class ParticipantsViewModel(
             filterState.query.isBlank()
             && filterState.selectedTypes.size == filterState.participantTypes.size
             && filterState.selectedWorkshops.size == filterState.workshops.size
+            && filterState.onlyConfirmedParticipants.not()
         )
             allParticipants
         else
@@ -115,14 +118,20 @@ class ParticipantsViewModel(
                         || it.email.contains(filterState.query, ignoreCase = true)
                         || it.pesel.contains(filterState.query, ignoreCase = true)
 
+                val signedResult = if (filterState.onlyConfirmedParticipants) it.paid else true
+
                 val typeResult = filterState.selectedTypes.contains(it.type)
                 val workshopsResult = filterState.selectedWorkshops.contains(it.workshop)
 
-                searchResult && typeResult && workshopsResult
+                searchResult && signedResult && typeResult && workshopsResult
             }
 
     private fun updateSearchQuery(query: String) {
         _filterState.update { it.copy(query = query) }
+    }
+
+    private fun toggleAllUsers(checked: Boolean) {
+        _filterState.update { it.copy(onlyConfirmedParticipants = checked) }
     }
 
     private fun updateWorkshopsFilter(elementSelected: String) {

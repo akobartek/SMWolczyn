@@ -171,18 +171,19 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 composable<Signings> {
                     val screen = it.toRoute<Signings>()
 
-                    (screen.meetingId ?: appConfiguration?.openSigning)?.let { meetingId ->
-                        SigningsScreen(
-                            navigateUp = { navController.navigateUpSafely(screen) },
-                            viewModel = koinViewModel {
-                                parametersOf(
-                                    meetingId,
-                                    if (screen.isAdmin.not()) user else null,
-                                    screen.email,
-                                )
-                            }
-                        )
-                    } ?: navController.popBackStack()
+                    (screen.meetingId.takeIf { it > 0 } ?: appConfiguration?.openSigning)
+                        ?.let { meetingId ->
+                            SigningsScreen(
+                                navigateUp = { navController.navigateUpSafely(screen) },
+                                viewModel = koinViewModel {
+                                    parametersOf(
+                                        meetingId,
+                                        if (screen.isAdmin.not()) user else null,
+                                        screen.email,
+                                    )
+                                }
+                            )
+                        } ?: navController.popBackStack()
                 }
 
                 composable<Meetings> {
