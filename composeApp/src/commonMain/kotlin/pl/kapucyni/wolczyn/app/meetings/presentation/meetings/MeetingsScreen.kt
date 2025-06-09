@@ -67,6 +67,7 @@ fun MeetingsScreen(
                     meetings = meetings,
                     userType = userType,
                     openParticipantsScreen = { navigate(Screen.MeetingParticipants(it)) },
+                    openWorkshopsScreen = { navigate(Screen.MeetingWorkshops(it)) },
                     openGroupsScreen = { navigate(Screen.MeetingGroups(it)) },
                 )
             } ?: LoadingBox()
@@ -79,6 +80,7 @@ private fun MeetingsScreenContent(
     meetings: List<Meeting>,
     userType: UserType,
     openParticipantsScreen: (Int) -> Unit,
+    openWorkshopsScreen: (Int) -> Unit,
     openGroupsScreen: (Int) -> Unit,
 ) {
     LazyColumn(
@@ -90,6 +92,7 @@ private fun MeetingsScreenContent(
                 meeting = meeting,
                 userType = userType,
                 openParticipantsScreen = openParticipantsScreen,
+                openWorkshopsScreen = openWorkshopsScreen,
                 openGroupsScreen = openGroupsScreen,
             )
         }

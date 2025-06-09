@@ -40,6 +40,9 @@ sealed interface Screen {
     ) : Screen
 
     @Serializable
+    data class MeetingWorkshops(val meetingId: Int) : Screen
+
+    @Serializable
     data class MeetingGroups(val meetingId: Int) : Screen
 
     @Serializable

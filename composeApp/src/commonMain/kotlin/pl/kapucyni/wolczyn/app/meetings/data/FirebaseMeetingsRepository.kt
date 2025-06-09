@@ -13,6 +13,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
+import pl.kapucyni.wolczyn.app.common.utils.saveObject
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -38,6 +39,14 @@ class FirebaseMeetingsRepository(
 
     override suspend fun getAvailableWorkshops() =
         getAllWorkshops().filter { it.available }
+
+    override suspend fun updateWorkshop(workshop: Workshop) = runCatching {
+        firestore.saveObject(
+            collectionName = COLLECTION_WORKSHOPS,
+            id = workshop.id,
+            data = workshop,
+        )
+    }.getOrDefault(Unit)
 
     override suspend fun checkPreviousSigning(
         meetingId: Int,
@@ -109,6 +118,10 @@ class FirebaseMeetingsRepository(
                     )
                 )
             }
+    }.getOrDefault(emptyFlow())
+
+    override fun getWorkshopsFlow(): Flow<List<Workshop>> = kotlin.runCatching {
+        firestore.getFirestoreCollectionFlow<Workshop>(COLLECTION_WORKSHOPS)
     }.getOrDefault(emptyFlow())
 
     private companion object {

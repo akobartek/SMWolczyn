@@ -48,6 +48,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.Home
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Kitchen
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.MeetingGroups
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.MeetingParticipants
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.MeetingWorkshops
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Meetings
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.ParticipantDetails
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Quiz
@@ -70,6 +71,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopProductScreen
@@ -220,6 +222,17 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                             parametersOf(screen.meetingId, screen.email)
                         },
                     )
+                }
+
+                composable<MeetingWorkshops> {
+                    val screen = it.toRoute<MeetingWorkshops>()
+
+                    user?.userType?.takeIf { type -> type == UserType.ADMIN }?.let {
+                        MeetingWorkshopsScreen(
+                            navigateUp = { navController.navigateUpSafely(screen) },
+                            viewModel = koinViewModel { parametersOf(screen.meetingId) },
+                        )
+                    } ?: navController.popBackStack()
                 }
 
                 composable<MeetingGroups> {

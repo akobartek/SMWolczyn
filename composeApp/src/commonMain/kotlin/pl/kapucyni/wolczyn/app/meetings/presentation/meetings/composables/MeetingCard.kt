@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Construction
 import androidx.compose.material.icons.outlined.Hub
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.Card
@@ -28,12 +29,14 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.meeting_groups
 import smwolczyn.composeapp.generated.resources.meeting_name
 import smwolczyn.composeapp.generated.resources.meeting_participants
+import smwolczyn.composeapp.generated.resources.workshops
 
 @Composable
 fun MeetingCard(
     meeting: Meeting,
     userType: UserType,
     openParticipantsScreen: (Int) -> Unit,
+    openWorkshopsScreen: (Int) -> Unit,
     openGroupsScreen: (Int) -> Unit,
 ) {
     Card(
@@ -67,6 +70,13 @@ fun MeetingCard(
                         contentDescription = stringResource(Res.string.meeting_participants),
                     )
                 }
+                if (userType == UserType.ADMIN)
+                    IconButton(onClick = { openWorkshopsScreen(meeting.id) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Construction,
+                            contentDescription = stringResource(Res.string.workshops),
+                        )
+                    }
                 if (userType == UserType.ADMIN && meeting.start.seconds <= Clock.System.now().epochSeconds)
                     IconButton(onClick = { openGroupsScreen(meeting.id) }) {
                         Icon(
