@@ -17,6 +17,8 @@ import smwolczyn.composeapp.generated.resources.sign_in_error
 import smwolczyn.composeapp.generated.resources.sign_up_error
 import smwolczyn.composeapp.generated.resources.signed_in
 import smwolczyn.composeapp.generated.resources.signed_out
+import smwolczyn.composeapp.generated.resources.signing_confirm_failure
+import smwolczyn.composeapp.generated.resources.signing_confirm_success
 import smwolczyn.composeapp.generated.resources.verify_email_email_sent
 
 sealed class SnackbarEvent(
@@ -54,4 +56,8 @@ sealed class SnackbarEvent(
     data object QrCodeScanningFailed : SnackbarEvent(message = Res.string.qr_scan_failed)
 
     data object QrCodeUserNotFound : SnackbarEvent(message = Res.string.qr_scan_user_not_found)
+
+    data object SigningConfirmSuccess : SnackbarEvent(message = Res.string.signing_confirm_success)
+
+    data object SigningConfirmFailed : SnackbarEvent(message = Res.string.signing_confirm_failure)
 }

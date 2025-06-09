@@ -17,7 +17,9 @@ import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
-import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningFailed
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningSuccess
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeUserNotFound
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
@@ -26,6 +28,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.ScanUserFound
 
 @OptIn(FlowPreview::class)
 class ParticipantsViewModel(
@@ -151,15 +154,15 @@ class ParticipantsViewModel(
     private fun handleQrScanSuccess(email: String) {
         viewModelScope.launch {
             allParticipants.firstOrNull { it.email == email }?.let { participant ->
-                SnackbarController.sendEvent(SnackbarEvent.QrCodeScanningSuccess)
-                _events.send(ParticipantsScreenEvent.QrScanSuccess(participant))
-            } ?: SnackbarController.sendEvent(SnackbarEvent.QrCodeUserNotFound)
+                SnackbarController.sendEvent(QrCodeScanningSuccess)
+                _events.send(ScanUserFound(participant))
+            } ?: SnackbarController.sendEvent(QrCodeUserNotFound)
         }
     }
 
     private fun handleQrScanFailure() {
         viewModelScope.launch {
-            SnackbarController.sendEvent(SnackbarEvent.QrCodeScanningFailed)
+            SnackbarController.sendEvent(QrCodeScanningFailed)
         }
     }
 }

@@ -14,7 +14,9 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.*
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
-import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.AccountDeleteFailed
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.AccountDeleted
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignedOut
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
 import pl.kapucyni.wolczyn.app.core.domain.usecases.GetAppConfigurationUseCase
 
@@ -66,7 +68,7 @@ class AppViewModel(
                     .collect { user ->
                         _user.value = user ?: User(id = userId)
                     }
-            } catch (e: FirebaseFirestoreException) {
+            } catch (_: FirebaseFirestoreException) {
                 userJob?.cancel()
             }
         }
@@ -75,7 +77,7 @@ class AppViewModel(
     private fun signOut() {
         viewModelScope.launch {
             authRepository.signOut()
-            SnackbarController.sendEvent(SnackbarEvent.SignedOut)
+            SnackbarController.sendEvent(SignedOut)
         }
     }
 
@@ -89,9 +91,9 @@ class AppViewModel(
         userJob?.cancel()
         viewModelScope.launch {
             authRepository.deleteAccount()
-                .onSuccess { SnackbarController.sendEvent(SnackbarEvent.AccountDeleted) }
+                .onSuccess { SnackbarController.sendEvent(AccountDeleted) }
                 .onFailure {
-                    SnackbarController.sendEvent(SnackbarEvent.AccountDeleteFailed)
+                    SnackbarController.sendEvent(AccountDeleteFailed)
                     user.value?.let { authRepository.updateUser(it) }
                 }
         }

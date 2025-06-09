@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
@@ -42,6 +43,7 @@ import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.ScanUserFound
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantCard
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantsFilteringBottomSheet
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
@@ -61,6 +63,7 @@ fun ParticipantsScreen(
     navigateUp: () -> Unit,
     navigate: (Screen) -> Unit,
     userType: UserType,
+    meetingId: Int,
     viewModel: ParticipantsViewModel,
     codeScanner: CodeScanner = koinInject(),
 ) {
@@ -72,13 +75,29 @@ fun ParticipantsScreen(
     var filterSheetVisible by remember { mutableStateOf(false) }
     var fabVisible by remember { mutableStateOf(true) }
     val openDetails = { participant: Participant ->
-        if (userType == UserType.ADMIN)
-            navigate(Screen.Signings(isAdmin = true, email = participant.email))
+        when (userType) {
+            ADMIN ->
+                navigate(
+                    Screen.Signings(
+                        meetingId = meetingId,
+                        isAdmin = true,
+                        email = participant.email,
+                    )
+                )
+
+            else ->
+                navigate(
+                    Screen.ParticipantDetails(
+                        meetingId = meetingId,
+                        email = participant.email,
+                    )
+                )
+        }
     }
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is ParticipantsScreenEvent.QrScanSuccess -> openDetails(event.participant)
+            is ScanUserFound -> openDetails(event.participant)
         }
     }
 

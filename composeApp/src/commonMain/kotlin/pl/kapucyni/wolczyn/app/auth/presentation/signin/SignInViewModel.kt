@@ -19,7 +19,10 @@ import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.EmailE
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.NoInternetAction
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.PasswordErrorType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
-import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.ResetPasswordMessageSent
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignInError
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignedIn
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.VerifyEmailMessageSent
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 
 class SignInViewModel(
@@ -56,7 +59,7 @@ class SignInViewModel(
         viewModelScope.launch {
             if (resend) {
                 authRepository.sendVerificationEmail()
-                SnackbarController.sendEvent(SnackbarEvent.VerifyEmailMessageSent)
+                SnackbarController.sendEvent(VerifyEmailMessageSent)
             }
             authRepository.signOut()
         }
@@ -70,7 +73,7 @@ class SignInViewModel(
             toggleLoading(false)
             _state.update {
                 if (result.isSuccess && result.getOrDefault(false)) {
-                    SnackbarController.sendEvent(SnackbarEvent.SignedIn)
+                    SnackbarController.sendEvent(SignedIn)
                     it.copy(isSignedIn = true)
                 } else result.exceptionOrNull()?.let { exc ->
                     when (exc) {
@@ -90,7 +93,7 @@ class SignInViewModel(
                             it.copy(passwordError = PasswordErrorType.UNKNOWN)
 
                         else -> {
-                            SnackbarController.sendEvent(SnackbarEvent.SignInError)
+                            SnackbarController.sendEvent(SignInError)
                             it
                         }
                     }
@@ -105,7 +108,7 @@ class SignInViewModel(
             val result = authRepository.sendRecoveryEmail(email)
             _state.update {
                 if (result.isSuccess && result.getOrDefault(false)) {
-                    SnackbarController.sendEvent(SnackbarEvent.ResetPasswordMessageSent)
+                    SnackbarController.sendEvent(ResetPasswordMessageSent)
                     it.copy(forgottenPasswordDialogVisible = false)
                 } else result.exceptionOrNull()?.let { exc ->
                     when (exc) {

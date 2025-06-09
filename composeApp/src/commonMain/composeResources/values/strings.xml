@@ -111,6 +111,8 @@
     <string name="filter_participants">Filtruj uczestników</string>
     <string name="filter_empty">Brak</string>
     <string name="add_participant">Dodaj uczestnika</string>
+    <string name="signing_confirm_success">Potwierdzono zapis uczestnika!</string>
+    <string name="signing_confirm_failure">Nie udało się zapisać, spróbuj ponownie później!</string>
     <string name="meeting_groups">Grupki</string>
 
     <!-- SIGNINGS STRINGS -->

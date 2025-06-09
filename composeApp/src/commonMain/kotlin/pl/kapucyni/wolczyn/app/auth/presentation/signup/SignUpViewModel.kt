@@ -14,7 +14,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.usecase.SignUpUseCase
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.*
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreenState.PasswordErrorType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
-import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignUpError
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 
 class SignUpViewModel(
@@ -108,7 +108,7 @@ class SignUpViewModel(
                             it.copy(noInternetDialogVisible = true)
 
                         else -> {
-                            SnackbarController.sendEvent(SnackbarEvent.SignUpError)
+                            SnackbarController.sendEvent(SignUpError)
                             it
                         }
                     }

@@ -49,6 +49,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.Kitchen
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.MeetingGroups
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.MeetingParticipants
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Meetings
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.ParticipantDetails
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Quiz
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Schedule
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Shop
@@ -66,6 +67,7 @@ import pl.kapucyni.wolczyn.app.core.presentation.composables.ForceUpdateDialog
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
@@ -169,7 +171,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 composable<Signings> {
                     val screen = it.toRoute<Signings>()
 
-                    appConfiguration?.openSigning?.let { meetingId ->
+                    (screen.meetingId ?: appConfiguration?.openSigning)?.let { meetingId ->
                         SigningsScreen(
                             navigateUp = { navController.navigateUpSafely(screen) },
                             viewModel = koinViewModel {
@@ -202,9 +204,21 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                             navigateUp = { navController.navigateUpSafely(screen) },
                             navigate = { destination -> navController.navigateSafely(destination) },
                             userType = userType,
+                            meetingId = screen.meetingId,
                             viewModel = koinViewModel { parametersOf(screen.meetingId, userType) },
                         )
                     } ?: navController.popBackStack()
+                }
+
+                composable<ParticipantDetails> {
+                    val screen = it.toRoute<ParticipantDetails>()
+
+                    ParticipantDetailsScreen(
+                        navigateUp = { navController.navigateUpSafely(screen) },
+                        viewModel = koinViewModel {
+                            parametersOf(screen.meetingId, screen.email)
+                        },
+                    )
                 }
 
                 composable<MeetingGroups> {

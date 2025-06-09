@@ -1,7 +1,9 @@
 package pl.kapucyni.wolczyn.app.meetings.domain.model
 
 import dev.gitlive.firebase.firestore.Timestamp
+import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlinx.serialization.Serializable
+import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 
 @Serializable
 data class Participant(
@@ -16,6 +18,10 @@ data class Participant(
     val workshop: String = "",
     val birthday: Timestamp = Timestamp.now(),
     val createdAt: Timestamp = Timestamp.now(),
+    val paid: Boolean = false,
     val consents: Boolean = false,
     val underageConsents: Boolean = false,
-)
+) {
+    fun isUnderAge() =
+        birthday.toMilliseconds().toLong().isAgeBelow(18)
+}

@@ -23,7 +23,8 @@ import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateCi
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateLastName
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
-import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.DataSaveError
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.EditProfileSuccess
 
 class EditProfileViewModel(
     user: User,
@@ -88,7 +89,7 @@ class EditProfileViewModel(
             }.apply {
                 toggleLoading(false)
                 onSuccess {
-                    SnackbarController.sendEvent(SnackbarEvent.EditProfileSuccess)
+                    SnackbarController.sendEvent(EditProfileSuccess)
                     with(state.value) {
                         currentUser = currentUser.copy(
                             firstName = firstName,
@@ -104,7 +105,7 @@ class EditProfileViewModel(
                             _state.update { it.copy(noInternetDialogVisible = true) }
 
                         else -> {
-                            SnackbarController.sendEvent(SnackbarEvent.DataSaveError)
+                            SnackbarController.sendEvent(DataSaveError)
                         }
                     }
                 }

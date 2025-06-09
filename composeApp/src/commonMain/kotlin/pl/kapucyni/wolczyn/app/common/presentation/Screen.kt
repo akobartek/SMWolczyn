@@ -22,6 +22,7 @@ sealed interface Screen {
 
     @Serializable
     data class Signings(
+        val meetingId: Int? = null,
         val isAdmin: Boolean = false,
         val email: String? = null,
     ) : Screen
@@ -31,6 +32,12 @@ sealed interface Screen {
 
     @Serializable
     data class MeetingParticipants(val meetingId: Int) : Screen
+
+    @Serializable
+    data class ParticipantDetails(
+        val meetingId: Int,
+        val email: String,
+    ) : Screen
 
     @Serializable
     data class MeetingGroups(val meetingId: Int) : Screen

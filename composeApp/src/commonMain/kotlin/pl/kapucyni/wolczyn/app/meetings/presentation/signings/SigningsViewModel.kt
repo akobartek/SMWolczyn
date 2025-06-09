@@ -14,7 +14,10 @@ import kotlinx.datetime.Instant
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
-import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.DataSaveError
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningRemoved
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningSaved
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningUpdated
 import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
@@ -252,11 +255,11 @@ class SigningsViewModel(
                 .onSuccess {
                     when {
                         state.createdAt != null -> {
-                            SnackbarController.sendEvent(event = SnackbarEvent.MeetingSigningUpdated)
+                            SnackbarController.sendEvent(event = MeetingSigningUpdated)
                         }
 
                         user == null -> {
-                            SnackbarController.sendEvent(event = SnackbarEvent.MeetingSigningSaved)
+                            SnackbarController.sendEvent(event = MeetingSigningSaved)
                             _screenState.update { State.Success(state.copy(operationFinished = true)) }
                         }
 
@@ -265,7 +268,7 @@ class SigningsViewModel(
                         }
                     }
                 }
-                .onFailure { SnackbarController.sendEvent(SnackbarEvent.DataSaveError) }
+                .onFailure { SnackbarController.sendEvent(DataSaveError) }
         }
     }
 
@@ -276,10 +279,10 @@ class SigningsViewModel(
         viewModelScope.launch {
             meetingsRepository.removeParticipant(meetingId, state.email)
                 .onSuccess {
-                    SnackbarController.sendEvent(event = SnackbarEvent.MeetingSigningRemoved)
+                    SnackbarController.sendEvent(event = MeetingSigningRemoved)
                     _screenState.update { State.Success(state.copy(operationFinished = true)) }
                 }
-                .onFailure { SnackbarController.sendEvent(SnackbarEvent.DataSaveError) }
+                .onFailure { SnackbarController.sendEvent(DataSaveError) }
         }
         toggleLoading(state, false)
     }
