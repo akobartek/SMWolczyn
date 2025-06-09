@@ -120,6 +120,7 @@
     <string name="signing_confirm">Potwierdź przybycie uczestnika</string>
     <string name="signing_confirm_success">Potwierdzono zapis uczestnika!</string>
     <string name="signing_confirm_failure">Nie udało się zapisać, spróbuj ponownie później!</string>
+    <string name="workshop_new_name">Nazwa warsztatów</string>
     <string name="meeting_groups">Grupki</string>
 
     <!-- SIGNINGS STRINGS -->

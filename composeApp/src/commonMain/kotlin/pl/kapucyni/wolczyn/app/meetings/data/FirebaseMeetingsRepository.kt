@@ -40,7 +40,7 @@ class FirebaseMeetingsRepository(
     override suspend fun getAvailableWorkshops() =
         getAllWorkshops().filter { it.available }
 
-    override suspend fun updateWorkshop(workshop: Workshop) = runCatching {
+    override suspend fun saveWorkshop(workshop: Workshop) = runCatching {
         firestore.saveObject(
             collectionName = COLLECTION_WORKSHOPS,
             id = workshop.id,
