@@ -1,16 +1,21 @@
 package pl.kapucyni.wolczyn.app.auth.data
 
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toLowerCase
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreDocument
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.EmailNotVerifiedException
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.utils.deleteObject
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
 
 class FirebaseAuthRepository(
@@ -27,6 +32,24 @@ class FirebaseAuthRepository(
         ).map { user ->
             user ?: auth.currentUser?.let { User(id = it.uid, email = it.email.orEmpty()) }
         }
+
+    override fun getAllUsers(): Flow<List<User>> = runCatching {
+        firestore.getFirestoreCollectionFlow<User>(collectionName = COLLECTION_USERS)
+            .map {
+                val locale = Locale.current
+                it.filter { user -> user.userType != UserType.ADMIN }
+                    .sortedWith(
+                        compareBy(
+                            {
+                                it.firstName.toLowerCase(locale)
+                                    .replace("br. ", "")
+                                    .replace("s. ", "")
+                            },
+                            { it.lastName.toLowerCase(locale) },
+                        )
+                    )
+            }
+    }.getOrDefault(emptyFlow())
 
     override suspend fun signIn(email: String, password: String): Result<Boolean> {
         return try {

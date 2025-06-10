@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 fun ScreenHeader(
     title: String,
     onBackPressed: (() -> Unit)? = null,
+    leadingIcon: (@Composable RowScope.() -> Unit)? = null,
     actionIcon: (@Composable RowScope.() -> Unit)? = null,
 ) {
     Row(
@@ -22,9 +23,9 @@ fun ScreenHeader(
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        onBackPressed?.let {
-            NavigateUpIcon(navigateUp = it)
-        } ?: WidthSpacer(if (actionIcon == null) 0.dp else 40.dp)
+        leadingIcon?.let { it() }
+            ?: onBackPressed?.let { NavigateUpIcon(navigateUp = it) }
+            ?: WidthSpacer(if (actionIcon == null) 0.dp else 40.dp)
         WolczynTitleText(
             text = title.replace("\n", " "),
             textAlign = TextAlign.Center,

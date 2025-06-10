@@ -8,6 +8,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.SignUpUseCase
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.UpdateUserUseCase
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileViewModel
+import pl.kapucyni.wolczyn.app.auth.presentation.manager.AccountManagerViewModel
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInViewModel
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpViewModel
 
@@ -19,4 +20,5 @@ val authModule = module {
     viewModel { (email: String) -> SignInViewModel(email, get()) }
     viewModel { (email: String) -> SignUpViewModel(email, get()) }
     viewModel { (user: User) -> EditProfileViewModel(user, get()) }
+    viewModel { AccountManagerViewModel(get()) }
 }

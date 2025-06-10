@@ -95,6 +95,19 @@
     <string name="edit_profile_success">Zapisano zmiany w profilu!</string>
     <string name="cd_save_profile">Zapisz profil</string>
 
+    <!-- ACCOUNT MANAGER STRINGS -->
+    <string name="account_manager_title">Zarządzanie kontami</string>
+    <string name="empty_users_list">Nie znaleziono użytkowników, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
+    <string name="user_type">Rola użytkownika</string>
+    <string name="user_type_member">Uczestnik</string>
+    <string name="user_type_signings">Zarządzający zapisami</string>
+    <string name="user_type_scouts">Zarządzający harcerzami</string>
+    <string name="user_type_animators">Zarządzający animatorami</string>
+    <string name="user_type_admin">Administator</string>
+    <string name="cd_open_users_management">Otwórz panel zarządzenia użytkownikami</string>
+    <string name="cd_search_user">Wyszukaj użytkownika</string>
+    <string name="cd_edit_user">Edytuj użytkownika</string>
+
     <!-- MEETINGS STRINGS -->
     <string name="meetings">Spotkania</string>
     <string name="meeting_name">%1$d. Wołczyn - %2$s</string>

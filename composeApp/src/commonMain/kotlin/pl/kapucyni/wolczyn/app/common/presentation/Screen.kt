@@ -21,6 +21,9 @@ sealed interface Screen {
     data object EditProfile : Screen
 
     @Serializable
+    data object AccountManager : Screen
+
+    @Serializable
     data class Signings(
         val meetingId: Int = -1,
         val isAdmin: Boolean = false,

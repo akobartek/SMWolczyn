@@ -29,12 +29,14 @@ import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
+import pl.kapucyni.wolczyn.app.auth.presentation.manager.AccountManagerScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySaveScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySelectScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviaryTextScreen
 import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.AccountManager
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Admin
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Archive
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.ArchiveMeeting
@@ -167,6 +169,14 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                         EditProfileScreen(
                             navigateUp = { navController.navigateUpSafely(EditProfile) },
                             viewModel = koinViewModel { parametersOf(user) },
+                        )
+                    } ?: navController.popBackStack()
+                }
+
+                composable<AccountManager> {
+                    user?.userType.takeIf { it == UserType.ADMIN }?.let {
+                        AccountManagerScreen(
+                            navigateUp = { navController.navigateUpSafely(AccountManager) },
                         )
                     } ?: navController.popBackStack()
                 }

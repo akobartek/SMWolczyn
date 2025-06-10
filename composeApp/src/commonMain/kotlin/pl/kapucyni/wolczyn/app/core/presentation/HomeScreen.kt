@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +26,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
@@ -34,7 +39,9 @@ import pl.kapucyni.wolczyn.app.core.domain.model.HomeNotification
 import pl.kapucyni.wolczyn.app.core.presentation.composables.AdminAccessDialog
 import pl.kapucyni.wolczyn.app.core.presentation.composables.HomeTileList
 import pl.kapucyni.wolczyn.app.core.presentation.composables.ProfileOptions
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.cd_open_users_management
 import smwolczyn.composeapp.generated.resources.home_title
 
 @OptIn(KoinExperimentalAPI::class)
@@ -51,6 +58,17 @@ fun HomeScreen(
     ScreenLayout(
         title = stringResource(Res.string.home_title)
                 + (user?.firstName?.takeIf { it.isNotBlank() }?.let { ",\n$it!" } ?: "!"),
+        leadingIcon = if (user?.userType == UserType.ADMIN) {
+            {
+                IconButton(onClick = { navigate(Screen.AccountManager) }) {
+                    Icon(
+                        imageVector = Icons.Default.ManageAccounts,
+                        tint = wolczynColors.primary,
+                        contentDescription = stringResource(Res.string.cd_open_users_management),
+                    )
+                }
+            }
+        } else null,
         actionIcon = {
             ProfileOptions(
                 user = user,
