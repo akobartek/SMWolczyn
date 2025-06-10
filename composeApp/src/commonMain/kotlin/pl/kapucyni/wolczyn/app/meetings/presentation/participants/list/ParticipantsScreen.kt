@@ -81,9 +81,9 @@ fun ParticipantsScreen(
     var signingConfirmedDialogVisible by remember { mutableStateOf(false) }
     var fabVisible by remember { mutableStateOf(true) }
 
-    val openDetails = { participant: Participant ->
-        when (userType) {
-            ADMIN ->
+    val openDetails = { participant: Participant, forceDetails: Boolean ->
+        when {
+            userType == ADMIN && forceDetails.not() ->
                 navigate(
                     Screen.Signings(
                         meetingId = meetingId,
@@ -106,7 +106,7 @@ fun ParticipantsScreen(
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is ScanUserFound -> openDetails(event.participant)
+            is ScanUserFound -> openDetails(event.participant, true)
         }
     }
 
@@ -198,7 +198,7 @@ fun ParticipantsScreen(
                             participant = participant,
                             onClick = {
                                 if (userType.canManageParticipants())
-                                    openDetails(participant)
+                                    openDetails(participant, false)
                             },
                         )
                     }

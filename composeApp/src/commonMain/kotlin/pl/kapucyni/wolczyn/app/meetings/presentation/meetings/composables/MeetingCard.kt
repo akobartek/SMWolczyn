@@ -64,12 +64,6 @@ fun MeetingCard(
                         .weight(1f)
                         .padding(horizontal = 12.dp),
                 )
-                IconButton(onClick = { openParticipantsScreen(meeting.id) }) {
-                    Icon(
-                        imageVector = Icons.Outlined.People,
-                        contentDescription = stringResource(Res.string.meeting_participants),
-                    )
-                }
                 if (userType == UserType.ADMIN)
                     IconButton(onClick = { openWorkshopsScreen(meeting.id) }) {
                         Icon(
@@ -84,6 +78,12 @@ fun MeetingCard(
                             contentDescription = stringResource(Res.string.meeting_groups),
                         )
                     }
+                IconButton(onClick = { openParticipantsScreen(meeting.id) }) {
+                    Icon(
+                        imageVector = Icons.Outlined.People,
+                        contentDescription = stringResource(Res.string.meeting_participants),
+                    )
+                }
             }
         }
     }
