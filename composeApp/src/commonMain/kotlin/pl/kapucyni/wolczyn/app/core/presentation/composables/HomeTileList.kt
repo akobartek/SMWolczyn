@@ -23,11 +23,11 @@ fun HomeTileList(
     user: User?,
     onTileClick: (HomeTileType) -> Unit,
 ) {
-    val meetingTile = user?.let {
-        when (user.userType) {
-            MEMBER -> appConfiguration.openSigning?.let { SIGNING }
-            else -> MEETINGS
-        }
+    val meetingTile = when {
+        user == null || user.userType == MEMBER ->
+            appConfiguration.openSigning?.let { SIGNING }
+
+        else -> MEETINGS
     }
     val tiles = when (columns) {
         1 -> oneColumn(appConfiguration.appVersion, meetingTile)

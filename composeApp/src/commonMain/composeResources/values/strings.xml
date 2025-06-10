@@ -125,6 +125,8 @@
 
     <!-- SIGNINGS STRINGS -->
     <string name="signings">Zapisy</string>
+    <string name="signings_no_user_dialog_title">Brak konta</string>
+    <string name="signings_no_user_dialog_message">Zapisy dostępne są tylko dla zalogowanych użytkowników, jeśli chcesz zapisać się na spotkanie, zaloguj się!</string>
     <string name="signing_send">Wyślij zgłoszenie</string>
     <string name="signing_save">Zapisz zgłoszenie</string>
     <string name="cd_save_signing">Zapisz zgłoszenie</string>

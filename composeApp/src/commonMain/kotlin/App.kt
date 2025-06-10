@@ -71,6 +71,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsNoUserDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
@@ -172,6 +173,14 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
 
                 composable<Signings> {
                     val screen = it.toRoute<Signings>()
+
+                    if (user == null) {
+                        SigningsNoUserDialog(
+                            onConfirm = { navController.navigateSafely(Auth) },
+                            onCancel = { navController.navigateUpSafely(screen) },
+                        )
+                        return@composable
+                    }
 
                     (screen.meetingId.takeIf { it > 0 } ?: appConfiguration?.openSigning)
                         ?.let { meetingId ->
