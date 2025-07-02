@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.meetings.domain.model
 import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlinx.serialization.Serializable
+import pl.kapucyni.wolczyn.app.common.utils.getAge
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 
 @Serializable
@@ -22,6 +23,7 @@ data class Participant(
     val consents: Boolean = false,
     val underageConsents: Boolean = false,
 ) {
-    fun isUnderAge() =
-        birthday.toMilliseconds().toLong().isAgeBelow(18)
+    fun isUnderAge() = birthday.toMilliseconds().toLong().isAgeBelow(18)
+
+    fun getAge() = birthday.toMilliseconds().toLong().getAge()
 }

@@ -144,13 +144,17 @@ fun SigningsScreen(
     ) {
         when (state) {
             is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.let {
-                SigningsScreenContent(
-                    state = it.data,
-                    handleAction = viewModel::handleAction,
-                    navigateUp = navigateUp,
-                    openEssentials = { uriHandler.openUri(ESSENTIALS_LINK) },
-                )
+            is State.Success -> (state as? State.Success)?.data?.let { state ->
+                if (state.isConfirmed.not() || state.isSigningByAdmin) {
+                    SigningsScreenContent(
+                        state = state,
+                        handleAction = viewModel::handleAction,
+                        navigateUp = navigateUp,
+                        openEssentials = { uriHandler.openUri(ESSENTIALS_LINK) },
+                    )
+                } else {
+                    // TODO: Show confirmation screen
+                }
             } ?: LoadingBox()
         }
     }

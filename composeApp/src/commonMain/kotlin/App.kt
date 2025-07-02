@@ -69,6 +69,7 @@ import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.core.presentation.composables.ForceUpdateDialog
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreen
@@ -256,6 +257,13 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
 
                 composable<MeetingGroups> {
                     val screen = it.toRoute<MeetingGroups>()
+
+                    user?.userType?.takeIf { type -> type == UserType.ADMIN }?.let {
+                        MeetingGroupsScreen(
+                            navigateUp = { navController.navigateUpSafely(screen) },
+                            viewModel = koinViewModel { parametersOf(screen.meetingId) },
+                        )
+                    } ?: navController.popBackStack()
                 }
 
                 composable<Admin> {

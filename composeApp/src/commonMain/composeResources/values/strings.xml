@@ -135,6 +135,10 @@
     <string name="signing_confirm_failure">Nie udało się zapisać, spróbuj ponownie później!</string>
     <string name="workshop_new_name">Nazwa warsztatów</string>
     <string name="meeting_groups">Grupki</string>
+    <string name="empty_groups_list">Brak wylosowanych wcześniej grupek, jeśli chcesz, możesz je wylosować:</string>
+    <string name="draw_groups">Wylosuj grupki</string>
+    <string name="draw">Losuj</string>
+    <string name="select_animators">Wybierz animatorów</string>
 
     <!-- SIGNINGS STRINGS -->
     <string name="signings">Zapisy</string>

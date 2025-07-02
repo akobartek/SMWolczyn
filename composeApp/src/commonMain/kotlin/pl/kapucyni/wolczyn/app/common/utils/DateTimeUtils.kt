@@ -67,6 +67,13 @@ fun Long.isAgeBelow(age: Int, other: Instant = Clock.System.now()) =
             timeZone = TimeZone.currentSystemDefault(),
         ) < age
 
+fun Long.getAge(other: Instant = Clock.System.now()) =
+    Instant.fromEpochMilliseconds(this)
+        .yearsUntil(
+            other = other,
+            timeZone = TimeZone.currentSystemDefault(),
+        )
+
 fun Timestamp.getPeselBeginning() =
     Instant.fromEpochSeconds(this.seconds, this.nanoseconds)
         .toLocalDateTime(TimeZone.currentSystemDefault())

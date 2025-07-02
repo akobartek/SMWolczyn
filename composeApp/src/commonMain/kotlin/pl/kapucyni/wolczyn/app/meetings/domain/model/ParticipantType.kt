@@ -22,4 +22,10 @@ enum class ParticipantType(val stringRes: StringResource) {
 
     fun canSelectWorkshops() =
         this == MEMBER || this == GUARDIAN || this == SCOUT || this == ANIMATOR
+
+    fun canBeGroupMember() =
+        this == MEMBER || this == SCOUT
+
+    fun canBeAnimator() =
+        this == ANIMATOR || this == MONK || this == PRIEST
 }

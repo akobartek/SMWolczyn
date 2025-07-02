@@ -15,6 +15,7 @@ import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.ANIMATOR
@@ -26,8 +27,7 @@ class FirebaseMeetingsRepository(
 ) : MeetingsRepository {
 
     override suspend fun getMeeting(id: Int): Meeting = runCatching {
-        firestore
-            .collection(COLLECTION_MEETINGS)
+        meetings()
             .document(id.toString())
             .get()
             .data<Meeting>()
@@ -51,11 +51,8 @@ class FirebaseMeetingsRepository(
     override suspend fun checkPreviousSigning(
         meetingId: Int,
         email: String,
-    ): Participant? = kotlin.runCatching {
-        firestore
-            .collection(COLLECTION_MEETINGS)
-            .document(meetingId.toString())
-            .collection(COLLECTION_SIGNINGS)
+    ): Participant? = runCatching {
+        signings(meetingId)
             .document(email)
             .get()
             .let {
@@ -65,21 +62,46 @@ class FirebaseMeetingsRepository(
     }.getOrDefault(null)
 
     override suspend fun saveParticipant(meetingId: Int, participant: Participant) = runCatching {
-        firestore
-            .collection(COLLECTION_MEETINGS)
-            .document(meetingId.toString())
-            .collection(COLLECTION_SIGNINGS)
+        signings(meetingId)
             .document(participant.email)
             .set(participant)
     }
 
     override suspend fun removeParticipant(meetingId: Int, email: String) = runCatching {
+        signings(meetingId)
+            .document(email)
+            .delete()
+    }
+
+    override suspend fun getParticipantsForGroups(meetingId: Int) = runCatching {
+        signings(meetingId)
+            .get()
+            .documents
+            .map { it.data<Participant>() }
+            .sortedBy { it.birthday.seconds }
+    }.getOrDefault(listOf<Participant>())
+
+    override suspend fun getGroups(meetingId: Int) = runCatching {
         firestore
             .collection(COLLECTION_MEETINGS)
             .document(meetingId.toString())
-            .collection(COLLECTION_SIGNINGS)
-            .document(email)
-            .delete()
+            .collection(COLLECTION_GROUPS)
+            .get()
+            .documents
+            .map { it.data<Group>() }
+            .sortedBy { it.number }
+    }.getOrDefault(listOf<Group>())
+
+    override suspend fun saveGroups(meetingId: Int, groups: List<Group>) = runCatching {
+        firestore.batch().let { batch ->
+            groups.forEach { group ->
+                batch.set(
+                    documentRef = groups(meetingId).document(group.number.toString()),
+                    data = group,
+                )
+            }
+            batch.commit()
+        }
     }
 
     override fun getAllMeetings(): Flow<List<Meeting>> =
@@ -89,10 +111,8 @@ class FirebaseMeetingsRepository(
     override fun getMeetingParticipants(
         meetingId: Int,
         userType: UserType,
-    ): Flow<List<Participant>> = kotlin.runCatching {
-        firestore.collection(COLLECTION_MEETINGS)
-            .document(meetingId.toString())
-            .collection(COLLECTION_SIGNINGS)
+    ): Flow<List<Participant>> = runCatching {
+        signings(meetingId)
             .snapshots
             .map<QuerySnapshot, List<Participant>> { querySnapshot ->
                 querySnapshot.documents.map { it.data() }
@@ -120,9 +140,22 @@ class FirebaseMeetingsRepository(
             }
     }.getOrDefault(emptyFlow())
 
-    override fun getWorkshopsFlow(): Flow<List<Workshop>> = kotlin.runCatching {
+    override fun getWorkshopsFlow(): Flow<List<Workshop>> = runCatching {
         firestore.getFirestoreCollectionFlow<Workshop>(COLLECTION_WORKSHOPS)
     }.getOrDefault(emptyFlow())
+
+    private fun meetings() =
+        firestore.collection(COLLECTION_MEETINGS)
+
+    private fun signings(meetingId: Int) =
+        meetings()
+            .document(meetingId.toString())
+            .collection(COLLECTION_SIGNINGS)
+
+    private fun groups(meetingId: Int) =
+        meetings()
+            .document(meetingId.toString())
+            .collection(COLLECTION_GROUPS)
 
     private companion object {
         const val COLLECTION_MEETINGS = "meetings"

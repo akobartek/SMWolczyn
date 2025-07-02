@@ -53,6 +53,7 @@ class SigningsViewModel(
                             meeting = meeting.await(),
                             isEditing = participant != null,
                             isSigningByAdmin = user == null,
+                            isConfirmed = participant?.paid == true,
                             firstName = participant?.firstName ?: user?.firstName.orEmpty(),
                             lastName = participant?.lastName ?: user?.lastName.orEmpty(),
                             city = participant?.city ?: user?.city.orEmpty(),

@@ -10,6 +10,7 @@ data class SigningsScreenState(
     val meeting: Meeting,
     val isEditing: Boolean,
     val isSigningByAdmin: Boolean,
+    val isConfirmed: Boolean,
     val firstName: String,
     val firstNameError: Boolean = false,
     val lastName: String,
