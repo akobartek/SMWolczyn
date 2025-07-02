@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.AlternateEmail
 import androidx.compose.material.icons.outlined.Cake
 import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.LocationCity
+import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -66,6 +67,11 @@ fun ParticipantDetailsScreenContent(
             ParticipantInfo(
                 imageVector = Icons.Outlined.AlternateEmail,
                 text = participant.email,
+            )
+
+            ParticipantInfo(
+                imageVector = Icons.Outlined.TaskAlt,
+                text = participant.createdAt.getFormattedDate(),
             )
         }
 
