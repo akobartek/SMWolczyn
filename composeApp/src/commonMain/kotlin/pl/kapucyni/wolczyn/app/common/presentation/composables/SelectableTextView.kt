@@ -31,8 +31,8 @@ fun <T> SelectableTextView(
     label: StringResource,
     items: List<Pair<T, String>>,
     onItemSelected: (T) -> Unit,
-    leadingIcon: ImageVector,
-    error: StringResource?,
+    leadingIcon: ImageVector? = null,
+    error: StringResource? = null,
 ) {
     val focusManager = LocalFocusManager.current
     var dropDownVisible by rememberSaveable { mutableStateOf(false) }
@@ -46,11 +46,13 @@ fun <T> SelectableTextView(
             value = value,
             onValueChange = {},
             label = { WolczynText(stringResource(label)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = leadingIcon,
-                    contentDescription = null,
-                )
+            leadingIcon = leadingIcon?.let {
+                {
+                    Icon(
+                        imageVector = leadingIcon,
+                        contentDescription = null,
+                    )
+                }
             },
             trailingIcon = {
                 Icon(

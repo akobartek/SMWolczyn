@@ -18,6 +18,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenA
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnAnimatorClicked
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.ToggleAnimatorsDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.composables.GroupsAnimatorsDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.groups.composables.GroupsGrid
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.draw_groups
 import smwolczyn.composeapp.generated.resources.empty_groups_list
@@ -48,7 +49,10 @@ fun MeetingGroupsScreenContent(
             }
         }
     } else {
-        // TODO
+        GroupsGrid(
+            state = state,
+            handleAction = handleAction,
+        )
     }
 
     LoadingDialog(visible = state.loading)

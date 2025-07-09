@@ -21,6 +21,7 @@
     <string name="force_update_dialog_title">Wymagana aktualizacja</string>
     <string name="force_update_dialog_message">Dostępna jest nowa wersja naszej apki! Aby dalej korzystać z aplikacji, musisz ją zaktualizować!</string>
     <string name="force_update_dialog_btn">Aktualizuj</string>
+    <string name="contact_number">Numer kontaktowy</string>
 
     <!-- HOME SCREEN STRINGS -->
     <string name="home_title">Pokój i Dobro</string>
@@ -139,6 +140,7 @@
     <string name="draw_groups">Wylosuj grupki</string>
     <string name="draw">Losuj</string>
     <string name="select_animators">Wybierz animatorów</string>
+    <string name="current_group">Obecna grupka</string>
 
     <!-- SIGNINGS STRINGS -->
     <string name="signings">Zapisy</string>

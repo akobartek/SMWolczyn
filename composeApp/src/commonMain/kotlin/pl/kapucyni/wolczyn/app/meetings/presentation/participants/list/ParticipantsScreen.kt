@@ -193,7 +193,7 @@ fun ParticipantsScreen(
                             }
                         }),
                 ) {
-                    items(items = participants, key = { it.pesel }) { participant ->
+                    items(items = participants, key = { it.email }) { participant ->
                         ParticipantCard(
                             participant = participant,
                             onClick = {

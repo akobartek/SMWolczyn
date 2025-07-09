@@ -4,6 +4,7 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
@@ -12,14 +13,17 @@ import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.ANIMATOR
+import pl.kapucyni.wolczyn.app.meetings.domain.usecases.DrawGroupsUseCase
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.DrawGroups
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnAnimatorClicked
+import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnAnimatorDataChange
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.SaveGroups
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.ToggleAnimatorsDialog
 
 class MeetingGroupsViewModel(
     private val meetingId: Int,
     private val meetingsRepository: MeetingsRepository,
+    private val drawGroupsUseCase: DrawGroupsUseCase,
 ) : BasicViewModel<MeetingGroupsScreenState>() {
 
     init {
@@ -72,6 +76,12 @@ class MeetingGroupsViewModel(
         when (action) {
             is ToggleAnimatorsDialog -> toggleAnimatorsDialog()
             is OnAnimatorClicked -> onAnimatorClicked(action.participant)
+            is OnAnimatorDataChange -> onAnimatorDataChange(
+                action.currentGroupNumber,
+                action.groupNumber,
+                action.contactNumber,
+            )
+
             is DrawGroups -> drawGroups()
             is SaveGroups -> saveGroups()
         }
@@ -106,17 +116,81 @@ class MeetingGroupsViewModel(
         }
     }
 
+    private fun onAnimatorDataChange(currentGroup: Int, newGroup: Int, contact: String) {
+        val state = (_screenState.value as? State.Success<MeetingGroupsScreenState>)?.data ?: return
+
+        state.newGroups.firstOrNull { it.number == currentGroup }?.let { group ->
+            if (currentGroup == newGroup && group.animatorContact == contact) return
+
+            val updatedGroup = group.copy(animatorContact = contact)
+            val newGroups = state.newGroups.toMutableList()
+
+            if (currentGroup != newGroup) {
+                state.newGroups.firstOrNull { it.number == newGroup }?.let { targetGroup ->
+                    newGroups[newGroups.indexOf(group)] = group.copy(
+                        animatorName = targetGroup.animatorName,
+                        animatorMail = targetGroup.animatorMail,
+                        animatorContact = targetGroup.animatorContact,
+                    )
+                    newGroups[newGroups.indexOf(targetGroup)] = targetGroup.copy(
+                        animatorName = updatedGroup.animatorName,
+                        animatorMail = updatedGroup.animatorMail,
+                        animatorContact = updatedGroup.animatorContact,
+                    )
+                }
+            } else {
+                newGroups[newGroups.indexOf(group)] = updatedGroup
+            }
+
+            _screenState.update {
+                State.Success(
+                    state.copy(
+                        newGroups = newGroups,
+                        saveAvailable = true,
+                    )
+                )
+            }
+        }
+    }
+
     private fun drawGroups() {
         val state = (_screenState.value as? State.Success<MeetingGroupsScreenState>)?.data ?: return
-        println(state)
+        viewModelScope.launch(Dispatchers.IO) {
+            val groups = drawGroupsUseCase(
+                participants = state.participants,
+                animators = state.selectedAnimators,
+            )
+            _screenState.update {
+                State.Success(
+                    state.copy(
+                        newGroups = groups,
+                        saveAvailable = true,
+                    )
+                )
+            }
+        }
     }
 
     private fun saveGroups() {
         val state = (_screenState.value as? State.Success<MeetingGroupsScreenState>)?.data ?: return
         if (state.saveAvailable.not() || state.newGroups.isEmpty()) return
 
+
         viewModelScope.launch(Dispatchers.Default) {
+            toggleLoading(true)
             meetingsRepository.saveGroups(meetingId, state.newGroups)
+                .onFailure {
+                    println(it.message)
+                }
+            toggleLoading(false)
+        }
+    }
+
+    private fun toggleLoading(value: Boolean) {
+        _screenState.update {
+            (it as? State.Success)?.data?.let { state ->
+                State.Success(state.copy(loading = value))
+            } ?: it
         }
     }
 }
