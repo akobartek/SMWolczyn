@@ -27,5 +27,5 @@ enum class ParticipantType(val stringRes: StringResource) {
         this == MEMBER || this == SCOUT
 
     fun canBeAnimator() =
-        this == ANIMATOR || this == MONK || this == PRIEST
+        this == ANIMATOR || this == MONK || this == PRIEST || this == ORGANISATION
 }

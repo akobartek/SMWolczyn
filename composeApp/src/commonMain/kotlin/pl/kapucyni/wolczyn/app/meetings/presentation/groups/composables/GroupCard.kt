@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,8 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draganddrop.DragAndDropEvent
-import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
 import androidx.compose.ui.text.style.TextAlign.Companion.Center
 import androidx.compose.ui.unit.dp
@@ -36,42 +33,12 @@ fun GroupCard(
     group: Group,
     numberOfGroups: Int,
     onAnimatorDialogSave: (Int, String) -> Unit,
-    onParticipantDropped: (String) -> Unit,
+    onMemberDialogSave: (Int, String) -> Unit,
 ) {
-    var animatorDialogVisible: Boolean by remember { mutableStateOf(false) }
-
-    val background = MaterialTheme.colorScheme.surfaceContainerHighest
-    val draggingBackground = MaterialTheme.colorScheme.tertiaryContainer
-    var backgroundColor by remember {
-        mutableStateOf(background)
-    }
-    val dragAndDropTarget = remember {
-        object : DragAndDropTarget {
-            override fun onDrop(event: DragAndDropEvent): Boolean {
-                event.toString()
-                return true
-            }
-
-            override fun onEntered(event: DragAndDropEvent) {
-                super.onEntered(event)
-                backgroundColor = draggingBackground
-            }
-
-            override fun onEnded(event: DragAndDropEvent) {
-                super.onEnded(event)
-                backgroundColor = background
-            }
-
-            override fun onExited(event: DragAndDropEvent) {
-                super.onExited(event)
-                backgroundColor = background
-            }
-        }
-    }
+    var animatorDialogVisible by remember { mutableStateOf(false) }
 
     Card(
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -99,28 +66,13 @@ fun GroupCard(
                     .padding(8.dp),
             )
             HeightSpacer(12.dp)
-            WolczynText(
-                text = stringResource(Res.string.group_members_title),
-                modifier = Modifier.fillMaxWidth(),
+            GroupMembersList(
+                title = stringResource(Res.string.group_members_title),
+                members = group.members,
+                currentGroup = group.number,
+                numberOfGroups = numberOfGroups,
+                onMemberDialogSave = onMemberDialogSave,
             )
-            group.members.forEach { (email, data) ->
-                WolczynText(
-                    text = "- $data",
-                    textStyle = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-//                    .dragAndDropSource(drawDragDecoration = {}) {
-//                        detectTapGestures(
-//                            onLongPress = {
-//                                startTransfer(DragAndDropTransferData(
-//
-//                                ))
-//                            },
-//                        )
-//                    },
-                )
-            }
         }
     }
 

@@ -12,6 +12,7 @@
     <string name="stop">Przerwij</string>
     <string name="delete">Usuń</string>
     <string name="close">Zamknij</string>
+    <string name="copy">Kopiuj</string>
     <string name="email">Email</string>
     <string name="password">Hasło</string>
     <string name="data_save_error">Wystąpił błąd podczas zapisywania danych, sprawdź swoje łącze i spróbuj ponownie!</string>
@@ -82,6 +83,7 @@
     <string name="user_group">Numer grupki:\n%1$d</string>
     <string name="groups_not_available">Wróć podczas spotkania, a poznasz numer swojej grupki!</string>
     <string name="group_members_title">Członkowie grupki:</string>
+    <string name="members_without_group_title">Członkowie bez grupki:</string>
     <string name="reset_password">Resetuj hasło</string>
     <string name="reset_password_dialog_msg">Na Twój adres mailowy została wiadomość z linkiem do zmiany hasła.</string>
     <string name="reset_password_dialog_title">Resetowanie hasła</string>

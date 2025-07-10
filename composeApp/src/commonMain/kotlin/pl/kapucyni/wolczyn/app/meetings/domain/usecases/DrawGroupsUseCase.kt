@@ -2,6 +2,7 @@ package pl.kapucyni.wolczyn.app.meetings.domain.usecases
 
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
+import pl.kapucyni.wolczyn.app.meetings.domain.model.toGroupMembers
 
 class DrawGroupsUseCase {
 
@@ -24,11 +25,9 @@ class DrawGroupsUseCase {
 
             val endIndex = (currentIndex + currentGroupSize).coerceAtMost(participants.size)
             val members = if (currentIndex < participants.size) {
-                sortedParticipants.subList(currentIndex, endIndex)
-                    .associate { it.email to "${it.firstName} ${it.lastName}, ${it.city} (${it.getAge()})" }
-                    .let { HashMap(it) }
+                sortedParticipants.subList(currentIndex, endIndex).toGroupMembers()
             } else {
-                hashMapOf<String, String>()
+                hashMapOf()
             }
             currentIndex = endIndex
 

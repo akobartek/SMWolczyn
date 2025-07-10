@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnAnimatorDataChange
+import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnMemberGroupAdd
+import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnMemberGroupChange
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenState
 
 @Composable
@@ -27,6 +29,21 @@ fun GroupsGrid(
             .fillMaxSize()
             .padding(horizontal = 8.dp),
     ) {
+        item(span = { GridItemSpan(1) }) {
+            EmptyGroupCard(
+                numberOfGroups = state.newGroups.size,
+                members = state.membersWithoutGroup,
+                onMemberDialogSave = { number, email ->
+                    handleAction(
+                        OnMemberGroupAdd(
+                            groupNumber = number,
+                            email = email,
+                        )
+                    )
+                },
+            )
+        }
+
         items(
             count = state.newGroups.size,
             key = { it },
@@ -45,7 +62,15 @@ fun GroupsGrid(
                         )
                     )
                 },
-                onParticipantDropped = {},
+                onMemberDialogSave = { number, email ->
+                    handleAction(
+                        OnMemberGroupChange(
+                            currentGroupNumber = group.number,
+                            groupNumber = number,
+                            email = email,
+                        )
+                    )
+                },
             )
         }
     }

@@ -38,9 +38,7 @@ fun SigningsHomeTile(
                     .scale(scaleX = -1f, scaleY = 1f)
             )
         },
-        additionalContent = {
-            // TODO
-        },
+        additionalContent = {},
         onClick = onClick,
         modifier = modifier,
     )
