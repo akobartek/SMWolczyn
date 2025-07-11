@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -60,6 +61,9 @@ import smwolczyn.composeapp.generated.resources.ic_cap_archive
 import smwolczyn.composeapp.generated.resources.meeting_animators
 import smwolczyn.composeapp.generated.resources.meeting_participants
 import smwolczyn.composeapp.generated.resources.meeting_scouts
+import smwolczyn.composeapp.generated.resources.ok
+import smwolczyn.composeapp.generated.resources.participant_group_body
+import smwolczyn.composeapp.generated.resources.participant_group_title
 import smwolczyn.composeapp.generated.resources.signing_confirmed_message
 import smwolczyn.composeapp.generated.resources.signing_confirmed_title
 
@@ -78,10 +82,13 @@ fun ParticipantsScreen(
     val filterState by viewModel.filterState.collectAsStateWithLifecycle()
 
     var filterSheetVisible by remember { mutableStateOf(false) }
-    var signingConfirmedDialogVisible by remember { mutableStateOf(false) }
     var fabVisible by remember { mutableStateOf(true) }
 
+    var signingConfirmedDialogVisible by remember { mutableStateOf(false) }
+    var participantGroupDialogVisible: Int? by remember { mutableStateOf(null) }
+
     val openDetails = { participant: Participant, forceDetails: Boolean ->
+        val group = viewModel.checkParticipantGroup(participant)
         when {
             userType == ADMIN && forceDetails.not() ->
                 navigate(
@@ -92,15 +99,17 @@ fun ParticipantsScreen(
                     )
                 )
 
-            else ->
-                if (participant.paid.not())
-                    navigate(
-                        Screen.ParticipantDetails(
-                            meetingId = meetingId,
-                            email = participant.email,
-                        )
+            participant.paid.not() ->
+                navigate(
+                    Screen.ParticipantDetails(
+                        meetingId = meetingId,
+                        email = participant.email,
                     )
-                else signingConfirmedDialogVisible = true
+                )
+
+            group != null -> participantGroupDialogVisible = group
+
+            else -> signingConfirmedDialogVisible = true
         }
     }
 
@@ -235,4 +244,18 @@ fun ParticipantsScreen(
         onConfirm = { signingConfirmedDialogVisible = false },
         onDismissRequest = { signingConfirmedDialogVisible = false },
     )
+
+    participantGroupDialogVisible?.let { group ->
+        WolczynAlertDialog(
+            isVisible = true,
+            imageVector = Icons.Default.Group,
+            dialogTitleId = Res.string.participant_group_title,
+            dialogText = stringResource(Res.string.participant_group_body, group),
+            dialogTextId = Res.string.participant_group_body,
+            confirmBtnTextId = Res.string.ok,
+            onConfirm = { participantGroupDialogVisible = null },
+            dismissible = true,
+            onDismissRequest = { participantGroupDialogVisible = null },
+        )
+    }
 }

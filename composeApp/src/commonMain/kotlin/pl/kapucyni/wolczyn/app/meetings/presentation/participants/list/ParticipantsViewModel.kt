@@ -21,6 +21,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCod
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningSuccess
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeUserNotFound
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
@@ -39,6 +40,7 @@ class ParticipantsViewModel(
 ) : BasicViewModel<List<Participant>>() {
 
     private var allParticipants = listOf<Participant>()
+    private var groups = listOf<Group>()
 
     private val _filterState = MutableStateFlow(ParticipantsFilterState())
     val filterState = _filterState.asStateFlow()
@@ -70,6 +72,12 @@ class ParticipantsViewModel(
             }
         }
 
+        viewModelScope.launch(Dispatchers.IO) {
+            runCatching {
+                groups = meetingsRepository.getGroups(meetingId = meetingId)
+            }
+        }
+
         viewModelScope.launch(Dispatchers.Default) {
             _filterState
                 .onEach { _screenState.update { State.Loading } }
@@ -98,6 +106,11 @@ class ParticipantsViewModel(
             is QrScanFailure -> handleQrScanFailure()
         }
     }
+
+    fun checkParticipantGroup(participant: Participant) =
+        groups.firstOrNull { group ->
+            group.members[participant.email] != null || group.animatorMail == participant.email
+        }?.number
 
     private fun filterParticipants(filterState: ParticipantsFilterState) =
         if (

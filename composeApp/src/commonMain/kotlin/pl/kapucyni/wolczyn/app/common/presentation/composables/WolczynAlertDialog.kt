@@ -16,6 +16,7 @@ fun WolczynAlertDialog(
     imageVector: ImageVector,
     dismissible: Boolean = true,
     dialogTitleId: StringResource,
+    dialogText: String? = null,
     dialogTextId: StringResource,
     confirmBtnTextId: StringResource,
     onConfirm: () -> Unit,
@@ -37,7 +38,7 @@ fun WolczynAlertDialog(
             },
             text = {
                 WolczynText(
-                    text = stringResource(dialogTextId),
+                    text = dialogText ?: stringResource(dialogTextId),
                     textStyle = MaterialTheme.typography.labelLarge,
                 )
             },

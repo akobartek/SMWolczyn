@@ -78,8 +78,9 @@ class FirebaseMeetingsRepository(
             .get()
             .documents
             .map { it.data<Participant>() }
+            .filter { it.paid }
             .sortedBy { it.birthday.seconds }
-    }.getOrDefault(listOf<Participant>())
+    }.getOrDefault(listOf())
 
     override suspend fun getGroups(meetingId: Int) = runCatching {
         firestore
@@ -90,7 +91,7 @@ class FirebaseMeetingsRepository(
             .documents
             .map { it.data<Group>() }
             .sortedBy { it.number }
-    }.getOrDefault(listOf<Group>())
+    }.getOrDefault(listOf())
 
     override suspend fun saveGroups(meetingId: Int, groups: List<Group>) = runCatching {
         firestore.batch().let { batch ->

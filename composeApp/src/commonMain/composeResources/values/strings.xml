@@ -80,10 +80,6 @@
     <string name="verify_email_dialog_message">Aby korzystać z konta musisz zatwierdzić adres mailowy. Jeśli chcesz, możesz ponowić wysłanie wiadomości.</string>
     <string name="verify_email_send_again">Ponów</string>
     <string name="verify_email_email_sent">Wysłano wiadomość na podany adres mailowy</string>
-    <string name="user_group">Numer grupki:\n%1$d</string>
-    <string name="groups_not_available">Wróć podczas spotkania, a poznasz numer swojej grupki!</string>
-    <string name="group_members_title">Członkowie grupki:</string>
-    <string name="members_without_group_title">Członkowie bez grupki:</string>
     <string name="reset_password">Resetuj hasło</string>
     <string name="reset_password_dialog_msg">Na Twój adres mailowy została wiadomość z linkiem do zmiany hasła.</string>
     <string name="reset_password_dialog_title">Resetowanie hasła</string>
@@ -143,6 +139,12 @@
     <string name="draw">Losuj</string>
     <string name="select_animators">Wybierz animatorów</string>
     <string name="current_group">Obecna grupka</string>
+    <string name="user_group">Numer grupki:\n%1$d</string>
+    <string name="groups_not_available">Wróć podczas spotkania, a poznasz numer swojej grupki!</string>
+    <string name="group_members_title">Członkowie grupki:</string>
+    <string name="members_without_group_title">Członkowie bez grupki:</string>
+    <string name="participant_group_title">Grupka uczestnika</string>
+    <string name="participant_group_body">Użytkownik znajduje się w grupce %1$d</string>
 
     <!-- SIGNINGS STRINGS -->
     <string name="signings">Zapisy</string>
