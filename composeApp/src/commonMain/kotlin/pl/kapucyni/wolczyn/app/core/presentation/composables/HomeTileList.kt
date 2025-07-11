@@ -74,7 +74,7 @@ private fun oneColumn(appVersion: AppVersion, meetingTile: HomeTileType?) = when
             arrayOf(meetingTile),
             arrayOf(SCHEDULE),
             arrayOf(SONG_BOOK),
-            arrayOf(KITCHEN),
+//            arrayOf(KITCHEN),
             arrayOf(SHOP),
             arrayOf(BREVIARY),
             arrayOf(WEATHER),
@@ -98,9 +98,9 @@ private fun twoColumns(appVersion: AppVersion, meetingTile: HomeTileType?) = whe
         arrayOf(
             arrayOf(meetingTile),
             arrayOf(SCHEDULE, SONG_BOOK),
-            arrayOf(KITCHEN, SHOP),
-            arrayOf(BREVIARY, WEATHER),
-            arrayOf(DECALOGUE, ARCHIVE),
+            arrayOf(BREVIARY, SHOP),
+            arrayOf(DECALOGUE, WEATHER),
+            arrayOf(ARCHIVE),
         )
     }
 
@@ -116,8 +116,8 @@ private fun threeColumns(appVersion: AppVersion, meetingTile: HomeTileType?) = w
     AppVersion.MEETING -> {
         arrayOf(
             arrayOf(SCHEDULE, meetingTile, SONG_BOOK),
-            arrayOf(SHOP, BREVIARY, KITCHEN),
-            arrayOf(WEATHER, ARCHIVE, DECALOGUE),
+            arrayOf(SHOP, BREVIARY, DECALOGUE),
+            arrayOf(WEATHER, ARCHIVE),
         )
     }
 
