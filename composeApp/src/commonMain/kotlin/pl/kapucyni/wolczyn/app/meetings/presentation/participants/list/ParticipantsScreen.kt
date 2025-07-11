@@ -200,6 +200,10 @@ fun ParticipantsScreen(
                                 if (userType.canManageParticipants())
                                     openDetails(participant, false)
                             },
+                            onDoubleClick = {
+                                if (userType.canManageParticipants())
+                                    openDetails(participant, true)
+                            },
                         )
                     }
 

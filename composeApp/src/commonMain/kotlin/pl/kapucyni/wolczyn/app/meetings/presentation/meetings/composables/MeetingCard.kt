@@ -71,7 +71,10 @@ fun MeetingCard(
                             contentDescription = stringResource(Res.string.workshops),
                         )
                     }
-                if (userType == UserType.ADMIN && meeting.start.seconds <= Clock.System.now().epochSeconds)
+                if (
+                    userType == UserType.ADMIN
+                    && meeting.start.seconds <= Clock.System.now().epochSeconds
+                )
                     IconButton(onClick = { openGroupsScreen(meeting.id) }) {
                         Icon(
                             imageVector = Icons.Outlined.Hub,

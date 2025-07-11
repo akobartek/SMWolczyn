@@ -6,7 +6,7 @@ data class ParticipantsFilterState(
     val query: String = "",
     val onlyConfirmedParticipants: Boolean = false,
     val participantTypes: List<ParticipantType> = ParticipantType.entries.toList(),
-    val selectedTypes: List<ParticipantType> = ParticipantType.entries.toList(),
+    val selectedTypes: List<ParticipantType> = emptyList(),
     val workshops: List<String> = emptyList(),
     val selectedWorkshops: List<String> = emptyList(),
 )

@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 fun ParticipantCard(
     participant: Participant,
     onClick: () -> Unit,
+    onDoubleClick: () -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -35,7 +37,10 @@ fun ParticipantCard(
             width = 1.dp,
             color = MaterialTheme.colorScheme.surfaceContainerHighest,
         ),
-        onClick = onClick,
+        modifier = Modifier.combinedClickable(
+            onClick = onClick,
+            onDoubleClick = onDoubleClick,
+        ),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,

@@ -64,10 +64,7 @@ class ParticipantsViewModel(
                     if (workshops.isEmpty()) return@launch
 
                     _filterState.update { state ->
-                        state.copy(
-                            workshops = workshops + "",
-                            selectedWorkshops = workshops + "",
-                        )
+                        state.copy(workshops = workshops + "")
                     }
                 }
             }
@@ -79,8 +76,8 @@ class ParticipantsViewModel(
                 .debounce { currentState ->
                     if (
                         currentState.query.isNotBlank()
-                        || currentState.selectedTypes.size != currentState.participantTypes.size
-                        || currentState.selectedWorkshops.size != currentState.workshops.size
+                        || currentState.selectedTypes.isNotEmpty()
+                        || currentState.selectedWorkshops.isNotEmpty()
                     ) 1226L // PDK
                     else 0L
                 }
@@ -105,8 +102,8 @@ class ParticipantsViewModel(
     private fun filterParticipants(filterState: ParticipantsFilterState) =
         if (
             filterState.query.isBlank()
-            && filterState.selectedTypes.size == filterState.participantTypes.size
-            && filterState.selectedWorkshops.size == filterState.workshops.size
+            && filterState.selectedTypes.isEmpty()
+            && filterState.selectedWorkshops.isEmpty()
             && filterState.onlyConfirmedParticipants.not()
         )
             allParticipants
@@ -120,8 +117,13 @@ class ParticipantsViewModel(
 
                 val signedResult = if (filterState.onlyConfirmedParticipants) it.paid else true
 
-                val typeResult = filterState.selectedTypes.contains(it.type)
-                val workshopsResult = filterState.selectedWorkshops.contains(it.workshop)
+                val typeResult =
+                    filterState.selectedTypes.isEmpty()
+                            || filterState.selectedTypes.contains(it.type)
+
+                val workshopsResult =
+                    filterState.selectedWorkshops.isEmpty()
+                            || filterState.selectedWorkshops.contains(it.workshop)
 
                 searchResult && signedResult && typeResult && workshopsResult
             }
