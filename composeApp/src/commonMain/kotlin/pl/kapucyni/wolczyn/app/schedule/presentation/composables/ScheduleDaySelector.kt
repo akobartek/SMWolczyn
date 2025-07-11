@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,7 +31,7 @@ fun RowScope.ScheduleDaySelector(
     day: Int,
     name: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val backgroundColor by animateColorAsState(if (isSelected) wolczynColors.primary else wolczynColors.secondary)
     val contentColor by animateColorAsState(
@@ -46,12 +47,12 @@ fun RowScope.ScheduleDaySelector(
         onClick = onClick,
         modifier = Modifier
             .weight(weight)
-            .height(height)
+            .height(height),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             WolczynText(
                 text = day.toString(),
@@ -69,6 +70,7 @@ fun RowScope.ScheduleDaySelector(
                     color = contentColor,
                     textAlign = TextAlign.Center,
                 ),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
         }
     }

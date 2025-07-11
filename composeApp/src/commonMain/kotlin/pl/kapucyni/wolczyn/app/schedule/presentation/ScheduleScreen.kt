@@ -72,12 +72,15 @@ fun ScheduleScreenContent(
             var currentEventIndex by remember { mutableIntStateOf(-1) }
 
             LaunchedEffect(state.selectedDay) {
-                currentEventIndex =
-                    if (state.selectedDay == state.currentDay)
+                currentEventIndex = when {
+                    state.selectedDay == state.currentDay ->
                         state.schedule.getOrNull(state.selectedDay)?.getCurrentEventIndex() ?: -1
-                    else if (state.selectedDay < state.currentDay)
+
+                    state.selectedDay < state.currentDay ->
                         state.schedule.getOrNull(state.selectedDay)?.events?.lastIndex ?: -1
-                    else -1
+
+                    else -> -1
+                }
                 val index =
                     if (state.selectedDay == state.currentDay) currentEventIndex
                     else 0
@@ -86,17 +89,17 @@ fun ScheduleScreenContent(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier
                     .height(104.dp)
-                    .padding(horizontal = 6.dp)
+                    .padding(horizontal = 4.dp),
             ) {
                 state.schedule.forEachIndexed { index, scheduleDay ->
                     ScheduleDaySelector(
                         day = scheduleDay.date.dayOfMonth,
                         name = scheduleDay.name,
                         isSelected = state.selectedDay == index,
-                        onClick = { onDaySelected(index) }
+                        onClick = { onDaySelected(index) },
                     )
                 }
             }
@@ -142,8 +145,8 @@ fun ScheduleScreenContent(
                             event = event,
                             filledCircle = currentEventIndex >= index,
                             hideTime =
-                            if (index > 0) scheduleDay.events[index - 1].time == event.time
-                            else false,
+                                if (index > 0) scheduleDay.events[index - 1].time == event.time
+                                else false,
                             isLast = index == scheduleDay.events.lastIndex,
                             onNavClick = navigateTo,
                         )

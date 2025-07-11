@@ -98,10 +98,10 @@ fun EventCard(
             onClick = {
                 when (event.type) {
                     EventType.MASS -> onNavClick(Screen.SongBook)
-                    EventType.MEAL -> onNavClick(Screen.Kitchen)
                     EventType.BREVIARY -> onNavClick(Screen.BreviarySelect)
-                    EventType.WORKSHOPS -> onNavClick(Screen.Workshops)
                     EventType.MF_TAU -> mfTauDialogVisible = true
+//                    EventType.MEAL -> onNavClick(Screen.Kitchen)
+//                    EventType.WORKSHOPS -> onNavClick(Screen.Workshops)
                     else -> {
                         if (!event.guestUrl.isNullOrBlank())
                             uriHandler.openUri(event.guestUrl)
