@@ -72,8 +72,8 @@ private fun oneColumn(appVersion: AppVersion, meetingTile: HomeTileType?) = when
     AppVersion.MEETING -> {
         arrayOf(
             arrayOf(meetingTile),
-            arrayOf(SCHEDULE),
             arrayOf(SONG_BOOK),
+            arrayOf(SCHEDULE),
 //            arrayOf(KITCHEN),
             arrayOf(SHOP),
             arrayOf(BREVIARY),
