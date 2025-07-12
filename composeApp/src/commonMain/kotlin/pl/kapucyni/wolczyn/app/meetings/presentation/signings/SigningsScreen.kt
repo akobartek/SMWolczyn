@@ -74,6 +74,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.Upd
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsViewModel.Companion.COSMETIC_WORKSHOP
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsConfirmedScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsQrCodeDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsSubtitle
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
@@ -153,7 +154,7 @@ fun SigningsScreen(
                         openEssentials = { uriHandler.openUri(ESSENTIALS_LINK) },
                     )
                 } else {
-                    // TODO: Show confirmation screen
+                    SigningsConfirmedScreen(state = state)
                 }
             } ?: LoadingBox()
         }

@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.signings
 
 import dev.gitlive.firebase.firestore.Timestamp
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 
@@ -40,4 +41,5 @@ data class SigningsScreenState(
     val tooYoungDialogVisible: Boolean = false,
     val noInternetDialogVisible: Boolean = false,
     val createdAt: Timestamp? = null,
+    val group: Group?,
 )

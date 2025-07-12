@@ -29,20 +29,21 @@ fun GroupsGrid(
             .fillMaxSize()
             .padding(horizontal = 8.dp),
     ) {
-        item(span = { GridItemSpan(1) }) {
-            EmptyGroupCard(
-                numberOfGroups = state.newGroups.size,
-                members = state.membersWithoutGroup,
-                onMemberDialogSave = { number, email ->
-                    handleAction(
-                        OnMemberGroupAdd(
-                            groupNumber = number,
-                            email = email,
+        if (state.membersWithoutGroup.isNotEmpty())
+            item(span = { GridItemSpan(1) }) {
+                EmptyGroupCard(
+                    numberOfGroups = state.newGroups.size,
+                    members = state.membersWithoutGroup,
+                    onMemberDialogSave = { number, email ->
+                        handleAction(
+                            OnMemberGroupAdd(
+                                groupNumber = number,
+                                email = email,
+                            )
                         )
-                    )
-                },
-            )
-        }
+                    },
+                )
+            }
 
         items(
             count = state.newGroups.size,

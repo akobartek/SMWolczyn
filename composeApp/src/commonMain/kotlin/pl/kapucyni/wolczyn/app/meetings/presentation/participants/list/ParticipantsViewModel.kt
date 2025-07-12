@@ -24,6 +24,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
+import pl.kapucyni.wolczyn.app.meetings.domain.model.containsParticipantByEmail
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.ToggleAllUsers
@@ -108,8 +109,8 @@ class ParticipantsViewModel(
     }
 
     fun checkParticipantGroup(participant: Participant) =
-        groups.firstOrNull { group ->
-            group.members[participant.email] != null || group.animatorMail == participant.email
+        groups.find { group ->
+            group.containsParticipantByEmail(email = participant.email)
         }?.number
 
     private fun filterParticipants(filterState: ParticipantsFilterState) =

@@ -50,7 +50,7 @@ class ParticipantDetailsViewModel(
 
     private fun setSuccessState() {
         viewModelScope.launch(Dispatchers.Default) {
-            meetingsRepository.checkPreviousSigning(meetingId, email)?.let { participant ->
+            meetingsRepository.getParticipant(meetingId, email)?.let { participant ->
                 _screenState.update { State.Success(participant) }
             } ?: onLoadingFailure()
         }

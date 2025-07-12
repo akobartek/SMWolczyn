@@ -139,12 +139,13 @@
     <string name="draw">Losuj</string>
     <string name="select_animators">Wybierz animatorów</string>
     <string name="current_group">Obecna grupka</string>
-    <string name="user_group">Numer grupki:\n%1$d</string>
-    <string name="groups_not_available">Wróć podczas spotkania, a poznasz numer swojej grupki!</string>
+    <string name="user_group">Numer Twojej grupki:</string>
+    <string name="groups_not_available">Wróć tu już niedługo, a poznasz numer swojej grupki!</string>
     <string name="group_members_title">Członkowie grupki:</string>
     <string name="members_without_group_title">Członkowie bez grupki:</string>
     <string name="participant_group_title">Grupka uczestnika</string>
     <string name="participant_group_body">Użytkownik znajduje się w grupce %1$d</string>
+    <string name="signing_confirmed">Witaj na pokładzie tegorocznego Wołczyna, %1$s!</string>
 
     <!-- SIGNINGS STRINGS -->
     <string name="signings">Zapisy</string>
@@ -155,7 +156,7 @@
     <string name="cd_save_signing">Zapisz zgłoszenie</string>
     <string name="cd_scan_signing">Okazanie kodu na zapisy</string>
     <string name="signings_qr_code_msg">Twój kod QR:</string>
-    <string name="signings_subtitle">Aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie pod hasłem %meeting_title%, wypełnij poniższy formularz zgłoszeniowy:</string>
+    <string name="signings_subtitle">Aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie, wypełnij poniższy formularz zgłoszeniowy:</string>
     <string name="signings_subtitle_edit">Twoje zgłoszenie jest już zapisane w systemie. Jeśli chcesz, możesz je edytować poniżej:</string>
     <string name="signings_subtitle_admin">Zapisywanie nowego uczestnika na Wołczyn:</string>
     <string name="pesel">PESEL</string>

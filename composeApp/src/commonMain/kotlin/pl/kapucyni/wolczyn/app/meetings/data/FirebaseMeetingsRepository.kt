@@ -2,10 +2,11 @@ package pl.kapucyni.wolczyn.app.meetings.data
 
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
+import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
@@ -21,6 +22,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.ANIMATOR
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.SCOUT
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
+import pl.kapucyni.wolczyn.app.meetings.domain.model.containsParticipantByEmail
 
 class FirebaseMeetingsRepository(
     private val firestore: FirebaseFirestore,
@@ -48,7 +50,7 @@ class FirebaseMeetingsRepository(
         )
     }.getOrDefault(Unit)
 
-    override suspend fun checkPreviousSigning(
+    override suspend fun getParticipant(
         meetingId: Int,
         email: String,
     ): Participant? = runCatching {
@@ -83,10 +85,7 @@ class FirebaseMeetingsRepository(
     }.getOrDefault(listOf())
 
     override suspend fun getGroups(meetingId: Int) = runCatching {
-        firestore
-            .collection(COLLECTION_MEETINGS)
-            .document(meetingId.toString())
-            .collection(COLLECTION_GROUPS)
+        groups(meetingId)
             .get()
             .documents
             .map { it.data<Group>() }
@@ -104,6 +103,10 @@ class FirebaseMeetingsRepository(
             batch.commit()
         }
     }
+
+    override suspend fun getParticipantGroup(meetingId: Int, email: String) = runCatching {
+        getGroups(meetingId).find { it.containsParticipantByEmail(email = email) }
+    }.getOrDefault(null)
 
     override fun getAllMeetings(): Flow<List<Meeting>> =
         firestore.getFirestoreCollectionFlow<Meeting>(COLLECTION_MEETINGS)
@@ -139,11 +142,21 @@ class FirebaseMeetingsRepository(
                     )
                 )
             }
-    }.getOrDefault(emptyFlow())
+    }.getOrDefault(flowOf(emptyList()))
 
     override fun getWorkshopsFlow(): Flow<List<Workshop>> = runCatching {
         firestore.getFirestoreCollectionFlow<Workshop>(COLLECTION_WORKSHOPS)
-    }.getOrDefault(emptyFlow())
+    }.getOrDefault(flowOf(emptyList()))
+
+    override fun getParticipantFlow(meetingId: Int, email: String): Flow<Participant?> =
+        runCatching {
+            email.takeIf { it.isNotBlank() }?.let {
+                signings(meetingId)
+                    .document(email)
+                    .snapshots
+                    .map<DocumentSnapshot, Participant?> { it.data() }
+            } ?: flowOf(null)
+        }.getOrDefault(flowOf(null))
 
     private fun meetings() =
         firestore.collection(COLLECTION_MEETINGS)

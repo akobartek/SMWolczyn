@@ -5,8 +5,11 @@ import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -34,47 +37,16 @@ class SigningsViewModel(
 ) : BasicViewModel<SigningsScreenState>() {
 
     init {
-        viewModelScope.launch {
-            coroutineScope {
-                val meeting = async { meetingsRepository.getMeeting(meetingId) }
-                val workshops = async { meetingsRepository.getAvailableWorkshops() }
-                val previousSigning = async {
-                    val signingEmail = email ?: user?.email
-                    signingEmail?.takeIf { it.isNotBlank() }?.let { email ->
-                        meetingsRepository.checkPreviousSigning(meetingId, email)
+        viewModelScope.launch(Dispatchers.Default) {
+            runCatching {
+                meetingsRepository.getParticipantFlow(
+                    meetingId = meetingId,
+                    email = (user?.email ?: email).orEmpty(),
+                )
+                    .shareIn(this, SharingStarted.Lazily, 1)
+                    .collect { participant ->
+                        loadState(participant)
                     }
-                }
-
-                previousSigning.await().let { participant ->
-                    val birthday =
-                        (participant?.birthday ?: user?.birthday)?.toMilliseconds()?.toLong()
-                    val state = State.Success(
-                        data = SigningsScreenState(
-                            meeting = meeting.await(),
-                            isEditing = participant != null,
-                            isSigningByAdmin = user == null,
-                            isConfirmed = participant?.paid == true,
-                            firstName = participant?.firstName ?: user?.firstName.orEmpty(),
-                            lastName = participant?.lastName ?: user?.lastName.orEmpty(),
-                            city = participant?.city ?: user?.city.orEmpty(),
-                            email = participant?.email ?: user?.email.orEmpty(),
-                            pesel =
-                                participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
-                            peselIsWoman = participant?.pesel?.peselIsWoman() == true,
-                            birthdayDate = birthday,
-                            isUnderAge = birthday?.isAgeBelow(age = 18) == true,
-                            availableTypes = getAvailableTypes(birthday),
-                            type = participant?.type,
-                            availableWorkshops = workshops.await().map { it.name },
-                            workshopsEnabled =
-                                workshopsEnabled(participant?.type, participant?.pesel.orEmpty()),
-                            selectedWorkshop = participant?.workshop,
-                            createdAt = participant?.createdAt,
-                            statuteChecked = participant != null,
-                        )
-                    )
-                    _screenState.update { state }
-                }
             }
         }
     }
@@ -95,6 +67,52 @@ class SigningsViewModel(
             is HideSuccessDialog -> toggleSuccessDialog(visible = false)
             is HideTooYoungDialog -> hideTooYoungDialog()
             is HideNoInternetDialog -> hideNoInternetDialog()
+        }
+    }
+
+    private fun loadState(participant: Participant?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            coroutineScope {
+                val meeting = async { meetingsRepository.getMeeting(meetingId) }
+                val workshops = async { meetingsRepository.getAvailableWorkshops() }
+                val group = async {
+                    participant?.let {
+                        meetingsRepository.getParticipantGroup(
+                            meetingId = meetingId,
+                            email = it.email,
+                        )
+                    }
+                }
+                val birthday = (participant?.birthday ?: user?.birthday)?.toMilliseconds()?.toLong()
+
+                val state = State.Success(
+                    data = SigningsScreenState(
+                        meeting = meeting.await(),
+                        isEditing = participant != null,
+                        isSigningByAdmin = user == null,
+                        isConfirmed = participant?.paid == true,
+                        firstName = participant?.firstName ?: user?.firstName.orEmpty(),
+                        lastName = participant?.lastName ?: user?.lastName.orEmpty(),
+                        city = participant?.city ?: user?.city.orEmpty(),
+                        email = participant?.email ?: user?.email.orEmpty(),
+                        pesel =
+                            participant?.pesel ?: user?.birthday?.getPeselBeginning().orEmpty(),
+                        peselIsWoman = participant?.pesel?.peselIsWoman() == true,
+                        birthdayDate = birthday,
+                        isUnderAge = birthday?.isAgeBelow(age = 18) == true,
+                        availableTypes = getAvailableTypes(birthday),
+                        type = participant?.type,
+                        availableWorkshops = workshops.await().map { it.name },
+                        workshopsEnabled =
+                            workshopsEnabled(participant?.type, participant?.pesel.orEmpty()),
+                        selectedWorkshop = participant?.workshop,
+                        createdAt = participant?.createdAt,
+                        statuteChecked = participant != null,
+                        group = group.await(),
+                    )
+                )
+                _screenState.update { state }
+            }
         }
     }
 

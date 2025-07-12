@@ -10,3 +10,6 @@ data class Group(
     val animatorName: String,
     val animatorContact: String,
 )
+
+fun Group.containsParticipantByEmail(email: String): Boolean =
+    members.contains(email) || animatorMail == email
