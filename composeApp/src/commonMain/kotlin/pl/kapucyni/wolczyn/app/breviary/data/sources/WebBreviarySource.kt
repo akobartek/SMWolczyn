@@ -416,7 +416,7 @@ class WebBreviarySource {
                         ?.children()?.firstOrNull { it.id() == "abc1" }
                         ?.firstElementChild()?.children()
                     val nestedText = children?.last()?.children() ?: listOf()
-                    children?.removeLast()
+                    children?.let { it.removeAt(it.lastIndex) }
                     children?.addAll(nestedText)
                     children?.forEachIndexed { index, element ->
                         if (element.hasClass("c")) append("\u00A0\u00A0\u00A0\u00A0")
