@@ -2,7 +2,6 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composab
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
@@ -24,6 +24,7 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.SearchTextField
+import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextView
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynBottomSheet
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -31,12 +32,15 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.ToggleAllUsers
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSorting
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.filter_confirmed
 import smwolczyn.composeapp.generated.resources.filter_empty
 import smwolczyn.composeapp.generated.resources.participant_type_title
+import smwolczyn.composeapp.generated.resources.sorting_label
 import smwolczyn.composeapp.generated.resources.workshops
 
 @Composable
@@ -55,6 +59,18 @@ fun ParticipantsFilteringBottomSheet(
                 value = state.query,
                 onValueChange = { handleAction(UpdateSearchQuery(it)) },
             )
+
+            FilterSection {
+                SelectableTextView(
+                    value = stringResource(state.sorting.stringRes),
+                    label = Res.string.sorting_label,
+                    items = ParticipantsSorting.entries.map {
+                        it to stringResource(it.stringRes)
+                    },
+                    onItemSelected = { handleAction(UpdateSorting(it)) },
+                    leadingIcon = Icons.AutoMirrored.Filled.Sort,
+                )
+            }
 
             FilterSection {
                 FilterChip(
@@ -103,7 +119,7 @@ fun ParticipantsFilteringBottomSheet(
 }
 
 @Composable
-private fun ColumnScope.FilterSection(content: @Composable () -> Unit) {
+private fun FilterSection(content: @Composable () -> Unit) {
     HeightSpacer(16.dp)
     HorizontalDivider(modifier = Modifier.fillMaxWidth())
     HeightSpacer(16.dp)

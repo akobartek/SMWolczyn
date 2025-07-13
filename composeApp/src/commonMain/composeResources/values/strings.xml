@@ -120,13 +120,17 @@
     <string name="qr_scan_failed">Wystąpił błąd podczas skanowania kodu QR, spróbuj ponownie!</string>
     <string name="qr_scan_user_not_found">Nie znaleziono uczestnika, spróbuj ponownie!</string>
     <string name="cd_send_email">Wyślij email</string>
+    <string name="sorting_label">Sortowanie</string>
+    <string name="sorting_alphabetically">Alfabetycznie</string>
+    <string name="sorting_birthday_asc">Data urodzenia (rosnąco)</string>
+    <string name="sorting_birthday_desc">Data urodzenia (malejąco)</string>
     <string name="filter_participants">Filtruj uczestników</string>
     <string name="filter_confirmed">Tylko uczestnicy na miejscu</string>
     <string name="filter_empty">Brak</string>
     <string name="add_participant">Dodaj uczestnika</string>
     <string name="signing_confirmed_title">Napotkano błąd</string>
     <string name="signing_confirmed_message">Uczestnik został już zarejestrowany na Spotkaniu, jeśli uważasz że jest to błąd, skontaktuj się z adminem!</string>
-    <string name="signing_confirm_consent">Odebrałem zgodę na przetwarzanie danych</string>
+    <string name="signing_confirm_consent">Zgoda na przetwarzanie danych</string>
     <string name="signing_confirm_underage_consent">Odebrałem zgodę rodzica/opiekuna</string>
     <string name="signing_confirm_paid">Odebrałem pieniądze za uczestnictwo</string>
     <string name="signing_confirm">Potwierdź przybycie uczestnika</string>
@@ -170,6 +174,7 @@
     <string name="participant_type_animator">Animator</string>
     <string name="participant_type_priest">Kapłan</string>
     <string name="participant_type_monk">Brat/Siostra zakonna</string>
+    <string name="participant_type_choir">Schola</string>
     <string name="participant_type_organisation">Organizator</string>
     <string name="workshops">Warsztaty</string>
     <string name="workshops_error">Proszę wybrać dostępne warsztaty!</string>

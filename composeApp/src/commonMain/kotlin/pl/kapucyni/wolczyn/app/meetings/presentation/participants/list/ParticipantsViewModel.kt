@@ -1,5 +1,7 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list
 
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -29,9 +31,13 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.ToggleAllUsers
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSorting
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.ScanUserFound
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.ALPHABETICALLY
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.BIRTHDAY_ASC
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.BIRTHDAY_DESC
 
 @OptIn(FlowPreview::class)
 class ParticipantsViewModel(
@@ -100,6 +106,7 @@ class ParticipantsViewModel(
     fun handleAction(action: ParticipantsScreenAction) {
         when (action) {
             is UpdateSearchQuery -> updateSearchQuery(action.query)
+            is UpdateSorting -> updateSorting(action.sorting)
             is ToggleAllUsers -> toggleAllUsers(action.checked)
             is UpdateTypesFilter -> updateTypesFilter(action.elementSelected)
             is UpdateWorkshopsFilter -> updateWorkshopsFilter(action.elementSelected)
@@ -120,14 +127,15 @@ class ParticipantsViewModel(
             && filterState.selectedWorkshops.isEmpty()
             && filterState.onlyConfirmedParticipants.not()
         )
-            allParticipants
+            allParticipants.getSortedList(filterState.sorting)
         else
             allParticipants.filter {
-                val searchResult = it.firstName.contains(filterState.query, ignoreCase = true)
-                        || it.lastName.contains(filterState.query, ignoreCase = true)
-                        || it.city.contains(filterState.query, ignoreCase = true)
-                        || it.email.contains(filterState.query, ignoreCase = true)
-                        || it.pesel.contains(filterState.query, ignoreCase = true)
+                val query = filterState.query.trim()
+                val searchResult = it.firstName.contains(query, ignoreCase = true)
+                        || it.lastName.contains(query, ignoreCase = true)
+                        || it.city.contains(query, ignoreCase = true)
+                        || it.email.contains(query, ignoreCase = true)
+                        || it.pesel.contains(query, ignoreCase = true)
 
                 val signedResult = if (filterState.onlyConfirmedParticipants) it.paid else true
 
@@ -140,10 +148,36 @@ class ParticipantsViewModel(
                             || filterState.selectedWorkshops.contains(it.workshop)
 
                 searchResult && signedResult && typeResult && workshopsResult
+            }.getSortedList(filterState.sorting)
+
+    private fun List<Participant>.getSortedList(sorting: ParticipantsSorting) =
+        with(Locale.current) {
+            when (sorting) {
+                ALPHABETICALLY -> this@getSortedList.sortedWith(
+                    compareBy(
+                        {
+                            it.firstName.toLowerCase(this)
+                                .replace("br. ", "")
+                                .replace("s. ", "")
+                        },
+                        { it.lastName.toLowerCase(this) },
+                    )
+                )
+
+                BIRTHDAY_ASC -> this@getSortedList.sortedBy { it.birthday.seconds }
+
+                BIRTHDAY_DESC -> this@getSortedList.sortedByDescending { it.birthday.seconds }
             }
+        }
 
     private fun updateSearchQuery(query: String) {
         _filterState.update { it.copy(query = query) }
+    }
+
+    private fun updateSorting(sorting: ParticipantsSorting) {
+        if (sorting == filterState.value.sorting) return
+
+        _filterState.update { it.copy(sorting = sorting) }
     }
 
     private fun toggleAllUsers(checked: Boolean) {

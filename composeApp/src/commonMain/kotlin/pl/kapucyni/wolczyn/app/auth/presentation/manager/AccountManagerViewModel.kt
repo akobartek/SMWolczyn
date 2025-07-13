@@ -46,7 +46,7 @@ class AccountManagerViewModel(
     }
 
     fun searchUsers(query: String) {
-        this.query = query
+        this.query = query.trim()
         filterUsers()
     }
 

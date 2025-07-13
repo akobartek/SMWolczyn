@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.meetings.domain.model
 import org.jetbrains.compose.resources.StringResource
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.participant_type_animator
+import smwolczyn.composeapp.generated.resources.participant_type_choir
 import smwolczyn.composeapp.generated.resources.participant_type_guardian
 import smwolczyn.composeapp.generated.resources.participant_type_member
 import smwolczyn.composeapp.generated.resources.participant_type_monk
@@ -17,6 +18,7 @@ enum class ParticipantType(val stringRes: StringResource) {
     ANIMATOR(Res.string.participant_type_animator),
     PRIEST(Res.string.participant_type_priest),
     MONK(Res.string.participant_type_monk),
+    CHOIR(Res.string.participant_type_choir),
     ORGANISATION(Res.string.participant_type_organisation),
     ;
 
@@ -28,4 +30,7 @@ enum class ParticipantType(val stringRes: StringResource) {
 
     fun canBeAnimator() =
         this == ANIMATOR || this == MONK || this == PRIEST || this == ORGANISATION
+
+    fun isSelectableByUser() =
+        this != CHOIR && this != ORGANISATION
 }

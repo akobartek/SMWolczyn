@@ -1,7 +1,5 @@
 package pl.kapucyni.wolczyn.app.meetings.data
 
-import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.toLowerCase
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.QuerySnapshot
@@ -128,19 +126,6 @@ class FirebaseMeetingsRepository(
                     ANIMATORS_MANAGER -> list.filter { it.type == ANIMATOR }
                     else -> emptyList()
                 }
-            }
-            .map { list ->
-                val locale = Locale.current
-                list.sortedWith(
-                    compareBy(
-                        {
-                            it.firstName.toLowerCase(locale)
-                                .replace("br. ", "")
-                                .replace("s. ", "")
-                        },
-                        { it.lastName.toLowerCase(locale) },
-                    )
-                )
             }
     }.getOrDefault(flowOf(emptyList()))
 

@@ -116,14 +116,14 @@ class SigningsViewModel(
         }
     }
 
-    private fun getAvailableTypes(birthday: Long?) = ParticipantType.entries.let {
+    private fun getAvailableTypes(birthday: Long?) = ParticipantType.entries.let { list ->
         when {
+            user == null -> list
+
             birthday?.isAgeBelow(18) == true ->
                 listOf(ParticipantType.MEMBER, ParticipantType.SCOUT)
 
-            user == null -> it
-
-            else -> it - ParticipantType.ORGANISATION
+            else -> list.filter { it.isSelectableByUser() }
         }
     }
 
