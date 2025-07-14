@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import kotlin.collections.component1
 import kotlin.collections.component2
 
@@ -20,7 +21,7 @@ fun GroupMembersList(
     title: String,
     members: HashMap<String, String>,
     currentGroup: Int?,
-    numberOfGroups: Int,
+    allGroups: List<Group>,
     onMemberDialogSave: (Int, String) -> Unit,
 ) {
     var memberDialogVisible: Pair<String, String>? by remember { mutableStateOf(null) }
@@ -48,7 +49,7 @@ fun GroupMembersList(
             email = email,
             data = data,
             currentGroup = currentGroup,
-            numberOfGroups = numberOfGroups,
+            allGroups = allGroups,
             onConfirm = onMemberDialogSave,
             onDismiss = { memberDialogVisible = null },
         )

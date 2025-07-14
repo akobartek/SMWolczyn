@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextView
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.current_group
@@ -30,7 +31,7 @@ fun GroupMemberDialog(
     email: String,
     data: String,
     currentGroup: Int?,
-    numberOfGroups: Int,
+    allGroups: List<Group>,
     onConfirm: (Int, String) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -56,7 +57,7 @@ fun GroupMemberDialog(
             SelectableTextView(
                 value = newGroup?.toString() ?: "",
                 label = Res.string.current_group,
-                items = (1..numberOfGroups).toList().map { it to it.toString() },
+                items = allGroups.map { it.number to "${it.number} (${it.animatorName})" },
                 onItemSelected = { newGroup = it },
             )
         },

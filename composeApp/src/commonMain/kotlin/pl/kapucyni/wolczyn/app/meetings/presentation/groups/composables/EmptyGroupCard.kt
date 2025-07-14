@@ -11,13 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.members_without_group_title
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EmptyGroupCard(
-    numberOfGroups: Int,
+    allGroups: List<Group>,
     members: HashMap<String, String>,
     onMemberDialogSave: (Int, String) -> Unit,
 ) {
@@ -34,7 +35,7 @@ fun EmptyGroupCard(
                 title = stringResource(Res.string.members_without_group_title),
                 members = members,
                 currentGroup = null,
-                numberOfGroups = numberOfGroups,
+                allGroups = allGroups,
                 onMemberDialogSave = onMemberDialogSave,
             )
         }

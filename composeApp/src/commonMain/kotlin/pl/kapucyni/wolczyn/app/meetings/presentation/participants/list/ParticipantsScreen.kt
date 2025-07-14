@@ -132,10 +132,14 @@ fun ParticipantsScreen(
             if (codeScanner.available && userType.canManageParticipants()) {
                 {
                     IconButton(onClick = {
-                        codeScanner.startScanning(
-                            onSuccess = { viewModel.handleAction(QrScanSuccess(it)) },
-                            onFailure = { viewModel.handleAction(QrScanFailure) },
-                        )
+                        try {
+                            codeScanner.startScanning(
+                                onSuccess = { viewModel.handleAction(QrScanSuccess(it)) },
+                                onFailure = { viewModel.handleAction(QrScanFailure) },
+                            )
+                        } catch (_: Exception) {
+                            viewModel.handleAction(QrScanFailure)
+                        }
                     }) {
                         Icon(
                             imageVector = Icons.Filled.QrCodeScanner,

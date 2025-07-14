@@ -22,6 +22,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningSuccess
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeUserNotFound
+import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
+import pl.kapucyni.wolczyn.app.common.utils.normalizeMultiplatform
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -130,12 +132,20 @@ class ParticipantsViewModel(
             allParticipants.getSortedList(filterState.sorting)
         else
             allParticipants.filter {
-                val query = filterState.query.trim()
-                val searchResult = it.firstName.contains(query, ignoreCase = true)
-                        || it.lastName.contains(query, ignoreCase = true)
-                        || it.city.contains(query, ignoreCase = true)
-                        || it.email.contains(query, ignoreCase = true)
-                        || it.pesel.contains(query, ignoreCase = true)
+                val query = filterState.query
+                    .replace(" ", "")
+                    .trim()
+                    .normalizeMultiplatform()
+                val searchResult =
+                    (it.firstName + it.lastName)
+                        .replace(" ", "")
+                        .trim()
+                        .normalizeMultiplatform()
+                        .contains(query, ignoreCase = true)
+                            || it.city.normalizeMultiplatform().contains(query, ignoreCase = true)
+                            || it.email.contains(query, ignoreCase = true)
+                            || it.pesel.contains(query, ignoreCase = true)
+                            || it.birthday.getFormattedDate().contains(query, ignoreCase = true)
 
                 val signedResult = if (filterState.onlyConfirmedParticipants) it.paid else true
 

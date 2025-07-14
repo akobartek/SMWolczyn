@@ -80,7 +80,7 @@ class WolczynSongBookRepository : SongBookRepository {
     )
 
     private val songTexts = arrayOf(
-        "Zwrotka:\nDziś jestem tu\nnie stoję samochodzie \nczuję ten wiatr\n\nJESTEŚMY RAZEM \n\n" +
+        "Zwrotka:\nDziś jestem tu\nnie stoję sam\nczuję ten wiatr\n\nJESTEŚMY RAZEM\n\n" +
                 "Nieważny trud \ngdy Słowo Twe znam \nnadzieję mam\n\nJESTEŚMY RAZEM\n\n" +
                 "Łączy nas Bóg\nOn prowadzi mnie\nnie boję się\n\nJESTEŚMY RAZEM\n\n" +
                 "Oddaję Mu\ncały ten czas\nniech widzi świat\n\nJESTEŚMY RAZEM\n\n" +

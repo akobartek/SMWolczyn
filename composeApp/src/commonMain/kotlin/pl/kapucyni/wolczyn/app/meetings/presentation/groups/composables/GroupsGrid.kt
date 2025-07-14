@@ -32,7 +32,7 @@ fun GroupsGrid(
         if (state.membersWithoutGroup.isNotEmpty())
             item(span = { GridItemSpan(1) }) {
                 EmptyGroupCard(
-                    numberOfGroups = state.newGroups.size,
+                    allGroups = state.newGroups,
                     members = state.membersWithoutGroup,
                     onMemberDialogSave = { number, email ->
                         handleAction(
@@ -53,7 +53,7 @@ fun GroupsGrid(
             val group = state.newGroups[index]
             GroupCard(
                 group = group,
-                numberOfGroups = state.newGroups.size,
+                allGroups = state.newGroups,
                 onAnimatorDialogSave = { number, contact ->
                     handleAction(
                         OnAnimatorDataChange(

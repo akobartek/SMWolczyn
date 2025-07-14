@@ -265,6 +265,7 @@ class SigningsViewModel(
                         Timestamp.fromMilliseconds(it.toDouble())
                     } ?: Timestamp.now(),
                     createdAt = state.createdAt ?: Timestamp.now(),
+                    paid = state.isConfirmed,
                     consents = state.consentChecked,
                     underageConsents = state.underageConsentChecked,
                 )

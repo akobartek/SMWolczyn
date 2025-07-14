@@ -31,7 +31,7 @@ import smwolczyn.composeapp.generated.resources.participant_type_animator
 @Composable
 fun GroupCard(
     group: Group,
-    numberOfGroups: Int,
+    allGroups: List<Group>,
     onAnimatorDialogSave: (Int, String) -> Unit,
     onMemberDialogSave: (Int, String) -> Unit,
 ) {
@@ -70,7 +70,7 @@ fun GroupCard(
                 title = stringResource(Res.string.group_members_title),
                 members = group.members,
                 currentGroup = group.number,
-                numberOfGroups = numberOfGroups,
+                allGroups = allGroups,
                 onMemberDialogSave = onMemberDialogSave,
             )
         }
@@ -81,7 +81,7 @@ fun GroupCard(
         name = group.animatorName,
         contact = group.animatorContact,
         currentGroup = group.number,
-        numberOfGroups = numberOfGroups,
+        allGroups = allGroups,
         onConfirm = onAnimatorDialogSave,
         onDismiss = { animatorDialogVisible = false },
     )

@@ -27,6 +27,7 @@ class AndroidCodeScanner(private val context: Context) : CodeScanner {
                     }
                 onFailure()
             }
+            .addOnCanceledListener {}
             .addOnFailureListener { onFailure() }
     }
 }
