@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
+import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material.icons.outlined.AlternateEmail
 import androidx.compose.material.icons.outlined.Cake
 import androidx.compose.material.icons.outlined.Fingerprint
@@ -37,6 +39,7 @@ import smwolczyn.composeapp.generated.resources.signing_confirm
 import smwolczyn.composeapp.generated.resources.signing_confirm_consent
 import smwolczyn.composeapp.generated.resources.signing_confirm_paid
 import smwolczyn.composeapp.generated.resources.signing_confirm_underage_consent
+import smwolczyn.composeapp.generated.resources.workshops
 
 @Composable
 fun ParticipantDetailsScreenContent(
@@ -68,6 +71,17 @@ fun ParticipantDetailsScreenContent(
                 imageVector = Icons.Outlined.AlternateEmail,
                 text = participant.email,
             )
+
+            ParticipantInfo(
+                imageVector = Icons.AutoMirrored.Filled.FollowTheSigns,
+                text = stringResource(participant.type.stringRes),
+            )
+
+            if (participant.workshop.isNotBlank())
+                ParticipantInfo(
+                    imageVector = Icons.Default.Construction,
+                    text = stringResource(Res.string.workshops) + ": " + participant.workshop,
+                )
 
             ParticipantInfo(
                 imageVector = Icons.Outlined.TaskAlt,

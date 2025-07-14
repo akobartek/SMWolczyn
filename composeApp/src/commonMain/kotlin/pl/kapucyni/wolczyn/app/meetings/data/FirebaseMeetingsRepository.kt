@@ -10,6 +10,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SIGNINGS_MANAGER
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
@@ -121,7 +122,7 @@ class FirebaseMeetingsRepository(
             }
             .map { list ->
                 when (userType) {
-                    ADMIN -> list
+                    ADMIN, SIGNINGS_MANAGER -> list
                     SCOUTS_MANAGER -> list.filter { it.type == SCOUT }
                     ANIMATORS_MANAGER -> list.filter { it.type == ANIMATOR }
                     else -> emptyList()
