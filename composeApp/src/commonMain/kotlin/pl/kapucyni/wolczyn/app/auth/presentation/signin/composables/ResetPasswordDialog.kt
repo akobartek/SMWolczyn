@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,11 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_clear_field
 import smwolczyn.composeapp.generated.resources.email
+import smwolczyn.composeapp.generated.resources.ic_close
+import smwolczyn.composeapp.generated.resources.ic_lock
 import smwolczyn.composeapp.generated.resources.reset_password_dialog_message
 import smwolczyn.composeapp.generated.resources.reset_password_dialog_title
 import smwolczyn.composeapp.generated.resources.reset_password_error
@@ -44,7 +44,7 @@ fun ResetPasswordDialog(
     AlertDialog(
         icon = {
             Icon(
-                imageVector = Icons.Default.Lock,
+                imageVector = vectorResource(Res.drawable.ic_lock),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
             )
@@ -65,7 +65,7 @@ fun ResetPasswordDialog(
                         if (email.isNotBlank())
                             IconButton(onClick = { email = "" }) {
                                 Icon(
-                                    imageVector = Icons.Filled.Close,
+                                    imageVector = vectorResource(Res.drawable.ic_close),
                                     contentDescription = stringResource(Res.string.cd_clear_field),
                                 )
                             }

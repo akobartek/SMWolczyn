@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.EmailErrorType
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.NoInternetAction
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.PasswordErrorType
@@ -52,6 +50,8 @@ import smwolczyn.composeapp.generated.resources.cd_clear_field
 import smwolczyn.composeapp.generated.resources.email_error_invalid
 import smwolczyn.composeapp.generated.resources.email_error_no_user
 import smwolczyn.composeapp.generated.resources.forgot_password
+import smwolczyn.composeapp.generated.resources.ic_close
+import smwolczyn.composeapp.generated.resources.ic_error
 import smwolczyn.composeapp.generated.resources.password_error_empty
 import smwolczyn.composeapp.generated.resources.password_error_invalid
 import smwolczyn.composeapp.generated.resources.password_error_unknown
@@ -139,7 +139,7 @@ private fun SignInScreenContent(
                         if (state.email.isNotBlank())
                             IconButton(onClick = { updateEmail("") }) {
                                 Icon(
-                                    imageVector = Icons.Filled.Close,
+                                    imageVector = vectorResource(Res.drawable.ic_close),
                                     contentDescription = stringResource(Res.string.cd_clear_field)
                                 )
                             }
@@ -222,7 +222,7 @@ private fun SignInScreenContent(
 
             WolczynAlertDialog(
                 isVisible = state.emailUnverifiedDialogVisible,
-                imageVector = Icons.Outlined.ErrorOutline,
+                imageVector = vectorResource(Res.drawable.ic_error),
                 dialogTitleId = Res.string.verify_email_dialog_title,
                 dialogTextId = Res.string.verify_email_dialog_message,
                 confirmBtnTextId = Res.string.verify_email_send_again,

@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -26,6 +25,7 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.button_finish
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.finish_quiz
+import smwolczyn.composeapp.generated.resources.ic_checklist
 import smwolczyn.composeapp.generated.resources.quiz_finish_message
 import smwolczyn.composeapp.generated.resources.quiz_finish_title
 
@@ -44,7 +44,7 @@ fun QuizQuestionsList(
     ) {
         questions.forEach { question ->
             item {
-                QuizTitle(text = question.question,)
+                QuizTitle(text = question.question)
             }
             items(items = question.answers, key = { it.answer }) { answer ->
                 AnswerCard(
@@ -72,7 +72,7 @@ fun QuizQuestionsList(
 
     WolczynAlertDialog(
         isVisible = isFinishQuizDialogVisible,
-        imageVector = Icons.Default.Checklist,
+        imageVector = vectorResource(Res.drawable.ic_checklist),
         dialogTitleId = Res.string.quiz_finish_title,
         dialogTextId = Res.string.quiz_finish_message,
         confirmBtnTextId = Res.string.button_finish,

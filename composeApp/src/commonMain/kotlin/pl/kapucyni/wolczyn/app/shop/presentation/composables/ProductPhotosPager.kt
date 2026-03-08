@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ChevronLeft
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,15 +18,19 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
+import pl.kapucyni.wolczyn.app.common.presentation.navigateUpIcon
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_navigate_up
+import smwolczyn.composeapp.generated.resources.ic_chevron_left
 import smwolczyn.composeapp.generated.resources.wolczyn_logo
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -62,7 +62,7 @@ fun ProductPhotosPager(
         }
         IconButton(onClick = onBackPressed, modifier = Modifier.padding(top = 20.dp)) {
             Icon(
-                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                imageVector = vectorResource(navigateUpIcon),
                 tint = wolczynColors.primary,
                 contentDescription = stringResource(Res.string.cd_navigate_up),
                 modifier = Modifier
@@ -74,7 +74,7 @@ fun ProductPhotosPager(
             )
         }
         Icon(
-            imageVector = Icons.Default.ChevronLeft,
+            imageVector = vectorResource(Res.drawable.ic_chevron_left),
             tint = Color.Black,
             contentDescription = null,
             modifier = Modifier
@@ -85,7 +85,7 @@ fun ProductPhotosPager(
 
         )
         Icon(
-            imageVector = Icons.Default.ChevronRight,
+            imageVector = vectorResource(Res.drawable.ic_chevron_left),
             tint = Color.Black,
             contentDescription = null,
             modifier = Modifier
@@ -93,6 +93,7 @@ fun ProductPhotosPager(
                 .clickable {
                     scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
                 }
+                .graphicsLayer(rotationZ = 180f)
         )
     }
 }

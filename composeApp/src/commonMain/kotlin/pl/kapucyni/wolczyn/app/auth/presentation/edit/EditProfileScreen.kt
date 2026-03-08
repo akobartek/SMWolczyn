@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -24,6 +22,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.BirthdayTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CityTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FirstNameTextField
@@ -41,6 +40,7 @@ import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_save_profile
 import smwolczyn.composeapp.generated.resources.edit_profile_title
+import smwolczyn.composeapp.generated.resources.ic_save
 
 @Composable
 fun EditProfileScreen(
@@ -72,7 +72,7 @@ private fun EditProfileScreenContent(
         actionIcon = {
             IconButton(onClick = { handleAction(SaveData) }) {
                 Icon(
-                    imageVector = Icons.Filled.Save,
+                    imageVector = vectorResource(Res.drawable.ic_save),
                     tint = wolczynColors.primary,
                     contentDescription = stringResource(Res.string.cd_save_profile),
                 )

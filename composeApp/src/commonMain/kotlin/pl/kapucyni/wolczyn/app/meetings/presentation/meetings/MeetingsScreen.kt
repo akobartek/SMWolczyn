@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.NoteAdd
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -14,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
@@ -27,6 +26,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.composables.Meetin
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.empty_meetings_list
+import smwolczyn.composeapp.generated.resources.ic_add_note
 import smwolczyn.composeapp.generated.resources.ic_cap_archive
 import smwolczyn.composeapp.generated.resources.meetings
 import smwolczyn.composeapp.generated.resources.signings_title
@@ -52,7 +52,7 @@ fun MeetingsScreen(
             {
                 IconButton(onClick = { navigate(Screen.Signings()) }) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.NoteAdd,
+                        imageVector = vectorResource(Res.drawable.ic_add_note),
                         tint = wolczynColors.primary,
                         contentDescription = stringResource(Res.string.signings_title),
                     )

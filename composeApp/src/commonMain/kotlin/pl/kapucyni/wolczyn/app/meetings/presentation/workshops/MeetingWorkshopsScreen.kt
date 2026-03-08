@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -19,6 +17,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
@@ -29,6 +28,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsS
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.composables.WorkshopCard
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.composables.WorkshopNewTextField
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_add
 import smwolczyn.composeapp.generated.resources.workshops_title
 
 @Composable
@@ -53,7 +53,7 @@ fun MeetingWorkshopsScreen(
                     viewModel.handleAction(UpdateIsAdding(isAdding.not()))
                 }) {
                     Icon(
-                        imageVector = Icons.Default.Add,
+                        imageVector = vectorResource(Res.drawable.ic_add),
                         contentDescription = null,
                         modifier = Modifier.graphicsLayer {
                             rotationZ = animatedRotation

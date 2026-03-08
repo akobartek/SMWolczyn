@@ -1,8 +1,6 @@
 package pl.kapucyni.wolczyn.app.core.presentation.composables
 
 import SMWolczyn.composeApp.BuildConfig
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalUriHandler
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.common.presentation.LifecycleManager
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
@@ -21,6 +20,7 @@ import smwolczyn.composeapp.generated.resources.close
 import smwolczyn.composeapp.generated.resources.force_update_dialog_btn
 import smwolczyn.composeapp.generated.resources.force_update_dialog_message
 import smwolczyn.composeapp.generated.resources.force_update_dialog_title
+import smwolczyn.composeapp.generated.resources.ic_release_alert
 
 @Composable
 fun ForceUpdateDialog(
@@ -54,7 +54,7 @@ fun ForceUpdateDialog(
 
     WolczynAlertDialog(
         isVisible = forceUpdateDialogVisible,
-        imageVector = Icons.Default.NewReleases,
+        imageVector = vectorResource(Res.drawable.ic_release_alert),
         dialogTitleId = Res.string.force_update_dialog_title,
         dialogTextId = Res.string.force_update_dialog_message,
         confirmBtnTextId = Res.string.force_update_dialog_btn,

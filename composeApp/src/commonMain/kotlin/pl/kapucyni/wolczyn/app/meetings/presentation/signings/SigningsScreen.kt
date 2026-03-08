@@ -10,14 +10,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
-import androidx.compose.material.icons.automirrored.filled.HelpOutline
-import androidx.compose.material.icons.filled.Construction
-import androidx.compose.material.icons.filled.QrCode2
-import androidx.compose.material.icons.outlined.Celebration
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.BirthdayTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
@@ -84,6 +77,13 @@ import smwolczyn.composeapp.generated.resources.cd_save_signing
 import smwolczyn.composeapp.generated.resources.cd_scan_signing
 import smwolczyn.composeapp.generated.resources.close
 import smwolczyn.composeapp.generated.resources.email_error_invalid
+import smwolczyn.composeapp.generated.resources.ic_celebration
+import smwolczyn.composeapp.generated.resources.ic_construction
+import smwolczyn.composeapp.generated.resources.ic_delete
+import smwolczyn.composeapp.generated.resources.ic_error
+import smwolczyn.composeapp.generated.resources.ic_follow_the_signs
+import smwolczyn.composeapp.generated.resources.ic_help
+import smwolczyn.composeapp.generated.resources.ic_qr_code
 import smwolczyn.composeapp.generated.resources.meeting_signing_essentials
 import smwolczyn.composeapp.generated.resources.meeting_signing_remove
 import smwolczyn.composeapp.generated.resources.meeting_signing_remove_dialog_btn
@@ -128,14 +128,14 @@ fun SigningsScreen(
                 if (success.data.isSigningByAdmin.not() && success.data.isEditing)
                     IconButton(onClick = { qrCodeEmail = success.data.email }) {
                         Icon(
-                            imageVector = Icons.Default.QrCode2,
+                            imageVector = vectorResource(Res.drawable.ic_qr_code),
                             tint = wolczynColors.primary,
                             contentDescription = stringResource(Res.string.cd_scan_signing),
                         )
                     }
                 IconButton(onClick = { uriHandler.openUri(ESSENTIALS_LINK) }) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.HelpOutline,
+                        imageVector = vectorResource(Res.drawable.ic_help),
                         tint = wolczynColors.primary,
                         contentDescription = stringResource(Res.string.cd_save_signing),
                     )
@@ -271,7 +271,7 @@ private fun SigningsScreenContent(
                 label = Res.string.participant_type,
                 items = state.availableTypes.map { it to stringResource(it.stringRes) },
                 onItemSelected = { handleAction(UpdateType(it)) },
-                leadingIcon = Icons.AutoMirrored.Filled.FollowTheSigns,
+                leadingIcon =  vectorResource(Res.drawable.ic_follow_the_signs),
                 error = if (state.typeError) Res.string.participant_type_error else null,
                 modifier = Modifier.focusRequester(typeRef),
             )
@@ -286,7 +286,7 @@ private fun SigningsScreenContent(
                 label = Res.string.workshops,
                 items = workshops.map { it to it },
                 onItemSelected = { handleAction(UpdateWorkshop(it)) },
-                leadingIcon = Icons.Default.Construction,
+                leadingIcon = vectorResource(Res.drawable.ic_construction),
                 error = if (state.workshopError) Res.string.workshops_error else null,
             )
         }
@@ -350,7 +350,7 @@ private fun SigningsScreenContent(
 
     WolczynAlertDialog(
         isVisible = state.successDialogVisible,
-        imageVector = Icons.Outlined.Celebration,
+        imageVector = vectorResource(Res.drawable.ic_celebration),
         dialogTitleId = Res.string.meeting_signing_success_dialog_title,
         dialogTextId = Res.string.meeting_signing_success_dialog_message,
         confirmBtnTextId = Res.string.meeting_signing_essentials,
@@ -369,7 +369,7 @@ private fun SigningsScreenContent(
 
     WolczynAlertDialog(
         isVisible = removeSigningDialogVisible,
-        imageVector = Icons.Outlined.Delete,
+        imageVector = vectorResource(Res.drawable.ic_delete),
         dialogTitleId = Res.string.meeting_signing_remove_dialog_title,
         dialogTextId = Res.string.meeting_signing_remove_dialog_message,
         confirmBtnTextId = Res.string.meeting_signing_remove_dialog_btn,
@@ -381,7 +381,7 @@ private fun SigningsScreenContent(
 
     WolczynAlertDialog(
         isVisible = state.tooYoungDialogVisible,
-        imageVector = Icons.Outlined.Error,
+        imageVector = vectorResource(Res.drawable.ic_error),
         dialogTitleId = Res.string.meeting_signing_too_young_dialog_title,
         dialogTextId = Res.string.meeting_signing_too_young_dialog_message,
         confirmBtnTextId = Res.string.close,

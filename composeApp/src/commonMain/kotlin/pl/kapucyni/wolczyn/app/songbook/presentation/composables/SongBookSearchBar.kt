@@ -12,10 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,9 +31,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.common.presentation.navigateUpIcon
 import pl.kapucyni.wolczyn.app.theme.poppinsFontFamily
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_close
+import smwolczyn.composeapp.generated.resources.ic_search
 import smwolczyn.composeapp.generated.resources.search
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +89,7 @@ fun SongBookSearchBar(
                             onBackPressed()
                         }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                imageVector = vectorResource(navigateUpIcon),
                                 contentDescription = null,
                             )
                         }
@@ -98,7 +98,7 @@ fun SongBookSearchBar(
                         if (query.isNotEmpty())
                             IconButton(onClick = { onQueryChanged("") }) {
                                 Icon(
-                                    imageVector = Icons.Default.Close,
+                                    imageVector = vectorResource(Res.drawable.ic_close),
                                     contentDescription = null
                                 )
                             }
@@ -108,7 +108,7 @@ fun SongBookSearchBar(
                                 focusRequester.requestFocus()
                             }) {
                                 Icon(
-                                    imageVector = Icons.Default.Search,
+                                    imageVector = vectorResource(Res.drawable.ic_search),
                                     contentDescription = null,
                                 )
                             }

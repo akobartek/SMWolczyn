@@ -6,14 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
-import androidx.compose.material.icons.filled.Construction
-import androidx.compose.material.icons.outlined.AlternateEmail
-import androidx.compose.material.icons.outlined.Cake
-import androidx.compose.material.icons.outlined.Fingerprint
-import androidx.compose.material.icons.outlined.LocationCity
-import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
@@ -37,6 +30,13 @@ import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_cake
+import smwolczyn.composeapp.generated.resources.ic_city
+import smwolczyn.composeapp.generated.resources.ic_construction
+import smwolczyn.composeapp.generated.resources.ic_email_alt
+import smwolczyn.composeapp.generated.resources.ic_fingerprint
+import smwolczyn.composeapp.generated.resources.ic_follow_the_signs
+import smwolczyn.composeapp.generated.resources.ic_task_alt
 import smwolczyn.composeapp.generated.resources.participant_group_body
 import smwolczyn.composeapp.generated.resources.signing_confirm
 import smwolczyn.composeapp.generated.resources.signing_confirm_consent
@@ -59,38 +59,38 @@ fun ParticipantDetailsScreenContent(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Column {
             ParticipantInfo(
-                imageVector = Icons.Outlined.Fingerprint,
+                imageVector = vectorResource(Res.drawable.ic_fingerprint),
                 text = participant.pesel,
             )
 
             ParticipantInfo(
-                imageVector = Icons.Outlined.Cake,
+                imageVector = vectorResource(Res.drawable.ic_cake),
                 text = participant.birthday.getFormattedDate(),
             )
 
             ParticipantInfo(
-                imageVector = Icons.Outlined.LocationCity,
+                imageVector = vectorResource(Res.drawable.ic_city),
                 text = participant.city,
             )
 
             ParticipantInfo(
-                imageVector = Icons.Outlined.AlternateEmail,
+                imageVector = vectorResource(Res.drawable.ic_email_alt),
                 text = participant.email,
             )
 
             ParticipantInfo(
-                imageVector = Icons.AutoMirrored.Filled.FollowTheSigns,
+                imageVector = vectorResource(Res.drawable.ic_follow_the_signs),
                 text = stringResource(participant.type.stringRes),
             )
 
             if (participant.workshop.isNotBlank())
                 ParticipantInfo(
-                    imageVector = Icons.Default.Construction,
+                    imageVector = vectorResource(Res.drawable.ic_construction),
                     text = stringResource(Res.string.workshops) + ": " + participant.workshop,
                 )
 
             ParticipantInfo(
-                imageVector = Icons.Outlined.TaskAlt,
+                imageVector = vectorResource(Res.drawable.ic_task_alt),
                 text = participant.createdAt.getFormattedDate(),
             )
         }

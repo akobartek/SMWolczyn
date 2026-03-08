@@ -8,8 +8,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +21,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
@@ -43,6 +42,7 @@ import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_open_users_management
 import smwolczyn.composeapp.generated.resources.home_title
+import smwolczyn.composeapp.generated.resources.ic_manage_accounts
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -62,7 +62,7 @@ fun HomeScreen(
             {
                 IconButton(onClick = { navigate(Screen.AccountManager) }) {
                     Icon(
-                        imageVector = Icons.Default.ManageAccounts,
+                        imageVector = vectorResource(Res.drawable.ic_manage_accounts),
                         tint = wolczynColors.primary,
                         contentDescription = stringResource(Res.string.cd_open_users_management),
                     )

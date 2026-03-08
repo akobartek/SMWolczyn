@@ -1,10 +1,10 @@
 package pl.kapucyni.wolczyn.app.common.presentation.fab
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 
 data class FloatingButtonData(
-    val icon: ImageVector,
+    val icon: DrawableResource,
     val contentDescription: StringResource,
     val onClick: () -> Unit,
     val enabled: Boolean = true,

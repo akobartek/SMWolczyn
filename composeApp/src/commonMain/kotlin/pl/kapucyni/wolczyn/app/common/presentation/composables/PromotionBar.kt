@@ -3,9 +3,6 @@ package pl.kapucyni.wolczyn.app.common.presentation.composables
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -15,7 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
+import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_close
+import smwolczyn.composeapp.generated.resources.ic_priority_high
 
 @Composable
 fun PromotionBar(
@@ -34,7 +35,7 @@ fun PromotionBar(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = Icons.Default.PriorityHigh,
+                imageVector = vectorResource(Res.drawable.ic_priority_high),
                 contentDescription = null,
                 modifier = Modifier.padding(start = 12.dp)
             )
@@ -48,7 +49,7 @@ fun PromotionBar(
             onRemove?.let {
                 IconButton(onClick = { onRemove(name) }) {
                     Icon(
-                        imageVector = Icons.Default.Close,
+                        imageVector = vectorResource(Res.drawable.ic_close),
                         contentDescription = null
                     )
                 }

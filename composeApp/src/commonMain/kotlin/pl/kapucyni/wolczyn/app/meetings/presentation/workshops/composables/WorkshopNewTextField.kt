@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
@@ -21,8 +19,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_save
 import smwolczyn.composeapp.generated.resources.save
 import smwolczyn.composeapp.generated.resources.workshop_new_name
 
@@ -50,7 +50,7 @@ fun WorkshopNewTextField(
             {
                 IconButton(onClick = saveWorkshop) {
                     Icon(
-                        imageVector = Icons.Default.Save,
+                        imageVector = vectorResource(Res.drawable.ic_save),
                         tint = MaterialTheme.colorScheme.primary,
                         contentDescription = stringResource(Res.string.save),
                     )

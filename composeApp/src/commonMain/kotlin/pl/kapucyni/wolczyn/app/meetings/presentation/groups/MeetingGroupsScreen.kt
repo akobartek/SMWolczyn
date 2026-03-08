@@ -1,9 +1,5 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.groups
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CopyAll
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -25,6 +22,9 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenA
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.copy
+import smwolczyn.composeapp.generated.resources.ic_copy_all
+import smwolczyn.composeapp.generated.resources.ic_save
+import smwolczyn.composeapp.generated.resources.ic_supervised_user_circle
 import smwolczyn.composeapp.generated.resources.meeting_groups
 import smwolczyn.composeapp.generated.resources.save
 import smwolczyn.composeapp.generated.resources.select_animators
@@ -45,7 +45,7 @@ fun MeetingGroupsScreen(
                 {
                     IconButton(onClick = { viewModel.handleAction(ToggleAnimatorsDialog) }) {
                         Icon(
-                            imageVector = Icons.Filled.SupervisedUserCircle,
+                            imageVector = vectorResource(Res.drawable.ic_supervised_user_circle),
                             tint = wolczynColors.primary,
                             contentDescription = stringResource(Res.string.select_animators),
                         )
@@ -58,7 +58,7 @@ fun MeetingGroupsScreen(
                     data.saveAvailable -> {
                         FloatingActionButton(onClick = { viewModel.handleAction(SaveGroups) }) {
                             Icon(
-                                imageVector = Icons.Default.Save,
+                                imageVector = vectorResource(Res.drawable.ic_save),
                                 contentDescription = stringResource(Res.string.save),
                             )
                         }
@@ -69,7 +69,7 @@ fun MeetingGroupsScreen(
                             clipboard.setText(data.savedGroups.getClipboardData())
                         }) {
                             Icon(
-                                imageVector = Icons.Default.CopyAll,
+                                imageVector = vectorResource(Res.drawable.ic_copy_all),
                                 contentDescription = stringResource(Res.string.copy),
                             )
                         }
@@ -79,7 +79,7 @@ fun MeetingGroupsScreen(
             if ((state as? State.Success<MeetingGroupsScreenState>)?.data?.saveAvailable == true) {
                 FloatingActionButton(onClick = { viewModel.handleAction(SaveGroups) }) {
                     Icon(
-                        imageVector = Icons.Default.Save,
+                        imageVector = vectorResource(Res.drawable.ic_save),
                         contentDescription = stringResource(Res.string.save),
                     )
                 }

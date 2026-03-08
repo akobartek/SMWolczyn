@@ -1,8 +1,6 @@
 package pl.kapucyni.wolczyn.app.admin.presentation.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SegmentedButton
@@ -11,10 +9,12 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizState
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_check
 import smwolczyn.composeapp.generated.resources.quiz_state_finished
 import smwolczyn.composeapp.generated.resources.quiz_state_ongoing
 import smwolczyn.composeapp.generated.resources.quiz_state_waiting
@@ -50,7 +50,7 @@ fun QuizStateChangeButton(
                 icon = {
                     if (isSelected)
                         Icon(
-                            imageVector = Icons.Default.Check,
+                            painter = painterResource(Res.drawable.ic_check),
                             contentDescription = null
                         )
                 },

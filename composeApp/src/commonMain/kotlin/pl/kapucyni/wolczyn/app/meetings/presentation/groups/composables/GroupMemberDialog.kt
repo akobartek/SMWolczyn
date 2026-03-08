@@ -2,8 +2,6 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.groups.composables
 
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextView
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -24,6 +23,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.current_group
+import smwolczyn.composeapp.generated.resources.ic_person
 import smwolczyn.composeapp.generated.resources.save
 
 @Composable
@@ -40,7 +40,7 @@ fun GroupMemberDialog(
     AlertDialog(
         icon = {
             Icon(
-                imageVector = Icons.Filled.Person,
+                painter = painterResource(Res.drawable.ic_person),
                 contentDescription = null,
                 modifier = Modifier.size(24.dp)
             )

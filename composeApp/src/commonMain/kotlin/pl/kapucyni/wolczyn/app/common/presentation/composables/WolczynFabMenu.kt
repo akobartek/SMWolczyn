@@ -9,9 +9,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,9 +21,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.fab.FloatingButtonData
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_more_options
+import smwolczyn.composeapp.generated.resources.ic_close
+import smwolczyn.composeapp.generated.resources.ic_settings
 
 @Composable
 fun WolczynFabMenu(
@@ -78,9 +78,9 @@ fun WolczynFabMenu(
 @Composable
 private fun MainFabIcon(listVisible: Boolean) {
     Icon(
-        imageVector =
-            if (listVisible) Icons.Default.Close
-            else Icons.Default.Settings,
+        imageVector = vectorResource(
+            if (listVisible) Res.drawable.ic_close else Res.drawable.ic_settings,
+        ),
         contentDescription = stringResource(Res.string.cd_more_options),
     )
 }

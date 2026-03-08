@@ -3,8 +3,6 @@ package pl.kapucyni.wolczyn.app.admin.presentation.composables
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -14,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_save_promotion
+import smwolczyn.composeapp.generated.resources.ic_save
 import smwolczyn.composeapp.generated.resources.new_promo_name
 
 @Composable
@@ -34,7 +34,7 @@ fun CreatePromotionItem(
             if (newPromotionName.isNotBlank())
                 IconButton(onClick = onSave) {
                     Icon(
-                        imageVector = Icons.Filled.Save,
+                        imageVector = vectorResource(Res.drawable.ic_save),
                         contentDescription = stringResource(Res.string.cd_save_promotion)
                     )
                 }

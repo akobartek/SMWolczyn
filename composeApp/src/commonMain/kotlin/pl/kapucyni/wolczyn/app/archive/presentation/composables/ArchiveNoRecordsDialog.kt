@@ -1,10 +1,10 @@
 package pl.kapucyni.wolczyn.app.archive.presentation.composables
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.VideocamOff
 import androidx.compose.runtime.Composable
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_videocam_off
 import smwolczyn.composeapp.generated.resources.no_records_dialog_message
 import smwolczyn.composeapp.generated.resources.no_records_dialog_title
 import smwolczyn.composeapp.generated.resources.ok
@@ -16,7 +16,7 @@ fun ArchiveNoRecordsDialog(
 ) {
     WolczynAlertDialog(
         isVisible = isVisible,
-        imageVector = Icons.Default.VideocamOff,
+        imageVector = vectorResource(Res.drawable.ic_videocam_off),
         dialogTitleId = Res.string.no_records_dialog_title,
         dialogTextId = Res.string.no_records_dialog_message,
         confirmBtnTextId = Res.string.ok,

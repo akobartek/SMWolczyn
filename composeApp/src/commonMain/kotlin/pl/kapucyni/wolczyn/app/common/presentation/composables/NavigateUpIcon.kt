@@ -4,6 +4,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.navigateUpIcon
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
@@ -17,7 +18,7 @@ fun NavigateUpIcon(
 ) {
     IconButton(onClick = navigateUp, modifier = modifier) {
         Icon(
-            imageVector = navigateUpIcon,
+            painter = painterResource(navigateUpIcon),
             tint = wolczynColors.primary,
             contentDescription = stringResource(Res.string.cd_navigate_up)
         )

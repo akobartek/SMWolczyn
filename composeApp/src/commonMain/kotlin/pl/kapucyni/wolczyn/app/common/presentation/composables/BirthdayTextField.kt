@@ -2,9 +2,6 @@ package pl.kapucyni.wolczyn.app.common.presentation.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Event
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
@@ -17,9 +14,12 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.birthday_error
+import smwolczyn.composeapp.generated.resources.ic_arrow_drop_down
+import smwolczyn.composeapp.generated.resources.ic_event
 import smwolczyn.composeapp.generated.resources.user_birthday
 
 @Composable
@@ -40,13 +40,13 @@ fun BirthdayTextField(
             label = { WolczynText(text = stringResource(Res.string.user_birthday)) },
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Default.Event,
+                    imageVector = vectorResource(Res.drawable.ic_event),
                     contentDescription = null,
                 )
             },
             trailingIcon = {
                 Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
+                    imageVector = vectorResource(Res.drawable.ic_arrow_drop_down),
                     contentDescription = null,
                 )
             },

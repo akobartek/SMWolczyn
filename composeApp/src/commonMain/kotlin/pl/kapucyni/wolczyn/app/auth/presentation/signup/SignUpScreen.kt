@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ManageAccounts
-import androidx.compose.material.icons.outlined.PersonSearch
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +23,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.SignUp
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.ToggleAccountExistsDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.ToggleNoInternetDialog
@@ -56,6 +54,8 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.create_account
 import smwolczyn.composeapp.generated.resources.email_error_invalid
+import smwolczyn.composeapp.generated.resources.ic_manage_accounts
+import smwolczyn.composeapp.generated.resources.ic_person_search
 import smwolczyn.composeapp.generated.resources.ok
 import smwolczyn.composeapp.generated.resources.password_error_too_short
 import smwolczyn.composeapp.generated.resources.password_error_wrong
@@ -225,7 +225,7 @@ private fun SignUpScreenContent(
 
     WolczynAlertDialog(
         isVisible = state.isSignedUpDialogVisible,
-        imageVector = Icons.Outlined.ManageAccounts,
+        imageVector = vectorResource(Res.drawable.ic_manage_accounts),
         dialogTitleId = Res.string.sign_up_successful_dialog_title,
         dialogTextId = Res.string.sign_up_successful_dialog_message,
         confirmBtnTextId = Res.string.ok,
@@ -238,7 +238,7 @@ private fun SignUpScreenContent(
 
     WolczynAlertDialog(
         isVisible = state.accountExistsDialogVisible,
-        imageVector = Icons.Outlined.PersonSearch,
+        imageVector = vectorResource(Res.drawable.ic_person_search),
         dialogTitleId = Res.string.sign_up_user_exists_dialog_title,
         dialogTextId = Res.string.sign_up_user_exists_dialog_message,
         confirmBtnTextId = Res.string.sign_in,

@@ -4,9 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySaveViewModel.State
@@ -29,6 +27,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
+import smwolczyn.composeapp.generated.resources.ic_error
+import smwolczyn.composeapp.generated.resources.ic_save
 import smwolczyn.composeapp.generated.resources.ok
 import smwolczyn.composeapp.generated.resources.save
 import smwolczyn.composeapp.generated.resources.save_breviary_dialog_msg
@@ -80,7 +80,7 @@ fun BreviarySaveScreen(
 
     WolczynAlertDialog(
         isVisible = exitDialogVisible,
-        imageVector = Icons.Default.ErrorOutline,
+        imageVector = vectorResource(Res.drawable.ic_error),
         dialogTitleId = Res.string.stop_action_title,
         dialogTextId = Res.string.stop_download_dialog_msg,
         dismissible = false,
@@ -123,7 +123,7 @@ fun BreviarySaveScreenContent(
 
             is State.Init -> WolczynAlertDialog(
                 isVisible = true,
-                imageVector = Icons.Default.Save,
+                imageVector = vectorResource(Res.drawable.ic_save),
                 dialogTitleId = Res.string.saving_breviary,
                 dialogTextId = Res.string.save_breviary_dialog_msg,
                 dismissible = false,
@@ -153,7 +153,7 @@ fun BreviarySaveScreenContent(
 
         WolczynAlertDialog(
             isVisible = saveCompleteDialogVisible,
-            imageVector = Icons.Default.Save,
+            imageVector = vectorResource(Res.drawable.ic_save),
             dialogTitleId = Res.string.saving_breviary,
             dialogTextId = Res.string.save_finished_dialog_msg,
             confirmBtnTextId = Res.string.ok,

@@ -1,12 +1,10 @@
 package pl.kapucyni.wolczyn.app.common.presentation.composables
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -18,11 +16,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
+import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_arrow_drop_down
 
 @Composable
 fun <T> SelectableTextView(
@@ -36,6 +38,7 @@ fun <T> SelectableTextView(
 ) {
     val focusManager = LocalFocusManager.current
     var dropDownVisible by rememberSaveable { mutableStateOf(false) }
+    val angle by animateFloatAsState(targetValue = if (dropDownVisible) 180f else 0f)
 
     BoxWithConstraints(
         modifier = Modifier
@@ -56,10 +59,11 @@ fun <T> SelectableTextView(
             },
             trailingIcon = {
                 Icon(
-                    imageVector =
-                        if (dropDownVisible) Icons.Default.ArrowDropUp
-                        else Icons.Default.ArrowDropDown,
+                    imageVector = vectorResource(Res.drawable.ic_arrow_drop_down),
                     contentDescription = null,
+                    modifier = Modifier.graphicsLayer {
+                        rotationZ = angle
+                    },
                 )
             },
             readOnly = true,

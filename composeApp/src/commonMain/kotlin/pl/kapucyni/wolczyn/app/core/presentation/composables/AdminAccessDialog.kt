@@ -4,8 +4,6 @@ import SMWolczyn.composeApp.BuildConfig
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,12 +22,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynLogo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.admin_password_error
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_clear_field
+import smwolczyn.composeapp.generated.resources.ic_close
 import smwolczyn.composeapp.generated.resources.password
 import smwolczyn.composeapp.generated.resources.restricted_access
 import smwolczyn.composeapp.generated.resources.sign_in
@@ -72,7 +72,7 @@ fun AdminAccessDialog(
                         if (password.isNotBlank())
                             IconButton(onClick = { password = "" }) {
                                 Icon(
-                                    imageVector = Icons.Filled.Close,
+                                    imageVector = vectorResource(Res.drawable.ic_close),
                                     contentDescription = stringResource(Res.string.cd_clear_field)
                                 )
                             }

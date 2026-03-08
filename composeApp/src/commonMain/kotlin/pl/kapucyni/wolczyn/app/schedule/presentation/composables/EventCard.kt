@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Construction
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -39,6 +37,7 @@ import pl.kapucyni.wolczyn.app.schedule.domain.model.EventPlace
 import pl.kapucyni.wolczyn.app.schedule.domain.model.EventType
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_construction
 import smwolczyn.composeapp.generated.resources.ic_schedule_breviary
 import smwolczyn.composeapp.generated.resources.ic_schedule_kitchen
 import smwolczyn.composeapp.generated.resources.ic_schedule_map_pin
@@ -174,13 +173,13 @@ fun EventCard(
                     EventType.GUEST_TALK,
                     EventType.OTHER -> null
 
-                    EventType.WORKSHOPS -> Icons.Rounded.Construction
-                    EventType.MASS -> vectorResource(Res.drawable.ic_schedule_song_book)
-                    EventType.MF_TAU, EventType.MEAL -> vectorResource(Res.drawable.ic_schedule_kitchen)
-                    EventType.BREVIARY -> vectorResource(Res.drawable.ic_schedule_breviary)
+                    EventType.WORKSHOPS -> Res.drawable.ic_construction
+                    EventType.MASS -> Res.drawable.ic_schedule_song_book
+                    EventType.MF_TAU, EventType.MEAL -> Res.drawable.ic_schedule_kitchen
+                    EventType.BREVIARY -> Res.drawable.ic_schedule_breviary
                 }?.let { imageVector ->
                     Icon(
-                        imageVector = imageVector,
+                        imageVector = vectorResource(imageVector),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(34.dp)

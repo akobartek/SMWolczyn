@@ -7,10 +7,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
-import androidx.compose.material.icons.automirrored.filled.Sort
-import androidx.compose.material.icons.filled.Construction
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -22,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.SearchTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextView
@@ -39,6 +36,9 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.filter_confirmed
 import smwolczyn.composeapp.generated.resources.filter_empty
+import smwolczyn.composeapp.generated.resources.ic_construction
+import smwolczyn.composeapp.generated.resources.ic_follow_the_signs
+import smwolczyn.composeapp.generated.resources.ic_sort
 import smwolczyn.composeapp.generated.resources.participant_type_title
 import smwolczyn.composeapp.generated.resources.sorting_label
 import smwolczyn.composeapp.generated.resources.workshops
@@ -68,7 +68,7 @@ fun ParticipantsFilteringBottomSheet(
                         it to stringResource(it.stringRes)
                     },
                     onItemSelected = { handleAction(UpdateSorting(it)) },
-                    leadingIcon = Icons.AutoMirrored.Filled.Sort,
+                    leadingIcon =  vectorResource(Res.drawable.ic_sort),
                 )
             }
 
@@ -89,7 +89,7 @@ fun ParticipantsFilteringBottomSheet(
             FilterSection {
                 FilterList(
                     title = Res.string.participant_type_title,
-                    imageVector = Icons.AutoMirrored.Filled.FollowTheSigns,
+                    imageVector = vectorResource(Res.drawable.ic_follow_the_signs),
                     allElements = state.participantTypes.map {
                         it to stringResource(it.stringRes)
                     },
@@ -102,7 +102,7 @@ fun ParticipantsFilteringBottomSheet(
                 FilterSection {
                     FilterList(
                         title = Res.string.workshops,
-                        imageVector = Icons.Default.Construction,
+                        imageVector = vectorResource(Res.drawable.ic_construction),
                         allElements = state.workshops.map {
                             it to (it.takeIf { it.isNotBlank() }
                                 ?: stringResource(Res.string.filter_empty))

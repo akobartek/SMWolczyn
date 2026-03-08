@@ -3,8 +3,6 @@ package pl.kapucyni.wolczyn.app.common.presentation.composables
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -13,8 +11,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.vectorResource
+import pl.kapucyni.wolczyn.app.common.presentation.navigateUpIcon
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
@@ -43,8 +44,9 @@ fun NotificationBar(
             onClick?.let {
                 IconButton(onClick = onClick) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Default.ArrowForward,
-                        contentDescription = null
+                        imageVector = vectorResource(navigateUpIcon),
+                        contentDescription = null,
+                        modifier = Modifier.graphicsLayer(rotationZ = 180f)
                     )
                 }
             }

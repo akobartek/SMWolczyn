@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.BreviarySelectOptionsMenu
@@ -36,6 +35,7 @@ import smwolczyn.composeapp.generated.resources.breviary_copyright
 import smwolczyn.composeapp.generated.resources.breviary_list
 import smwolczyn.composeapp.generated.resources.breviary_title
 import smwolczyn.composeapp.generated.resources.cd_more_options
+import smwolczyn.composeapp.generated.resources.ic_more
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -55,7 +55,7 @@ fun BreviarySelectScreen(
         actionIcon = {
             IconButton(onClick = { dropDownMenuExpanded = true }) {
                 Icon(
-                    imageVector = Icons.Filled.MoreVert,
+                    imageVector = vectorResource(Res.drawable.ic_more),
                     tint = wolczynColors.primary,
                     contentDescription = stringResource(Res.string.cd_more_options)
                 )

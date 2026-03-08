@@ -5,6 +5,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.fab.FloatingButtonData
 
 @Composable
@@ -14,14 +15,14 @@ fun WolczynFloatingActionButton(data: FloatingButtonData) {
     if (data.isSmall) {
         SmallFloatingActionButton(onClick = data.onClick) {
             Icon(
-                imageVector = data.icon,
+                imageVector = vectorResource(data.icon),
                 contentDescription = stringResource(data.contentDescription),
             )
         }
     } else {
         FloatingActionButton(onClick = data.onClick) {
             Icon(
-                imageVector = data.icon,
+                imageVector = vectorResource(data.icon),
                 contentDescription = stringResource(data.contentDescription),
             )
         }

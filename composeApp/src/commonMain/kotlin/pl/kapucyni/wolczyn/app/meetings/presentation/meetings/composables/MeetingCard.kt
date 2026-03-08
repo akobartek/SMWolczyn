@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Construction
-import androidx.compose.material.icons.outlined.Hub
-import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,10 +18,14 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import kotlinx.datetime.Clock
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_construction
+import smwolczyn.composeapp.generated.resources.ic_hub
+import smwolczyn.composeapp.generated.resources.ic_people
 import smwolczyn.composeapp.generated.resources.meeting_groups
 import smwolczyn.composeapp.generated.resources.meeting_name
 import smwolczyn.composeapp.generated.resources.meeting_participants
@@ -67,7 +67,7 @@ fun MeetingCard(
                 if (userType == UserType.ADMIN)
                     IconButton(onClick = { openWorkshopsScreen(meeting.id) }) {
                         Icon(
-                            imageVector = Icons.Outlined.Construction,
+                            imageVector = vectorResource(Res.drawable.ic_construction),
                             contentDescription = stringResource(Res.string.workshops),
                         )
                     }
@@ -77,13 +77,13 @@ fun MeetingCard(
                 )
                     IconButton(onClick = { openGroupsScreen(meeting.id) }) {
                         Icon(
-                            imageVector = Icons.Outlined.Hub,
+                            imageVector = vectorResource(Res.drawable.ic_hub),
                             contentDescription = stringResource(Res.string.meeting_groups),
                         )
                     }
                 IconButton(onClick = { openParticipantsScreen(meeting.id) }) {
                     Icon(
-                        imageVector = Icons.Outlined.People,
+                        imageVector = vectorResource(Res.drawable.ic_people),
                         contentDescription = stringResource(Res.string.meeting_participants),
                     )
                 }

@@ -5,11 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.FilterAlt
-import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -26,6 +21,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.koinInject
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
@@ -53,7 +49,11 @@ import smwolczyn.composeapp.generated.resources.cd_qr_scanner
 import smwolczyn.composeapp.generated.resources.cd_send_email
 import smwolczyn.composeapp.generated.resources.empty_participants_list
 import smwolczyn.composeapp.generated.resources.filter_participants
+import smwolczyn.composeapp.generated.resources.ic_add
 import smwolczyn.composeapp.generated.resources.ic_cap_archive
+import smwolczyn.composeapp.generated.resources.ic_email
+import smwolczyn.composeapp.generated.resources.ic_filter
+import smwolczyn.composeapp.generated.resources.ic_qr_scanner
 import smwolczyn.composeapp.generated.resources.meeting_animators
 import smwolczyn.composeapp.generated.resources.meeting_participants
 import smwolczyn.composeapp.generated.resources.meeting_scouts
@@ -126,7 +126,7 @@ fun ParticipantsScreen(
                         }
                     }) {
                         Icon(
-                            imageVector = Icons.Filled.QrCodeScanner,
+                            imageVector = vectorResource(Res.drawable.ic_qr_scanner),
                             tint = wolczynColors.primary,
                             contentDescription = stringResource(Res.string.cd_qr_scanner),
                         )
@@ -139,7 +139,7 @@ fun ParticipantsScreen(
                 visible = fabVisible,
                 items = listOf(
                     FloatingButtonData(
-                        icon = Icons.Default.Email,
+                        icon = Res.drawable.ic_email,
                         contentDescription = Res.string.cd_send_email,
                         onClick = {
                             successData?.joinToString(",") { it.email }
@@ -152,14 +152,14 @@ fun ParticipantsScreen(
                         enabled = (successData?.isNotEmpty() == true),
                     ),
                     FloatingButtonData(
-                        icon = Icons.Default.FilterAlt,
+                        icon = Res.drawable.ic_filter,
                         contentDescription = Res.string.filter_participants,
                         onClick = { filterSheetVisible = true },
                         isSmall = true,
                         enabled = userType.canManageParticipants(),
                     ),
                     FloatingButtonData(
-                        icon = Icons.Default.Add,
+                        icon = Res.drawable.ic_add,
                         contentDescription = Res.string.add_participant,
                         onClick = { navigate(Screen.Signings(isAdmin = true)) },
                         isSmall = true,

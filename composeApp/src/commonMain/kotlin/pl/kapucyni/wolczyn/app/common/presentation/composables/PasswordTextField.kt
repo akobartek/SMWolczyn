@@ -4,9 +4,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -22,8 +19,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.hide_password
+import smwolczyn.composeapp.generated.resources.ic_visibility
+import smwolczyn.composeapp.generated.resources.ic_visibility_off
 import smwolczyn.composeapp.generated.resources.password
 import smwolczyn.composeapp.generated.resources.show_password
 
@@ -55,12 +55,12 @@ fun PasswordTextField(
             IconButton(onClick = { passwordHidden = !passwordHidden }) {
                 if (passwordHidden)
                     Icon(
-                        imageVector = Icons.Filled.Visibility,
+                        imageVector = vectorResource(Res.drawable.ic_visibility),
                         contentDescription = stringResource(Res.string.show_password)
                     )
                 else
                     Icon(
-                        imageVector = Icons.Filled.VisibilityOff,
+                        imageVector = vectorResource(Res.drawable.ic_visibility_off),
                         contentDescription = stringResource(Res.string.hide_password)
                     )
             }

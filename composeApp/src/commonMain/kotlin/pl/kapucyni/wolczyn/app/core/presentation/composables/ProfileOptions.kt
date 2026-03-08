@@ -7,11 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.LockReset
-import androidx.compose.material.icons.outlined.ManageAccounts
-import androidx.compose.material.icons.outlined.NoAccounts
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -28,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.DeleteAccount
@@ -43,6 +39,10 @@ import smwolczyn.composeapp.generated.resources.delete_account
 import smwolczyn.composeapp.generated.resources.delete_account_dialog_msg
 import smwolczyn.composeapp.generated.resources.delete_account_dialog_title
 import smwolczyn.composeapp.generated.resources.edit_profile_title
+import smwolczyn.composeapp.generated.resources.ic_lock_reset
+import smwolczyn.composeapp.generated.resources.ic_logout
+import smwolczyn.composeapp.generated.resources.ic_manage_accounts
+import smwolczyn.composeapp.generated.resources.ic_no_accounts
 import smwolczyn.composeapp.generated.resources.message_sent
 import smwolczyn.composeapp.generated.resources.ok
 import smwolczyn.composeapp.generated.resources.reset_password
@@ -88,7 +88,7 @@ fun ProfileOptions(
                     text = { WolczynText(text = stringResource(Res.string.edit_profile_title)) },
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Outlined.ManageAccounts,
+                            imageVector = vectorResource(Res.drawable.ic_manage_accounts),
                             contentDescription = null
                         )
                     },
@@ -101,7 +101,7 @@ fun ProfileOptions(
                     text = { WolczynText(text = stringResource(Res.string.sign_out)) },
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Outlined.Logout,
+                            imageVector = vectorResource(Res.drawable.ic_logout),
                             contentDescription = null
                         )
                     },
@@ -114,7 +114,7 @@ fun ProfileOptions(
                     text = { WolczynText(text = stringResource(Res.string.reset_password)) },
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Outlined.LockReset,
+                            imageVector = vectorResource(Res.drawable.ic_lock_reset),
                             contentDescription = null
                         )
                     },
@@ -127,7 +127,7 @@ fun ProfileOptions(
                     text = { WolczynText(text = stringResource(Res.string.delete_account)) },
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Outlined.NoAccounts,
+                            imageVector = vectorResource(Res.drawable.ic_no_accounts),
                             contentDescription = null
                         )
                     },
@@ -142,7 +142,7 @@ fun ProfileOptions(
 
     WolczynAlertDialog(
         isVisible = resetPasswordDialogVisible,
-        imageVector = Icons.Outlined.LockReset,
+        imageVector = vectorResource(Res.drawable.ic_lock_reset),
         dialogTitleId = Res.string.message_sent,
         dialogTextId = Res.string.reset_password_dialog_msg,
         confirmBtnTextId = Res.string.ok,
@@ -155,7 +155,7 @@ fun ProfileOptions(
 
     WolczynAlertDialog(
         isVisible = deleteAccountDialogVisible,
-        imageVector = Icons.Outlined.NoAccounts,
+        imageVector = vectorResource(Res.drawable.ic_no_accounts),
         dialogTitleId = Res.string.delete_account_dialog_title,
         dialogTextId = Res.string.delete_account_dialog_msg,
         confirmBtnTextId = Res.string.delete,

@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,11 +24,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_clear_field
 import smwolczyn.composeapp.generated.resources.cd_search_user
+import smwolczyn.composeapp.generated.resources.ic_close
+import smwolczyn.composeapp.generated.resources.ic_search
 import smwolczyn.composeapp.generated.resources.search
 
 @Composable
@@ -52,7 +52,7 @@ fun SearchUserDialog(
         AlertDialog(
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Search,
+                    imageVector = vectorResource(Res.drawable.ic_search),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )
@@ -70,7 +70,7 @@ fun SearchUserDialog(
                             if (query.isNotBlank())
                                 IconButton(onClick = { query = "" }) {
                                     Icon(
-                                        imageVector = Icons.Filled.Close,
+                                        imageVector = vectorResource(Res.drawable.ic_close),
                                         contentDescription = stringResource(Res.string.cd_clear_field),
                                     )
                                 }

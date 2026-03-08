@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,8 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.painterResource
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.ic_delete
 
 @Composable
 fun AdminDataListItem(
@@ -51,7 +52,7 @@ fun AdminDataListItem(
         onPromotionDelete?.let {
             IconButton(onClick = { onPromotionDelete(data.id) }) {
                 Icon(
-                    imageVector = Icons.Default.Delete,
+                    painter = painterResource(Res.drawable.ic_delete),
                     contentDescription = null
                 )
             }
