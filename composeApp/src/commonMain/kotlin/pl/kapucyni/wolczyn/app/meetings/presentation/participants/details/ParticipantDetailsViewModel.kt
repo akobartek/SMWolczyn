@@ -2,7 +2,11 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.participants.details
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -11,6 +15,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmSuccess
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreenEvent.NavigateUp
 
@@ -22,6 +27,9 @@ class ParticipantDetailsViewModel(
 
     private val _events = Channel<ParticipantDetailsScreenEvent>()
     val events = _events.receiveAsFlow()
+
+    private val _group = MutableStateFlow<Group?>(null)
+    val group = _group.asStateFlow()
 
     init {
         setSuccessState()
@@ -50,9 +58,15 @@ class ParticipantDetailsViewModel(
 
     private fun setSuccessState() {
         viewModelScope.launch(Dispatchers.Default) {
-            meetingsRepository.getParticipant(meetingId, email)?.let { participant ->
-                _screenState.update { State.Success(participant) }
-            } ?: onLoadingFailure()
+            coroutineScope {
+                val participantAsync = async { meetingsRepository.getParticipant(meetingId, email) }
+                val groupAsync = async { meetingsRepository.getParticipantGroup(meetingId, email) }
+
+                participantAsync.await()?.let { participant ->
+                    _group.update { groupAsync.await() }
+                    _screenState.update { State.Success(participant) }
+                } ?: onLoadingFailure()
+            }
         }
     }
 

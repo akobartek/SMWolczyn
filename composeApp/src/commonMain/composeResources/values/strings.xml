@@ -124,11 +124,12 @@
     <string name="sorting_alphabetically">Alfabetycznie</string>
     <string name="sorting_birthday_asc">Data urodzenia (rosnąco)</string>
     <string name="sorting_birthday_desc">Data urodzenia (malejąco)</string>
+    <string name="sorting_signing_date_asc">Data zapisu (rosnąco)</string>
+    <string name="sorting_signing_date_desc">Data zapisu (malejąco)</string>
     <string name="filter_participants">Filtruj uczestników</string>
     <string name="filter_confirmed">Tylko uczestnicy na miejscu</string>
     <string name="filter_empty">Brak</string>
     <string name="add_participant">Dodaj uczestnika</string>
-    <string name="signing_confirmed_title">Napotkano błąd</string>
     <string name="signing_confirmed_message">Uczestnik został już zarejestrowany na Spotkaniu, jeśli uważasz że jest to błąd, skontaktuj się z adminem!</string>
     <string name="signing_confirm_consent">Zgoda na przetwarzanie danych</string>
     <string name="signing_confirm_underage_consent">Odebrałem zgodę rodzica/opiekuna</string>

@@ -241,6 +241,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                         viewModel = koinViewModel {
                             parametersOf(screen.meetingId, screen.email)
                         },
+                        isConfirmed = screen.isConfirmed,
                     )
                 }
 

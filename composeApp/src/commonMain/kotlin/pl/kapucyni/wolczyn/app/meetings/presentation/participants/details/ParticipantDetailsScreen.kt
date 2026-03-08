@@ -13,8 +13,10 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.Partic
 fun ParticipantDetailsScreen(
     navigateUp: () -> Unit,
     viewModel: ParticipantDetailsViewModel,
+    isConfirmed: Boolean,
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val group by viewModel.group.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -34,6 +36,8 @@ fun ParticipantDetailsScreen(
                 ParticipantDetailsScreenContent(
                     participant = participant,
                     confirmUserSigning = viewModel::confirmUserSigning,
+                    group = group,
+                    isConfirmed = isConfirmed,
                 )
             } ?: LoadingBox()
         }

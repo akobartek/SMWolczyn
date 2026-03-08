@@ -25,10 +25,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCod
 import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
 import pl.kapucyni.wolczyn.app.common.utils.normalizeMultiplatform
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
-import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
-import pl.kapucyni.wolczyn.app.meetings.domain.model.containsParticipantByEmail
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.ToggleAllUsers
@@ -40,6 +38,8 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.ALPHABETICALLY
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.BIRTHDAY_ASC
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.BIRTHDAY_DESC
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.SIGNING_DATE_ASC
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.SIGNING_DATE_DESC
 
 @OptIn(FlowPreview::class)
 class ParticipantsViewModel(
@@ -49,7 +49,6 @@ class ParticipantsViewModel(
 ) : BasicViewModel<List<Participant>>() {
 
     private var allParticipants = listOf<Participant>()
-    private var groups = listOf<Group>()
 
     private val _filterState = MutableStateFlow(ParticipantsFilterState())
     val filterState = _filterState.asStateFlow()
@@ -78,12 +77,6 @@ class ParticipantsViewModel(
                         state.copy(workshops = workshops + "")
                     }
                 }
-            }
-        }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            runCatching {
-                groups = meetingsRepository.getGroups(meetingId = meetingId)
             }
         }
 
@@ -116,11 +109,6 @@ class ParticipantsViewModel(
             is QrScanFailure -> handleQrScanFailure()
         }
     }
-
-    fun checkParticipantGroup(participant: Participant) =
-        groups.find { group ->
-            group.containsParticipantByEmail(email = participant.email)
-        }?.number
 
     private fun filterParticipants(filterState: ParticipantsFilterState) =
         if (
@@ -177,6 +165,10 @@ class ParticipantsViewModel(
                 BIRTHDAY_ASC -> this@getSortedList.sortedBy { it.birthday.seconds }
 
                 BIRTHDAY_DESC -> this@getSortedList.sortedByDescending { it.birthday.seconds }
+
+                SIGNING_DATE_ASC -> this@getSortedList.sortedBy { it.createdAt.seconds }
+
+                SIGNING_DATE_DESC -> this@getSortedList.sortedByDescending { it.createdAt.seconds }
             }
         }
 

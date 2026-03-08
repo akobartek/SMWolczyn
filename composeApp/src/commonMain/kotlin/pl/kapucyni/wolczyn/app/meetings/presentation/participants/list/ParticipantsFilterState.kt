@@ -6,6 +6,8 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.sorting_alphabetically
 import smwolczyn.composeapp.generated.resources.sorting_birthday_asc
 import smwolczyn.composeapp.generated.resources.sorting_birthday_desc
+import smwolczyn.composeapp.generated.resources.sorting_signing_date_asc
+import smwolczyn.composeapp.generated.resources.sorting_signing_date_desc
 
 data class ParticipantsFilterState(
     val query: String = "",
@@ -21,5 +23,7 @@ enum class ParticipantsSorting(val stringRes: StringResource) {
     ALPHABETICALLY(Res.string.sorting_alphabetically),
     BIRTHDAY_ASC(Res.string.sorting_birthday_asc),
     BIRTHDAY_DESC(Res.string.sorting_birthday_desc),
+    SIGNING_DATE_ASC(Res.string.sorting_signing_date_asc),
+    SIGNING_DATE_DESC(Res.string.sorting_signing_date_desc),
     ;
 }

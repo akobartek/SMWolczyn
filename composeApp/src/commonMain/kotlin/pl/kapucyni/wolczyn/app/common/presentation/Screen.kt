@@ -40,6 +40,7 @@ sealed interface Screen {
     data class ParticipantDetails(
         val meetingId: Int,
         val email: String,
+        val isConfirmed: Boolean,
     ) : Screen
 
     @Serializable
