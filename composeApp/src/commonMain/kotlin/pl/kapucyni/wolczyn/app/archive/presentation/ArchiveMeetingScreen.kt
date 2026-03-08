@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
@@ -53,7 +53,7 @@ fun ArchiveMeetingScreen(
             if (state is State.Success && !state.data?.anthem.isNullOrBlank())
                 IconButton(onClick = { uriHandler.openUri(state.data.anthem) }) {
                     Icon(
-                        painter = painterResource(Res.drawable.ic_music_note),
+                        imageVector = vectorResource(Res.drawable.ic_music_note),
                         tint = wolczynColors.primary,
                         contentDescription = null
                     )

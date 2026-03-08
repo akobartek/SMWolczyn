@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -106,20 +105,16 @@ fun KitchenScreenContent(
                 screenState.data.menu.forEach { (section, menuItems) ->
                     item {
                         KitchenSectionHeader(
-                            title = stringResource(
-                                when (section) {
-                                    KitchenMenuSection.SNACKS -> Res.string.kitchen_section_snacks
-                                    KitchenMenuSection.SWEETS -> Res.string.kitchen_section_sweets
-                                    KitchenMenuSection.BEVERAGES -> Res.string.kitchen_section_beverages
-                                }
-                            ),
-                            icon = painterResource(
-                                when (section) {
-                                    KitchenMenuSection.SNACKS -> Res.drawable.ic_kitchen_snacks
-                                    KitchenMenuSection.SWEETS -> Res.drawable.ic_kitchen_sweets
-                                    KitchenMenuSection.BEVERAGES -> Res.drawable.ic_kitchen_beverages
-                                }
-                            )
+                            title = when (section) {
+                                KitchenMenuSection.SNACKS -> Res.string.kitchen_section_snacks
+                                KitchenMenuSection.SWEETS -> Res.string.kitchen_section_sweets
+                                KitchenMenuSection.BEVERAGES -> Res.string.kitchen_section_beverages
+                            },
+                            icon = when (section) {
+                                KitchenMenuSection.SNACKS -> Res.drawable.ic_kitchen_snacks
+                                KitchenMenuSection.SWEETS -> Res.drawable.ic_kitchen_sweets
+                                KitchenMenuSection.BEVERAGES -> Res.drawable.ic_kitchen_beverages
+                            },
                         )
                     }
                     items(items = menuItems, key = { it.id }) { item ->

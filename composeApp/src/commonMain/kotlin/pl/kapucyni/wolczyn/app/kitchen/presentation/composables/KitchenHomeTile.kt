@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_cap_kitchen
@@ -27,7 +27,7 @@ fun KitchenHomeTile(
         backgroundColor = backgroundColor,
         image = {
             Image(
-                painter = painterResource(Res.drawable.ic_cap_kitchen),
+                imageVector = vectorResource(Res.drawable.ic_cap_kitchen),
                 contentScale = FixedScale(0.39f),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.BottomEnd)

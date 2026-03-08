@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
@@ -139,7 +138,7 @@ fun EventCard(
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(Res.drawable.ic_schedule_map_pin),
+                            imageVector = vectorResource(Res.drawable.ic_schedule_map_pin),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(24.dp)

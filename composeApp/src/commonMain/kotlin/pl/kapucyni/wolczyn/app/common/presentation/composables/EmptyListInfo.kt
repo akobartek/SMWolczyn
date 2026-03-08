@@ -13,8 +13,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun EmptyListInfo(
@@ -28,7 +28,7 @@ fun EmptyListInfo(
         modifier = modifier.padding(32.dp)
     ) {
         Image(
-            painter = painterResource(drawableRes),
+            imageVector = vectorResource(drawableRes),
             contentDescription = null,
             modifier = Modifier.size(160.dp)
         )

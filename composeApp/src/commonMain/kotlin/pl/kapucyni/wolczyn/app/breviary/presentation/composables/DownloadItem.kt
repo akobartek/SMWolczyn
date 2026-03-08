@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cd_download_error
 import smwolczyn.composeapp.generated.resources.cd_download_success
@@ -34,7 +34,7 @@ fun DownloadItem(name: String, value: String?) {
         Text(text = name, fontSize = 16.sp)
         when {
             value == null -> Icon(
-                painter = painterResource(Res.drawable.ic_error),
+                imageVector = vectorResource(Res.drawable.ic_error),
                 contentDescription = stringResource(Res.string.cd_download_error),
                 tint = MaterialTheme.colorScheme.error
             )
@@ -42,7 +42,7 @@ fun DownloadItem(name: String, value: String?) {
             value.isBlank() -> CircularProgressIndicator(modifier = Modifier.size(24.dp))
 
             else -> Icon(
-                painter = painterResource(Res.drawable.ic_check),
+                imageVector = vectorResource(Res.drawable.ic_check),
                 contentDescription = stringResource(Res.string.cd_download_success, name)
             )
         }

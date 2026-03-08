@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.ANIMATOR
@@ -45,7 +45,7 @@ fun GroupsAnimatorsDialog(
         AlertDialog(
             icon = {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_supervised_user),
+                    imageVector = vectorResource(Res.drawable.ic_supervised_user),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )

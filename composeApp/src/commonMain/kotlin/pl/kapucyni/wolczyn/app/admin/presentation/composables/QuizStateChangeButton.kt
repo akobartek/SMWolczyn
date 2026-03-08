@@ -9,8 +9,8 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizState
 import smwolczyn.composeapp.generated.resources.Res
@@ -50,7 +50,7 @@ fun QuizStateChangeButton(
                 icon = {
                     if (isSelected)
                         Icon(
-                            painter = painterResource(Res.drawable.ic_check),
+                            imageVector = vectorResource(Res.drawable.ic_check),
                             contentDescription = null
                         )
                 },

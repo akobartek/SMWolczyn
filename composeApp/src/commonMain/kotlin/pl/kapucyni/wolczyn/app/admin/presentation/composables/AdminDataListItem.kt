@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
@@ -52,7 +52,7 @@ fun AdminDataListItem(
         onPromotionDelete?.let {
             IconButton(onClick = { onPromotionDelete(data.id) }) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_delete),
+                    imageVector = vectorResource(Res.drawable.ic_delete),
                     contentDescription = null
                 )
             }

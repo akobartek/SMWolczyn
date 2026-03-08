@@ -27,8 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
@@ -53,7 +53,7 @@ fun MultipleOfficesDialog(
         AlertDialog(
             icon = {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_schedule_breviary),
+                    imageVector = vectorResource(Res.drawable.ic_schedule_breviary),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )

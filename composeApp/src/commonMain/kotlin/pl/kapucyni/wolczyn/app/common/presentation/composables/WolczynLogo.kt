@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.wolczyn_logo
 
@@ -17,7 +17,7 @@ fun WolczynLogo(
     modifier: Modifier = Modifier,
 ) {
     Icon(
-        painter = painterResource(Res.drawable.wolczyn_logo),
+        imageVector = vectorResource(Res.drawable.wolczyn_logo),
         contentDescription = null,
         tint = MaterialTheme.colorScheme.primary,
         modifier = modifier.width(size),
