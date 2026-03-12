@@ -1,9 +1,9 @@
 package pl.kapucyni.wolczyn.app.schedule.domain.model
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 data class Event(
     val id: String = "",

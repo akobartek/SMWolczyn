@@ -1,16 +1,17 @@
 package pl.kapucyni.wolczyn.app.common.utils
 
 import dev.gitlive.firebase.firestore.Timestamp
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.yearsUntil
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 fun LocalDateTime.getFormattedDateTime() = format(
     LocalDateTime.Format {
@@ -26,7 +27,7 @@ fun LocalDateTime.getFormattedDateTime() = format(
         chars(" - ")
         date(
             LocalDate.Format {
-                dayOfMonth()
+                day()
                 char('.')
                 monthNumber()
                 char('.')
@@ -40,7 +41,7 @@ fun LocalDateTime.getFormattedDate() = format(
     LocalDateTime.Format {
         date(
             LocalDate.Format {
-                dayOfMonth()
+                day()
                 char('.')
                 monthNumber()
                 char('.')
@@ -88,12 +89,12 @@ private fun LocalDateTime.getPeselBeginning() = format(
     LocalDateTime.Format {
         yearTwoDigits(year)
         when (year) {
-            in (1800..1899) -> chars((monthNumber + 80).toString())
-            in (2000..2099) -> chars((monthNumber + 20).toString())
-            in (2100..2199) -> chars((monthNumber + 40).toString())
-            in (2200..2299) -> chars((monthNumber + 60).toString())
+            in (1800..1899) -> chars((month.number + 80).toString())
+            in (2000..2099) -> chars((month.number + 20).toString())
+            in (2100..2199) -> chars((month.number + 40).toString())
+            in (2200..2299) -> chars((month.number + 60).toString())
             else -> monthNumber()
         }
-        dayOfMonth()
+        day()
     }
 )

@@ -19,21 +19,21 @@ plugins {
 
 buildConfig {
     val properties = Properties()
-    properties.load(project.rootProject.file("local.properties").inputStream())
+    val localPropertiesFile = project.rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.inputStream())
+    }
     val password = properties.getProperty("admin_password") ?: ""
     buildConfigField<String>(name = "ADMIN_PASSWORD", value = password)
     buildConfigField<String>(name = "APP_VERSION", value = appVersion)
 }
 
 kotlin {
-    sourceSets.commonMain {
-        kotlin.srcDir("build/generated/ksp/metadata")
-    }
-
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -54,29 +54,33 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.components.uiToolingPreview)
+            implementation(libs.compose.adaptive)
+            implementation(libs.compose.adaptive.layout)
 
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
-            implementation(libs.window.size)
             implementation(libs.viewmodel)
+
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
             implementation(libs.datastore.preferences.core)
+
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+
             implementation(libs.ktor.core)
             implementation(libs.ktor.logging)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
+
             implementation(libs.ksoup)
             api(libs.webview)
 
@@ -85,23 +89,19 @@ kotlin {
             implementation(libs.firebase.gitlive.common)
             implementation(libs.firebase.gitlive.auth)
         }
+
         androidMain.dependencies {
-            implementation(compose.preview)
+            implementation(libs.compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
-            implementation(libs.koin.androidx.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.google.code.scanner)
         }
+
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
-        dependencies {
-            ksp(libs.room.compiler)
-        }
     }
-
-    task("testClasses")
 }
 
 android {
@@ -133,7 +133,6 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -141,7 +140,14 @@ android {
         compose = true
     }
     dependencies {
-        debugImplementation(compose.uiTooling)
+        debugImplementation(libs.compose.uiTooling)
         coreLibraryDesugaring(libs.android.desugaring)
     }
+}
+
+dependencies {
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
 }

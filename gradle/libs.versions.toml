@@ -1,74 +1,75 @@
 [versions]
 agp = "8.11.0"
 android-minSdk = "24"
-android-compileSdk = "35"
+android-compileSdk = "36"
 android-targetSdk = "34"
 android-desugaring = "2.1.5"
-androidx-activityCompose = "1.10.1"
-androidx-appcompat = "1.7.1"
-androidx-core-ktx = "1.16.0"
-androidx-espresso-core = "3.6.1"
-androidx-material = "1.12.0"
-androidx-test-junit = "1.2.1"
-compose-plugin = "1.8.2"
-junit = "4.13.2"
-kotlin = "2.1.20"
-buildconfig = "5.3.5"
+androidx-activityCompose = "1.13.0"
+compose-plugin = "1.10.2"
+compose-material3="1.9.0"
+compose-adaptive="1.3.0-alpha02"
+kotlin = "2.3.10"
+buildconfig = "6.0.9"
 
-serialization = "1.7.3"
-navigation = "2.8.0-alpha08"
-kotlinx-datetime = "0.6.0"
-viewmodel = "2.8.0"
-room = "2.7.0-alpha11"
-datastore = "1.1.7"
-ksp = "2.1.20-2.0.1"
-sqlite = "2.5.0-alpha11"
-ktor = "3.0.0"
-koin = "3.6.0-Beta4"
-koin-multiplatform = "1.2.0-Beta4"
-coil = "3.0.0"
-ksoup = "0.1.2"
-webview = "1.9.12"
+serialization = "1.10.0"
+navigation = "2.9.2"
+kotlinx-datetime = "0.7.1"
+viewmodel = "2.9.6"
+room = "2.8.4"
+sqlite = "2.6.2"
+datastore = "1.2.1"
+ksp = "2.3.6"
+ktor = "3.4.1"
+koin = "4.1.1"
+coil = "3.4.0"
+ksoup = "0.2.6"
+webview = "2.0.3"
 
-firebase-gitlive-sdk = "2.0.0"
-crashlytics = "3.0.3"
-google-services = "4.4.2"
+firebase-gitlive-sdk = "2.4.0"
+crashlytics = "3.0.6"
+google-services = "4.4.4"
 google-code-scanner = "16.1.0"
 
 
 [libraries]
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit = { module = "junit:junit", version.ref = "junit" }
-
 android-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugaring" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
-androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
-androidx-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso-core" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
-androidx-material = { module = "com.google.android.material:material", version.ref = "androidx-material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-plugin" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-plugin" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-plugin" }
+compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-plugin" }
+compose-components-uiToolingPreview = { module = "org.jetbrains.compose.components:components-ui-tooling-preview", version.ref = "compose-plugin" }
+compose-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-plugin" }
+compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-plugin" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-material3" }
+compose-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "compose-adaptive" }
+compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "compose-adaptive" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
-window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "compose-plugin" }
 viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
+
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-multiplatform" }
-koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-multiplatform" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+
 ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 webview = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "webview" }
 
