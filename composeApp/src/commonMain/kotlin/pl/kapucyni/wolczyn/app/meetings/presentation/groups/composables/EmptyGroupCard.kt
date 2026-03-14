@@ -19,8 +19,8 @@ import smwolczyn.composeapp.generated.resources.members_without_group_title
 @Composable
 fun EmptyGroupCard(
     allGroups: List<Group>,
-    members: HashMap<String, String>,
-    onMemberDialogSave: (Int, String) -> Unit,
+    members: Map<String, String>,
+    onMemberDialogSave: (Int?, String) -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),

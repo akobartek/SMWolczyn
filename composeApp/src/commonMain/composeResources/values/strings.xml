@@ -147,7 +147,7 @@
     <string name="user_group">Numer Twojej grupki:</string>
     <string name="groups_not_available">Wróć tu już niedługo, a poznasz numer swojej grupki!</string>
     <string name="group_members_title">Członkowie grupki:</string>
-    <string name="members_without_group_title">Członkowie bez grupki:</string>
+    <string name="members_without_group_title">Uczestnicy bez grupki:</string>
     <string name="participant_group_title">Grupka uczestnika</string>
     <string name="participant_group_body">Użytkownik znajduje się w grupce %1$d</string>
     <string name="signing_confirmed">Witaj na pokładzie tegorocznego Wołczyna, %1$s!</string>

@@ -19,7 +19,6 @@ import pl.kapucyni.wolczyn.app.meetings.domain.usecases.DrawGroupsUseCase
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.DrawGroups
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnAnimatorClicked
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnAnimatorDataChange
-import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnMemberGroupAdd
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnMemberGroupChange
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.SaveGroups
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.ToggleAnimatorsDialog
@@ -40,19 +39,12 @@ class MeetingGroupsViewModel(
             is ToggleAnimatorsDialog -> toggleAnimatorsDialog()
             is DrawGroups -> drawGroups()
             is SaveGroups -> saveGroups()
-
             is OnAnimatorClicked -> onAnimatorClicked(action.participant)
             is OnAnimatorDataChange -> onAnimatorDataChange(
                 currentGroup = action.currentGroupNumber,
                 newGroup = action.groupNumber,
                 contact = action.contactNumber,
             )
-
-            is OnMemberGroupAdd -> onMemberGroupAdd(
-                newGroup = action.groupNumber,
-                email = action.email,
-            )
-
             is OnMemberGroupChange -> onMemberGroupChange(
                 currentGroup = action.currentGroupNumber,
                 newGroup = action.groupNumber,
@@ -123,8 +115,6 @@ class MeetingGroupsViewModel(
     }
 
     private fun onAnimatorClicked(animator: Participant) {
-        if (animator.type == ANIMATOR) return
-
         _screenState.update {
             (it as? State.Success)?.data?.let { state ->
                 val animators = state.selectedAnimators
@@ -176,39 +166,38 @@ class MeetingGroupsViewModel(
         }
     }
 
-    private fun onMemberGroupAdd(newGroup: Int, email: String) {
+    private fun onMemberGroupChange(currentGroup: Int?, newGroup: Int?, email: String) {
+        if (newGroup == currentGroup) return
+
         val state = (_screenState.value as? State.Success)?.data ?: return
-        val new = state.newGroups.firstOrNull { it.number == newGroup }
-        val withoutGroup = state.membersWithoutGroup
-        withoutGroup.remove(email)?.let { data -> new?.members?.put(email, data) }
+        val currentGroupMembers = currentGroup?.let {
+            state.newGroups.firstOrNull { it.number == currentGroup }?.members
+        } ?: state.membersWithoutGroup
+        val newGroupMembers = newGroup?.let {
+            state.newGroups.firstOrNull { it.number == newGroup }?.members
+        } ?: state.membersWithoutGroup
 
-        val newGroups = state.newGroups.toMutableList()
-        newGroups[newGroups.indexOfFirst { it.number == newGroup }] = new ?: return
+        val memberData = currentGroupMembers[email] ?: return
+        val updatedCurrentMembers = currentGroupMembers.toMutableMap().apply { remove(email) }
+        val updatedNewMembers = newGroupMembers.toMutableMap().apply { put(email, memberData) }
 
-        _screenState.update {
-            State.Success(
-                state.copy(
-                    membersWithoutGroup = withoutGroup,
-                    newGroups = newGroups,
-                    saveAvailable = true,
-                )
-            )
+        val newMembersWithoutGroup = when {
+            currentGroup != null && newGroup == null -> updatedNewMembers
+            currentGroup == null && newGroup != null -> updatedCurrentMembers
+            else -> state.membersWithoutGroup
         }
-    }
-
-    private fun onMemberGroupChange(currentGroup: Int, newGroup: Int, email: String) {
-        val state = (_screenState.value as? State.Success)?.data ?: return
-        val current = state.newGroups.firstOrNull { it.number == currentGroup }
-        val new = state.newGroups.firstOrNull { it.number == newGroup }
-        current?.members?.remove(email)?.let { data -> new?.members?.put(email, data) }
-
-        val newGroups = state.newGroups.toMutableList()
-        newGroups[newGroups.indexOfFirst { it.number == currentGroup }] = current ?: return
-        newGroups[newGroups.indexOfFirst { it.number == newGroup }] = new ?: return
+        val newGroups = state.newGroups.map { group ->
+            when (group.number) {
+                currentGroup -> group.copy(members = updatedCurrentMembers)
+                newGroup -> group.copy(members = updatedNewMembers)
+                else -> group
+            }
+        }
 
         _screenState.update {
             State.Success(
                 state.copy(
+                    membersWithoutGroup = newMembersWithoutGroup,
                     newGroups = newGroups,
                     saveAvailable = true,
                 )
@@ -262,5 +251,5 @@ class MeetingGroupsViewModel(
     private fun List<Participant>.membersWithoutGroup(groups: List<Group>) =
         filter { member ->
             groups.none { it.members.contains(member.email) }
-        }.toGroupMembers()
+        }.toGroupMembers().toMutableMap()
 }

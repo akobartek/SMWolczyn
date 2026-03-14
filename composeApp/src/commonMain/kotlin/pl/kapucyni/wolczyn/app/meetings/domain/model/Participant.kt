@@ -28,9 +28,6 @@ data class Participant(
     fun getAge() = birthday.toMilliseconds().toLong().getAge()
 }
 
-fun List<Participant>.toGroupMembers() =
-    HashMap(
-        associate {
-            it.email to "${it.firstName} ${it.lastName}, ${it.city} (${it.getAge()})"
-        }
-    )
+fun List<Participant>.toGroupMembers() = associate {
+    it.email to "${it.firstName} ${it.lastName}, ${it.city} (${it.getAge()})"
+}

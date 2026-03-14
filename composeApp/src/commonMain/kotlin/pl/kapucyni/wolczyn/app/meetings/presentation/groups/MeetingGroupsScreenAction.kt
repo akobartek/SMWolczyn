@@ -21,14 +21,9 @@ sealed interface MeetingGroupsScreenAction {
         val contactNumber: String,
     ) : MeetingGroupsScreenAction
 
-    data class OnMemberGroupAdd(
-        val groupNumber: Int,
-        val email: String,
-    ) : MeetingGroupsScreenAction
-
     data class OnMemberGroupChange(
-        val currentGroupNumber: Int,
-        val groupNumber: Int,
+        val currentGroupNumber: Int?,
+        val groupNumber: Int?,
         val email: String,
     ) : MeetingGroupsScreenAction
 }

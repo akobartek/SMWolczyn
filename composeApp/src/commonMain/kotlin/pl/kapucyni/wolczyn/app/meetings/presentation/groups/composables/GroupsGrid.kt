@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnAnimatorDataChange
-import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnMemberGroupAdd
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenAction.OnMemberGroupChange
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenState
 
@@ -36,7 +36,8 @@ fun GroupsGrid(
                     members = state.membersWithoutGroup,
                     onMemberDialogSave = { number, email ->
                         handleAction(
-                            OnMemberGroupAdd(
+                            OnMemberGroupChange(
+                                currentGroupNumber = null,
                                 groupNumber = number,
                                 email = email,
                             )
@@ -46,11 +47,10 @@ fun GroupsGrid(
             }
 
         items(
-            count = state.newGroups.size,
-            key = { it },
+            items = state.newGroups,
+            key = { group -> group.number },
             span = { GridItemSpan(1) },
-        ) { index ->
-            val group = state.newGroups[index]
+        ) { group ->
             GroupCard(
                 group = group,
                 allGroups = state.newGroups,

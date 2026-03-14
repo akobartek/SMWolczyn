@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -75,11 +76,10 @@ fun MeetingWorkshopsScreen(
                         .padding(horizontal = 8.dp),
                 ) {
                     items(
-                        count = pairs.size,
-                        key = { it },
+                        items = pairs,
+                        key = { (workshop, _) -> workshop.id },
                         span = { GridItemSpan(1) },
-                    ) { index ->
-                        val (workshop, count) = pairs[index]
+                    ) { (workshop, count) ->
                         WorkshopCard(
                             workshop = workshop,
                             count = count,

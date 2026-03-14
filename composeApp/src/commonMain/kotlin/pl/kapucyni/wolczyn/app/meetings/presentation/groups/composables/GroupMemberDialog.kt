@@ -23,8 +23,10 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.current_group
+import smwolczyn.composeapp.generated.resources.filter_empty
 import smwolczyn.composeapp.generated.resources.ic_person
 import smwolczyn.composeapp.generated.resources.save
+import kotlin.collections.buildList
 
 @Composable
 fun GroupMemberDialog(
@@ -32,7 +34,7 @@ fun GroupMemberDialog(
     data: String,
     currentGroup: Int?,
     allGroups: List<Group>,
-    onConfirm: (Int, String) -> Unit,
+    onConfirm: (Int?, String) -> Unit,
     onDismiss: () -> Unit,
 ) {
     var newGroup by rememberSaveable { mutableStateOf(currentGroup) }
@@ -55,9 +57,12 @@ fun GroupMemberDialog(
         },
         text = {
             SelectableTextView(
-                value = newGroup?.toString() ?: "",
+                value = newGroup?.toString() ?: stringResource(Res.string.filter_empty),
                 label = Res.string.current_group,
-                items = allGroups.map { it.number to "${it.number} (${it.animatorName})" },
+                items = buildList {
+                    add(null to stringResource(Res.string.filter_empty))
+                    addAll(allGroups.map { it.number to "${it.number} (${it.animatorName})" })
+                },
                 onItemSelected = { newGroup = it },
             )
         },
@@ -65,10 +70,8 @@ fun GroupMemberDialog(
         confirmButton = {
             TextButton(onClick = {
                 onDismiss()
-                newGroup?.let {
-                    if (it != currentGroup)
-                        onConfirm(it, email)
-                }
+                if (newGroup != currentGroup)
+                    onConfirm(newGroup, email)
             }) {
                 Text(stringResource(Res.string.save))
             }

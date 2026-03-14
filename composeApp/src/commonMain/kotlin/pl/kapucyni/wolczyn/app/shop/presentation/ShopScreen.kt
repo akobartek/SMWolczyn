@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -63,11 +64,10 @@ fun ShopScreenContent(
                     .padding(bottom = 12.dp)
             ) {
                 items(
-                    count = shop.promotions.size,
+                    items = shop.promotions,
                     key = { it },
                     span = { GridItemSpan(maxLineSpan) },
-                ) { index ->
-                    val promo = shop.promotions[index]
+                ) { promo ->
                     PromotionBar(
                         name = promo,
                         onRemove = null,
@@ -76,10 +76,9 @@ fun ShopScreenContent(
                 }
 
                 items(
-                    count = shop.products.size,
-                    key = { shop.products[it].id }
-                ) { index ->
-                    val product = shop.products[index]
+                    items = shop.products,
+                    key = { product -> product.id },
+                ) { product ->
                     ProductListItem(
                         product = product,
                         modifier = Modifier.clickable { onProductClick(product.id) }

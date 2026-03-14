@@ -7,7 +7,7 @@ data class MeetingGroupsScreenState(
     val loading: Boolean = false,
     val newGroups: List<Group>,
     val savedGroups: List<Group>,
-    val membersWithoutGroup: HashMap<String, String>,
+    val membersWithoutGroup: Map<String, String>,
     val participants: List<Participant>,
     val potentialAnimators: List<Participant>,
     val selectedAnimators: List<Participant>,

@@ -76,14 +76,6 @@ fun MeetingGroupsScreen(
                     }
                 }
             }
-            if ((state as? State.Success<MeetingGroupsScreenState>)?.data?.saveAvailable == true) {
-                FloatingActionButton(onClick = { viewModel.handleAction(SaveGroups) }) {
-                    Icon(
-                        imageVector = vectorResource(Res.drawable.ic_save),
-                        contentDescription = stringResource(Res.string.save),
-                    )
-                }
-            }
         },
     ) {
         when (state) {
@@ -107,9 +99,7 @@ private fun List<Group>.getClipboardData() = buildAnnotatedString {
                         else ""
             )
         }
-        group.members.keys.forEachIndexed { index, email ->
-            appendLine("${group.members[email]}")
-        }
+        group.members.values.forEach { memberData -> appendLine(memberData) }
         appendLine()
         appendLine()
     }

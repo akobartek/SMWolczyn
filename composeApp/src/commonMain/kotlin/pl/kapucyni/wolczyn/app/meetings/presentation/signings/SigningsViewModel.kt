@@ -254,12 +254,12 @@ class SigningsViewModel(
                 participant = Participant(
                     userId = user?.id.orEmpty(),
                     type = state.type ?: ParticipantType.MEMBER,
-                    firstName = state.firstName,
-                    lastName = state.lastName,
-                    city = state.city,
-                    email = state.email,
-                    pesel = state.pesel,
-                    contactNumber = state.contactNumber,
+                    firstName = state.firstName.trim(),
+                    lastName = state.lastName.trim(),
+                    city = state.city.trim(),
+                    email = state.email.trim(),
+                    pesel = state.pesel.trim(),
+                    contactNumber = state.contactNumber.trim(),
                     workshop = state.selectedWorkshop.orEmpty(),
                     birthday = state.birthdayDate?.let {
                         Timestamp.fromMilliseconds(it.toDouble())

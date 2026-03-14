@@ -25,7 +25,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
-import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.ANIMATOR
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.draw
@@ -70,8 +69,7 @@ fun GroupsAnimatorsDialog(
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(12.dp))
                                 .clickable {
-                                    if (animator.type != ANIMATOR)
-                                        onAnimatorClicked(animator, selected.not())
+                                    onAnimatorClicked(animator, selected.not())
                                 }
                                 .background(
                                     color =
