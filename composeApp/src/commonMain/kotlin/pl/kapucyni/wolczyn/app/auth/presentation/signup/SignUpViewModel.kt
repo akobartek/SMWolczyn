@@ -12,10 +12,10 @@ import kotlinx.coroutines.launch
 import kotlin.time.Clock
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.SignUpUseCase
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.*
-import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreenState.PasswordErrorType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignUpError
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
+import pl.kapucyni.wolczyn.app.common.utils.validatePassword
 
 class SignUpViewModel(
     email: String,
@@ -124,11 +124,7 @@ class SignUpViewModel(
             copy(
                 email = email.trim(),
                 emailError = email.trim().isValidEmail().not(),
-                passwordError = when {
-                    password.length < 8 -> PasswordErrorType.TOO_SHORT
-                    password.isValidPassword().not() -> PasswordErrorType.WRONG
-                    else -> null
-                },
+                passwordError = password.validatePassword(),
                 firstName = firstName.trim(),
                 firstNameError = firstName.trim().isBlank(),
                 lastName = lastName.trim(),
@@ -146,10 +142,5 @@ class SignUpViewModel(
                 && newState.lastNameError.not()
                 && newState.cityError.not()
                 && newState.birthdayError.not()
-    }
-
-    private fun CharSequence.isValidPassword(): Boolean {
-        val passwordRegex = Regex("((?=.*[a-z])(?=.*\\d)(?=.*[A-Z]).{8,20})")
-        return this.matches(passwordRegex)
     }
 }

@@ -15,6 +15,7 @@
     <string name="copy">Kopiuj</string>
     <string name="email">Email</string>
     <string name="password">Hasło</string>
+    <string name="password_new">Nowe hasło</string>
     <string name="data_save_error">Wystąpił błąd podczas zapisywania danych, sprawdź swoje łącze i spróbuj ponownie!</string>
     <string name="cd_clear_field">Wyczyść pole</string>
     <string name="cd_close_dialog">Zamknij okno</string>
@@ -84,6 +85,8 @@
     <string name="reset_password_dialog_msg">Na Twój adres mailowy została wiadomość z linkiem do zmiany hasła.</string>
     <string name="reset_password_dialog_title">Resetowanie hasła</string>
     <string name="reset_password_dialog_message">Wpisz adres mailowy:</string>
+    <string name="reset_password_set_dialog_message">dla konta: </string>
+    <string name="reset_password_success">Gotowe! Hasło zmienione pomyślnie!</string>
     <string name="reset_password_error">Resetowanie nieudane, sprawdź połączenie i poprawność adresu!</string>
     <string name="delete_account">Usuń konto</string>
     <string name="delete_account_dialog_title">Usuwanie konta</string>

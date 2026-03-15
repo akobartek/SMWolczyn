@@ -8,15 +8,19 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.*
+import pl.kapucyni.wolczyn.app.auth.presentation.resetpassword.ResetPasswordDialogState
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.AccountDeleteFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.AccountDeleted
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.ResetPasswordSuccess
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignedOut
+import pl.kapucyni.wolczyn.app.common.utils.validatePassword
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
 import pl.kapucyni.wolczyn.app.core.domain.usecases.GetAppConfigurationUseCase
 
@@ -32,6 +36,9 @@ class AppViewModel(
     private val _appConfiguration = MutableStateFlow<AppConfiguration?>(null)
     val appConfiguration: StateFlow<AppConfiguration?> = _appConfiguration.asStateFlow()
 
+    private val _resetPasswordDialogState = MutableStateFlow<ResetPasswordDialogState?>(null)
+    val resetPasswordDialogState = _resetPasswordDialogState.asStateFlow()
+
     init {
         viewModelScope.launch(Dispatchers.Default) {
             getAppConfigurationUseCase().collect {
@@ -45,6 +52,23 @@ class AppViewModel(
                     ?: clearUser()
             }
         }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            DeepLinkManager.resetCode.collect { resetCode ->
+                resetCode?.let {
+                    authRepository.getEmailFromResetCode(resetCode)
+                        .onSuccess { email ->
+                            _resetPasswordDialogState.update {
+                                ResetPasswordDialogState(
+                                    resetCode = resetCode,
+                                    email = email,
+                                )
+                            }
+                        }
+                        .onFailure { println(it.message) }
+                } ?: run { closeResetDialog() }
+            }
+        }
     }
 
     fun handleAction(action: AuthAction) {
@@ -52,6 +76,8 @@ class AppViewModel(
             is SignOut -> signOut()
             is ResetPassword -> resetPassword()
             is DeleteAccount -> deleteAccount()
+            is CloseResetDialog -> closeResetDialog()
+            is SetNewPassword -> setNewPassword(action.password)
         }
     }
 
@@ -96,6 +122,35 @@ class AppViewModel(
                     SnackbarController.sendEvent(AccountDeleteFailed)
                     user.value?.let { authRepository.updateUser(it) }
                 }
+        }
+    }
+
+    private fun closeResetDialog() {
+        _resetPasswordDialogState.update { null }
+    }
+
+    private fun setNewPassword(password: String) {
+        val resetPasswordState = _resetPasswordDialogState.value ?: return
+        _resetPasswordDialogState.update { resetPasswordState.copy(loading = true) }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            password.validatePassword()?.let { error ->
+                _resetPasswordDialogState.update {
+                    resetPasswordState.copy(loading = false, passwordError = error)
+                }
+            } ?: run {
+                authRepository.confirmPasswordReset(
+                    code = resetPasswordState.resetCode,
+                    newPassword = password,
+                ).onSuccess {
+                    DeepLinkManager.clearCode()
+                    SnackbarController.sendEvent(ResetPasswordSuccess)
+                }.onFailure {
+                    _resetPasswordDialogState.update {
+                        resetPasswordState.copy(loading = false, resetFailed = true)
+                    }
+                }
+            }
         }
     }
 }

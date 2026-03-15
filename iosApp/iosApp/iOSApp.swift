@@ -1,5 +1,6 @@
 import SwiftUI
 import Firebase
+import ComposeApp
 
 @main
 struct iOSApp: App {
@@ -11,6 +12,9 @@ struct iOSApp: App {
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
+				.onOpenURL { url in
+					DeepLinkManager.shared.onUrlReceived(url: url.absoluteString)
+				}
 		}
 	}
 }

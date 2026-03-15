@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import smwolczyn.composeapp.generated.resources.Res
@@ -33,6 +34,7 @@ fun PasswordTextField(
     value: String,
     onValueChange: (String) -> Unit,
     errorMessage: String?,
+    label: StringResource = Res.string.password,
     enabled: Boolean = true,
     keyboardActions: KeyboardActions? = null,
     imeAction: ImeAction = keyboardActions?.let { ImeAction.Next } ?: ImeAction.Done,
@@ -42,7 +44,7 @@ fun PasswordTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { WolczynText(text = stringResource(Res.string.password)) },
+        label = { WolczynText(text = stringResource(label)) },
         visualTransformation =
             if (passwordHidden) PasswordVisualTransformation()
             else VisualTransformation.None,

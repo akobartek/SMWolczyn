@@ -22,3 +22,8 @@ captures
 *.aab
 **/google-services.json
 **/GoogleService-Info.plist
+
+# Firebase
+.firebase/
+firebase-debug.log
+*.firebase.log

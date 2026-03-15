@@ -2,6 +2,8 @@ package pl.kapucyni.wolczyn.app.auth.data
 
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
+import dev.gitlive.firebase.auth.ActionCodeResult
+import dev.gitlive.firebase.auth.ActionCodeSettings
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.NonCancellable
@@ -35,9 +37,9 @@ class FirebaseAuthRepository(
 
     override fun getAllUsers(): Flow<List<User>> = runCatching {
         firestore.getFirestoreCollectionFlow<User>(collectionName = COLLECTION_USERS)
-            .map {
+            .map { users ->
                 val locale = Locale.current
-                it.filter { user -> user.userType != UserType.ADMIN }
+                users.filter { user -> user.userType != UserType.ADMIN }
                     .sortedWith(
                         compareBy(
                             {
@@ -95,11 +97,23 @@ class FirebaseAuthRepository(
 
     override suspend fun sendRecoveryEmail(email: String): Result<Boolean> {
         return try {
-            auth.sendPasswordResetEmail(email)
+            val settings = ActionCodeSettings(
+                url = "https://wolczyn2k19.firebaseapp.com/reset-password",
+                canHandleCodeInApp = false,
+            )
+            auth.sendPasswordResetEmail(email, settings)
             Result.success(true)
         } catch (exc: Exception) {
             Result.failure(exc)
         }
+    }
+
+    override suspend fun getEmailFromResetCode(code: String): Result<String> = runCatching {
+        auth.checkActionCode<ActionCodeResult.PasswordReset>(code).email
+    }
+
+    override suspend fun confirmPasswordReset(code: String, newPassword: String) = runCatching {
+        auth.confirmPasswordReset(code, newPassword)
     }
 
     override suspend fun sendVerificationEmail() {

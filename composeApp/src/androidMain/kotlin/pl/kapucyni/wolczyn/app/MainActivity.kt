@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app
 
 import App
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,6 +22,8 @@ class MainActivity : ComponentActivity() {
             )
         )
 
+        intent?.handleDeepLinks()
+
         setContent {
             App()
         }
@@ -34,5 +37,16 @@ class MainActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         (application as? WolczynApplication)?.currentActivity = null
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.handleDeepLinks()
+    }
+
+    private fun Intent.handleDeepLinks() {
+        data?.toString()?.let { url ->
+            DeepLinkManager.onUrlReceived(url)
+        }
     }
 }

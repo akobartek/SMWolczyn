@@ -30,6 +30,7 @@ import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.manager.AccountManagerScreen
+import pl.kapucyni.wolczyn.app.auth.presentation.resetpassword.ResetPasswordDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreen
 import pl.kapucyni.wolczyn.app.breviary.presentation.BreviarySaveScreen
@@ -89,6 +90,7 @@ import pl.kapucyni.wolczyn.app.workshops.WorkshopsScreen
 fun App(appViewModel: AppViewModel = koinViewModel()) {
     val appConfiguration by appViewModel.appConfiguration.collectAsStateWithLifecycle()
     val user by appViewModel.user.collectAsStateWithLifecycle()
+    val resetPasswordDialogState by appViewModel.resetPasswordDialogState.collectAsStateWithLifecycle()
 
     AppTheme {
         val navController = rememberNavController()
@@ -116,6 +118,11 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
         }
 
         ForceUpdateDialog(appConfiguration = appConfiguration)
+
+        ResetPasswordDialog(
+            state = resetPasswordDialogState,
+            handleAction = appViewModel::handleAction,
+        )
 
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -193,7 +200,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                         return@composable
                     }
 
-                    (screen.meetingId.takeIf { it > 0 } ?: appConfiguration?.openSigning)
+                    (screen.meetingId.takeIf { id -> id > 0 } ?: appConfiguration?.openSigning)
                         ?.let { meetingId ->
                             SigningsScreen(
                                 navigateUp = { navController.navigateUpSafely(screen) },

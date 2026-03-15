@@ -12,16 +12,11 @@ data class SignUpScreenState(
     val emailError: Boolean = false,
     val password: String = "",
     val passwordHidden: Boolean = true,
-    val passwordError: PasswordErrorType? = null,
+    val passwordError: SignUpPasswordError? = null,
     val birthdayDate: Long? = null,
     val birthdayError: Boolean = false,
     val consentsChecked: Boolean = false,
     val isSignedUpDialogVisible: Boolean = false,
     val accountExistsDialogVisible: Boolean = false,
     val noInternetDialogVisible: Boolean = false,
-) {
-    enum class PasswordErrorType {
-        TOO_SHORT,
-        WRONG,
-    }
-}
+)

@@ -33,7 +33,7 @@ import smwolczyn.composeapp.generated.resources.reset_password_error
 import smwolczyn.composeapp.generated.resources.send
 
 @Composable
-fun ResetPasswordDialog(
+fun ForgottenPasswordDialog(
     signInEmail: String,
     onReset: (String) -> Unit,
     onCancel: () -> Unit,

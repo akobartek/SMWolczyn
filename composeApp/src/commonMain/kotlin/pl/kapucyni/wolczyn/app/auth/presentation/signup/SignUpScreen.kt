@@ -35,7 +35,6 @@ import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.UpdateEmail
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.UpdateLastName
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.UpdatePassword
-import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpScreenState.PasswordErrorType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.BirthdayTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CityTextField
@@ -164,8 +163,8 @@ private fun SignUpScreenContent(
                 errorMessage = state.passwordError?.let {
                     stringResource(
                         when (state.passwordError) {
-                            PasswordErrorType.TOO_SHORT -> Res.string.password_error_too_short
-                            PasswordErrorType.WRONG -> Res.string.password_error_wrong
+                            SignUpPasswordError.TOO_SHORT -> Res.string.password_error_too_short
+                            SignUpPasswordError.WRONG -> Res.string.password_error_wrong
                         }
                     )
                 },

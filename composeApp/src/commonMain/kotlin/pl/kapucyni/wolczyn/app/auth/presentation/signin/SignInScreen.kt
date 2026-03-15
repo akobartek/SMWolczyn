@@ -33,7 +33,7 @@ import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.EmailErrorType
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.NoInternetAction
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.PasswordErrorType
-import pl.kapucyni.wolczyn.app.auth.presentation.signin.composables.ResetPasswordDialog
+import pl.kapucyni.wolczyn.app.auth.presentation.signin.composables.ForgottenPasswordDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmailTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
@@ -213,7 +213,7 @@ private fun SignInScreenContent(
             LoadingDialog(visible = state.loading)
 
             if (state.forgottenPasswordDialogVisible)
-                ResetPasswordDialog(
+                ForgottenPasswordDialog(
                     signInEmail = state.email,
                     onReset = sendResetPasswordEmail,
                     onCancel = toggleForgottenPasswordDialogVisibility,

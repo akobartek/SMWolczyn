@@ -8,6 +8,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withLink
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpPasswordError
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 expect fun String.normalizeMultiplatform(): String
@@ -21,6 +22,15 @@ fun String.isValidEmail(): Boolean {
                 "(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+"
     )
     return this.matches(emailRegex)
+}
+
+fun CharSequence.validatePassword(): SignUpPasswordError? {
+    val passwordRegex = Regex("((?=.*[a-z])(?=.*\\d)(?=.*[A-Z]).{8,20})")
+    return when {
+        this.length < 8 -> SignUpPasswordError.TOO_SHORT
+        this.matches(passwordRegex).not() -> SignUpPasswordError.WRONG
+        else -> null
+    }
 }
 
 @Composable
