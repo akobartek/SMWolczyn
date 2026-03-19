@@ -4,4 +4,5 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 
 sealed interface ParticipantsScreenEvent {
     data class ScanUserFound(val participant: Participant) : ParticipantsScreenEvent
+    data object NavigateUp: ParticipantsScreenEvent
 }

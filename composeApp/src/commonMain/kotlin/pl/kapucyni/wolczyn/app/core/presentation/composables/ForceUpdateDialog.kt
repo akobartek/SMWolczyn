@@ -30,7 +30,7 @@ fun ForceUpdateDialog(
     val uriHandler = LocalUriHandler.current
     var forceUpdateDialogVisible by remember { mutableStateOf(false) }
 
-    LaunchedEffect(appConfiguration?.androidForceUpdate) {
+    LaunchedEffect(appConfiguration) {
         appConfiguration?.platformForceUpdate()?.let { force ->
             var updateNeeded = false
             BuildConfig.APP_VERSION

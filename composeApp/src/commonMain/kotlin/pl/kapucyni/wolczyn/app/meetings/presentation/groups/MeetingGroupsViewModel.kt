@@ -2,7 +2,9 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.groups
 
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
@@ -10,6 +12,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -25,10 +28,12 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreenA
 import kotlin.collections.contains
 
 class MeetingGroupsViewModel(
-    private val meetingId: Int,
+    savedStateHandle: SavedStateHandle,
     private val meetingsRepository: MeetingsRepository,
     private val drawGroupsUseCase: DrawGroupsUseCase,
 ) : BasicViewModel<MeetingGroupsScreenState>() {
+
+    private val meetingId = savedStateHandle.toRoute<Screen.MeetingGroups>().meetingId
 
     init {
         updateState()

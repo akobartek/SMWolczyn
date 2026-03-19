@@ -13,6 +13,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -32,7 +33,7 @@ import smwolczyn.composeapp.generated.resources.select_animators
 @Composable
 fun MeetingGroupsScreen(
     navigateUp: () -> Unit,
-    viewModel: MeetingGroupsViewModel,
+    viewModel: MeetingGroupsViewModel = koinViewModel(),
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
     val clipboard = LocalClipboardManager.current

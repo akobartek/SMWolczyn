@@ -47,13 +47,13 @@ import smwolczyn.composeapp.generated.resources.ic_manage_accounts
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun HomeScreen(
-    appConfiguration: AppConfiguration?,
     user: User?,
     navigate: (Screen) -> Unit,
     handleAuthAction: (AuthAction) -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val appConfiguration by viewModel.appConfiguration.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.home_title)
@@ -83,14 +83,12 @@ fun HomeScreen(
         when (screenState) {
             is State.Loading -> LoadingBox()
             is State.Success ->
-                appConfiguration?.let { configuration ->
-                    HomeScreenContent(
-                        appConfiguration = configuration,
-                        notifications = (screenState as? State.Success)?.data,
-                        user = user,
-                        onTileClick = { navigate(it.navRoute) },
-                    )
-                } ?: LoadingBox()
+                HomeScreenContent(
+                    appConfiguration = appConfiguration,
+                    notifications = (screenState as? State.Success)?.data,
+                    user = user,
+                    onTileClick = { navigate(it.navRoute) },
+                )
         }
     }
 }

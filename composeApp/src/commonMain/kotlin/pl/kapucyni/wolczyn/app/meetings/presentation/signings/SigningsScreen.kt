@@ -31,8 +31,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.AndroidUiModes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.gitlive.firebase.firestore.Timestamp
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
@@ -52,6 +55,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextVie
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.buildLinkableString
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
+import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideNoInternetDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideSuccessDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideTooYoungDialog
@@ -70,6 +75,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsViewModel.
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsConfirmedScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsQrCodeDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsSubtitle
+import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
@@ -99,6 +105,7 @@ import smwolczyn.composeapp.generated.resources.meeting_statute_value
 import smwolczyn.composeapp.generated.resources.meeting_underage_consent
 import smwolczyn.composeapp.generated.resources.participant_type
 import smwolczyn.composeapp.generated.resources.participant_type_error
+import smwolczyn.composeapp.generated.resources.signing_edit
 import smwolczyn.composeapp.generated.resources.signing_save
 import smwolczyn.composeapp.generated.resources.signing_send
 import smwolczyn.composeapp.generated.resources.signings
@@ -324,8 +331,11 @@ private fun SigningsScreenContent(
         ) {
             WolczynText(
                 text = stringResource(
-                    if (state.isEditing) Res.string.signing_save
-                    else Res.string.signing_send
+                    when {
+                        state.isSigningByAdmin -> Res.string.signing_save
+                        state.isEditing -> Res.string.signing_edit
+                        else -> Res.string.signing_send
+                    }
                 ),
             )
         }
@@ -409,3 +419,37 @@ private const val STATUTE_LINK =
 private const val UNDER_AGE = "%consent%"
 private const val UNDER_AGE_LINK =
     "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Zgoda-rodzica-2025.pdf"
+// todo - links from firebase
+
+@Preview(name = "Light", showBackground = true)
+@Preview(name = "Dark", uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun SigningsScreenContentPreview() {
+    AppTheme {
+        SigningsScreenContent(
+            state = SigningsScreenState(
+                meeting = Meeting(),
+                isEditing = false,
+                isSigningByAdmin = false,
+                isConfirmed = false,
+                firstName = "Test",
+                lastName = "Testowy",
+                city = "Testowo",
+                email = "test@test.com",
+                pesel = "1234567890123",
+                peselIsWoman = false,
+                birthdayDate = Timestamp.now().seconds,
+                isUnderAge = true,
+                availableTypes = listOf(ParticipantType.MEMBER),
+                type = ParticipantType.MEMBER,
+                availableWorkshops = listOf("Piłkarskie"),
+                selectedWorkshop = "Piłkarskie",
+                statuteChecked = false,
+                group = null,
+            ),
+            handleAction = {},
+            navigateUp = {},
+            openEssentials = {},
+        )
+    }
+}

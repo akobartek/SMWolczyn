@@ -22,6 +22,8 @@ data class Participant(
     val paid: Boolean = false,
     val consents: Boolean = false,
     val underageConsents: Boolean = false,
+    val acceptedAt: Timestamp? = null,
+    val acceptedBy: String? = null,
 ) {
     fun isUnderAge() = birthday.toMilliseconds().toLong().isAgeBelow(18)
 

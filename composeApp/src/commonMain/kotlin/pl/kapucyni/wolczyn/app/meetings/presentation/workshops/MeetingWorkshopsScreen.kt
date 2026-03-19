@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
@@ -35,7 +36,7 @@ import smwolczyn.composeapp.generated.resources.workshops_title
 @Composable
 fun MeetingWorkshopsScreen(
     navigateUp: () -> Unit,
-    viewModel: MeetingWorkshopsViewModel,
+    viewModel: MeetingWorkshopsViewModel = koinViewModel(),
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
     val isAdding by viewModel.isAdding.collectAsStateWithLifecycle()

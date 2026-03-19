@@ -2,7 +2,9 @@ package pl.kapucyni.wolczyn.app.common.utils
 
 import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.FirebaseFirestore
+import dev.gitlive.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
@@ -10,7 +12,13 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionFlow(collectionNa
     this.collection(collectionName)
         .snapshots
         .map { querySnapshot ->
-            querySnapshot.documents.map { it.data() }
+            querySnapshot.documents.map { it.data<T>() }
+        }
+        .catch { exception ->
+            if (exception is FirebaseFirestoreException)
+                emit(emptyList())
+            else
+                throw exception
         }
 
 suspend inline fun <reified T> FirebaseFirestore.getFirestoreCollection(collectionName: String): List<T> =
@@ -32,6 +40,12 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
                 .map<DocumentSnapshot, T> { it.data() }
                 .firstOrNull()
         }
+        .catch { exception ->
+            if (exception is FirebaseFirestoreException)
+                emit(null)
+            else
+                throw exception
+        }
 
 inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
     collectionName: String,
@@ -40,7 +54,13 @@ inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
     this.collection(collectionName)
         .document(documentId)
         .snapshots
-        .map { it.data() }
+        .map { it.data<T?>() }
+        .catch { exception ->
+            if (exception is FirebaseFirestoreException)
+                emit(null)
+            else
+                throw exception
+        }
 } ?: flowOf(null)
 
 inline fun <reified T> FirebaseFirestore.getFirestoreFirstAvailableDocument(
@@ -49,7 +69,13 @@ inline fun <reified T> FirebaseFirestore.getFirestoreFirstAvailableDocument(
     this.collection(collectionName)
         .snapshots
         .map { querySnapshot ->
-            querySnapshot.documents.firstOrNull()?.data()
+            querySnapshot.documents.firstOrNull()?.data<T>()
+        }
+        .catch { exception ->
+            if (exception is FirebaseFirestoreException)
+                emit(null)
+            else
+                throw exception
         }
 
 suspend inline fun <reified T : Any> FirebaseFirestore.saveObject(

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -37,18 +38,20 @@ fun MeetingsScreen(
     navigateUp: () -> Unit,
     navigate: (Screen) -> Unit,
     userType: UserType,
-    openSigningMeeting: Int?,
     viewModel: MeetingsViewModel = koinViewModel(),
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val openSigning by viewModel.openSigning.collectAsStateWithLifecycle()
 
-    if (userType == UserType.MEMBER)
-        return navigateUp()
+    LaunchedEffect(userType) {
+        if (userType == UserType.MEMBER)
+            navigateUp()
+    }
 
     ScreenLayout(
         title = stringResource(Res.string.meetings),
         onBackPressed = navigateUp,
-        actionIcon = openSigningMeeting?.let {
+        actionIcon = openSigning?.let {
             {
                 IconButton(onClick = { navigate(Screen.Signings()) }) {
                     Icon(

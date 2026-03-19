@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
@@ -39,6 +40,7 @@ import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.NavigateUp
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.ScanUserFound
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantCard
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantsFilteringBottomSheet
@@ -64,7 +66,7 @@ fun ParticipantsScreen(
     navigate: (Screen) -> Unit,
     userType: UserType,
     meetingId: Int,
-    viewModel: ParticipantsViewModel,
+    viewModel: ParticipantsViewModel = koinViewModel(),
     codeScanner: CodeScanner = koinInject(),
 ) {
     val uriHandler = LocalUriHandler.current
@@ -100,6 +102,7 @@ fun ParticipantsScreen(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is ScanUserFound -> openDetails(event.participant, true)
+            is NavigateUp -> navigateUp()
         }
     }
 

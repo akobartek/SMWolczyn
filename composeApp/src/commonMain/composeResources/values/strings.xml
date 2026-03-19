@@ -28,7 +28,7 @@
     <!-- HOME SCREEN STRINGS -->
     <string name="home_title">Pokój i Dobro</string>
     <string name="meetings_title">Spotkania</string>
-    <string name="signings_title">Zapisz\nsię na\nWołczyn!</string>
+    <string name="signings_title">Strefa\nuczestnika</string>
     <string name="schedule_title">Plan\nspotkania</string>
     <string name="song_book_title">Śpiewnik</string>
     <string name="kitchen_title">Kuchnia\nWasyla</string>
@@ -161,6 +161,7 @@
     <string name="signings_no_user_dialog_message">Zapisy dostępne są tylko dla zalogowanych użytkowników, jeśli chcesz zapisać się na spotkanie, zaloguj się!</string>
     <string name="signing_send">Wyślij zgłoszenie</string>
     <string name="signing_save">Zapisz zgłoszenie</string>
+    <string name="signing_edit">Edytuj obecne zgłoszenie</string>
     <string name="cd_save_signing">Zapisz zgłoszenie</string>
     <string name="cd_scan_signing">Okazanie kodu na zapisy</string>
     <string name="signings_qr_code_msg">Twój kod QR:</string>

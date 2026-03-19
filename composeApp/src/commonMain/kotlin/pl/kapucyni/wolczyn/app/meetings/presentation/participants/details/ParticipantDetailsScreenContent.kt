@@ -19,7 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.AndroidUiModes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.gitlive.firebase.firestore.Timestamp
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
@@ -29,6 +32,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
+import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
+import pl.kapucyni.wolczyn.app.theme.AppTheme
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_cake
 import smwolczyn.composeapp.generated.resources.ic_city
@@ -182,6 +187,35 @@ private fun ParticipantInfo(
         WolczynText(
             text = text,
             textStyle = MaterialTheme.typography.bodyLarge,
+        )
+    }
+}
+
+@Preview(name = "Light", showBackground = true)
+@Preview(name = "Dark", uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun ParticipantDetailsScreenContentPreview() {
+    AppTheme {
+        ParticipantDetailsScreenContent(
+            participant = Participant(
+                userId = "",
+                type = ParticipantType.MEMBER,
+                firstName = "Jan",
+                lastName = "Kowalski",
+                city = "Kraków",
+                email = "jankowalski@xd.com",
+                pesel = "1234567890123",
+                contactNumber = "123456789",
+                workshop = "Piłkarskie",
+                paid = false,
+                consents = true,
+                underageConsents = true,
+                acceptedAt = Timestamp.now(),
+                acceptedBy = "admin@wolczyn.com",
+            ),
+            confirmUserSigning = {},
+            group = null,
+            isConfirmed = true,
         )
     }
 }

@@ -1,19 +1,19 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.gitlive.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
-import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.*
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.CloseResetDialog
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.DeleteAccount
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.ResetPassword
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.SetNewPassword
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.SignOut
 import pl.kapucyni.wolczyn.app.auth.presentation.resetpassword.ResetPasswordDialogState
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.AccountDeleteFailed
@@ -22,36 +22,21 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.Reset
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignedOut
 import pl.kapucyni.wolczyn.app.common.utils.validatePassword
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
-import pl.kapucyni.wolczyn.app.core.domain.usecases.GetAppConfigurationUseCase
+import pl.kapucyni.wolczyn.app.core.domain.repository.CoreRepository
 
 class AppViewModel(
-    private val getAppConfigurationUseCase: GetAppConfigurationUseCase,
+    coreRepository: CoreRepository,
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private var userJob: Job? = null
-    private val _user = MutableStateFlow<User?>(null)
-    val user: StateFlow<User?> = _user.asStateFlow()
+    val user: StateFlow<User?> = authRepository.currentUser
 
-    private val _appConfiguration = MutableStateFlow<AppConfiguration?>(null)
-    val appConfiguration: StateFlow<AppConfiguration?> = _appConfiguration.asStateFlow()
+    val appConfiguration: StateFlow<AppConfiguration> = coreRepository.appConfiguration
 
     private val _resetPasswordDialogState = MutableStateFlow<ResetPasswordDialogState?>(null)
     val resetPasswordDialogState = _resetPasswordDialogState.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
-            getAppConfigurationUseCase().collect {
-                _appConfiguration.value = it
-            }
-        }
-
-        viewModelScope.launch(Dispatchers.Default) {
-            authRepository.getUserIdentifier().collect { userId ->
-                userId?.takeIf { it.isNotBlank() }?.let { startObservingUser(it) }
-                    ?: clearUser()
-            }
-        }
 
         viewModelScope.launch(Dispatchers.Default) {
             DeepLinkManager.resetCode.collect { resetCode ->
@@ -81,25 +66,6 @@ class AppViewModel(
         }
     }
 
-    private fun clearUser() {
-        userJob?.cancel()
-        _user.value = null
-    }
-
-    private fun startObservingUser(userId: String) {
-        userJob = viewModelScope.launch {
-            try {
-                authRepository.getCurrentUser(userId = userId)
-                    .stateIn(this, SharingStarted.WhileSubscribed(5000L), null)
-                    .collect { user ->
-                        _user.value = user ?: User(id = userId)
-                    }
-            } catch (_: FirebaseFirestoreException) {
-                userJob?.cancel()
-            }
-        }
-    }
-
     private fun signOut() {
         viewModelScope.launch {
             authRepository.signOut()
@@ -114,7 +80,6 @@ class AppViewModel(
     }
 
     private fun deleteAccount() {
-        userJob?.cancel()
         viewModelScope.launch {
             authRepository.deleteAccount()
                 .onSuccess { SnackbarController.sendEvent(AccountDeleted) }

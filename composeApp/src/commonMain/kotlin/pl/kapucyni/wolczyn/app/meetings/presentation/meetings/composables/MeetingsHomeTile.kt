@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.meetings.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -9,9 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FixedScale
+import androidx.compose.ui.tooling.preview.AndroidUiModes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
+import pl.kapucyni.wolczyn.app.theme.AppTheme
+import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_cap_decalogue
 import smwolczyn.composeapp.generated.resources.meetings_title
@@ -41,4 +46,17 @@ fun MeetingsHomeTile(
         onClick = onClick,
         modifier = modifier,
     )
+}
+
+@Preview(name = "Light", showBackground = true)
+@Preview(name = "Dark",uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun MeetingsHomeTilePreview() {
+    AppTheme {
+        MeetingsHomeTile(
+            backgroundColor = wolczynColors.accent,
+            onClick = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }

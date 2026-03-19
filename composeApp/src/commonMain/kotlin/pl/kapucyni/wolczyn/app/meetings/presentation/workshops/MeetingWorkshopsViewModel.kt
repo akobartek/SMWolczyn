@@ -1,6 +1,8 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.workshops
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.SaveWorkshop
@@ -18,14 +21,16 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsS
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.UpdateWorkshop
 
 class MeetingWorkshopsViewModel(
-    private val meetingId: Int,
+    savedStateHandle: SavedStateHandle,
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<List<Pair<Workshop, Int>>>() {
 
-    private val _isAdding = MutableStateFlow<Boolean>(false)
+    private val meetingId = savedStateHandle.toRoute<Screen.MeetingWorkshops>().meetingId
+
+    private val _isAdding = MutableStateFlow(false)
     val isAdding = _isAdding.asStateFlow()
 
-    private val _isLoading = MutableStateFlow<Boolean>(false)
+    private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
     init {

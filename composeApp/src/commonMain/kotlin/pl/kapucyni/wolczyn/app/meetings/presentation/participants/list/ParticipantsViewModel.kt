@@ -2,7 +2,9 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list
 
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.IO
@@ -16,8 +18,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
+import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningSuccess
@@ -34,6 +37,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSorting
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateTypesFilter
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateWorkshopsFilter
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.NavigateUp
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.ScanUserFound
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.ALPHABETICALLY
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsSorting.BIRTHDAY_ASC
@@ -43,10 +47,12 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 
 @OptIn(FlowPreview::class)
 class ParticipantsViewModel(
-    private val meetingId: Int,
-    private val userType: UserType,
+    savedStateHandle: SavedStateHandle,
+    authRepository: AuthRepository,
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<List<Participant>>() {
+
+    private val args = savedStateHandle.toRoute<Screen.MeetingParticipants>()
 
     private var allParticipants = listOf<Participant>()
 
@@ -57,14 +63,20 @@ class ParticipantsViewModel(
     val events = _events.receiveAsFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             runCatching {
-                meetingsRepository.getMeetingParticipants(meetingId, userType)
-                    .shareIn(this, SharingStarted.Lazily, 1)
-                    .collect { participants ->
-                        allParticipants = participants
-                        _screenState.update { State.Success(filterParticipants(filterState.value)) }
-                    }
+                authRepository.currentUser.collect { user ->
+                    user?.let {
+                        meetingsRepository.getMeetingParticipants(args.meetingId, user.userType)
+                            .shareIn(this, SharingStarted.Lazily, 1)
+                            .collect { participants ->
+                                allParticipants = participants
+                                _screenState.update { State.Success(filterParticipants(filterState.value)) }
+                            }
+                    } ?: run { _events.send(NavigateUp) }
+                }
+            }.onFailure {
+                _events.send(NavigateUp)
             }
         }
 

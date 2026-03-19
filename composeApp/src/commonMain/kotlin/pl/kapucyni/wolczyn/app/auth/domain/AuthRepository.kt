@@ -1,11 +1,11 @@
 package pl.kapucyni.wolczyn.app.auth.domain
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 
 interface AuthRepository {
-    fun getUserIdentifier(): Flow<String?>
-    fun getCurrentUser(userId: String): Flow<User?>
+    val currentUser: StateFlow<User?>
     fun getAllUsers(): Flow<List<User>>
     suspend fun signIn(email: String, password: String): Result<Boolean>
     suspend fun signUp(user: User, password: String): Result<Boolean>

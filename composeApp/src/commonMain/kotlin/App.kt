@@ -136,7 +136,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
             ) {
                 composable<Home> {
                     HomeScreen(
-                        appConfiguration = appConfiguration,
                         user = user,
                         navigate = { navController.navigateSafely(it) },
                         handleAuthAction = { appViewModel.handleAction(it) },
@@ -197,22 +196,21 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                             onConfirm = { navController.navigateSafely(Auth) },
                             onCancel = { navController.navigateUpSafely(screen) },
                         )
-                        return@composable
+                    } else {
+                        (screen.meetingId.takeIf { id -> id > 0 } ?: appConfiguration.openSigning)
+                            ?.let { meetingId ->
+                                SigningsScreen(
+                                    navigateUp = { navController.navigateUpSafely(screen) },
+                                    viewModel = koinViewModel {
+                                        parametersOf(
+                                            meetingId,
+                                            if (screen.isAdmin.not()) user else null,
+                                            screen.email,
+                                        )
+                                    }
+                                )
+                            } ?: navController.popBackStack()
                     }
-
-                    (screen.meetingId.takeIf { id -> id > 0 } ?: appConfiguration?.openSigning)
-                        ?.let { meetingId ->
-                            SigningsScreen(
-                                navigateUp = { navController.navigateUpSafely(screen) },
-                                viewModel = koinViewModel {
-                                    parametersOf(
-                                        meetingId,
-                                        if (screen.isAdmin.not()) user else null,
-                                        screen.email,
-                                    )
-                                }
-                            )
-                        } ?: navController.popBackStack()
                 }
 
                 composable<Meetings> {
@@ -221,7 +219,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                             navigateUp = { navController.navigateUpSafely(Meetings) },
                             navigate = { navController.navigateSafely(it) },
                             userType = userType,
-                            openSigningMeeting = appConfiguration?.openSigning,
                         )
                     } ?: navController.popBackStack()
                 }
@@ -229,13 +226,12 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 composable<MeetingParticipants> {
                     val screen = it.toRoute<MeetingParticipants>()
 
-                    user?.userType?.takeIf { type -> type != UserType.MEMBER }?.let { userType ->
+                    user?.userType.takeIf { type -> type != UserType.MEMBER }?.let { userType ->
                         ParticipantsScreen(
                             navigateUp = { navController.navigateUpSafely(screen) },
                             navigate = { destination -> navController.navigateSafely(destination) },
                             userType = userType,
                             meetingId = screen.meetingId,
-                            viewModel = koinViewModel { parametersOf(screen.meetingId, userType) },
                         )
                     } ?: navController.popBackStack()
                 }
@@ -245,20 +241,15 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
 
                     ParticipantDetailsScreen(
                         navigateUp = { navController.navigateUpSafely(screen) },
-                        viewModel = koinViewModel {
-                            parametersOf(screen.meetingId, screen.email)
-                        },
                         isConfirmed = screen.isConfirmed,
                     )
                 }
 
                 composable<MeetingWorkshops> {
                     val screen = it.toRoute<MeetingWorkshops>()
-
                     user?.userType?.takeIf { type -> type == UserType.ADMIN }?.let {
                         MeetingWorkshopsScreen(
                             navigateUp = { navController.navigateUpSafely(screen) },
-                            viewModel = koinViewModel { parametersOf(screen.meetingId) },
                         )
                     } ?: navController.popBackStack()
                 }
@@ -269,7 +260,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     user?.userType?.takeIf { type -> type == UserType.ADMIN }?.let {
                         MeetingGroupsScreen(
                             navigateUp = { navController.navigateUpSafely(screen) },
-                            viewModel = koinViewModel { parametersOf(screen.meetingId) },
                         )
                     } ?: navController.popBackStack()
                 }

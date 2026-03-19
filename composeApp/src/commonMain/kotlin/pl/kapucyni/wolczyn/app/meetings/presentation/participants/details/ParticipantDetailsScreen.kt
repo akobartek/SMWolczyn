@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.participants.details
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
@@ -12,8 +13,8 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.Partic
 @Composable
 fun ParticipantDetailsScreen(
     navigateUp: () -> Unit,
-    viewModel: ParticipantDetailsViewModel,
     isConfirmed: Boolean,
+    viewModel: ParticipantDetailsViewModel = koinViewModel(),
 ) {
     val state by viewModel.screenState.collectAsStateWithLifecycle()
     val group by viewModel.group.collectAsStateWithLifecycle()

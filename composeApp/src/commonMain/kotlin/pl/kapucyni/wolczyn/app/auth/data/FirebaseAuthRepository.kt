@@ -6,10 +6,19 @@ import dev.gitlive.firebase.auth.ActionCodeResult
 import dev.gitlive.firebase.auth.ActionCodeSettings
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreDocument
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
@@ -25,15 +34,22 @@ class FirebaseAuthRepository(
     private val firestore: FirebaseFirestore,
 ) : AuthRepository {
 
-    override fun getUserIdentifier() = auth.authStateChanged.map { it?.uid }
 
-    override fun getCurrentUser(userId: String): Flow<User?> =
-        firestore.getFirestoreDocument<User?>(
-            collectionName = COLLECTION_USERS,
-            documentId = userId,
-        ).map { user ->
-            user ?: auth.currentUser?.let { User(id = it.uid, email = it.email.orEmpty()) }
-        }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val currentUser: StateFlow<User?> = auth.authStateChanged.flatMapLatest { firebaseUser ->
+        firebaseUser?.let {
+            firestore.getFirestoreDocument<User?>(
+                collectionName = COLLECTION_USERS,
+                documentId = firebaseUser.uid,
+            ).map { user ->
+                user ?: User(id = firebaseUser.uid, email = firebaseUser.email.orEmpty())
+            }
+        } ?: flowOf(null)
+    }.stateIn(
+        scope = CoroutineScope(Dispatchers.Default + SupervisorJob()),
+        started = SharingStarted.Eagerly,
+        initialValue = null,
+    )
 
     override fun getAllUsers(): Flow<List<User>> = runCatching {
         firestore.getFirestoreCollectionFlow<User>(collectionName = COLLECTION_USERS)

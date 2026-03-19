@@ -1,6 +1,8 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.participants.details
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmSuccess
@@ -20,10 +23,11 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreenEvent.NavigateUp
 
 class ParticipantDetailsViewModel(
-    private val meetingId: Int,
-    private val email: String,
+    savedStateHandle: SavedStateHandle,
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<Participant>() {
+
+    private val args = savedStateHandle.toRoute<Screen.ParticipantDetails>()
 
     private val _events = Channel<ParticipantDetailsScreenEvent>()
     val events = _events.receiveAsFlow()
@@ -40,7 +44,7 @@ class ParticipantDetailsViewModel(
         viewModelScope.launch(Dispatchers.Main) {
             setLoadingState()
             meetingsRepository.saveParticipant(
-                meetingId = meetingId,
+                meetingId = args.meetingId,
                 participant = participant.copy(
                     consents = true,
                     underageConsents = true,
@@ -59,8 +63,12 @@ class ParticipantDetailsViewModel(
     private fun setSuccessState() {
         viewModelScope.launch(Dispatchers.Default) {
             coroutineScope {
-                val participantAsync = async { meetingsRepository.getParticipant(meetingId, email) }
-                val groupAsync = async { meetingsRepository.getParticipantGroup(meetingId, email) }
+                val participantAsync = async {
+                    meetingsRepository.getParticipant(args.meetingId, args.email)
+                }
+                val groupAsync = async {
+                    meetingsRepository.getParticipantGroup(args.meetingId, args.email)
+                }
 
                 participantAsync.await()?.let { participant ->
                     _group.update { groupAsync.await() }
