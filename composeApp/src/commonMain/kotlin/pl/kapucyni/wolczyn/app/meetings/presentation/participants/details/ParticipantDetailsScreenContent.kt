@@ -18,7 +18,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,11 +33,13 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
+import pl.kapucyni.wolczyn.app.common.utils.getFormattedDateTimeForAdmin
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.by
 import smwolczyn.composeapp.generated.resources.ic_cake
 import smwolczyn.composeapp.generated.resources.ic_city
 import smwolczyn.composeapp.generated.resources.ic_construction
@@ -42,11 +47,12 @@ import smwolczyn.composeapp.generated.resources.ic_email_alt
 import smwolczyn.composeapp.generated.resources.ic_fingerprint
 import smwolczyn.composeapp.generated.resources.ic_follow_the_signs
 import smwolczyn.composeapp.generated.resources.ic_task_alt
-import smwolczyn.composeapp.generated.resources.participant_group_body
+import smwolczyn.composeapp.generated.resources.participant_group
 import smwolczyn.composeapp.generated.resources.signing_confirm
 import smwolczyn.composeapp.generated.resources.signing_confirm_consent
 import smwolczyn.composeapp.generated.resources.signing_confirm_paid
 import smwolczyn.composeapp.generated.resources.signing_confirm_underage_consent
+import smwolczyn.composeapp.generated.resources.signing_confirmed_by
 import smwolczyn.composeapp.generated.resources.signing_confirmed_message
 import smwolczyn.composeapp.generated.resources.workshops
 
@@ -108,11 +114,12 @@ fun ParticipantDetailsScreenContent(
         )
 
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .widthIn(max = 420.dp)
         ) {
-            if (isConfirmed) {
+            if (isConfirmed.not()) {
                 CheckableField(
                     checked = consent,
                     onCheckedChange = { consent = consent.not() },
@@ -143,19 +150,41 @@ fun ParticipantDetailsScreenContent(
                     WolczynText(text = stringResource(Res.string.signing_confirm))
                 }
             } else {
-                WolczynText(
-                    text = stringResource(Res.string.signing_confirmed_message),
-                    textStyle = MaterialTheme.typography.titleMedium.copy(
-                        textAlign = TextAlign.Center,
-                    ),
-                )
+                participant.acceptedBy?.let { acceptedBy ->
+                    WolczynText(
+                        text = buildAnnotatedString {
+                            append(stringResource(Res.string.signing_confirmed_by))
+                            append(" ")
+                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(participant.acceptedAt?.getFormattedDateTimeForAdmin().orEmpty())
+                            }
+                            append(" ${stringResource(Res.string.by)} ")
+                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(acceptedBy)
+                            }
+                        },
+                        textStyle = MaterialTheme.typography.titleMedium.copy(
+                            textAlign = TextAlign.Center,
+                        ),
+                    )
+                } ?: run {
+                    WolczynText(
+                        text = stringResource(Res.string.signing_confirmed_message),
+                        textStyle = MaterialTheme.typography.titleMedium.copy(
+                            textAlign = TextAlign.Center,
+                        ),
+                    )
+                }
                 group?.let {
                     HeightSpacer(12.dp)
                     WolczynText(
-                        text = stringResource(
-                            Res.string.participant_group_body,
-                            group.number,
-                        ),
+                        text = buildAnnotatedString {
+                            append(stringResource(Res.string.participant_group))
+                            append(" ")
+                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append(group.number.toString())
+                            }
+                        },
                         textStyle = MaterialTheme.typography.titleMedium.copy(
                             textAlign = TextAlign.Center,
                         ),

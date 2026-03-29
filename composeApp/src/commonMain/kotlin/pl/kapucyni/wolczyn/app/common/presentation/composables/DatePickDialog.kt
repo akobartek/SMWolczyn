@@ -12,7 +12,9 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringResource
+import pl.kapucyni.wolczyn.app.common.utils.getMillis
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.save
@@ -26,7 +28,10 @@ fun DatePickDialog(
     onDateSelected: (Long) -> Unit,
 ) {
     if (isVisible) {
-        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = dateMillis)
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = dateMillis,
+            initialDisplayedMonthMillis = dateMillis ?: LocalDate.parse("2010-04-02").getMillis(),
+        )
         DatePickerDialog(
             onDismissRequest = onDismiss,
             confirmButton = {

@@ -5,13 +5,18 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 import kotlinx.datetime.format
 import kotlinx.datetime.format.char
 import kotlinx.datetime.number
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.yearsUntil
 import kotlin.time.Clock
 import kotlin.time.Instant
+
+fun LocalDate.getMillis() =
+    this.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 
 fun LocalDateTime.getFormattedDateTime() = format(
     LocalDateTime.Format {
@@ -37,6 +42,29 @@ fun LocalDateTime.getFormattedDateTime() = format(
     }
 )
 
+fun LocalDateTime.getFormattedDateTimeForAdmin() = format(
+    LocalDateTime.Format {
+        date(
+            LocalDate.Format {
+                day()
+                char('.')
+                monthNumber()
+                char('.')
+                year()
+            }
+        )
+        chars("(")
+        time(
+            LocalTime.Format {
+                hour()
+                char(':')
+                minute()
+            }
+        )
+        chars(")")
+    }
+)
+
 fun LocalDateTime.getFormattedDate() = format(
     LocalDateTime.Format {
         date(
@@ -55,6 +83,11 @@ fun Timestamp.getFormattedDate() =
     Instant.fromEpochSeconds(this.seconds, this.nanoseconds)
         .toLocalDateTime(TimeZone.currentSystemDefault())
         .getFormattedDate()
+
+fun Timestamp.getFormattedDateTimeForAdmin() =
+    Instant.fromEpochSeconds(this.seconds, this.nanoseconds)
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .getFormattedDateTimeForAdmin()
 
 fun Long.getFormattedDate() =
     Instant.fromEpochMilliseconds(this)

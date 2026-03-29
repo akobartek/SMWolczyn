@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.presentation
 
 import kotlinx.serialization.Serializable
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 
 @Serializable
 sealed interface Screen {
@@ -24,10 +25,12 @@ sealed interface Screen {
     data object AccountManager : Screen
 
     @Serializable
-    data class Signings(
-        val meetingId: Int = -1,
-        val isAdmin: Boolean = false,
-        val email: String? = null,
+    data class Signings(val meetingId: Int) : Screen
+
+    @Serializable
+    data class SigningsAdmin(
+        val meetingId: Int,
+        val participant: Participant? = null,
     ) : Screen
 
     @Serializable
@@ -40,7 +43,7 @@ sealed interface Screen {
     data class ParticipantDetails(
         val meetingId: Int,
         val email: String,
-        val isConfirmed: Boolean,
+        val isConfirmed: Boolean, // todo remove - base on value from repository
     ) : Screen
 
     @Serializable

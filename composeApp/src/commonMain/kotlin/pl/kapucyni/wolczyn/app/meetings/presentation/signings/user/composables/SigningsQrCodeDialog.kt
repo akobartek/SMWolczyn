@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables
+package pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio

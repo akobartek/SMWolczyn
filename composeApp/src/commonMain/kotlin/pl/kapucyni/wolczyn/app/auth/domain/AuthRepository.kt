@@ -7,6 +7,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.User
 interface AuthRepository {
     val currentUser: StateFlow<User?>
     fun getAllUsers(): Flow<List<User>>
+    suspend fun getUserIdIfExists(email: String): String
     suspend fun signIn(email: String, password: String): Result<Boolean>
     suspend fun signUp(user: User, password: String): Result<Boolean>
     suspend fun updateUser(user: User): Result<Unit>

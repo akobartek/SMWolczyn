@@ -26,6 +26,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.EmailNotVerifiedException
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.utils.deleteObject
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
 
@@ -68,6 +69,13 @@ class FirebaseAuthRepository(
                     )
             }
     }.getOrDefault(emptyFlow())
+
+    override suspend fun getUserIdIfExists(email: String): String = runCatching {
+        firestore.getFirestoreCollection<User>(collectionName = COLLECTION_USERS)
+            .firstOrNull { it.email == email }
+            ?.id
+            .orEmpty()
+    }.getOrDefault("")
 
     override suspend fun signIn(email: String, password: String): Result<Boolean> {
         return try {

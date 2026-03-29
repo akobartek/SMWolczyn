@@ -10,11 +10,13 @@ import smwolczyn.composeapp.generated.resources.participant_type_monk
 import smwolczyn.composeapp.generated.resources.participant_type_organisation
 import smwolczyn.composeapp.generated.resources.participant_type_priest
 import smwolczyn.composeapp.generated.resources.participant_type_scout
+import smwolczyn.composeapp.generated.resources.participant_type_volunteer
 
 enum class ParticipantType(val stringRes: StringResource) {
     MEMBER(Res.string.participant_type_member),
     GUARDIAN(Res.string.participant_type_guardian),
     SCOUT(Res.string.participant_type_scout),
+    VOLUNTEER(Res.string.participant_type_volunteer),
     ANIMATOR(Res.string.participant_type_animator),
     PRIEST(Res.string.participant_type_priest),
     MONK(Res.string.participant_type_monk),
@@ -26,11 +28,11 @@ enum class ParticipantType(val stringRes: StringResource) {
         this == MEMBER || this == GUARDIAN || this == SCOUT || this == ANIMATOR
 
     fun canBeGroupMember() =
-        this == MEMBER || this == SCOUT
+        this == MEMBER || this == SCOUT || this == GUARDIAN
 
     fun canBeAnimator() =
         this == ANIMATOR || this == MONK || this == PRIEST || this == ORGANISATION
 
     fun isSelectableByUser() =
-        this != CHOIR && this != ORGANISATION
+        this != CHOIR && this != ORGANISATION && this != VOLUNTEER
 }

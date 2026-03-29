@@ -1,6 +1,5 @@
 package pl.kapucyni.wolczyn.app.common.presentation.composables
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
@@ -29,7 +28,6 @@ fun PeselTextField(
     value: String,
     onValueChange: (String) -> Unit,
     error: Boolean,
-    visible: Boolean = true,
     enabled: Boolean = true,
     keyboardActions: KeyboardActions? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -40,34 +38,32 @@ fun PeselTextField(
         peselValue = TextFieldValue(value, TextRange(value.length))
     }
 
-    AnimatedVisibility(visible) {
-        OutlinedTextField(
-            value = peselValue,
-            onValueChange = { newValue ->
-                when {
-                    newValue.text != value -> onValueChange(newValue.text)
-                    (newValue.selection.start >= 6) -> peselValue = newValue
-                }
-            },
-            label = { WolczynText(text = stringResource(Res.string.pesel)) },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = keyboardActions?.let { ImeAction.Next } ?: ImeAction.Done,
-            ),
-            keyboardActions = keyboardActions ?: KeyboardActions.Default,
-            trailingIcon = trailingIcon,
-            enabled = enabled,
-            singleLine = true,
-            isError = error,
-            supportingText = if (error) {
-                {
-                    WolczynText(text = stringResource(Res.string.pesel_error))
-                }
-            } else null,
-            modifier = Modifier
-                .widthIn(max = 420.dp)
-                .fillMaxWidth()
-                .then(modifier),
-        )
-    }
+    OutlinedTextField(
+        value = peselValue,
+        onValueChange = { newValue ->
+            when {
+                newValue.text != value -> onValueChange(newValue.text)
+                (newValue.selection.start >= 6) -> peselValue = newValue
+            }
+        },
+        label = { WolczynText(text = stringResource(Res.string.pesel)) },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Number,
+            imeAction = keyboardActions?.let { ImeAction.Next } ?: ImeAction.Done,
+        ),
+        keyboardActions = keyboardActions ?: KeyboardActions.Default,
+        trailingIcon = trailingIcon,
+        enabled = enabled,
+        singleLine = true,
+        isError = error,
+        supportingText = if (error) {
+            {
+                WolczynText(text = stringResource(Res.string.pesel_error))
+            }
+        } else null,
+        modifier = Modifier
+            .widthIn(max = 420.dp)
+            .fillMaxWidth()
+            .then(modifier),
+    )
 }

@@ -1,9 +1,10 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables
+package pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreenState
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsState
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.group_members_title
@@ -26,18 +27,19 @@ import smwolczyn.composeapp.generated.resources.user_group
 
 @Composable
 fun SigningsConfirmedScreen(
-    state: SigningsScreenState,
+    state: SigningsState.Confirmed,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
+            .widthIn(max = 420.dp)
             .padding(horizontal = 24.dp)
             .verticalScroll(rememberScrollState()),
     ) {
         WolczynText(
             text = stringResource(Res.string.signing_confirmed, state.firstName),
-            textStyle = MaterialTheme.typography.headlineSmall.copy(textAlign = Center),
+            textStyle = MaterialTheme.typography.titleLarge.copy(textAlign = Center),
         )
         HeightSpacer(20.dp)
         state.group?.let { group ->

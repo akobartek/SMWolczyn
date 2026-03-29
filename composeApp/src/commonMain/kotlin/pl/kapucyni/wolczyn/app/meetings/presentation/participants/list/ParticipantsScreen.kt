@@ -80,20 +80,14 @@ fun ParticipantsScreen(
     val openDetails = { participant: Participant, forceDetails: Boolean ->
         when {
             userType == ADMIN && forceDetails.not() ->
-                navigate(
-                    Screen.Signings(
-                        meetingId = meetingId,
-                        isAdmin = true,
-                        email = participant.email,
-                    )
-                )
+                navigate(Screen.SigningsAdmin(meetingId, participant))
 
             else ->
                 navigate(
                     Screen.ParticipantDetails(
                         meetingId = meetingId,
                         email = participant.email,
-                        isConfirmed = participant.paid.not(),
+                        isConfirmed = participant.paid,
                     )
                 )
         }
@@ -164,7 +158,7 @@ fun ParticipantsScreen(
                     FloatingButtonData(
                         icon = Res.drawable.ic_add,
                         contentDescription = Res.string.add_participant,
-                        onClick = { navigate(Screen.Signings(isAdmin = true)) },
+                        onClick = { navigate(Screen.SigningsAdmin(meetingId)) },
                         isSmall = true,
                         enabled = userType.canManageParticipants(),
                     ),
@@ -198,11 +192,11 @@ fun ParticipantsScreen(
                             participant = participant,
                             onClick = {
                                 if (userType.canManageParticipants())
-                                    openDetails(participant, false)
-                            },
-                            onDoubleClick = {
-                                if (userType.canManageParticipants())
                                     openDetails(participant, true)
+                            },
+                            onLongClick = {
+                                if (userType.canManageParticipants())
+                                    openDetails(participant, false)
                             },
                         )
                     }

@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.participants.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import dev.gitlive.firebase.firestore.Timestamp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
@@ -24,6 +26,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.Partic
 
 class ParticipantDetailsViewModel(
     savedStateHandle: SavedStateHandle,
+    private val authRepository: AuthRepository,
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<Participant>() {
 
@@ -41,7 +44,8 @@ class ParticipantDetailsViewModel(
 
     fun confirmUserSigning() {
         val participant = (screenState.value as? State.Success)?.data ?: return
-        viewModelScope.launch(Dispatchers.Main) {
+        val currentUser = authRepository.currentUser.value ?: return
+        viewModelScope.launch(Dispatchers.Default) {
             setLoadingState()
             meetingsRepository.saveParticipant(
                 meetingId = args.meetingId,
@@ -49,6 +53,9 @@ class ParticipantDetailsViewModel(
                     consents = true,
                     underageConsents = true,
                     paid = true,
+                    acceptedAt = Timestamp.now(),
+                    acceptedBy = "${currentUser.firstName} ${currentUser.lastName}",
+                    acceptedById = currentUser.id,
                 ),
             ).onSuccess {
                 SnackbarController.sendEvent(SigningConfirmSuccess)

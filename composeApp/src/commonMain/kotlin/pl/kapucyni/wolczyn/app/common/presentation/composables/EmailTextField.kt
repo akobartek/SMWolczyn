@@ -16,7 +16,7 @@ import smwolczyn.composeapp.generated.resources.email
 
 @Composable
 fun EmailTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     errorMessage: String?,

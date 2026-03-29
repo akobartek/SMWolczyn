@@ -87,7 +87,9 @@ fun HomeScreen(
                     appConfiguration = appConfiguration,
                     notifications = (screenState as? State.Success)?.data,
                     user = user,
-                    onTileClick = { navigate(it.navRoute) },
+                    onTileClick = { tileType ->
+                        tileType.navRoute(appConfiguration)?.let { navigate(it) }
+                    },
                 )
         }
     }

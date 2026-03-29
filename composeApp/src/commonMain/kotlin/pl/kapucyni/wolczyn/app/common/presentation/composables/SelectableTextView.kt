@@ -33,6 +33,7 @@ fun <T> SelectableTextView(
     label: StringResource,
     items: List<Pair<T, String>>,
     onItemSelected: (T) -> Unit,
+    enabled: Boolean = true,
     leadingIcon: ImageVector? = null,
     error: StringResource? = null,
 ) {
@@ -49,6 +50,7 @@ fun <T> SelectableTextView(
             value = value,
             onValueChange = {},
             label = { WolczynText(stringResource(label)) },
+            enabled = enabled,
             leadingIcon = leadingIcon?.let {
                 {
                     Icon(

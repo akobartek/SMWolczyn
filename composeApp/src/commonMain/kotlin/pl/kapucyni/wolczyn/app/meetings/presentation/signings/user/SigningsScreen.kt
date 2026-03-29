@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.signings
+package pl.kapucyni.wolczyn.app.meetings.presentation.signings.user
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,7 +37,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.gitlive.firebase.firestore.Timestamp
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
+import org.koin.compose.viewmodel.koinViewModel
+import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
 import pl.kapucyni.wolczyn.app.common.presentation.composables.BirthdayTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CityTextField
@@ -55,26 +55,26 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.SelectableTextVie
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.buildLinkableString
-import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideNoInternetDialog
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideSuccessDialog
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.HideTooYoungDialog
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.RemoveSigning
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.SaveData
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateBirthday
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateCity
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateEmail
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateFirstName
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateLastName
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdatePesel
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateStatuteConsent
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateType
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsAction.UpdateWorkshop
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsViewModel.Companion.COSMETIC_WORKSHOP
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsConfirmedScreen
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsQrCodeDialog
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsSubtitle
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideNoInternetDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideSuccessDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideTooYoungDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.RemoveSigning
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.SaveData
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateFirstName
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateLastName
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdatePesel
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateStatuteConsent
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateType
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateWorkshop
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsEvent.NavigateUp
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsEvent.UserNotAvailable
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.SigningsConfirmedScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.SigningsNoUserDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.SigningsQrCodeDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.SigningsSubtitle
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
@@ -82,7 +82,6 @@ import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_save_signing
 import smwolczyn.composeapp.generated.resources.cd_scan_signing
 import smwolczyn.composeapp.generated.resources.close
-import smwolczyn.composeapp.generated.resources.email_error_invalid
 import smwolczyn.composeapp.generated.resources.ic_celebration
 import smwolczyn.composeapp.generated.resources.ic_construction
 import smwolczyn.composeapp.generated.resources.ic_delete
@@ -106,64 +105,96 @@ import smwolczyn.composeapp.generated.resources.meeting_underage_consent
 import smwolczyn.composeapp.generated.resources.participant_type
 import smwolczyn.composeapp.generated.resources.participant_type_error
 import smwolczyn.composeapp.generated.resources.signing_edit
-import smwolczyn.composeapp.generated.resources.signing_save
 import smwolczyn.composeapp.generated.resources.signing_send
 import smwolczyn.composeapp.generated.resources.signings
-import smwolczyn.composeapp.generated.resources.signings_subtitle_admin
 import smwolczyn.composeapp.generated.resources.workshops
 import smwolczyn.composeapp.generated.resources.workshops_error
+import kotlin.collections.minus
 
 @Composable
 fun SigningsScreen(
     navigateUp: () -> Unit,
-    viewModel: SigningsViewModel,
+    openAuth: () -> Unit,
+    viewModel: SigningsViewModel = koinViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val loading by viewModel.loading.collectAsStateWithLifecycle()
+    var noUserDialogVisible by rememberSaveable { mutableStateOf(false) }
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is NavigateUp -> navigateUp()
+            is UserNotAvailable -> { noUserDialogVisible = true }
+        }
+    }
+
+    LoadingDialog(
+        visible = loading,
+        onDismiss = navigateUp,
+    )
+
+    state?.let {
+        SigningsScreen(
+            state = it,
+            handleAction = viewModel::handleAction,
+            navigateUp = navigateUp,
+        )
+    } ?: LoadingBox()
+
+    SigningsNoUserDialog(
+        isVisible = noUserDialogVisible,
+        onConfirm = openAuth,
+        onCancel = navigateUp,
+    )
+}
+
+@Composable
+private fun SigningsScreen(
+    state: SigningsState,
+    handleAction: (SigningsAction) -> Unit,
+    navigateUp: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
     var qrCodeEmail by rememberSaveable { mutableStateOf<String?>(null) }
-
-    LaunchedEffect(state) {
-        if ((state as? State.Success)?.data?.operationFinished == true)
-            navigateUp()
-    }
 
     ScreenLayout(
         title = stringResource(Res.string.signings),
         onBackPressed = navigateUp,
-        actionIcon = (state as? State.Success)?.let { success ->
-            {
-                if (success.data.isSigningByAdmin.not() && success.data.isEditing)
-                    IconButton(onClick = { qrCodeEmail = success.data.email }) {
-                        Icon(
-                            imageVector = vectorResource(Res.drawable.ic_qr_code),
-                            tint = wolczynColors.primary,
-                            contentDescription = stringResource(Res.string.cd_scan_signing),
-                        )
-                    }
-                IconButton(onClick = { uriHandler.openUri(ESSENTIALS_LINK) }) {
+        actionIcon = {
+            state.qrEmail?.let { qrEmail ->
+                IconButton(onClick = { qrCodeEmail = qrEmail }) {
+                    Icon(
+                        imageVector = vectorResource(Res.drawable.ic_qr_code),
+                        tint = wolczynColors.primary,
+                        contentDescription = stringResource(Res.string.cd_scan_signing),
+                    )
+                }
+            }
+            if (state is SigningsState.NotConfirmed && state.essentialsUrl.isNotBlank())
+                IconButton(onClick = { uriHandler.openUri(state.essentialsUrl) }) {
                     Icon(
                         imageVector = vectorResource(Res.drawable.ic_help),
                         tint = wolczynColors.primary,
                         contentDescription = stringResource(Res.string.cd_save_signing),
                     )
                 }
-            }
         },
     ) {
         when (state) {
-            is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.data?.let { state ->
-                if (state.isConfirmed.not() || state.isSigningByAdmin) {
-                    SigningsScreenContent(
-                        state = state,
-                        handleAction = viewModel::handleAction,
-                        navigateUp = navigateUp,
-                        openEssentials = { uriHandler.openUri(ESSENTIALS_LINK) },
-                    )
-                } else {
-                    SigningsConfirmedScreen(state = state)
-                }
-            } ?: LoadingBox()
+            is SigningsState.Confirmed -> {
+                SigningsConfirmedScreen(state = state)
+            }
+
+            is SigningsState.NotConfirmed -> {
+                SigningsScreenContent(
+                    state = state,
+                    handleAction = handleAction,
+                    openEssentials = {
+                        state.essentialsUrl.takeIf { it.isNotBlank() }
+                            ?.let { uriHandler.openUri(it) }
+                    },
+                )
+            }
         }
     }
 
@@ -175,13 +206,12 @@ fun SigningsScreen(
 
 @Composable
 private fun SigningsScreenContent(
-    state: SigningsScreenState,
+    state: SigningsState.NotConfirmed,
     handleAction: (SigningsAction) -> Unit,
-    navigateUp: () -> Unit,
     openEssentials: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val (firstNameRef, lastNameRef, cityRef, emailRef, birthdayRef, peselRef, typeRef) =
+    val (firstNameRef, lastNameRef, cityRef, birthdayRef, peselRef, typeRef) =
         remember { FocusRequester.createRefs() }
     var removeSigningDialogVisible by remember { mutableStateOf(false) }
 
@@ -190,16 +220,18 @@ private fun SigningsScreenContent(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier
             .fillMaxSize()
+            .widthIn(max = 420.dp)
             .padding(horizontal = 24.dp)
             .verticalScroll(rememberScrollState()),
     ) {
-        when {
-            state.isSigningByAdmin.not() -> SigningsSubtitle(state = state)
-            state.isEditing.not() -> WolczynText(
-                text = stringResource(Res.string.signings_subtitle_admin),
-                textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
-            )
-        }
+        SigningsSubtitle(state = state)
+
+        EmailTextField(
+            value = state.email,
+            onValueChange = {},
+            enabled = false,
+            errorMessage = null,
+        )
 
         FirstNameTextField(
             value = state.firstName,
@@ -234,21 +266,6 @@ private fun SigningsScreenContent(
             ),
             modifier = Modifier
                 .focusRequester(cityRef)
-                .focusProperties { next = emailRef },
-        )
-
-        EmailTextField(
-            value = state.email,
-            onValueChange = { handleAction(UpdateEmail(it)) },
-            enabled = (state.isSigningByAdmin && state.isEditing.not()) || state.email.isEmpty(),
-            errorMessage =
-                if (state.emailError) stringResource(Res.string.email_error_invalid)
-                else null,
-            keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(FocusDirection.Next) },
-            ),
-            modifier = Modifier
-                .focusRequester(emailRef)
                 .focusProperties { next = birthdayRef },
         )
 
@@ -263,7 +280,7 @@ private fun SigningsScreenContent(
             value = state.pesel,
             onValueChange = { handleAction(UpdatePesel(it)) },
             error = state.peselError,
-            visible = state.birthdayDate != null,
+            enabled = state.birthdayDate != null,
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Next) },
             ),
@@ -272,22 +289,21 @@ private fun SigningsScreenContent(
                 .focusProperties { next = typeRef },
         )
 
-        AnimatedVisibility(state.birthdayDate != null) {
-            SelectableTextView(
-                value = state.type?.let { stringResource(it.stringRes) }.orEmpty(),
-                label = Res.string.participant_type,
-                items = state.availableTypes.map { it to stringResource(it.stringRes) },
-                onItemSelected = { handleAction(UpdateType(it)) },
-                leadingIcon =  vectorResource(Res.drawable.ic_follow_the_signs),
-                error = if (state.typeError) Res.string.participant_type_error else null,
-                modifier = Modifier.focusRequester(typeRef),
-            )
-        }
+        SelectableTextView(
+            value = state.type?.let { stringResource(it.stringRes) }.orEmpty(),
+            label = Res.string.participant_type,
+            enabled = state.birthdayDate != null,
+            items = state.availableTypes.map { it to stringResource(it.stringRes) },
+            onItemSelected = { handleAction(UpdateType(it)) },
+            leadingIcon = vectorResource(Res.drawable.ic_follow_the_signs),
+            error = if (state.typeError) Res.string.participant_type_error else null,
+            modifier = Modifier.focusRequester(typeRef),
+        )
 
         AnimatedVisibility(state.workshopsEnabled) {
             val workshops =
                 if (state.peselIsWoman) state.availableWorkshops
-                else state.availableWorkshops - COSMETIC_WORKSHOP
+                else state.availableWorkshops - SigningsViewModel.COSMETIC_WORKSHOP
             SelectableTextView(
                 value = state.selectedWorkshop.orEmpty(),
                 label = Res.string.workshops,
@@ -298,22 +314,22 @@ private fun SigningsScreenContent(
             )
         }
 
-        if (state.isSigningByAdmin.not() && state.isEditing.not())
+        if (state.isEditing.not())
             CheckableField(
                 checked = state.statuteChecked,
                 onCheckedChange = { handleAction(UpdateStatuteConsent(it)) },
                 text = buildLinkableString(
                     text = Res.string.meeting_statute_title,
-                    links = listOf(Triple(STATUTE, STATUTE_LINK, Res.string.meeting_statute_value)),
+                    links = listOf(Triple(STATUTE, state.statuteUrl, Res.string.meeting_statute_value)),
                 ),
             )
 
-        if (state.isSigningByAdmin.not() && state.isUnderAge)
+        if (state.isUnderAge)
             WolczynText(
                 text = buildLinkableString(
                     text = Res.string.meeting_signing_underage_info,
                     links = listOf(
-                        Triple(UNDER_AGE, UNDER_AGE_LINK, Res.string.meeting_underage_consent),
+                        Triple(UNDER_AGE, state.parentAgreementUrl, Res.string.meeting_underage_consent),
                     ),
                 ),
                 textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
@@ -324,15 +340,14 @@ private fun SigningsScreenContent(
                 focusManager.clearFocus(true)
                 handleAction(SaveData)
             },
-            enabled = state.statuteChecked || state.isSigningByAdmin,
+            enabled = state.statuteChecked,
             modifier = Modifier
-                .widthIn(max = 420.dp)
+                .padding(top = 8.dp)
                 .fillMaxWidth(),
         ) {
             WolczynText(
                 text = stringResource(
                     when {
-                        state.isSigningByAdmin -> Res.string.signing_save
                         state.isEditing -> Res.string.signing_edit
                         else -> Res.string.signing_send
                     }
@@ -346,17 +361,13 @@ private fun SigningsScreenContent(
                     focusManager.clearFocus(true)
                     removeSigningDialogVisible = true
                 },
-                modifier = Modifier
-                    .widthIn(max = 420.dp)
-                    .fillMaxWidth(0.75f),
+                modifier = Modifier.fillMaxWidth(0.75f),
             ) {
                 WolczynText(text = stringResource(Res.string.meeting_signing_remove))
             }
 
         HeightSpacer(12.dp)
     }
-
-    LoadingDialog(visible = state.loading)
 
     WolczynAlertDialog(
         isVisible = state.successDialogVisible,
@@ -366,14 +377,10 @@ private fun SigningsScreenContent(
         confirmBtnTextId = Res.string.meeting_signing_essentials,
         onConfirm = {
             handleAction(HideSuccessDialog)
-            navigateUp()
             openEssentials()
         },
         dismissBtnTextId = Res.string.cancel,
-        onDismissRequest = {
-            handleAction(HideSuccessDialog)
-            navigateUp()
-        },
+        onDismissRequest = { handleAction(HideSuccessDialog) },
         dismissible = false,
     )
 
@@ -395,10 +402,7 @@ private fun SigningsScreenContent(
         dialogTitleId = Res.string.meeting_signing_too_young_dialog_title,
         dialogTextId = Res.string.meeting_signing_too_young_dialog_message,
         confirmBtnTextId = Res.string.close,
-        onConfirm = {
-            handleAction(HideTooYoungDialog)
-            navigateUp()
-        },
+        onConfirm = { handleAction(HideTooYoungDialog) },
         dismissible = false,
     )
 
@@ -412,14 +416,8 @@ private fun SigningsScreenContent(
     )
 }
 
-private const val ESSENTIALS_LINK = "https://wolczyn.kapucyni.pl/niezbednik/"
 private const val STATUTE = "%statute%"
-private const val STATUTE_LINK =
-    "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Regulamin-Spotkania.pdf"
 private const val UNDER_AGE = "%consent%"
-private const val UNDER_AGE_LINK =
-    "https://wolczyn.kapucyni.pl/wp-content/uploads/2025/03/Zgoda-rodzica-2025.pdf"
-// todo - links from firebase
 
 @Preview(name = "Light", showBackground = true)
 @Preview(name = "Dark", uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, showBackground = true)
@@ -427,11 +425,11 @@ private const val UNDER_AGE_LINK =
 private fun SigningsScreenContentPreview() {
     AppTheme {
         SigningsScreenContent(
-            state = SigningsScreenState(
-                meeting = Meeting(),
+            state = SigningsState.NotConfirmed(
+                essentialsUrl = "",
+                statuteUrl = "",
+                parentAgreementUrl = "",
                 isEditing = false,
-                isSigningByAdmin = false,
-                isConfirmed = false,
                 firstName = "Test",
                 lastName = "Testowy",
                 city = "Testowo",
@@ -445,10 +443,8 @@ private fun SigningsScreenContentPreview() {
                 availableWorkshops = listOf("Piłkarskie"),
                 selectedWorkshop = "Piłkarskie",
                 statuteChecked = false,
-                group = null,
             ),
             handleAction = {},
-            navigateUp = {},
             openEssentials = {},
         )
     }

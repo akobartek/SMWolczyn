@@ -10,4 +10,7 @@ data class Meeting(
     val start: Timestamp = Timestamp.now(),
     val end: Timestamp = Timestamp.now(),
     val photoUrl: String = "",
+    val essentialsUrl: String = "",
+    val statuteUrl: String = "",
+    val parentAgreementUrl: String = "",
 )

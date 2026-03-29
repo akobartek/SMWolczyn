@@ -61,8 +61,10 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.ShopProduct
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignIn
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignUp
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Signings
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.SigningsAdmin
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SongBook
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Workshops
+import pl.kapucyni.wolczyn.app.common.presentation.navigation.ParticipantParameterType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
@@ -70,12 +72,13 @@ import pl.kapucyni.wolczyn.app.core.presentation.HomeScreen
 import pl.kapucyni.wolczyn.app.core.presentation.composables.ForceUpdateDialog
 import pl.kapucyni.wolczyn.app.decalogue.presentation.DecalogueScreen
 import pl.kapucyni.wolczyn.app.kitchen.presentation.KitchenScreen
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.groups.MeetingGroupsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.MeetingsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreen
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.SigningsScreen
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsNoUserDialog
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminScreen
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
@@ -84,6 +87,7 @@ import pl.kapucyni.wolczyn.app.shop.presentation.ShopScreen
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.workshops.WorkshopsScreen
+import kotlin.reflect.typeOf
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -190,27 +194,19 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
 
                 composable<Signings> {
                     val screen = it.toRoute<Signings>()
+                    SigningsScreen(
+                        navigateUp = { navController.navigateUpSafely(screen) },
+                        openAuth = { navController.navigateSafely(Auth) },
+                    )
+                }
 
-                    if (user == null) {
-                        SigningsNoUserDialog(
-                            onConfirm = { navController.navigateSafely(Auth) },
-                            onCancel = { navController.navigateUpSafely(screen) },
-                        )
-                    } else {
-                        (screen.meetingId.takeIf { id -> id > 0 } ?: appConfiguration.openSigning)
-                            ?.let { meetingId ->
-                                SigningsScreen(
-                                    navigateUp = { navController.navigateUpSafely(screen) },
-                                    viewModel = koinViewModel {
-                                        parametersOf(
-                                            meetingId,
-                                            if (screen.isAdmin.not()) user else null,
-                                            screen.email,
-                                        )
-                                    }
-                                )
-                            } ?: navController.popBackStack()
-                    }
+                composable<SigningsAdmin>(
+                    typeMap = mapOf(typeOf<Participant?>() to ParticipantParameterType),
+                ) {
+                    val screen = it.toRoute<SigningsAdmin>()
+                    SigningsAdminScreen(
+                        navigateUp = { navController.navigateUpSafely(screen) },
+                    )
                 }
 
                 composable<Meetings> {

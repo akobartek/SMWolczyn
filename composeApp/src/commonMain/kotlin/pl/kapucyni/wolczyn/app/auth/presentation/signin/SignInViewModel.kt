@@ -66,10 +66,13 @@ class SignInViewModel(
     }
 
     fun signIn() {
-        if (validateInput().not()) return
+        val email = _state.value.email.trim()
+        val password = _state.value.password.trim()
+        if (validateInput(email, password).not()) return
+
         toggleLoading(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val result = authRepository.signIn(state.value.email, state.value.password)
+            val result = authRepository.signIn(email, password)
             toggleLoading(false)
             _state.update {
                 if (result.isSuccess && result.getOrDefault(false)) {
@@ -126,17 +129,17 @@ class SignInViewModel(
 
     private fun toggleLoading(value: Boolean) = _state.update { it.copy(loading = value) }
 
-    private fun validateInput(): Boolean {
-        val newState = _state.value.let { state ->
-            state.copy(
-                emailError = if (state.email.isValidEmail()) null else EmailErrorType.INVALID,
-                passwordError = when {
-                    state.password.isBlank() -> PasswordErrorType.EMPTY
-                    else -> null
-                }
+    private fun validateInput(email: String, password: String): Boolean {
+        val emailError = if (email.isValidEmail()) null else EmailErrorType.INVALID
+        val passwordError = if (password.isNotBlank()) null else PasswordErrorType.EMPTY
+        _state.update {
+            it.copy(
+                email = email,
+                emailError = emailError,
+                password = password,
+                passwordError = passwordError,
             )
         }
-        _state.update { newState }
-        return newState.emailError == null && newState.passwordError == null
+        return emailError == null && passwordError == null
     }
 }

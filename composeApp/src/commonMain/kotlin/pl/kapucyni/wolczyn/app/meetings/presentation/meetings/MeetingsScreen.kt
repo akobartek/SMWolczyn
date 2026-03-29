@@ -51,9 +51,9 @@ fun MeetingsScreen(
     ScreenLayout(
         title = stringResource(Res.string.meetings),
         onBackPressed = navigateUp,
-        actionIcon = openSigning?.let {
+        actionIcon = openSigning?.let { meetingId ->
             {
-                IconButton(onClick = { navigate(Screen.Signings()) }) {
+                IconButton(onClick = { navigate(Screen.Signings(meetingId)) }) {
                     Icon(
                         imageVector = vectorResource(Res.drawable.ic_add_note),
                         tint = wolczynColors.primary,

@@ -1,4 +1,4 @@
-package pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables
+package pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.vectorResource
@@ -12,11 +12,12 @@ import smwolczyn.composeapp.generated.resources.signings_no_user_dialog_title
 
 @Composable
 fun SigningsNoUserDialog(
+    isVisible: Boolean,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
 ) {
     WolczynAlertDialog(
-        isVisible = true,
+        isVisible = isVisible,
         imageVector = vectorResource(Res.drawable.ic_manage_accounts),
         dismissible = false,
         dialogTitleId = Res.string.signings_no_user_dialog_title,
