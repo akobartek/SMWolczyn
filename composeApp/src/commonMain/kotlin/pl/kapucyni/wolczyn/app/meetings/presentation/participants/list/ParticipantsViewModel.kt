@@ -12,13 +12,15 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
@@ -50,7 +52,7 @@ class ParticipantsViewModel(
     savedStateHandle: SavedStateHandle,
     authRepository: AuthRepository,
     private val meetingsRepository: MeetingsRepository,
-) : BasicViewModel<List<Participant>>() {
+) : BasicViewModel<ParticipantsState>() {
 
     private val args = savedStateHandle.toRoute<Screen.MeetingParticipants>()
 
@@ -64,20 +66,22 @@ class ParticipantsViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            runCatching {
-                authRepository.currentUser.collect { user ->
-                    user?.let {
-                        meetingsRepository.getMeetingParticipants(args.meetingId, user.userType)
-                            .shareIn(this, SharingStarted.Lazily, 1)
-                            .collect { participants ->
-                                allParticipants = participants
-                                _screenState.update { State.Success(filterParticipants(filterState.value)) }
+            authRepository.currentUser.value?.takeIf { it.userType != UserType.MEMBER }
+                ?.let { user ->
+                    meetingsRepository.getMeetingParticipants(args.meetingId, user.userType)
+                        .onEach { participants ->
+                            allParticipants = participants
+                            _state.update {
+                                ParticipantsState(
+                                    meetingId = args.meetingId,
+                                    participants = filterParticipants(filterState.value),
+                                    userType = user.userType,
+                                )
                             }
-                    } ?: run { _events.send(NavigateUp) }
-                }
-            }.onFailure {
-                _events.send(NavigateUp)
-            }
+                        }
+                        .catch { _events.send(NavigateUp) }
+                    .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
+            } ?: run { _events.send(NavigateUp) }
         }
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -94,18 +98,19 @@ class ParticipantsViewModel(
 
         viewModelScope.launch(Dispatchers.Default) {
             _filterState
-                .onEach { _screenState.update { State.Loading } }
                 .debounce { currentState ->
                     if (
                         currentState.query.isNotBlank()
                         || currentState.selectedTypes.isNotEmpty()
                         || currentState.selectedWorkshops.isNotEmpty()
-                    ) 1226L // PDK
+                    ) 666L
                     else 0L
                 }
                 .collect { currentState ->
                     if (allParticipants.isNotEmpty())
-                        _screenState.update { State.Success(filterParticipants(currentState)) }
+                        _state.update {
+                            it?.copy(participants = filterParticipants(currentState))
+                        }
                 }
         }
     }

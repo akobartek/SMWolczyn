@@ -221,15 +221,10 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
 
                 composable<MeetingParticipants> {
                     val screen = it.toRoute<MeetingParticipants>()
-
-                    user?.userType.takeIf { type -> type != UserType.MEMBER }?.let { userType ->
-                        ParticipantsScreen(
-                            navigateUp = { navController.navigateUpSafely(screen) },
-                            navigate = { destination -> navController.navigateSafely(destination) },
-                            userType = userType,
-                            meetingId = screen.meetingId,
-                        )
-                    } ?: navController.popBackStack()
+                    ParticipantsScreen(
+                        navigateUp = { navController.navigateUpSafely(screen) },
+                        navigate = { destination -> navController.navigateSafely(destination) },
+                    )
                 }
 
                 composable<ParticipantDetails>(

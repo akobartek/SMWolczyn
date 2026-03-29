@@ -24,11 +24,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
@@ -64,26 +62,23 @@ import smwolczyn.composeapp.generated.resources.meeting_scouts
 fun ParticipantsScreen(
     navigateUp: () -> Unit,
     navigate: (Screen) -> Unit,
-    userType: UserType,
-    meetingId: Int,
     viewModel: ParticipantsViewModel = koinViewModel(),
     codeScanner: CodeScanner = koinInject(),
 ) {
     val uriHandler = LocalUriHandler.current
 
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val filterState by viewModel.filterState.collectAsStateWithLifecycle()
 
     var filterSheetVisible by remember { mutableStateOf(false) }
     var fabVisible by remember { mutableStateOf(true) }
 
     val openDetails = { participant: Participant, forceDetails: Boolean ->
-        when {
-            userType == ADMIN && forceDetails.not() ->
-                navigate(Screen.SigningsAdmin(meetingId, participant))
-
-            else ->
-                navigate(Screen.ParticipantDetails(meetingId, participant))
+        state?.let { state ->
+            if (state.userType == ADMIN && forceDetails.not())
+                navigate(Screen.SigningsAdmin(state.meetingId, participant))
+            else
+                navigate(Screen.ParticipantDetails(state.meetingId, participant))
         }
     }
 
@@ -95,16 +90,18 @@ fun ParticipantsScreen(
     }
 
     ScreenLayout(
-        title = stringResource(
-            when (userType) {
-                SCOUTS_MANAGER -> Res.string.meeting_scouts
-                ANIMATORS_MANAGER -> Res.string.meeting_animators
-                else -> Res.string.meeting_participants
-            }
-        ) + ((state as? State.Success)?.data?.let { " (${it.size})" } ?: ""),
+        title = state?.let { state ->
+            stringResource(
+                when (state.userType) {
+                    SCOUTS_MANAGER -> Res.string.meeting_scouts
+                    ANIMATORS_MANAGER -> Res.string.meeting_animators
+                    else -> Res.string.meeting_participants
+                }
+            ) + state.participants.size.let { "($it)" }
+        },
         onBackPressed = navigateUp,
         actionIcon =
-            if (codeScanner.available && userType.canManageParticipants()) {
+            if (codeScanner.available && state?.userType?.canManageParticipants() == true) {
                 {
                     IconButton(onClick = {
                         try {
@@ -125,86 +122,85 @@ fun ParticipantsScreen(
                 }
             } else null,
         floatingActionButton = {
-            val successData = (state as? State.Success)?.data
-            WolczynFabMenu(
-                visible = fabVisible,
-                items = listOf(
-                    FloatingButtonData(
-                        icon = Res.drawable.ic_email,
-                        contentDescription = Res.string.cd_send_email,
-                        onClick = {
-                            successData?.joinToString(",") { it.email }
-                                ?.takeIf { it.isNotBlank() }
-                                ?.let { emails ->
-                                    uriHandler.openUri("mailto:?bcc=$emails")
-                                }
-                        },
-                        isSmall = true,
-                        enabled = (successData?.isNotEmpty() == true),
+            state?.let { state ->
+                WolczynFabMenu(
+                    visible = fabVisible,
+                    items = listOf(
+                        FloatingButtonData(
+                            icon = Res.drawable.ic_email,
+                            contentDescription = Res.string.cd_send_email,
+                            onClick = {
+                                state.participants
+                                    .joinToString(",") { it.email }
+                                    .takeIf { it.isNotBlank() }
+                                    ?.let { emails ->
+                                        uriHandler.openUri("mailto:?bcc=$emails")
+                                    }
+                            },
+                            isSmall = true,
+                            enabled = state.participants.isNotEmpty(),
+                        ),
+                        FloatingButtonData(
+                            icon = Res.drawable.ic_filter,
+                            contentDescription = Res.string.filter_participants,
+                            onClick = { filterSheetVisible = true },
+                            isSmall = true,
+                            enabled = state.userType.canManageParticipants(),
+                        ),
+                        FloatingButtonData(
+                            icon = Res.drawable.ic_add,
+                            contentDescription = Res.string.add_participant,
+                            onClick = { navigate(Screen.SigningsAdmin(state.meetingId)) },
+                            isSmall = true,
+                            enabled = state.userType.canManageParticipants(),
+                        ),
                     ),
-                    FloatingButtonData(
-                        icon = Res.drawable.ic_filter,
-                        contentDescription = Res.string.filter_participants,
-                        onClick = { filterSheetVisible = true },
-                        isSmall = true,
-                        enabled = userType.canManageParticipants(),
-                    ),
-                    FloatingButtonData(
-                        icon = Res.drawable.ic_add,
-                        contentDescription = Res.string.add_participant,
-                        onClick = { navigate(Screen.SigningsAdmin(meetingId)) },
-                        isSmall = true,
-                        enabled = userType.canManageParticipants(),
-                    ),
-                ),
-            )
+                )
+            }
         }
     ) {
-        when (state) {
-            is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.data?.let { participants ->
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp)
-                        .nestedScroll(object : NestedScrollConnection {
-                            override fun onPreScroll(
-                                available: Offset,
-                                source: NestedScrollSource,
-                            ): Offset {
-                                when {
-                                    available.y > 1 -> fabVisible = true
-                                    available.y < -1 -> fabVisible = false
-                                }
-                                return Offset.Zero
+        state?.let { state ->
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 4.dp)
+                    .nestedScroll(object : NestedScrollConnection {
+                        override fun onPreScroll(
+                            available: Offset,
+                            source: NestedScrollSource,
+                        ): Offset {
+                            when {
+                                available.y > 1 -> fabVisible = true
+                                available.y < -1 -> fabVisible = false
                             }
-                        }),
-                ) {
-                    items(items = participants, key = { it.email }) { participant ->
-                        ParticipantCard(
-                            participant = participant,
-                            onClick = {
-                                if (userType.canManageParticipants())
-                                    openDetails(participant, true)
-                            },
-                            onLongClick = {
-                                if (userType.canManageParticipants())
-                                    openDetails(participant, false)
-                            },
+                            return Offset.Zero
+                        }
+                    }),
+            ) {
+                items(items = state.participants, key = { it.email }) { participant ->
+                    ParticipantCard(
+                        participant = participant,
+                        onClick = {
+                            if (state.userType.canManageParticipants())
+                                openDetails(participant, true)
+                        },
+                        onLongClick = {
+                            if (state.userType.canManageParticipants())
+                                openDetails(participant, false)
+                        },
+                    )
+                }
+
+                if (state.participants.isEmpty())
+                    item {
+                        EmptyListInfo(
+                            messageRes = Res.string.empty_participants_list,
+                            drawableRes = Res.drawable.ic_cap_archive,
                         )
                     }
-
-                    if (participants.isEmpty())
-                        item {
-                            EmptyListInfo(
-                                messageRes = Res.string.empty_participants_list,
-                                drawableRes = Res.drawable.ic_cap_archive,
-                            )
-                        }
-                }
-            } ?: LoadingBox()
-        }
+            }
+        } ?: LoadingBox()
     }
 
     ParticipantsFilteringBottomSheet(
