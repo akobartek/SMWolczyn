@@ -42,8 +42,7 @@ sealed interface Screen {
     @Serializable
     data class ParticipantDetails(
         val meetingId: Int,
-        val email: String,
-        val isConfirmed: Boolean, // todo remove - base on value from repository
+        val participant: Participant,
     ) : Screen
 
     @Serializable

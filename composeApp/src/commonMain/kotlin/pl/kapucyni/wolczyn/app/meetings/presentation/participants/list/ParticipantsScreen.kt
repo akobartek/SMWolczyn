@@ -83,13 +83,7 @@ fun ParticipantsScreen(
                 navigate(Screen.SigningsAdmin(meetingId, participant))
 
             else ->
-                navigate(
-                    Screen.ParticipantDetails(
-                        meetingId = meetingId,
-                        email = participant.email,
-                        isConfirmed = participant.paid,
-                    )
-                )
+                navigate(Screen.ParticipantDetails(meetingId, participant))
         }
     }
 

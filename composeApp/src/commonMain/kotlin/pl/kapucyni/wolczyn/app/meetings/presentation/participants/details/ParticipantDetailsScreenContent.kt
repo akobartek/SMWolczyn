@@ -61,7 +61,6 @@ fun ParticipantDetailsScreenContent(
     participant: Participant,
     confirmUserSigning: () -> Unit,
     group: Group?,
-    isConfirmed: Boolean,
 ) {
     var consent by rememberSaveable { mutableStateOf(false) }
     var underAgeConsent by rememberSaveable { mutableStateOf(participant.isUnderAge().not()) }
@@ -119,7 +118,7 @@ fun ParticipantDetailsScreenContent(
                 .padding(horizontal = 16.dp)
                 .widthIn(max = 420.dp)
         ) {
-            if (isConfirmed.not()) {
+            if (participant.paid.not()) {
                 CheckableField(
                     checked = consent,
                     onCheckedChange = { consent = consent.not() },
@@ -236,7 +235,7 @@ private fun ParticipantDetailsScreenContentPreview() {
                 pesel = "1234567890123",
                 contactNumber = "123456789",
                 workshop = "Piłkarskie",
-                paid = false,
+                paid = true,
                 consents = true,
                 underageConsents = true,
                 acceptedAt = Timestamp.now(),
@@ -244,7 +243,6 @@ private fun ParticipantDetailsScreenContentPreview() {
             ),
             confirmUserSigning = {},
             group = null,
-            isConfirmed = true,
         )
     }
 }

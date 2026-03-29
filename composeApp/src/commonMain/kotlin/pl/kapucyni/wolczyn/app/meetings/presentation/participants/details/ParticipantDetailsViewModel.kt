@@ -5,9 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dev.gitlive.firebase.firestore.Timestamp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -16,6 +14,7 @@ import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
+import pl.kapucyni.wolczyn.app.common.presentation.navigation.ParticipantParameterType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmSuccess
@@ -23,6 +22,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreenEvent.NavigateUp
+import kotlin.reflect.typeOf
 
 class ParticipantDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -30,7 +30,9 @@ class ParticipantDetailsViewModel(
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<Participant>() {
 
-    private val args = savedStateHandle.toRoute<Screen.ParticipantDetails>()
+    private val args = savedStateHandle.toRoute<Screen.ParticipantDetails>(
+        typeMap = mapOf(typeOf<Participant>() to ParticipantParameterType),
+    )
 
     private val _events = Channel<ParticipantDetailsScreenEvent>()
     val events = _events.receiveAsFlow()
@@ -39,14 +41,14 @@ class ParticipantDetailsViewModel(
     val group = _group.asStateFlow()
 
     init {
-        setSuccessState()
+        initState()
     }
 
     fun confirmUserSigning() {
-        val participant = (screenState.value as? State.Success)?.data ?: return
+        val participant = args.participant
         val currentUser = authRepository.currentUser.value ?: return
         viewModelScope.launch(Dispatchers.Default) {
-            setLoadingState()
+            setLoading(true)
             meetingsRepository.saveParticipant(
                 meetingId = args.meetingId,
                 participant = participant.copy(
@@ -61,36 +63,18 @@ class ParticipantDetailsViewModel(
                 SnackbarController.sendEvent(SigningConfirmSuccess)
                 _events.send(NavigateUp)
             }.onFailure {
-                _screenState.update { State.Success(participant) }
+                setLoading(false)
                 SnackbarController.sendEvent(SigningConfirmFailed)
             }
         }
     }
 
-    private fun setSuccessState() {
+    private fun initState() {
         viewModelScope.launch(Dispatchers.Default) {
-            coroutineScope {
-                val participantAsync = async {
-                    meetingsRepository.getParticipant(args.meetingId, args.email)
-                }
-                val groupAsync = async {
-                    meetingsRepository.getParticipantGroup(args.meetingId, args.email)
-                }
-
-                participantAsync.await()?.let { participant ->
-                    _group.update { groupAsync.await() }
-                    _screenState.update { State.Success(participant) }
-                } ?: onLoadingFailure()
-            }
+            val participant = args.participant
+            val group = meetingsRepository.getParticipantGroup(args.meetingId, participant.email)
+            _group.update { group }
+            _state.update { participant }
         }
-    }
-
-    private fun setLoadingState() {
-        _screenState.update { State.Loading }
-    }
-
-    private suspend fun onLoadingFailure() {
-        SnackbarController.sendEvent(SigningConfirmFailed)
-        _events.send(NavigateUp)
     }
 }

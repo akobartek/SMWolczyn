@@ -4,20 +4,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
+import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreenEvent.NavigateUp
 
 @Composable
 fun ParticipantDetailsScreen(
     navigateUp: () -> Unit,
-    isConfirmed: Boolean,
     viewModel: ParticipantDetailsViewModel = koinViewModel(),
 ) {
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val participant by viewModel.state.collectAsStateWithLifecycle()
     val group by viewModel.group.collectAsStateWithLifecycle()
+    val loading by viewModel.loading.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -25,22 +25,18 @@ fun ParticipantDetailsScreen(
         }
     }
 
+    LoadingDialog(visible = loading)
+
     ScreenLayout(
-        title = (state as? State.Success)?.data?.let { participant ->
-            "${participant.firstName} ${participant.lastName}"
-        }.orEmpty(),
+        title = participant?.let { "${it.firstName} ${it.lastName}" }.orEmpty(),
         onBackPressed = navigateUp,
     ) {
-        when (state) {
-            is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.data?.let { participant ->
-                ParticipantDetailsScreenContent(
-                    participant = participant,
-                    confirmUserSigning = viewModel::confirmUserSigning,
-                    group = group,
-                    isConfirmed = isConfirmed,
-                )
-            } ?: LoadingBox()
-        }
+        participant?.let {
+            ParticipantDetailsScreenContent(
+                participant = it,
+                confirmUserSigning = viewModel::confirmUserSigning,
+                group = group,
+            )
+        } ?: LoadingBox()
     }
 }

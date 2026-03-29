@@ -232,12 +232,12 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     } ?: navController.popBackStack()
                 }
 
-                composable<ParticipantDetails> {
+                composable<ParticipantDetails>(
+                    typeMap = mapOf(typeOf<Participant>() to ParticipantParameterType),
+                ) {
                     val screen = it.toRoute<ParticipantDetails>()
-
                     ParticipantDetailsScreen(
                         navigateUp = { navController.navigateUpSafely(screen) },
-                        isConfirmed = screen.isConfirmed,
                     )
                 }
 
