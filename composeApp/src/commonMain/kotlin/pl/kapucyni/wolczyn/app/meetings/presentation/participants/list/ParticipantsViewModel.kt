@@ -123,7 +123,7 @@ class ParticipantsViewModel(
             is UpdateTypesFilter -> updateTypesFilter(action.elementSelected)
             is UpdateWorkshopsFilter -> updateWorkshopsFilter(action.elementSelected)
             is QrScanSuccess -> handleQrScanSuccess(action.email)
-            is QrScanFailure -> handleQrScanFailure()
+            is QrScanFailure -> handleQrScanFailure(action.invalidValue)
         }
     }
 
@@ -238,9 +238,12 @@ class ParticipantsViewModel(
         }
     }
 
-    private fun handleQrScanFailure() {
+    private fun handleQrScanFailure(invalidValue: Boolean) {
         viewModelScope.launch {
-            SnackbarController.sendEvent(QrCodeScanningFailed)
+            SnackbarController.sendEvent(
+                if (invalidValue) QrCodeUserNotFound
+                else QrCodeScanningFailed
+            )
         }
     }
 }

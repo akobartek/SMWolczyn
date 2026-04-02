@@ -106,11 +106,13 @@ fun ParticipantsScreen(
                     IconButton(onClick = {
                         try {
                             codeScanner.startScanning(
-                                onSuccess = { viewModel.handleAction(QrScanSuccess(it)) },
-                                onFailure = { viewModel.handleAction(QrScanFailure) },
+                                onSuccess = { viewModel.handleAction(QrScanSuccess(email = it)) },
+                                onFailure = { viewModel.handleAction(QrScanFailure(invalidValue = it)) },
+                                onCancel = {}
                             )
-                        } catch (_: Exception) {
-                            viewModel.handleAction(QrScanFailure)
+                        } catch (e: Exception) {
+                            println("XDDDD ${e.message}")
+                            viewModel.handleAction(QrScanFailure(invalidValue = false))
                         }
                     }) {
                         Icon(
