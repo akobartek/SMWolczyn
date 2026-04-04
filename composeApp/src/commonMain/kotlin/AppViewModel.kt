@@ -50,7 +50,6 @@ class AppViewModel(
                                 )
                             }
                         }
-                        .onFailure { println(it.message) }
                 } ?: run { closeResetDialog() }
             }
         }

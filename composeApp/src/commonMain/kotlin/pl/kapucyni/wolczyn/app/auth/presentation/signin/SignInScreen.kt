@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.EmailErrorType
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.NoInternetAction
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.PasswordErrorType
@@ -65,7 +66,7 @@ import smwolczyn.composeapp.generated.resources.verify_email_send_again
 fun SignInScreen(
     navigateUp: () -> Unit,
     openSignUp: (String) -> Unit,
-    viewModel: SignInViewModel,
+    viewModel: SignInViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 

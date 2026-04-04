@@ -21,3 +21,5 @@ fun NavHostController.navigateUpSafely(source: Screen) =
     if (currentDestination?.route?.contains(source::class.simpleName ?: "") == true)
         popBackStack()
     else false
+
+expect fun encodeUrl(value: String): String

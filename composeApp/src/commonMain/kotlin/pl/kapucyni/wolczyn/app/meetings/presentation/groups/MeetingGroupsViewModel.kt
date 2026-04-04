@@ -50,6 +50,7 @@ class MeetingGroupsViewModel(
                 newGroup = action.groupNumber,
                 contact = action.contactNumber,
             )
+
             is OnMemberGroupChange -> onMemberGroupChange(
                 currentGroup = action.currentGroupNumber,
                 newGroup = action.groupNumber,
@@ -89,18 +90,16 @@ class MeetingGroupsViewModel(
                 }
                 val savedGroups = groups.await()
 
-                _screenState.update {
-                    State.Success(
-                        data = MeetingGroupsScreenState(
-                            newGroups = savedGroups,
-                            savedGroups = savedGroups,
-                            participants = members,
-                            membersWithoutGroup = members.membersWithoutGroup(savedGroups),
-                            potentialAnimators = animators,
-                            selectedAnimators = animators.filter { it.type == ANIMATOR },
-                            copyAvailable = savedGroups.isNotEmpty(),
-                            loading = false,
-                        )
+                _state.update {
+                    MeetingGroupsScreenState(
+                        newGroups = savedGroups,
+                        savedGroups = savedGroups,
+                        participants = members,
+                        membersWithoutGroup = members.membersWithoutGroup(savedGroups),
+                        potentialAnimators = animators,
+                        selectedAnimators = animators.filter { it.type == ANIMATOR },
+                        copyAvailable = savedGroups.isNotEmpty(),
+                        loading = false,
                     )
                 }
             }
@@ -108,35 +107,24 @@ class MeetingGroupsViewModel(
     }
 
     private fun toggleAnimatorsDialog() {
-        _screenState.update {
-            (it as? State.Success)?.data?.let { state ->
-                State.Success(
-                    data = state.copy(
-                        animatorsDialogVisible = state.animatorsDialogVisible.not(),
-                    )
-                )
-            } ?: it
-        }
+        _state.update { it?.copy(animatorsDialogVisible = it.animatorsDialogVisible.not()) }
     }
 
     private fun onAnimatorClicked(animator: Participant) {
-        _screenState.update {
-            (it as? State.Success)?.data?.let { state ->
+        _state.update {
+            it?.let { state ->
                 val animators = state.selectedAnimators
-                State.Success(
-                    data = state.copy(
-                        selectedAnimators =
-                            if (animators.contains(animator)) animators - animator
-                            else animators + animator,
-                    )
+                state.copy(
+                    selectedAnimators =
+                        if (animators.contains(animator)) animators - animator
+                        else animators + animator,
                 )
-            } ?: it
+            }
         }
     }
 
     private fun onAnimatorDataChange(currentGroup: Int, newGroup: Int, contact: String) {
-        val state = (_screenState.value as? State.Success)?.data ?: return
-
+        val state = _state.value ?: return
         state.newGroups.firstOrNull { it.number == currentGroup }?.let { group ->
             if (currentGroup == newGroup && group.animatorContact == contact) return
 
@@ -160,21 +148,14 @@ class MeetingGroupsViewModel(
                 newGroups[newGroups.indexOf(group)] = updatedGroup
             }
 
-            _screenState.update {
-                State.Success(
-                    state.copy(
-                        newGroups = newGroups,
-                        saveAvailable = true,
-                    )
-                )
-            }
+            _state.update { it?.copy(newGroups = newGroups, saveAvailable = true) }
         }
     }
 
     private fun onMemberGroupChange(currentGroup: Int?, newGroup: Int?, email: String) {
         if (newGroup == currentGroup) return
+        val state = _state.value ?: return
 
-        val state = (_screenState.value as? State.Success)?.data ?: return
         val currentGroupMembers = currentGroup?.let {
             state.newGroups.firstOrNull { it.number == currentGroup }?.members
         } ?: state.membersWithoutGroup
@@ -199,38 +180,34 @@ class MeetingGroupsViewModel(
             }
         }
 
-        _screenState.update {
-            State.Success(
-                state.copy(
-                    membersWithoutGroup = newMembersWithoutGroup,
-                    newGroups = newGroups,
-                    saveAvailable = true,
-                )
+        _state.update {
+            state.copy(
+                membersWithoutGroup = newMembersWithoutGroup,
+                newGroups = newGroups,
+                saveAvailable = true,
             )
         }
     }
 
     private fun drawGroups() {
-        val state = (_screenState.value as? State.Success)?.data ?: return
+        val state = _state.value ?: return
         viewModelScope.launch(Dispatchers.IO) {
             val groups = drawGroupsUseCase(
                 participants = state.participants,
                 animators = state.selectedAnimators,
             )
-            _screenState.update {
-                State.Success(
-                    state.copy(
-                        newGroups = groups,
-                        membersWithoutGroup = state.participants.membersWithoutGroup(groups),
-                        saveAvailable = true,
-                    )
+            _state.update {
+                state.copy(
+                    newGroups = groups,
+                    membersWithoutGroup = state.participants.membersWithoutGroup(groups),
+                    saveAvailable = true,
                 )
             }
         }
     }
 
     private fun saveGroups() {
-        val state = (_screenState.value as? State.Success)?.data ?: return
+        val state = _state.value ?: return
         if (state.saveAvailable.not() || state.newGroups.isEmpty()) return
 
         viewModelScope.launch(Dispatchers.Default) {
@@ -246,11 +223,7 @@ class MeetingGroupsViewModel(
     }
 
     private fun toggleLoading(value: Boolean) {
-        _screenState.update {
-            (it as? State.Success)?.data?.let { state ->
-                State.Success(state.copy(loading = value))
-            } ?: it
-        }
+        _state.update { it?.copy(loading = value) }
     }
 
     private fun List<Participant>.membersWithoutGroup(groups: List<Group>) =

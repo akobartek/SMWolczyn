@@ -5,9 +5,7 @@ import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -65,7 +63,7 @@ class ParticipantsViewModel(
     val events = _events.receiveAsFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             authRepository.currentUser.value?.takeIf { it.userType != UserType.MEMBER }
                 ?.let { user ->
                     meetingsRepository.getMeetingParticipants(args.meetingId, user.userType)
@@ -84,7 +82,7 @@ class ParticipantsViewModel(
             } ?: run { _events.send(NavigateUp) }
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
                 meetingsRepository.getAllWorkshops().map { it.name }.let { workshops ->
                     if (workshops.isEmpty()) return@launch
@@ -96,7 +94,7 @@ class ParticipantsViewModel(
             }
         }
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             _filterState
                 .debounce { currentState ->
                     if (

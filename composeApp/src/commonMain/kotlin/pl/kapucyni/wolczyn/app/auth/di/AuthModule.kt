@@ -1,10 +1,9 @@
 package pl.kapucyni.wolczyn.app.auth.di
 
-import org.koin.compose.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.auth.data.FirebaseAuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
-import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.SignUpUseCase
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.UpdateUserUseCase
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileViewModel
@@ -17,8 +16,8 @@ val authModule = module {
     factory { SignUpUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
 
-    viewModel { (email: String) -> SignInViewModel(email, get()) }
-    viewModel { (email: String) -> SignUpViewModel(email, get()) }
-    viewModel { (user: User) -> EditProfileViewModel(user, get()) }
-    viewModel { AccountManagerViewModel(get()) }
+    viewModelOf(::EditProfileViewModel)
+    viewModelOf(::SignInViewModel)
+    viewModelOf(::SignUpViewModel)
+    viewModelOf(::AccountManagerViewModel)
 }

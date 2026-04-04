@@ -1,7 +1,9 @@
 package pl.kapucyni.wolczyn.app.auth.presentation.signup
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dev.gitlive.firebase.FirebaseNetworkException
 import dev.gitlive.firebase.auth.FirebaseAuthUserCollisionException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,15 +14,18 @@ import kotlinx.coroutines.launch
 import kotlin.time.Clock
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.SignUpUseCase
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.*
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignUpError
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 import pl.kapucyni.wolczyn.app.common.utils.validatePassword
 
 class SignUpViewModel(
-    email: String,
+    savedStateHandle: SavedStateHandle,
     private val signUpUseCase: SignUpUseCase,
 ) : ViewModel() {
+
+    private val email = savedStateHandle.toRoute<Screen.SignUp>().email
 
     private val _state = MutableStateFlow(SignUpScreenState(email = email))
     val state: StateFlow<SignUpScreenState> = _state.asStateFlow()

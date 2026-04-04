@@ -5,10 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.quiz.domain.model.QuizAnswer
@@ -30,17 +28,15 @@ class QuizViewModel(
     val screenState: StateFlow<QuizScreenState> = _screenState.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                getQuizUseCase()
-                    .shareIn(this, SharingStarted.Lazily, 1)
-                    .collect { quiz ->
-                        _screenState.update { currentState ->
-                            quiz?.let {
-                                currentState.copy(isLoading = false, quiz = it)
-                            } ?: currentState.copy(isLoading = false, loadingFailed = false)
-                        }
+                getQuizUseCase().collect { quiz ->
+                    _screenState.update { currentState ->
+                        quiz?.let {
+                            currentState.copy(isLoading = false, quiz = it)
+                        } ?: currentState.copy(isLoading = false, loadingFailed = false)
                     }
+                }
             } catch (_: Exception) {
                 _screenState.update { currentState ->
                     currentState.copy(isLoading = false, loadingFailed = false)

@@ -15,74 +15,59 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
-import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
-import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
+import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ProductDetails
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun ShopProductScreen(
-    productId: String?,
+    product: ShopProduct,
     onBackPressed: () -> Unit,
-    viewModel: ShopViewModel = koinViewModel(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-    ShopProductScreenContent(productId, screenState, onBackPressed)
+    ShopProductScreenContent(product, onBackPressed)
 }
 
 @Composable
 fun ShopProductScreenContent(
-    productId: String?,
-    screenState: State<Shop>,
+    product: ShopProduct,
     onBackPressed: () -> Unit,
 ) {
-    when (screenState) {
-        is State.Loading -> LoadingBox()
-        is State.Success -> {
-            val product = screenState.data.products.find { it.id == productId }
-            if (product == null || productId == null) {
-                onBackPressed()
-                return
-            }
-            var selectedColor by rememberSaveable {
-                mutableStateOf(product.photoUrls.keys.firstOrNull())
-            }
-            var isOrientationLandscape by remember { mutableStateOf(false) }
+    var selectedColor by rememberSaveable {
+        mutableStateOf(product.photoUrls.keys.firstOrNull())
+    }
+    var isOrientationLandscape by remember { mutableStateOf(false) }
 
-            Box(modifier = Modifier.onGloballyPositioned {
-                isOrientationLandscape = it.size.width > it.size.height
-            }) {
-                val details = @Composable {
-                    ProductDetails(
-                        product = product,
-                        selectedColor = selectedColor,
-                        onColorSelected = { selectedColor = it },
-                        onBackPressed = onBackPressed,
-                        isOrientationLandscape = isOrientationLandscape
-                    )
-                }
-
-                if (!isOrientationLandscape)
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        details()
-                    }
-                else
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        details()
-                    }
-            }
+    Box(
+        modifier = Modifier.onGloballyPositioned {
+            isOrientationLandscape = it.size.width > it.size.height
+        },
+    ) {
+        val details = @Composable {
+            ProductDetails(
+                product = product,
+                selectedColor = selectedColor,
+                onColorSelected = { selectedColor = it },
+                onBackPressed = onBackPressed,
+                isOrientationLandscape = isOrientationLandscape
+            )
         }
+
+        if (!isOrientationLandscape)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                details()
+            }
+        else
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                details()
+            }
     }
 }

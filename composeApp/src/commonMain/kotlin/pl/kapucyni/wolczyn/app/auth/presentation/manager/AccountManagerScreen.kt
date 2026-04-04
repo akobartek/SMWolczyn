@@ -21,7 +21,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.auth.presentation.manager.composables.SearchUserDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.manager.composables.UserCard
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
@@ -40,7 +39,7 @@ fun AccountManagerScreen(
     navigateUp: () -> Unit,
     viewModel: AccountManagerViewModel = koinViewModel(),
 ) {
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
     var searchDialogVisible by remember { mutableStateOf(false) }
@@ -58,32 +57,29 @@ fun AccountManagerScreen(
             }
         },
     ) {
-        when (state) {
-            is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.data?.let { users ->
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 4.dp),
-                ) {
-                    items(items = users, key = { it.id }) { user ->
-                        UserCard(
-                            user = user,
-                            onTypeChanged = { type -> viewModel.updateUserType(user, type) },
+        state?.let { users ->
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 4.dp),
+            ) {
+                items(items = users, key = { it.id }) { user ->
+                    UserCard(
+                        user = user,
+                        onTypeChanged = { type -> viewModel.updateUserType(user, type) },
+                    )
+                }
+
+                if (users.isEmpty())
+                    item {
+                        EmptyListInfo(
+                            messageRes = Res.string.empty_users_list,
+                            drawableRes = Res.drawable.ic_cap_archive,
                         )
                     }
-
-                    if (users.isEmpty())
-                        item {
-                            EmptyListInfo(
-                                messageRes = Res.string.empty_users_list,
-                                drawableRes = Res.drawable.ic_cap_archive,
-                            )
-                        }
-                }
-            } ?: LoadingBox()
-        }
+            }
+        } ?: LoadingBox()
     }
 
     SearchUserDialog(

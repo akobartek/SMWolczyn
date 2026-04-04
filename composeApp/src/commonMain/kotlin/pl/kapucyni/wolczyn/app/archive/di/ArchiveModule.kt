@@ -1,6 +1,6 @@
 package pl.kapucyni.wolczyn.app.archive.di
 
-import org.koin.compose.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.archive.data.repository.ArchiveRepositoryImpl
 import pl.kapucyni.wolczyn.app.archive.data.sources.FirestoreArchiveSource
@@ -16,6 +16,6 @@ val archiveModule = module {
     single { GetArchiveUseCase(get()) }
     single { GetArchiveMeetingByNumberUseCase(get()) }
 
-    viewModel { ArchiveViewModel(get()) }
-    viewModel { ArchiveMeetingViewModel(get()) }
+    viewModelOf(::ArchiveViewModel)
+    viewModelOf(::ArchiveMeetingViewModel)
 }

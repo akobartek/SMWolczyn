@@ -17,7 +17,6 @@ import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
@@ -40,7 +39,7 @@ fun MeetingsScreen(
     userType: UserType,
     viewModel: MeetingsViewModel = koinViewModel(),
 ) {
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val openSigning by viewModel.openSigning.collectAsStateWithLifecycle()
 
     LaunchedEffect(userType) {
@@ -63,18 +62,15 @@ fun MeetingsScreen(
             }
         }
     ) {
-        when (state) {
-            is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.data?.let { meetings ->
-                MeetingsScreenContent(
-                    meetings = meetings,
-                    userType = userType,
-                    openParticipantsScreen = { navigate(Screen.MeetingParticipants(it)) },
-                    openWorkshopsScreen = { navigate(Screen.MeetingWorkshops(it)) },
-                    openGroupsScreen = { navigate(Screen.MeetingGroups(it)) },
-                )
-            } ?: LoadingBox()
-        }
+        state?.let { meetings ->
+            MeetingsScreenContent(
+                meetings = meetings,
+                userType = userType,
+                openParticipantsScreen = { navigate(Screen.MeetingParticipants(it)) },
+                openWorkshopsScreen = { navigate(Screen.MeetingWorkshops(it)) },
+                openGroupsScreen = { navigate(Screen.MeetingGroups(it)) },
+            )
+        } ?: LoadingBox()
     }
 }
 

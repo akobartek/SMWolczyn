@@ -1,10 +1,8 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.meetings
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,11 +25,11 @@ class MeetingsViewModel(
         )
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             runCatching {
-                meetingsRepository.getAllMeetings()
-                    .shareIn(this, SharingStarted.Lazily, 1)
-                    .collect { meetings -> _screenState.update { State.Success(meetings) } }
+                meetingsRepository.getAllMeetings().collect { meetings ->
+                    _state.update { meetings }
+                }
             }
         }
     }

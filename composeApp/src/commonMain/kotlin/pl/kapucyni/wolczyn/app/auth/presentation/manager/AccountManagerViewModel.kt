@@ -2,11 +2,8 @@ package pl.kapucyni.wolczyn.app.auth.presentation.manager
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
@@ -25,14 +22,12 @@ class AccountManagerViewModel(
     val isLoading = _isLoading.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             runCatching {
-                authRepository.getAllUsers()
-                    .shareIn(this, SharingStarted.Lazily, 1)
-                    .collect { users ->
-                        allUsers = users
-                        filterUsers()
-                    }
+                authRepository.getAllUsers().collect { users ->
+                    allUsers = users
+                    filterUsers()
+                }
             }
         }
     }
@@ -52,11 +47,11 @@ class AccountManagerViewModel(
 
     private fun filterUsers() =
         if (query.isBlank())
-            _screenState.update { State.Success(allUsers) }
+            _state.update { allUsers }
         else
             allUsers.filter {
                 it.firstName.contains(query, ignoreCase = true)
                         || it.lastName.contains(query, ignoreCase = true)
                         || it.email.contains(query, ignoreCase = true)
-            }.let { users -> _screenState.update { State.Success(users) } }
+            }.let { users -> _state.update { users } }
 }

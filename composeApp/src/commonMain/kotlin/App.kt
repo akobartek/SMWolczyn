@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.parameter.parametersOf
 import pl.kapucyni.wolczyn.app.admin.presentation.AdminScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
@@ -57,7 +56,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.ParticipantDetails
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Quiz
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Schedule
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Shop
-import pl.kapucyni.wolczyn.app.common.presentation.Screen.ShopProduct
+import pl.kapucyni.wolczyn.app.common.presentation.Screen.ShopProductDetails
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignIn
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SignUp
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Signings
@@ -65,6 +64,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen.SigningsAdmin
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.SongBook
 import pl.kapucyni.wolczyn.app.common.presentation.Screen.Workshops
 import pl.kapucyni.wolczyn.app.common.presentation.navigation.ParticipantParameterType
+import pl.kapucyni.wolczyn.app.common.presentation.navigation.ShopProductParameterType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.utils.navigateSafely
 import pl.kapucyni.wolczyn.app.common.utils.navigateUpSafely
@@ -82,6 +82,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsScree
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreen
 import pl.kapucyni.wolczyn.app.quiz.presentation.QuizScreen
 import pl.kapucyni.wolczyn.app.schedule.presentation.ScheduleScreen
+import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopProductScreen
 import pl.kapucyni.wolczyn.app.shop.presentation.ShopScreen
 import pl.kapucyni.wolczyn.app.songbook.presentation.SongBookScreen
@@ -155,7 +156,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                             openSignUp = { email ->
                                 navController.navigateSafely(SignUp(email))
                             },
-                            viewModel = koinViewModel { parametersOf(screen.email) },
                         )
                     }
 
@@ -170,7 +170,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                                     popUpTo = Auth,
                                 )
                             },
-                            viewModel = koinViewModel { parametersOf(screen.email) },
                         )
                     }
                 }
@@ -179,7 +178,6 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                     user?.let {
                         EditProfileScreen(
                             navigateUp = { navController.navigateUpSafely(EditProfile) },
-                            viewModel = koinViewModel { parametersOf(user) },
                         )
                     } ?: navController.popBackStack()
                 }
@@ -284,14 +282,17 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 composable<Shop> {
                     ShopScreen(
                         onBackPressed = { navController.navigateUpSafely(Shop) },
-                        onProductClick = { navController.navigateSafely(ShopProduct(it)) },
+                        onProductClick = { navController.navigateSafely(ShopProductDetails(it)) },
                     )
                 }
-                composable<ShopProduct> {
-                    val screen = it.toRoute<ShopProduct>()
+
+                composable<ShopProductDetails>(
+                    typeMap = mapOf(typeOf<ShopProduct>() to ShopProductParameterType),
+                ) {
+                    val screen = it.toRoute<ShopProductDetails>()
 
                     ShopProductScreen(
-                        productId = screen.productId,
+                        product = screen.product,
                         onBackPressed = { navController.navigateUpSafely(screen) },
                     )
                 }
@@ -344,10 +345,8 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
 
                 composable<ArchiveMeeting> {
                     val screen = it.toRoute<ArchiveMeeting>()
-
                     ArchiveMeetingScreen(
-                        onBackPressed = { navController.navigateUpSafely(screen) },
-                        meetingNumber = screen.meetingNumber,
+                        navigateUp = { navController.navigateUpSafely(screen) },
                     )
                 }
 

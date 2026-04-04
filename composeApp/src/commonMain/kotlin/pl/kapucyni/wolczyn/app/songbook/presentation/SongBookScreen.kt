@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
+import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.songbook.domain.model.Song
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongBookSearchBar
 import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongCard
@@ -39,21 +39,26 @@ fun SongBookScreen(
     onBackPressed: () -> Unit,
     viewModel: SongBookViewModel = koinViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val loading by viewModel.loading.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
 
-    SongBookScreenContent(
-        state = screenState,
-        searchQuery = searchQuery,
-        onSearchQueryChange = viewModel::updateSearchQuery,
-        onBackPressed = onBackPressed
-    )
+    state?.let { songs ->
+        SongBookScreenContent(
+            songs = songs,
+            searchQuery = searchQuery,
+            onSearchQueryChange = viewModel::updateSearchQuery,
+            onBackPressed = onBackPressed
+        )
+    } ?: LoadingBox()
+
+    LoadingDialog(visible = loading)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongBookScreenContent(
-    state: State<List<Song>>,
+    songs: List<Song>,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onBackPressed: () -> Unit
@@ -91,24 +96,19 @@ fun SongBookScreenContent(
             )
         }
 
-        when (state) {
-            is State.Loading -> item { LoadingBox() }
-            is State.Success -> {
-                items(items = state.data, key = { it.title }) { song ->
-                    SongCard(
-                        song = song,
-                        modifier = Modifier.fillParentMaxWidth()
-                    )
-                }
-
-                if (state.data.isEmpty())
-                    item {
-                        EmptyListInfo(
-                            messageRes = Res.string.empty_search_list,
-                            drawableRes = Res.drawable.ic_cap_song_book
-                        )
-                    }
-            }
+        items(items = songs, key = { it.title }) { song ->
+            SongCard(
+                song = song,
+                modifier = Modifier.fillParentMaxWidth()
+            )
         }
+
+        if (songs.isEmpty())
+            item {
+                EmptyListInfo(
+                    messageRes = Res.string.empty_search_list,
+                    drawableRes = Res.drawable.ic_cap_song_book
+                )
+            }
     }
 }

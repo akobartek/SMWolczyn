@@ -25,7 +25,6 @@ import pl.kapucyni.wolczyn.app.admin.presentation.composables.AdminDataDialog
 import pl.kapucyni.wolczyn.app.admin.presentation.composables.AdminQuizDialog
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminData
 import pl.kapucyni.wolczyn.app.admin.presentation.model.AdminScreenAction
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
@@ -51,18 +50,18 @@ fun AdminScreen(
     onBackPressed: () -> Unit,
     viewModel: AdminViewModel = koinViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.app_data),
         onBackPressed = onBackPressed
     ) {
-        if (screenState is State.Success<FirestoreData>)
+        state?.let { data ->
             AdminScreenContent(
-                data = (screenState as State.Success<FirestoreData>).data,
+                data = data,
                 handleScreenAction = viewModel::handleScreenAction
             )
-        else LoadingBox()
+        } ?: LoadingBox()
     }
 }
 

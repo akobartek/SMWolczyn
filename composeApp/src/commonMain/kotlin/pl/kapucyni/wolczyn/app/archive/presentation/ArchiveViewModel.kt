@@ -1,10 +1,6 @@
 package pl.kapucyni.wolczyn.app.archive.presentation
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
@@ -16,12 +12,11 @@ class ArchiveViewModel(
 ) : BasicViewModel<List<ArchiveMeeting>>() {
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                getArchiveUseCase()
-                    .shareIn(this, SharingStarted.Lazily, 1)
-                    .collect { archive -> _screenState.update { State.Success(archive) } }
-            } catch (_: Exception) {
+        viewModelScope.launch {
+            runCatching {
+                getArchiveUseCase().collect { archive ->
+                    _state.update { archive }
+                }
             }
         }
     }

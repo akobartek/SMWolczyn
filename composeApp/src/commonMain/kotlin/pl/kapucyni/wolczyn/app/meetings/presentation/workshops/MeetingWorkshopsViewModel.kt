@@ -5,10 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
@@ -34,15 +32,14 @@ class MeetingWorkshopsViewModel(
     val isLoading = _isLoading.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             meetingsRepository.getMeetingParticipants(meetingId, UserType.ADMIN)
                 .combine(meetingsRepository.getWorkshopsFlow()) { participants, workshops ->
                     workshops.map {
                         it to participants.count { participant -> participant.workshop == it.name }
                     }
                 }
-                .shareIn(this, SharingStarted.Lazily, 1)
-                .collect { data -> _screenState.update { State.Success(data) } }
+                .collect { data -> _state.update { data } }
         }
     }
 

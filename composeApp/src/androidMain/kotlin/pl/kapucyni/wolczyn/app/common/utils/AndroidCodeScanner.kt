@@ -30,7 +30,6 @@ class AndroidCodeScanner(private val context: Context) : CodeScanner {
             .getClient(context, options)
             .startScan()
             .addOnSuccessListener { barcode ->
-                println("XDDD sukces")
                 barcode.rawValue
                     ?.takeIf { it.isValidEmail() }
                     ?.let {

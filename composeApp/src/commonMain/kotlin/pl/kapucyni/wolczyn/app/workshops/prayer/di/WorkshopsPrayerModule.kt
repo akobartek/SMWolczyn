@@ -1,6 +1,6 @@
 package pl.kapucyni.wolczyn.app.workshops.prayer.di
 
-import org.koin.compose.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.workshops.prayer.data.repository.PrayerWorkshopRepositoryImpl
 import pl.kapucyni.wolczyn.app.workshops.prayer.data.sources.FirestorePrayerWorkshopSource

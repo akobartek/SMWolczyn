@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.presentation
 
 import kotlinx.serialization.Serializable
+import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 
 @Serializable
@@ -70,7 +71,7 @@ sealed interface Screen {
     data object Shop : Screen
 
     @Serializable
-    data class ShopProduct(val productId: String) : Screen
+    data class ShopProductDetails(val product: ShopProduct) : Screen
 
     @Serializable
     data object BreviarySelect : Screen

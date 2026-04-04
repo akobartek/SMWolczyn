@@ -1,7 +1,9 @@
 package pl.kapucyni.wolczyn.app.auth.presentation.signin
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dev.gitlive.firebase.FirebaseNetworkException
 import dev.gitlive.firebase.auth.FirebaseAuthException
 import dev.gitlive.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -18,6 +20,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.EmailNotVerifiedException
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.EmailErrorType
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.NoInternetAction
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreenState.PasswordErrorType
+import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.ResetPasswordMessageSent
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SignInError
@@ -26,9 +29,11 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.Verif
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 
 class SignInViewModel(
-    email: String,
+    savedStateHandle: SavedStateHandle,
     private val authRepository: AuthRepository,
 ) : ViewModel() {
+
+    private val email = savedStateHandle.toRoute<Screen.SignIn>().email
 
     private val _state = MutableStateFlow(SignInScreenState(email = email))
     val state: StateFlow<SignInScreenState> = _state.asStateFlow()

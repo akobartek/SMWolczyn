@@ -3,8 +3,6 @@ package pl.kapucyni.wolczyn.app.admin.presentation
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.admin.data.model.FirestoreData
@@ -34,12 +32,11 @@ class AdminViewModel(
 ) : BasicViewModel<FirestoreData>() {
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                getAppDataUseCase()
-                    .shareIn(this, SharingStarted.Lazily, 1)
-                    .collect { data -> _screenState.update { State.Success(data) } }
-            } catch (_: Exception) {
+        viewModelScope.launch {
+            runCatching {
+                getAppDataUseCase().collect { data ->
+                    _state.update { data }
+                }
             }
         }
     }
@@ -62,19 +59,19 @@ class AdminViewModel(
     }
 
     private fun onShopProductUpdate(product: FirestoreShopProduct) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             saveShopProductUseCase(product)
         }
     }
 
     private fun onQuizUpdate(quiz: FirestoreQuiz, newState: QuizState) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             saveQuizUseCase(quiz.copy(state = newState))
         }
     }
 
     private fun onPromotionAdd(newPromotionName: String, isFromKitchen: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             savePromotionUseCase(
                 FirestorePromotion(id = randomUUID(), name = newPromotionName),
                 isFromKitchen
@@ -83,13 +80,13 @@ class AdminViewModel(
     }
 
     private fun onPromotionUpdate(promotion: FirestorePromotion, isFromKitchen: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             savePromotionUseCase(promotion, isFromKitchen)
         }
     }
 
     private fun onPromotionDelete(promotionId: String, isFromKitchen: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             deletePromotionUseCase(promotionId, isFromKitchen)
         }
     }

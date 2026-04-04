@@ -1,5 +1,8 @@
 package pl.kapucyni.wolczyn.app.shop.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ShopProduct(
     val id: String = "",
     val name: String = "",

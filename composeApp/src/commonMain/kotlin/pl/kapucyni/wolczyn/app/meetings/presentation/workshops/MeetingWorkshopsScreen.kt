@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -38,7 +37,7 @@ fun MeetingWorkshopsScreen(
     navigateUp: () -> Unit,
     viewModel: MeetingWorkshopsViewModel = koinViewModel(),
 ) {
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val isAdding by viewModel.isAdding.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
@@ -46,7 +45,7 @@ fun MeetingWorkshopsScreen(
         title = stringResource(Res.string.workshops_title),
         onBackPressed = navigateUp,
         floatingActionButton = {
-            if (state is State.Success) {
+            if (state != null) {
                 val animatedRotation: Float by animateFloatAsState(
                     if (isAdding.not()) 0f else 45f,
                     label = "rotation",
@@ -65,41 +64,38 @@ fun MeetingWorkshopsScreen(
             }
         },
     ) {
-        when (state) {
-            is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.data?.let { pairs ->
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(160.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 8.dp),
-                ) {
-                    items(
-                        items = pairs,
-                        key = { (workshop, _) -> workshop.id },
-                        span = { GridItemSpan(1) },
-                    ) { (workshop, count) ->
-                        WorkshopCard(
-                            workshop = workshop,
-                            count = count,
-                            onAvailableChange = { available ->
-                                viewModel.handleAction(UpdateWorkshop(workshop, available))
-                            },
+        state?.let { pairs ->
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(160.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
+            ) {
+                items(
+                    items = pairs,
+                    key = { (workshop, _) -> workshop.id },
+                    span = { GridItemSpan(1) },
+                ) { (workshop, count) ->
+                    WorkshopCard(
+                        workshop = workshop,
+                        count = count,
+                        onAvailableChange = { available ->
+                            viewModel.handleAction(UpdateWorkshop(workshop, available))
+                        },
+                    )
+                }
+
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    AnimatedVisibility(isAdding) {
+                        WorkshopNewTextField(
+                            onSave = { viewModel.handleAction(SaveWorkshop(it)) },
                         )
                     }
-
-                    item(span = { GridItemSpan(maxLineSpan) }) {
-                        AnimatedVisibility(isAdding) {
-                            WorkshopNewTextField(
-                                onSave = { viewModel.handleAction(SaveWorkshop(it)) },
-                            )
-                        }
-                    }
                 }
-            } ?: LoadingBox()
-        }
+            }
+        } ?: LoadingBox()
     }
 
     LoadingDialog(visible = isLoading)

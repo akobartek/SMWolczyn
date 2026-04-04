@@ -16,7 +16,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.archive.domain.model.ArchiveMeeting
 import pl.kapucyni.wolczyn.app.archive.presentation.composables.ArchiveMeetingCard
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import smwolczyn.composeapp.generated.resources.Res
@@ -29,48 +28,43 @@ fun ArchiveScreen(
     onMeetingClick: (Int) -> Unit,
     viewModel: ArchiveViewModel = koinViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.archive_title),
         onBackPressed = onBackPressed
     ) {
-        ArchiveScreenContent(
-            screenState = screenState,
-            onMeetingClick = onMeetingClick
-        )
+        state?.let { archive ->
+            ArchiveScreenContent(
+                archive = archive,
+                onMeetingClick = onMeetingClick,
+            )
+        } ?: LoadingBox()
     }
 }
 
 @Composable
 fun ArchiveScreenContent(
-    screenState: State<List<ArchiveMeeting>>,
+    archive: List<ArchiveMeeting>,
     onMeetingClick: (Int) -> Unit = {}
 ) {
-
-    when (screenState) {
-        is State.Loading -> LoadingBox()
-        is State.Success -> {
-            val archive = screenState.data
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(300.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-                    .padding(bottom = 12.dp)
-            ) {
-                items(
-                    items = archive,
-                    key = { meeting -> meeting.number },
-                ) { meeting ->
-                    ArchiveMeetingCard(
-                        meeting = meeting,
-                        onMeetingClick = onMeetingClick
-                    )
-                }
-            }
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(300.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp)
+            .padding(bottom = 12.dp)
+    ) {
+        items(
+            items = archive,
+            key = { meeting -> meeting.number },
+        ) { meeting ->
+            ArchiveMeetingCard(
+                meeting = meeting,
+                onMeetingClick = onMeetingClick
+            )
         }
     }
 }

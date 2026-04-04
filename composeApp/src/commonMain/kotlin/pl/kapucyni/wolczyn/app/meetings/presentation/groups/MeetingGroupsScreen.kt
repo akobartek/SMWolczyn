@@ -14,7 +14,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
@@ -35,14 +34,14 @@ fun MeetingGroupsScreen(
     navigateUp: () -> Unit,
     viewModel: MeetingGroupsViewModel = koinViewModel(),
 ) {
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val clipboard = LocalClipboardManager.current
 
     ScreenLayout(
         title = stringResource(Res.string.meeting_groups),
         onBackPressed = navigateUp,
         actionIcon =
-            if ((state as? State.Success)?.data?.newGroups.isNullOrEmpty().not()) {
+            if (state?.newGroups.isNullOrEmpty().not()) {
                 {
                     IconButton(onClick = { viewModel.handleAction(ToggleAnimatorsDialog) }) {
                         Icon(
@@ -54,9 +53,9 @@ fun MeetingGroupsScreen(
                 }
             } else null,
         floatingActionButton = {
-            (state as? State.Success)?.data?.let { data ->
+            state?.let { state ->
                 when {
-                    data.saveAvailable -> {
+                    state.saveAvailable -> {
                         FloatingActionButton(onClick = { viewModel.handleAction(SaveGroups) }) {
                             Icon(
                                 imageVector = vectorResource(Res.drawable.ic_save),
@@ -65,9 +64,9 @@ fun MeetingGroupsScreen(
                         }
                     }
 
-                    data.copyAvailable -> {
+                    state.copyAvailable -> {
                         FloatingActionButton(onClick = {
-                            clipboard.setText(data.savedGroups.getClipboardData())
+                            clipboard.setText(state.savedGroups.getClipboardData())
                         }) {
                             Icon(
                                 imageVector = vectorResource(Res.drawable.ic_copy_all),
@@ -79,15 +78,12 @@ fun MeetingGroupsScreen(
             }
         },
     ) {
-        when (state) {
-            is State.Loading -> LoadingBox()
-            is State.Success -> (state as? State.Success)?.data?.let { state ->
-                MeetingGroupsScreenContent(
-                    state = state,
-                    handleAction = viewModel::handleAction,
-                )
-            } ?: LoadingBox()
-        }
+        state?.let { state ->
+            MeetingGroupsScreenContent(
+                state = state,
+                handleAction = viewModel::handleAction,
+            )
+        } ?: LoadingBox()
     }
 }
 

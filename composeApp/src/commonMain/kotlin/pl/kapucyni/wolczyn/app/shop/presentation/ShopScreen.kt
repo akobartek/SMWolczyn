@@ -16,12 +16,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.shop.domain.model.Shop
+import pl.kapucyni.wolczyn.app.shop.domain.model.ShopProduct
 import pl.kapucyni.wolczyn.app.shop.presentation.composables.ProductListItem
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.empty_shop_list
@@ -32,67 +32,63 @@ import smwolczyn.composeapp.generated.resources.shop_title
 @Composable
 fun ShopScreen(
     onBackPressed: () -> Unit,
-    onProductClick: (String) -> Unit,
+    onProductClick: (ShopProduct) -> Unit,
     viewModel: ShopViewModel = koinViewModel(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     ScreenLayout(
         title = stringResource(Res.string.shop_title),
         onBackPressed = onBackPressed
     ) {
-        ShopScreenContent(screenState, onProductClick)
+        state?.let { shop ->
+            ShopScreenContent(shop, onProductClick)
+        } ?: LoadingBox()
     }
 }
 
 @Composable
 fun ShopScreenContent(
-    screenState: State<Shop>,
-    onProductClick: (String) -> Unit,
+    shop: Shop,
+    onProductClick: (ShopProduct) -> Unit,
 ) {
-    when (screenState) {
-        is State.Loading -> LoadingBox()
-        is State.Success -> {
-            val shop = screenState.data
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(160.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = 12.dp)
-            ) {
-                items(
-                    items = shop.promotions,
-                    key = { it },
-                    span = { GridItemSpan(maxLineSpan) },
-                ) { promo ->
-                    PromotionBar(
-                        name = promo,
-                        onRemove = null,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                    )
-                }
-
-                items(
-                    items = shop.products,
-                    key = { product -> product.id },
-                ) { product ->
-                    ProductListItem(
-                        product = product,
-                        modifier = Modifier.clickable { onProductClick(product.id) }
-                    )
-                }
-
-                if (shop.products.isEmpty())
-                    item(span = { GridItemSpan(maxLineSpan) }) {
-                        EmptyListInfo(
-                            messageRes = Res.string.empty_shop_list,
-                            drawableRes = Res.drawable.ic_cap_shop
-                        )
-                    }
-            }
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(160.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp)
+            .padding(bottom = 12.dp)
+    ) {
+        items(
+            items = shop.promotions,
+            key = { it },
+            span = { GridItemSpan(maxLineSpan) },
+        ) { promo ->
+            PromotionBar(
+                name = promo,
+                onRemove = null,
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
         }
+
+        items(
+            items = shop.products,
+            key = { product -> product.id },
+        ) { product ->
+            ProductListItem(
+                product = product,
+                modifier = Modifier.clickable { onProductClick(product) }
+            )
+        }
+
+        if (shop.products.isEmpty())
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                EmptyListInfo(
+                    messageRes = Res.string.empty_shop_list,
+                    drawableRes = Res.drawable.ic_cap_shop
+                )
+            }
     }
 }

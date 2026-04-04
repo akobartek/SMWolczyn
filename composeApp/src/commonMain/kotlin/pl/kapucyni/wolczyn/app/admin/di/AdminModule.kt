@@ -1,6 +1,6 @@
 package pl.kapucyni.wolczyn.app.admin.di
 
-import org.koin.compose.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.admin.data.model.FirestoreData
@@ -26,5 +26,5 @@ val adminModule = module {
     single { SavePromotionUseCase(get()) }
     single { DeletePromotionUseCase(get()) }
 
-    viewModel { AdminViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModelOf(::AdminViewModel)
 }

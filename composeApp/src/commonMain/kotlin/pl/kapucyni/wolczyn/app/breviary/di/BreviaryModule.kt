@@ -4,7 +4,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import org.koin.compose.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.breviary.data.database.BreviaryDao
 import pl.kapucyni.wolczyn.app.breviary.data.database.BreviaryDatabase
@@ -42,7 +42,7 @@ val breviaryModule = module {
     single { SaveBreviaryUseCase(get()) }
     single { ClearBreviaryDbUseCase(get()) }
 
-    viewModel { BreviarySelectViewModel(get()) }
-    viewModel { BreviaryTextViewModel(get(), get()) }
-    viewModel { BreviarySaveViewModel(get(), get()) }
+    viewModelOf(::BreviarySelectViewModel)
+    viewModelOf(::BreviaryTextViewModel)
+    viewModelOf(::BreviarySaveViewModel)
 }

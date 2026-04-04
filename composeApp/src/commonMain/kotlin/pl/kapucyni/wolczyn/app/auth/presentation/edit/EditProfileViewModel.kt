@@ -1,19 +1,15 @@
 package pl.kapucyni.wolczyn.app.auth.presentation.edit
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.gitlive.firebase.FirebaseNetworkException
-import dev.gitlive.firebase.firestore.Timestamp
-import dev.gitlive.firebase.firestore.fromMilliseconds
 import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
+import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.usecase.UpdateUserUseCase
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.SaveData
@@ -22,25 +18,40 @@ import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateBi
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateCity
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateLastName
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreenEvent.NavigateUp
+import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.DataSaveError
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.EditProfileSuccess
+import kotlin.time.Clock
 
 class EditProfileViewModel(
-    user: User,
+    authRepository: AuthRepository,
     private val updateUserUseCase: UpdateUserUseCase,
-) : ViewModel() {
+) : BasicViewModel<EditProfileScreenState>() {
 
-    private var currentUser: User = user
-    private val _state = MutableStateFlow(
-        EditProfileScreenState(
-            firstName = user.firstName,
-            lastName = user.lastName,
-            city = user.city,
-            birthdayDate = user.birthday?.let { it.seconds * 1000 },
-        )
-    )
-    val state: StateFlow<EditProfileScreenState> = _state.asStateFlow()
+    private var currentUser: User? = authRepository.currentUser.value
+
+    private val _events = Channel<EditProfileScreenEvent>()
+    val events = _events.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            authRepository.currentUser.collect { user ->
+                currentUser = user
+                user?.let {
+                    _state.update { _ ->
+                        EditProfileScreenState(
+                            firstName = user.firstName,
+                            lastName = user.lastName,
+                            city = user.city,
+                            birthdayDate = user.birthday?.let { it.seconds * 1000 },
+                        )
+                    }
+                } ?: _events.send(NavigateUp)
+            }
+        }
+    }
 
     fun handleAction(action: EditProfileAction) {
         when (action) {
@@ -54,30 +65,33 @@ class EditProfileViewModel(
     }
 
     private fun updateFirstName(firstName: String) {
-        _state.update { it.copy(firstName = firstName, firstNameError = false) }
+        _state.update { it?.copy(firstName = firstName, firstNameError = false) }
     }
 
     private fun updateLastName(lastName: String) {
-        _state.update { it.copy(lastName = lastName, lastNameError = false) }
+        _state.update { it?.copy(lastName = lastName, lastNameError = false) }
     }
 
     private fun updateCity(city: String) {
-        _state.update { it.copy(city = city, cityError = false) }
+        _state.update { it?.copy(city = city, cityError = false) }
     }
 
     private fun updateBirthdayDate(value: Long) {
-        _state.update { it.copy(birthdayDate = value, birthdayError = false) }
+        _state.update { it?.copy(birthdayDate = value, birthdayError = false) }
     }
 
     private fun hideNoInternetDialog() {
-        _state.update { it.copy(noInternetDialogVisible = false) }
+        _state.update { it?.copy(noInternetDialogVisible = false) }
     }
 
     private fun saveData() {
-        if (validateInput().not()) return
+        val currentUser = currentUser ?: return
+        val state = _state.value ?: return
+        if (state.validateInput(currentUser).not()) return
         toggleLoading(true)
+
         viewModelScope.launch(Dispatchers.IO) {
-            with(state.value) {
+            with(state) {
                 updateUserUseCase(
                     user = currentUser,
                     firstName = firstName,
@@ -90,19 +104,11 @@ class EditProfileViewModel(
                 toggleLoading(false)
                 onSuccess {
                     SnackbarController.sendEvent(EditProfileSuccess)
-                    with(state.value) {
-                        currentUser = currentUser.copy(
-                            firstName = firstName,
-                            lastName = lastName,
-                            city = city,
-                            birthday = birthdayDate?.let { Timestamp.fromMilliseconds(it.toDouble()) },
-                        )
-                    }
                 }
                 onFailure { throwable ->
                     when (throwable) {
                         is FirebaseNetworkException ->
-                            _state.update { it.copy(noInternetDialogVisible = true) }
+                            _state.update { it?.copy(noInternetDialogVisible = true) }
 
                         else -> {
                             SnackbarController.sendEvent(DataSaveError)
@@ -113,21 +119,19 @@ class EditProfileViewModel(
         }
     }
 
-    private fun toggleLoading(value: Boolean) = _state.update { it.copy(loading = value) }
+    private fun toggleLoading(value: Boolean) = _state.update { it?.copy(loading = value) }
 
-    private fun validateInput(): Boolean {
-        val newState = with(state.value) {
-            copy(
-                firstName = firstName.trim(),
-                firstNameError = firstName.trim().isBlank(),
-                lastName = lastName.trim(),
-                lastNameError = lastName.trim().isBlank(),
-                city = city.trim(),
-                cityError = city.trim().isBlank(),
-                birthdayError =
-                    birthdayDate?.let { it > Clock.System.now().toEpochMilliseconds() } ?: false,
-            )
-        }
+    private fun EditProfileScreenState.validateInput(currentUser: User): Boolean {
+        val newState = copy(
+            firstName = firstName.trim(),
+            firstNameError = firstName.trim().isBlank(),
+            lastName = lastName.trim(),
+            lastNameError = lastName.trim().isBlank(),
+            city = city.trim(),
+            cityError = city.trim().isBlank(),
+            birthdayError =
+                birthdayDate?.let { it > Clock.System.now().toEpochMilliseconds() } ?: false,
+        )
         _state.update { newState }
         val userChanged = currentUser.firstName != newState.firstName
                 || currentUser.lastName != newState.lastName

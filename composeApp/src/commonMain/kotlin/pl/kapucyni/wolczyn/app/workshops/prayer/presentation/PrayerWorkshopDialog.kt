@@ -10,11 +10,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FullScreenDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HeightSpacer
-import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.workshops.prayer.domain.model.PrayerWorkshopTask
 import pl.kapucyni.wolczyn.app.workshops.prayer.presentation.composables.PrayerTaskCard
 import smwolczyn.composeapp.generated.resources.Res
@@ -29,12 +27,12 @@ fun PrayerWorkshopDialog(
     onDismiss: () -> Unit,
     viewModel: PrayerWorkshopViewModel = koinViewModel(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     PrayerWorkshopDialogContent(
         isVisible = isVisible,
         onDismiss = onDismiss,
-        state = screenState,
+        state = state,
     )
 }
 
@@ -42,7 +40,7 @@ fun PrayerWorkshopDialog(
 fun PrayerWorkshopDialogContent(
     isVisible: Boolean,
     onDismiss: () -> Unit,
-    state: State<List<PrayerWorkshopTask>>,
+    state: List<PrayerWorkshopTask>?,
 ) {
     FullScreenDialog(
         isVisible = isVisible,
@@ -50,24 +48,24 @@ fun PrayerWorkshopDialogContent(
         onAction = null,
         onDismiss = onDismiss,
     ) {
-        if (state is State.Loading) LoadingBox()
-        else
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                items(items = (state as State.Success).data, key = { it.name }) { task ->
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            state?.let { state ->
+                items(items = state, key = { it.name }) { task ->
                     PrayerTaskCard(task = task)
                 }
-
-                if (state.data.isEmpty())
-                    item {
-                        EmptyListInfo(
-                            messageRes = Res.string.empty_workshop_tasks_list,
-                            drawableRes = Res.drawable.ic_cap_schedule,
-                        )
-                    }
-
-                item {
-                    HeightSpacer(12.dp)
-                }
             }
+
+            if (state?.isEmpty() ?: true)
+                item {
+                    EmptyListInfo(
+                        messageRes = Res.string.empty_workshop_tasks_list,
+                        drawableRes = Res.drawable.ic_cap_schedule,
+                    )
+                }
+
+            item {
+                HeightSpacer(12.dp)
+            }
+        }
     }
 }

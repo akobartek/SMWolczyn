@@ -110,8 +110,7 @@ fun ParticipantsScreen(
                                 onFailure = { viewModel.handleAction(QrScanFailure(invalidValue = it)) },
                                 onCancel = {}
                             )
-                        } catch (e: Exception) {
-                            println("XDDDD ${e.message}")
+                        } catch (_: Exception) {
                             viewModel.handleAction(QrScanFailure(invalidValue = false))
                         }
                     }) {

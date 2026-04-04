@@ -1,9 +1,7 @@
 package pl.kapucyni.wolczyn.app.songbook.presentation
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -22,15 +20,16 @@ class SongBookViewModel(private val filterSongsUseCase: FilterSongsUseCase) :
     val searchQuery = _searchQuery.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _searchQuery
-                .onEach { _screenState.update { State.Loading } }
+                .onEach { setLoading(true) }
                 .debounce { query ->
                     if (query.isNotBlank()) 1226L // PDK
                     else 0L
                 }
                 .collect { query ->
-                    _screenState.update { State.Success(filterSongsUseCase(query)) }
+                    _state.update { filterSongsUseCase(query) }
+                    setLoading(false)
                 }
         }
     }

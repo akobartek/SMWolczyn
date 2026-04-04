@@ -1,6 +1,6 @@
 package pl.kapucyni.wolczyn.app.kitchen.di
 
-import org.koin.compose.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.kitchen.data.repository.KitchenRepositoryImpl
@@ -20,5 +20,5 @@ val kitchenModule = module {
     }
     single { GetKitchenMenuUseCase(get()) }
 
-    viewModel { KitchenViewModel(get()) }
+    viewModelOf(::KitchenViewModel)
 }

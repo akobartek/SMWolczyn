@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.SignUp
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.ToggleAccountExistsDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpAction.ToggleNoInternetDialog
@@ -72,7 +73,7 @@ import smwolczyn.composeapp.generated.resources.sign_up_user_exists_dialog_title
 fun SignUpScreen(
     navigateUp: () -> Unit,
     openSignIn: (String) -> Unit,
-    viewModel: SignUpViewModel,
+    viewModel: SignUpViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 

@@ -14,8 +14,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
-import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.PromotionBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynTitleText
@@ -43,7 +41,7 @@ fun KitchenScreen(
     onOpenQuiz: (String) -> Unit,
     viewModel: KitchenViewModel = koinViewModel()
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val openPromotions by viewModel.openPromotions.collectAsStateWithLifecycle()
 
     ScreenLayout(
@@ -51,7 +49,7 @@ fun KitchenScreen(
         onBackPressed = onBackPressed
     ) {
         KitchenScreenContent(
-            screenState = screenState,
+            kitchenMenu = state,
             openPromotions = openPromotions,
             onStartQuiz = { onOpenQuiz(KITCHEN_QUIZ) },
             onPromotionRemove = viewModel::removePromotion
@@ -61,7 +59,7 @@ fun KitchenScreen(
 
 @Composable
 fun KitchenScreenContent(
-    screenState: State<KitchenMenu>,
+    kitchenMenu: KitchenMenu?,
     openPromotions: List<String>,
     onStartQuiz: () -> Unit,
     onPromotionRemove: (String) -> Unit,
@@ -72,9 +70,7 @@ fun KitchenScreenContent(
             .padding(horizontal = 20.dp)
             .padding(bottom = 12.dp)
     ) {
-        if (screenState is State.Success
-            && screenState.data.quiz?.state in arrayOf(QuizState.ONGOING, QuizState.FINISHED)
-        ) {
+        if (kitchenMenu?.quiz?.state in arrayOf(QuizState.ONGOING, QuizState.FINISHED)) {
             item {
                 QuizNotificationBar(
                     onStartQuiz = onStartQuiz,
@@ -99,28 +95,23 @@ fun KitchenScreenContent(
             )
         }
 
-        when (screenState) {
-            is State.Loading -> item { LoadingBox() }
-            is State.Success -> {
-                screenState.data.menu.forEach { (section, menuItems) ->
-                    item {
-                        KitchenSectionHeader(
-                            title = when (section) {
-                                KitchenMenuSection.SNACKS -> Res.string.kitchen_section_snacks
-                                KitchenMenuSection.SWEETS -> Res.string.kitchen_section_sweets
-                                KitchenMenuSection.BEVERAGES -> Res.string.kitchen_section_beverages
-                            },
-                            icon = when (section) {
-                                KitchenMenuSection.SNACKS -> Res.drawable.ic_kitchen_snacks
-                                KitchenMenuSection.SWEETS -> Res.drawable.ic_kitchen_sweets
-                                KitchenMenuSection.BEVERAGES -> Res.drawable.ic_kitchen_beverages
-                            },
-                        )
-                    }
-                    items(items = menuItems, key = { it.id }) { item ->
-                        KitchenMenuItem(item = item)
-                    }
-                }
+        kitchenMenu?.menu?.forEach { (section, menuItems) ->
+            item {
+                KitchenSectionHeader(
+                    title = when (section) {
+                        KitchenMenuSection.SNACKS -> Res.string.kitchen_section_snacks
+                        KitchenMenuSection.SWEETS -> Res.string.kitchen_section_sweets
+                        KitchenMenuSection.BEVERAGES -> Res.string.kitchen_section_beverages
+                    },
+                    icon = when (section) {
+                        KitchenMenuSection.SNACKS -> Res.drawable.ic_kitchen_snacks
+                        KitchenMenuSection.SWEETS -> Res.drawable.ic_kitchen_sweets
+                        KitchenMenuSection.BEVERAGES -> Res.drawable.ic_kitchen_beverages
+                    },
+                )
+            }
+            items(items = menuItems, key = { it.id }) { item ->
+                KitchenMenuItem(item = item)
             }
         }
     }

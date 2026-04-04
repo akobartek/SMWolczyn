@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.viewmodel.koinViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.composables.BirthdayTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CityTextField
 import pl.kapucyni.wolczyn.app.common.presentation.composables.FirstNameTextField
@@ -33,6 +34,9 @@ import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateBi
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateCity
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileAction.UpdateLastName
+import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreenEvent.NavigateUp
+import pl.kapucyni.wolczyn.app.common.presentation.ObserveAsEvents
+import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NoInternetDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
@@ -45,15 +49,23 @@ import smwolczyn.composeapp.generated.resources.ic_save
 @Composable
 fun EditProfileScreen(
     navigateUp: () -> Unit,
-    viewModel: EditProfileViewModel,
+    viewModel: EditProfileViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    EditProfileScreenContent(
-        navigateUp = navigateUp,
-        state = state,
-        handleAction = viewModel::handleAction,
-    )
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is NavigateUp -> navigateUp()
+        }
+    }
+
+    state?.let { state ->
+        EditProfileScreenContent(
+            navigateUp = navigateUp,
+            state = state,
+            handleAction = viewModel::handleAction,
+        )
+    } ?: LoadingBox()
 }
 
 @Composable

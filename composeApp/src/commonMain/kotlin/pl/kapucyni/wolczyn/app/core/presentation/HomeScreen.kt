@@ -27,10 +27,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
-import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel.State
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
-import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.NotificationBar
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
@@ -52,7 +50,7 @@ fun HomeScreen(
     handleAuthAction: (AuthAction) -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
-    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val appConfiguration by viewModel.appConfiguration.collectAsStateWithLifecycle()
 
     ScreenLayout(
@@ -80,18 +78,14 @@ fun HomeScreen(
             .animateContentSize()
             .verticalScroll(rememberScrollState()),
     ) {
-        when (screenState) {
-            is State.Loading -> LoadingBox()
-            is State.Success ->
-                HomeScreenContent(
-                    appConfiguration = appConfiguration,
-                    notifications = (screenState as? State.Success)?.data,
-                    user = user,
-                    onTileClick = { tileType ->
-                        tileType.navRoute(appConfiguration)?.let { navigate(it) }
-                    },
-                )
-        }
+        HomeScreenContent(
+            appConfiguration = appConfiguration,
+            notifications = state,
+            user = user,
+            onTileClick = { tileType ->
+                tileType.navRoute(appConfiguration)?.let { navigate(it) }
+            },
+        )
     }
 }
 
