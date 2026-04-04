@@ -13,6 +13,8 @@ data class SigningsAdminState(
     val lastNameError: Boolean = false,
     val city: String = "",
     val cityError: Boolean = false,
+    val contactNumber: String = "",
+    val contactNumberError: Boolean = false,
     val email: String = "",
     val emailEnabled: Boolean = true,
     val emailError: Boolean = false,
@@ -28,7 +30,9 @@ data class SigningsAdminState(
     val selectedWorkshop: String? = null,
     val workshopsEnabled: Boolean = false,
     val workshopError: Boolean = false,
-    val contactNumber: String = "",
+    val notesEnabled: Boolean = false,
+    val notes: String = "",
+    val notesError: Boolean = false,
     val noInternetDialogVisible: Boolean = false,
 ) {
     companion object {
@@ -48,6 +52,8 @@ data class SigningsAdminState(
                 selectedWorkshop = workshop,
                 workshopsEnabled = type.canSelectWorkshops(),
                 contactNumber = contactNumber,
+                notes = notes,
+                notesEnabled = type.notesAvailable(),
             )
         }
     }

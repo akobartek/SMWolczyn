@@ -29,6 +29,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.Meeti
 import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidPesel
+import pl.kapucyni.wolczyn.app.common.utils.isValidPhoneNumber
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
@@ -38,9 +39,11 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.SaveData
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateLastName
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateNotes
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdatePesel
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateStatuteConsent
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateType
@@ -86,10 +89,12 @@ class SigningsViewModel(
             is UpdateFirstName -> updateFirstName(action.firstName)
             is UpdateLastName -> updateLastName(action.lastName)
             is UpdateCity -> updateCity(action.city)
+            is UpdateContactNumber -> updateContactNumber(action.contactNumber)
             is UpdateBirthday -> updateBirthdayDate(action.millis)
             is UpdatePesel -> updatePesel(action.pesel)
             is UpdateType -> updateType(action.type)
             is UpdateWorkshop -> updateWorkshop(action.workshop)
+            is UpdateNotes -> updateNotes(action.notes)
             is UpdateStatuteConsent -> updateStatuteConsent(action.checked)
             is SaveData -> saveData()
             is RemoveSigning -> removeSigning()
@@ -123,6 +128,7 @@ class SigningsViewModel(
                     firstName = participant?.firstName ?: user.firstName,
                     lastName = participant?.lastName ?: user.lastName,
                     city = participant?.city ?: user.city,
+                    contactNumber = participant?.contactNumber.orEmpty(),
                     email = participant?.email ?: user.email,
                     pesel = participant?.pesel ?: user.birthday?.getPeselBeginning().orEmpty(),
                     peselIsWoman = participant?.pesel?.peselIsWoman() == true,
@@ -134,6 +140,8 @@ class SigningsViewModel(
                     workshopsEnabled =
                         workshopsEnabled(participant?.type, participant?.pesel.orEmpty()),
                     selectedWorkshop = participant?.workshop,
+                    notes = participant?.notes.orEmpty(),
+                    notesEnabled = participant?.type?.notesAvailable() == true,
                     statuteChecked = participant != null,
                 )
             }
@@ -165,6 +173,15 @@ class SigningsViewModel(
     private fun updateCity(city: String) {
         _state.update {
             (it as? SigningsState.NotConfirmed)?.copy(city = city, cityError = false)
+        }
+    }
+
+    private fun updateContactNumber(contactNumber: String) {
+        _state.update {
+            (it as? SigningsState.NotConfirmed)?.copy(
+                contactNumber = contactNumber,
+                contactNumberError = false,
+            )
         }
     }
 
@@ -209,6 +226,8 @@ class SigningsViewModel(
                     selectedWorkshop = if (workshopsEnabled) it.selectedWorkshop else null,
                     workshopsEnabled = workshopsEnabled,
                     workshopError = it.workshopError && workshopsEnabled,
+                    notes = if (type.notesAvailable()) state.notes else "",
+                    notesEnabled = type.notesAvailable(),
                 )
             }
         }
@@ -219,6 +238,15 @@ class SigningsViewModel(
             (it as? SigningsState.NotConfirmed)?.copy(
                 selectedWorkshop = workshop,
                 workshopError = false
+            )
+        }
+    }
+
+    private fun updateNotes(notes: String) {
+        _state.update {
+            (it as? SigningsState.NotConfirmed)?.copy(
+                notes = notes,
+                notesError = false,
             )
         }
     }
@@ -261,11 +289,12 @@ class SigningsViewModel(
                     city = state.city.trim(),
                     email = state.email.trim(),
                     pesel = state.pesel.trim(),
-                    contactNumber = state.contactNumber.trim(),
+                    contactNumber = "+48${state.contactNumber.trim()}",
                     workshop = state.selectedWorkshop.orEmpty(),
                     birthday = state.birthdayDate?.let {
                         Timestamp.fromMilliseconds(it.toDouble())
                     } ?: Timestamp.now(),
+                    notes = state.notes,
                     createdAt = participant?.createdAt ?: Timestamp.now(),
                     paid = participant?.paid == true,
                     consents = state.consentChecked,
@@ -294,6 +323,8 @@ class SigningsViewModel(
                 lastNameError = lastName.trim().isBlank(),
                 city = city.trim(),
                 cityError = city.trim().isBlank(),
+                contactNumber = contactNumber.trim(),
+                contactNumberError = contactNumber.isValidPhoneNumber().not(),
                 birthdayError =
                     birthdayDate == null || birthdayDate > Clock.System.now().toEpochMilliseconds(),
                 pesel = pesel.trim(),
@@ -305,6 +336,10 @@ class SigningsViewModel(
                     selectedWorkshop == COSMETIC_WORKSHOP -> pesel.peselIsWoman().not()
                     else -> false
                 },
+                notes = notes.trim(),
+                notesError =
+                    if (notesEnabled) notes.trim().length > 10
+                    else false,
                 tooYoungDialogVisible = birthdayDate?.isAgeBelow(
                     age = 15,
                     other = Instant.fromEpochMilliseconds(meeting.start.toMilliseconds().toLong()),
@@ -319,6 +354,7 @@ class SigningsViewModel(
                 && newState.peselError.not()
                 && newState.typeError.not()
                 && newState.workshopError.not()
+                && newState.notesError.not()
                 && newState.tooYoungDialogVisible.not()
     }
 

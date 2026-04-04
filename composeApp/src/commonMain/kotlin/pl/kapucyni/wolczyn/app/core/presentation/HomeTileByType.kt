@@ -7,6 +7,7 @@ import pl.kapucyni.wolczyn.app.archive.presentation.composables.ArchiveHomeTile
 import pl.kapucyni.wolczyn.app.breviary.presentation.composables.BreviaryHomeTile
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.*
+import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
 import pl.kapucyni.wolczyn.app.decalogue.presentation.composables.DecalogueHomeTile
 import pl.kapucyni.wolczyn.app.kitchen.presentation.composables.KitchenHomeTile
 import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.composables.MeetingsHomeTile
@@ -17,14 +18,15 @@ import pl.kapucyni.wolczyn.app.songbook.presentation.composables.SongBookHomeTil
 import pl.kapucyni.wolczyn.app.weather.presentation.composables.WeatherHomeTile
 
 @Composable
-fun getHomeTile(
+fun HomeTileByType(
+    appConfiguration: AppConfiguration,
     tileType: HomeTileType,
     backgroundColor: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (tileType) {
-        SIGNING -> SigningsHomeTile(backgroundColor, onClick, modifier)
+        SIGNING -> SigningsHomeTile(appConfiguration, backgroundColor, onClick, modifier)
         MEETINGS -> MeetingsHomeTile(backgroundColor, onClick, modifier)
         SCHEDULE -> ScheduleHomeTile(backgroundColor, onClick, modifier)
         SONG_BOOK -> SongBookHomeTile(backgroundColor, onClick, modifier)

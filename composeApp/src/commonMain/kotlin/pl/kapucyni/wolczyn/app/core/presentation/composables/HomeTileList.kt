@@ -14,7 +14,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType
 import pl.kapucyni.wolczyn.app.common.presentation.HomeTileType.*
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
 import pl.kapucyni.wolczyn.app.core.domain.model.AppVersion
-import pl.kapucyni.wolczyn.app.core.presentation.getHomeTile
+import pl.kapucyni.wolczyn.app.core.presentation.HomeTileByType
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
@@ -42,7 +42,8 @@ fun HomeTileList(
         if (row.size == 1) {
             val tileType = row[0]
             tileType?.let {
-                getHomeTile(
+                HomeTileByType(
+                    appConfiguration = appConfiguration,
                     tileType = tileType,
                     backgroundColor = getTileBackground(i),
                     onClick = { onTileClick(tileType) },
@@ -56,7 +57,8 @@ fun HomeTileList(
             ) {
                 row.forEachIndexed { j, tileType ->
                     tileType?.let {
-                        getHomeTile(
+                        HomeTileByType(
+                            appConfiguration = appConfiguration,
                             tileType = tileType,
                             backgroundColor = getTileBackground(i + j),
                             onClick = { onTileClick(tileType) },

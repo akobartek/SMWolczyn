@@ -35,4 +35,6 @@ enum class ParticipantType(val stringRes: StringResource) {
 
     fun isSelectableByUser() =
         this != CHOIR && this != ORGANISATION && this != VOLUNTEER
+
+    fun notesAvailable() = this == ANIMATOR
 }

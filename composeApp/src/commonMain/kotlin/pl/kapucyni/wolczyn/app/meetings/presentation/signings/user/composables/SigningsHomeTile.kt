@@ -15,20 +15,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
+import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
+import pl.kapucyni.wolczyn.app.core.domain.model.AppVersion
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_cap_decalogue
+import smwolczyn.composeapp.generated.resources.signings
 import smwolczyn.composeapp.generated.resources.signings_title
 
 @Composable
 fun SigningsHomeTile(
+    appConfiguration: AppConfiguration,
     backgroundColor: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     HomeTile(
-        nameRes = Res.string.signings_title,
+        nameRes =
+            if (appConfiguration.appVersion == AppVersion.MEETING) Res.string.signings_title
+            else Res.string.signings,
         nameAlignment = Alignment.TopStart,
         height = 170.dp,
         backgroundColor = backgroundColor,
@@ -55,6 +61,7 @@ fun SigningsHomeTile(
 private fun SigningsHomeTilePreview() {
     AppTheme {
         SigningsHomeTile(
+            appConfiguration = AppConfiguration(),
             backgroundColor = wolczynColors.accent,
             onClick = {},
             modifier = Modifier.fillMaxWidth(),

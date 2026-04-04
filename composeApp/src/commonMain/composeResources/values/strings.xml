@@ -170,6 +170,8 @@
     <string name="signings_qr_code_msg">Twój kod QR:</string>
     <string name="signings_subtitle">Aby wziąć udział w tegorocznym Spotkaniu Młodych w Wołczynie, wypełnij poniższy formularz zgłoszeniowy:</string>
     <string name="signings_subtitle_edit">Twoje zgłoszenie jest już zapisane w systemie. Jeśli chcesz, możesz je edytować poniżej:</string>
+    <string name="phone_number">Numer telefonu</string>
+    <string name="phone_number_error">Podany numer telefonu jest nieprawidłowy!</string>
     <string name="pesel">PESEL</string>
     <string name="pesel_error">Podany numer PESEL jest nieprawidłowy!</string>
     <string name="participant_type_title">Funkcja uczestnika</string>
@@ -185,7 +187,12 @@
     <string name="participant_type_choir">Schola</string>
     <string name="participant_type_organisation">Organizator</string>
     <string name="workshops">Warsztaty</string>
-    <string name="workshops_error">Proszę wybrać dostępne warsztaty!</string>
+    <string name="workshops_error">Nie wybrano warsztatów!</string>
+    <string name="notes_general">Notatki</string>
+    <string name="notes_general_error">Uzupełnij notatki!</string>
+    <string name="notes_animator">Doświadczenie oraz wspólnota</string>
+    <string name="notes_animator_placeholder">Opisz swoje doświadczenie w prowadzeniu grupek/zajęć oraz z jakiej wspólnoty pochodzisz</string>
+    <string name="notes_animator_error">Aby zostać animatorem, potrzebujemy poznać Twoje doświadczenie oraz z jakiej jesteś wspólnoty</string>
     <string name="meeting_statute_title">Akceptuję %statute%.</string>
     <string name="meeting_statute_value">Regulamin Spotkania</string>
     <string name="meeting_signing_saved">Pomyślnie zapisano na Spotkanie Młodych!</string>

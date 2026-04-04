@@ -33,6 +33,11 @@ fun CharSequence.validatePassword(): SignUpPasswordError? {
     }
 }
 
+fun CharSequence.isValidPhoneNumber(): Boolean {
+    val regex = Regex("^[1-9]\\d{8}$")
+    return this.matches(regex)
+}
+
 fun CharSequence.isValidPesel(): Boolean {
     val regex = Regex("\\b[0-9]{2}([02468][1-9]|[13579][0-2])(0[1-9]|[1,2][0-9]|3[0-1])\\d{5}")
     return this.matches(regex) && peselControlNumberValidation()

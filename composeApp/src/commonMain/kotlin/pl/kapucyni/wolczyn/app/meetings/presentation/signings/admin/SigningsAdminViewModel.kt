@@ -22,6 +22,7 @@ import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
 import pl.kapucyni.wolczyn.app.common.utils.isValidPesel
+import pl.kapucyni.wolczyn.app.common.utils.isValidPhoneNumber
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
@@ -30,10 +31,12 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdmi
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.SaveData
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateBirthday
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateCity
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateEmail
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateLastName
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateNotes
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdatePesel
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateWorkshop
@@ -64,11 +67,13 @@ class SigningsAdminViewModel(
             is UpdateFirstName -> updateFirstName(action.firstName)
             is UpdateLastName -> updateLastName(action.lastName)
             is UpdateCity -> updateCity(action.city)
+            is UpdateContactNumber -> updateContactNumber(action.contactNumber)
             is UpdateBirthday -> updateBirthdayDate(action.millis)
             is UpdateEmail -> updateEmail(action.email)
             is UpdatePesel -> updatePesel(action.pesel)
             is UpdateType -> updateType(action.type)
             is UpdateWorkshop -> updateWorkshop(action.workshop)
+            is UpdateNotes -> updateNotes(action.notes)
             is SaveData -> saveData()
             is RemoveSigning -> removeSigning()
             is HideNoInternetDialog -> hideNoInternetDialog()
@@ -99,6 +104,10 @@ class SigningsAdminViewModel(
 
     private fun updateCity(city: String) {
         _state.update { it?.copy(city = city, cityError = false) }
+    }
+
+    private fun updateContactNumber(contactNumber: String) {
+        _state.update { it?.copy(contactNumber = contactNumber, contactNumberError = false) }
     }
 
     private fun updateBirthdayDate(value: Long) {
@@ -143,12 +152,18 @@ class SigningsAdminViewModel(
                 selectedWorkshop = if (workshopsEnabled) it.selectedWorkshop else null,
                 workshopsEnabled = workshopsEnabled,
                 workshopError = it.workshopError && workshopsEnabled,
+                notes = if (type.notesAvailable()) it.notes else "",
+                notesEnabled = type.notesAvailable(),
             )
         }
     }
 
     private fun updateWorkshop(workshop: String) {
         _state.update { it?.copy(selectedWorkshop = workshop, workshopError = false) }
+    }
+
+    private fun updateNotes(notes: String) {
+        _state.update { it?.copy(notes = notes, notesError = false) }
     }
 
     private fun hideNoInternetDialog() {
@@ -175,11 +190,12 @@ class SigningsAdminViewModel(
                     city = state.city.trim(),
                     email = state.email.trim(),
                     pesel = state.pesel.trim(),
-                    contactNumber = state.contactNumber.trim(),
+                    contactNumber = "+48${state.contactNumber.trim()}",
                     workshop = state.selectedWorkshop.orEmpty(),
                     birthday = state.birthdayDate?.let {
                         Timestamp.fromMilliseconds(it.toDouble())
                     } ?: Timestamp.now(),
+                    notes = state.notes,
                 )
             ).onSuccess {
                 setLoading(false)
@@ -203,12 +219,16 @@ class SigningsAdminViewModel(
                 lastNameError = lastName.trim().isBlank(),
                 city = city.trim(),
                 cityError = city.trim().isBlank(),
+                contactNumber = contactNumber.trim(),
+                contactNumberError =
+                    contactNumber.trim().isBlank().not() && contactNumber.isValidPhoneNumber().not(),
                 birthdayError =
                     birthdayDate == null || birthdayDate > Clock.System.now().toEpochMilliseconds(),
                 pesel = pesel.trim(),
                 peselError = pesel.trim().isValidPesel().not(),
                 typeError = type == null,
                 workshopError = false,
+                notes = notes.trim(),
             )
         }
         _state.update { newState }
@@ -216,6 +236,7 @@ class SigningsAdminViewModel(
                 && newState.firstNameError.not()
                 && newState.lastNameError.not()
                 && newState.cityError.not()
+                && newState.contactNumberError.not()
                 && newState.birthdayError.not()
                 && newState.peselError.not()
                 && newState.typeError.not()

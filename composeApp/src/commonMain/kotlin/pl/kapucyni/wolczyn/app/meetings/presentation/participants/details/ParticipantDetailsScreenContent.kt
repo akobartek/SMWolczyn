@@ -1,5 +1,6 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.participants.details
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +43,7 @@ import pl.kapucyni.wolczyn.app.theme.AppTheme
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.by
 import smwolczyn.composeapp.generated.resources.ic_cake
+import smwolczyn.composeapp.generated.resources.ic_call
 import smwolczyn.composeapp.generated.resources.ic_city
 import smwolczyn.composeapp.generated.resources.ic_construction
 import smwolczyn.composeapp.generated.resources.ic_email_alt
@@ -62,6 +65,7 @@ fun ParticipantDetailsScreenContent(
     confirmUserSigning: () -> Unit,
     group: Group?,
 ) {
+    val uriHandler = LocalUriHandler.current
     var consent by rememberSaveable { mutableStateOf(false) }
     var underAgeConsent by rememberSaveable { mutableStateOf(participant.isUnderAge().not()) }
     var paid by rememberSaveable { mutableStateOf(false) }
@@ -86,7 +90,15 @@ fun ParticipantDetailsScreenContent(
             ParticipantInfo(
                 imageVector = vectorResource(Res.drawable.ic_email_alt),
                 text = participant.email,
+                onClick = { uriHandler.openUri("mailto:?bcc=${participant.email}") }
             )
+
+            if (participant.contactNumber.isNotBlank())
+                ParticipantInfo(
+                    imageVector = vectorResource(Res.drawable.ic_call),
+                    text = participant.contactNumber,
+                    onClick = { uriHandler.openUri("tel:${participant.contactNumber}") }
+                )
 
             ParticipantInfo(
                 imageVector = vectorResource(Res.drawable.ic_follow_the_signs),
@@ -102,6 +114,23 @@ fun ParticipantDetailsScreenContent(
             ParticipantInfo(
                 imageVector = vectorResource(Res.drawable.ic_task_alt),
                 text = participant.createdAt.getFormattedDate(),
+            )
+        }
+
+        if (participant.notes.isNotBlank()) {
+            HorizontalDivider(
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+            )
+
+            WolczynText(
+                text = participant.notes,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    textAlign = TextAlign.Center,
+                ),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
 
@@ -155,7 +184,9 @@ fun ParticipantDetailsScreenContent(
                             append(stringResource(Res.string.signing_confirmed_by))
                             append(" ")
                             withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                                append(participant.acceptedAt?.getFormattedDateTimeForAdmin().orEmpty())
+                                append(
+                                    participant.acceptedAt?.getFormattedDateTimeForAdmin().orEmpty()
+                                )
                             }
                             append(" ${stringResource(Res.string.by)} ")
                             withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
@@ -200,10 +231,13 @@ fun ParticipantDetailsScreenContent(
 private fun ParticipantInfo(
     imageVector: ImageVector,
     text: String,
+    onClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+        modifier = Modifier
+            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
+            .clickable(onClick = onClick),
     ) {
         Icon(
             imageVector = imageVector,
@@ -235,6 +269,7 @@ private fun ParticipantDetailsScreenContentPreview() {
                 pesel = "1234567890123",
                 contactNumber = "123456789",
                 workshop = "Piłkarskie",
+                notes = "Bardzo długie notatki opisujące doświadczenie w prowadzeniu grupki oraz wspólnotę",
                 paid = true,
                 consents = true,
                 underageConsents = true,

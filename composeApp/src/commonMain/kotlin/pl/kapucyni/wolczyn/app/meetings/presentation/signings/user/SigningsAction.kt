@@ -6,10 +6,12 @@ sealed interface SigningsAction {
     data class UpdateFirstName(val firstName: String) : SigningsAction
     data class UpdateLastName(val lastName: String) : SigningsAction
     data class UpdateCity(val city: String) : SigningsAction
+    data class UpdateContactNumber(val contactNumber: String) : SigningsAction
     data class UpdateBirthday(val millis: Long): SigningsAction
     data class UpdatePesel(val pesel: String) : SigningsAction
     data class UpdateType(val type: ParticipantType) : SigningsAction
     data class UpdateWorkshop(val workshop: String) : SigningsAction
+    data class UpdateNotes(val notes: String) : SigningsAction
     data class UpdateStatuteConsent(val checked: Boolean) : SigningsAction
     data object SaveData : SigningsAction
     data object RemoveSigning : SigningsAction

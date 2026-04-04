@@ -40,6 +40,7 @@ private data class NavParticipant(
     val contactNumber: String = "",
     val workshop: String = "",
     val birthday: Double,
+    val notes: String = "",
     val createdAt: Double,
     val paid: Boolean = false,
     val consents: Boolean = false,
@@ -51,10 +52,9 @@ private data class NavParticipant(
     fun toParticipant() = Participant(
         userId, type, firstName, lastName,
         city, email, pesel, contactNumber, workshop,
-        Timestamp.fromMilliseconds(birthday),
-        Timestamp.fromMilliseconds(createdAt),
-        paid, consents, underageConsents,
-        acceptedAt?.let { Timestamp.fromMilliseconds(it) },
+        Timestamp.fromMilliseconds(birthday), notes,
+        Timestamp.fromMilliseconds(createdAt), paid, consents,
+        underageConsents, acceptedAt?.let { Timestamp.fromMilliseconds(it) },
         acceptedBy, acceptedById,
     )
 
@@ -63,10 +63,9 @@ private data class NavParticipant(
             NavParticipant(
                 userId, type, firstName, lastName,
                 city, email, pesel, contactNumber, workshop,
-                birthday.toMilliseconds(),
-                createdAt.toMilliseconds(),
-                paid, consents, underageConsents,
-                acceptedAt?.toMilliseconds(),
+                birthday.toMilliseconds(), notes,
+                createdAt.toMilliseconds(), paid, consents,
+                underageConsents, acceptedAt?.toMilliseconds(),
                 acceptedBy, acceptedById,
             )
         }

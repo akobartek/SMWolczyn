@@ -18,6 +18,7 @@ data class Participant(
     val contactNumber: String = "",
     val workshop: String = "",
     val birthday: Timestamp = Timestamp.now(),
+    val notes: String = "",
     val createdAt: Timestamp = Timestamp.now(),
     val paid: Boolean = false,
     val consents: Boolean = false,
