@@ -7,4 +7,5 @@ data class Workshop(
     val id: String = "",
     val available: Boolean = false,
     val name: String = "",
+    val gender: Gender = Gender.BOTH,
 )

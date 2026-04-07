@@ -25,7 +25,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingDialog
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.SaveWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.UpdateIsAdding
-import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.UpdateWorkshop
+import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.UpdateAvailability
+import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.UpdateGender
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.composables.WorkshopCard
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.composables.WorkshopNewTextField
 import smwolczyn.composeapp.generated.resources.Res
@@ -82,7 +83,10 @@ fun MeetingWorkshopsScreen(
                         workshop = workshop,
                         count = count,
                         onAvailableChange = { available ->
-                            viewModel.handleAction(UpdateWorkshop(workshop, available))
+                            viewModel.handleAction(UpdateAvailability(workshop, available))
+                        },
+                        onGenderChange = { gender ->
+                          viewModel.handleAction(UpdateGender(workshop, gender))
                         },
                     )
                 }
