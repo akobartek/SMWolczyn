@@ -8,4 +8,6 @@ data class Workshop(
     val available: Boolean = false,
     val name: String = "",
     val gender: Gender = Gender.BOTH,
-)
+) {
+    fun allow(gender: Gender) = this.gender == Gender.BOTH || this.gender == gender
+}

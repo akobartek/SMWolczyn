@@ -7,8 +7,8 @@ import smwolczyn.composeapp.generated.resources.ic_gender_man
 import smwolczyn.composeapp.generated.resources.ic_gender_woman
 
 enum class Gender(val iconRes: DrawableResource) {
-    WOMAN(Res.drawable.ic_gender_woman),
+    FEMALE(Res.drawable.ic_gender_woman),
     BOTH(Res.drawable.ic_gender_both),
-    MAN(Res.drawable.ic_gender_man),
+    MALE(Res.drawable.ic_gender_man),
     ;
 }

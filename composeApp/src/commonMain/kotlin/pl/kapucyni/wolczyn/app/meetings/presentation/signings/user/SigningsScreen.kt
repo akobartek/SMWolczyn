@@ -37,6 +37,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynAlertDialo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.common.utils.buildLinkableString
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables.SigningsContent
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideNoInternetDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideSuccessDialog
@@ -313,11 +314,11 @@ private fun SigningsScreenContentPreview() {
                 city = "Testowo",
                 email = "test@test.com",
                 pesel = "1234567890123",
-                peselIsWoman = false,
                 birthdayDate = Timestamp.now().seconds,
                 isUnderAge = true,
                 availableTypes = listOf(ParticipantType.MEMBER),
                 type = ParticipantType.MEMBER,
+                allWorkshops = listOf(Workshop(name = "Piłkarskie")),
                 availableWorkshops = listOf("Piłkarskie"),
                 selectedWorkshop = "Piłkarskie",
                 statuteChecked = false,

@@ -2,6 +2,7 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.signings.user
 
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 
 sealed class SigningsState(val qrEmail: String?) {
     data class Confirmed(
@@ -26,13 +27,13 @@ sealed class SigningsState(val qrEmail: String?) {
         val email: String,
         val pesel: String,
         val peselError: Boolean = false,
-        val peselIsWoman: Boolean,
         val birthdayDate: Long?,
         val birthdayError: Boolean = false,
         val isUnderAge: Boolean,
         val availableTypes: List<ParticipantType>,
         val type: ParticipantType?,
         val typeError: Boolean = false,
+        val allWorkshops: List<Workshop>,
         val availableWorkshops: List<String>,
         val selectedWorkshop: String?,
         val workshopsEnabled: Boolean = false,

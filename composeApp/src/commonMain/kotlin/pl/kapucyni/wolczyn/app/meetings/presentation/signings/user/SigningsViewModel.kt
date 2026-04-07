@@ -31,6 +31,7 @@ import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidPesel
 import pl.kapucyni.wolczyn.app.common.utils.isValidPhoneNumber
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Gender
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideNoInternetDialog
@@ -131,11 +132,11 @@ class SigningsViewModel(
                     contactNumber = participant?.contactNumber.orEmpty(),
                     email = participant?.email ?: user.email,
                     pesel = participant?.pesel ?: user.birthday?.getPeselBeginning().orEmpty(),
-                    peselIsWoman = participant?.pesel?.peselIsWoman() == true,
                     birthdayDate = birthday,
                     isUnderAge = birthday?.isAgeBelow(age = 18) == true,
                     availableTypes = getAvailableTypes(birthday),
                     type = participant?.type,
+                    allWorkshops = workshops,
                     availableWorkshops = workshops.map { it.name },
                     workshopsEnabled =
                         workshopsEnabled(participant?.type, participant?.pesel.orEmpty()),
@@ -203,14 +204,20 @@ class SigningsViewModel(
             pesel.startsWith(birthdayDate?.getPeselBeginning().orEmpty()).not()
             || pesel.length > 11
         ) return
+        val state = (_state.value as? SigningsState.NotConfirmed) ?: return
+        val workshops =
+            if (pesel.length < 11) listOf()
+            else state.allWorkshops
+                .filter { it.allow(pesel.genderByPesel()) }
+                .map { it.name }
 
         _state.update {
-            (it as? SigningsState.NotConfirmed)?.copy(
+            state.copy(
                 pesel = pesel,
                 peselError = false,
-                peselIsWoman = pesel.peselIsWoman(),
                 selectedWorkshop = null,
-                workshopsEnabled = workshopsEnabled(it.type, pesel),
+                availableWorkshops = workshops,
+                workshopsEnabled = workshopsEnabled(state.type, pesel),
                 workshopError = false,
             )
         }
@@ -333,7 +340,9 @@ class SigningsViewModel(
                 workshopError = when {
                     workshopsEnabled.not() -> false
                     selectedWorkshop == null -> true
-                    selectedWorkshop == COSMETIC_WORKSHOP -> pesel.peselIsWoman().not()
+                    allWorkshops.firstOrNull { it.name == selectedWorkshop }
+                        ?.allow(pesel.genderByPesel()) != true -> true
+
                     else -> false
                 },
                 notes = notes.trim(),
@@ -378,11 +387,11 @@ class SigningsViewModel(
     private fun workshopsEnabled(type: ParticipantType?, pesel: String) =
         type?.canSelectWorkshops() == true && pesel.isValidPesel()
 
-    private fun CharSequence.peselIsWoman() = getOrNull(9)?.let {
-        it.isDigit() && (it.digitToInt()) % 2 == 0
-    } == true
-
-    companion object {
-        const val COSMETIC_WORKSHOP = "Kosmetyczne"
-    }
+    private fun CharSequence.genderByPesel() = getOrNull(9)?.let {
+        when {
+            it.isDigit().not() -> Gender.BOTH
+            (it.digitToInt()) % 2 == 0 -> Gender.FEMALE
+            else -> Gender.MALE
+        }
+    } ?: Gender.BOTH
 }
