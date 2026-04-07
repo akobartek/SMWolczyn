@@ -116,7 +116,7 @@ class SigningsViewModel(
                     group = group,
                 )
             } else {
-                val workshops = meetingsRepository.getAvailableWorkshops()
+                val workshops = meetingsRepository.getAvailableWorkshops(args.meetingId)
                 val meeting = meetingsRepository.getMeeting(args.meetingId)
                 val birthday = (participant?.birthday ?: user.birthday)?.toMilliseconds()?.toLong()
 

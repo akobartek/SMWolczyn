@@ -44,6 +44,7 @@ sealed interface Screen {
     data class ParticipantDetails(
         val meetingId: Int,
         val participant: Participant,
+        val showData: Boolean,
     ) : Screen
 
     @Serializable

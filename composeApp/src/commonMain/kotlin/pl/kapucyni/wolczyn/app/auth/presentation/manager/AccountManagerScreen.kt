@@ -67,7 +67,7 @@ fun AccountManagerScreen(
                 items(items = users, key = { it.id }) { user ->
                     UserCard(
                         user = user,
-                        onTypeChanged = { type -> viewModel.updateUserType(user, type) },
+                        onTypeChanged = { changed -> viewModel.updateUserType(user, changed) },
                     )
                 }
 
@@ -88,7 +88,6 @@ fun AccountManagerScreen(
             searchDialogVisible = false
             viewModel.searchUsers(query)
         },
-        onCancel = { searchDialogVisible = false },
     )
 
     LoadingDialog(visible = isLoading)

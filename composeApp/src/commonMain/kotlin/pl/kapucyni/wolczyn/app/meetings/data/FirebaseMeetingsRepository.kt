@@ -6,20 +6,11 @@ import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ADMIN
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.ANIMATORS_MANAGER
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SCOUTS_MANAGER
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType.SIGNINGS_MANAGER
-import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
-import pl.kapucyni.wolczyn.app.common.utils.saveObject
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
-import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.ANIMATOR
-import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType.SCOUT
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 import pl.kapucyni.wolczyn.app.meetings.domain.model.containsParticipantByEmail
 
@@ -34,19 +25,21 @@ class FirebaseMeetingsRepository(
             .data<Meeting>()
     }.getOrDefault(Meeting(id = id))
 
-    override suspend fun getAllWorkshops() = runCatching {
-        firestore.getFirestoreCollection<Workshop>(COLLECTION_WORKSHOPS)
+    override suspend fun getAllWorkshops(meetingId: Int) = runCatching {
+        workshops(meetingId)
+            .get()
+            .let { querySnapshot ->
+                querySnapshot.documents.map { it.data<Workshop>() }
+            }
     }.getOrDefault(listOf())
 
-    override suspend fun getAvailableWorkshops() =
-        getAllWorkshops().filter { it.available }
+    override suspend fun getAvailableWorkshops(meetingId: Int) =
+        getAllWorkshops(meetingId).filter { it.available }
 
-    override suspend fun saveWorkshop(workshop: Workshop) = runCatching {
-        firestore.saveObject(
-            collectionName = COLLECTION_WORKSHOPS,
-            id = workshop.id,
-            data = workshop,
-        )
+    override suspend fun saveWorkshop(meetingId: Int, workshop: Workshop) = runCatching {
+        workshops(meetingId)
+            .document(workshop.id)
+            .set(workshop)
     }.getOrDefault(Unit)
 
     override suspend fun getParticipant(
@@ -111,27 +104,20 @@ class FirebaseMeetingsRepository(
         firestore.getFirestoreCollectionFlow<Meeting>(COLLECTION_MEETINGS)
             .map { meetings -> meetings.sortedByDescending { it.id } }
 
-    override fun getMeetingParticipants(
-        meetingId: Int,
-        userType: UserType,
-    ): Flow<List<Participant>> = runCatching {
+    override fun getMeetingParticipants(meetingId: Int): Flow<List<Participant>> = runCatching {
         signings(meetingId)
             .snapshots
             .map<QuerySnapshot, List<Participant>> { querySnapshot ->
                 querySnapshot.documents.map { it.data() }
             }
-            .map { list ->
-                when (userType) {
-                    ADMIN, SIGNINGS_MANAGER -> list
-                    SCOUTS_MANAGER -> list.filter { it.type == SCOUT }
-                    ANIMATORS_MANAGER -> list.filter { it.type == ANIMATOR }
-                    else -> emptyList()
-                }
-            }
     }.getOrDefault(flowOf(emptyList()))
 
-    override fun getWorkshopsFlow(): Flow<List<Workshop>> = runCatching {
-        firestore.getFirestoreCollectionFlow<Workshop>(COLLECTION_WORKSHOPS)
+    override fun getWorkshopsFlow(meetingId: Int): Flow<List<Workshop>> = runCatching {
+        workshops(meetingId)
+            .snapshots
+            .map<QuerySnapshot, List<Workshop>> { querySnapshot ->
+                querySnapshot.documents.map { it.data() }
+            }
     }.getOrDefault(flowOf(emptyList()))
 
     override fun getParticipantFlow(meetingId: Int, email: String): Flow<Participant?> =
@@ -156,6 +142,11 @@ class FirebaseMeetingsRepository(
         meetings()
             .document(meetingId.toString())
             .collection(COLLECTION_GROUPS)
+
+    private fun workshops(meetingId: Int) =
+        meetings()
+            .document(meetingId.toString())
+            .collection(COLLECTION_WORKSHOPS)
 
     private companion object {
         const val COLLECTION_MEETINGS = "meetings"

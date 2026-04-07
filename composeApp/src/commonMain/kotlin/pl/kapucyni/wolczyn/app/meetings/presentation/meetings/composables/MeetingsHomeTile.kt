@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.tooling.preview.AndroidUiModes
@@ -18,7 +17,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.HomeTile
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
-import smwolczyn.composeapp.generated.resources.ic_cap_decalogue
+import smwolczyn.composeapp.generated.resources.ic_cap_signings
 import smwolczyn.composeapp.generated.resources.meetings_title
 
 @Composable
@@ -34,13 +33,12 @@ fun MeetingsHomeTile(
         backgroundColor = backgroundColor,
         image = {
             Image(
-                painter = painterResource(Res.drawable.ic_cap_decalogue),
-                contentScale = FixedScale(0.5f),
+                painter = painterResource(Res.drawable.ic_cap_signings),
+                contentScale = FixedScale(0.145f),
                 alignment = BiasAlignment(0f, -1f),
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.TopEnd)
-                    .padding(end = 14.dp, top = 8.dp)
-                    .scale(scaleX = -1f, scaleY = 1f)
+                    .padding(end = 32.dp, top = 8.dp)
             )
         },
         onClick = onClick,

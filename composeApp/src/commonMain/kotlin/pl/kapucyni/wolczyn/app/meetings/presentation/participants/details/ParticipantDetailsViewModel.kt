@@ -28,7 +28,7 @@ class ParticipantDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val authRepository: AuthRepository,
     private val meetingsRepository: MeetingsRepository,
-) : BasicViewModel<Participant>() {
+) : BasicViewModel<ParticipantDetailsState>() {
 
     private val args = savedStateHandle.toRoute<Screen.ParticipantDetails>(
         typeMap = mapOf(typeOf<Participant>() to ParticipantParameterType),
@@ -74,7 +74,7 @@ class ParticipantDetailsViewModel(
             val participant = args.participant
             val group = meetingsRepository.getParticipantGroup(args.meetingId, participant.email)
             _group.update { group }
-            _state.update { participant }
+            _state.update { ParticipantDetailsState(participant, args.showData) }
         }
     }
 }

@@ -12,7 +12,15 @@ data class User(
     val firstName: String = "",
     val lastName: String = "",
     val city: String = "",
+    val permits: List<UserPermit> = listOf(),
     val birthday: Timestamp? = null,
     val createdAt: Timestamp = Timestamp.now(),
     val photoUrl: String? = null,
-)
+) {
+    fun isAdmin() = userType == UserType.ADMIN
+
+    fun hasSigningsPermit() = permits.contains(UserPermit.SIGNINGS)
+    fun hasAnimatorsPermit() = permits.contains(UserPermit.ANIMATORS)
+    fun hasVolunteersPermit() = permits.contains(UserPermit.VOLUNTEERS)
+
+}

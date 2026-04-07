@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
@@ -30,7 +29,7 @@ import smwolczyn.composeapp.generated.resources.ic_edit
 @Composable
 fun UserCard(
     user: User,
-    onTypeChanged: (UserType) -> Unit,
+    onTypeChanged: (User) -> Unit,
 ) {
     var editDialogVisible by remember { mutableStateOf(false) }
 

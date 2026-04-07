@@ -99,14 +99,16 @@
     <string name="cd_save_profile">Zapisz profil</string>
 
     <!-- ACCOUNT MANAGER STRINGS -->
-    <string name="account_manager_title">Zarządzanie kontami</string>
+    <string name="account_manager_title">Użytkownicy</string>
     <string name="empty_users_list">Nie znaleziono użytkowników, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="user_type">Rola użytkownika</string>
     <string name="user_type_member">Uczestnik</string>
-    <string name="user_type_signings">Zarządzający zapisami</string>
-    <string name="user_type_scouts">Zarządzający harcerzami</string>
-    <string name="user_type_animators">Zarządzający animatorami</string>
+    <string name="user_type_organisation">Organizacja</string>
     <string name="user_type_admin">Administator</string>
+    <string name="user_permits_title">Uprawnienia:</string>
+    <string name="user_permit_signings">Zapisy</string>
+    <string name="user_permit_volunteers">Wolontariusze</string>
+    <string name="user_permit_animators">Animatorzy</string>
     <string name="cd_open_users_management">Otwórz panel zarządzenia użytkownikami</string>
     <string name="cd_search_user">Wyszukaj użytkownika</string>
     <string name="cd_edit_user">Edytuj użytkownika</string>
@@ -117,12 +119,11 @@
     <string name="empty_meetings_list">Wystąpił błąd podczas ładowania listy spotkań, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="empty_participants_list">Nie znaleziono żadnych uczestników dla podanych wartości!</string>
     <string name="meeting_participants">Uczestnicy</string>
-    <string name="meeting_scouts">Harcerze</string>
-    <string name="meeting_animators">Animatorzy</string>
     <string name="cd_qr_scanner">Otwórz skaner kodów QR</string>
     <string name="qr_scan_success">Otwieram stronę uczestnika...</string>
     <string name="qr_scan_failed">Wystąpił błąd podczas skanowania kodu QR, spróbuj ponownie!</string>
     <string name="qr_scan_user_not_found">Nie znaleziono uczestnika dla podanego kodu, spróbuj ponownie!</string>
+    <string name="qr_scan_list_title">Kliknij tutaj, aby zeskanować kod użytkownika</string>
     <string name="cd_send_email">Wyślij email</string>
     <string name="sorting_label">Sortowanie</string>
     <string name="sorting_alphabetically">Alfabetycznie</string>

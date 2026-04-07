@@ -48,6 +48,7 @@ fun ParticipantsFilteringBottomSheet(
     state: ParticipantsFilterState,
     handleAction: (ParticipantsScreenAction) -> Unit,
     isVisible: Boolean,
+    isAdmin: Boolean,
     onDismiss: () -> Unit,
 ) {
     WolczynBottomSheet(
@@ -68,7 +69,7 @@ fun ParticipantsFilteringBottomSheet(
                         it to stringResource(it.stringRes)
                     },
                     onItemSelected = { handleAction(UpdateSorting(it)) },
-                    leadingIcon =  vectorResource(Res.drawable.ic_sort),
+                    leadingIcon = vectorResource(Res.drawable.ic_sort),
                 )
             }
 
@@ -86,19 +87,20 @@ fun ParticipantsFilteringBottomSheet(
                 )
             }
 
-            FilterSection {
-                FilterList(
-                    title = Res.string.participant_type_title,
-                    imageVector = vectorResource(Res.drawable.ic_follow_the_signs),
-                    allElements = state.participantTypes.map {
-                        it to stringResource(it.stringRes)
-                    },
-                    selectedElements = state.selectedTypes,
-                    onElementSelected = { handleAction(UpdateTypesFilter(it)) },
-                )
-            }
+            if (isAdmin)
+                FilterSection {
+                    FilterList(
+                        title = Res.string.participant_type_title,
+                        imageVector = vectorResource(Res.drawable.ic_follow_the_signs),
+                        allElements = state.participantTypes.map {
+                            it to stringResource(it.stringRes)
+                        },
+                        selectedElements = state.selectedTypes,
+                        onElementSelected = { handleAction(UpdateTypesFilter(it)) },
+                    )
+                }
 
-            if (state.workshops.isNotEmpty()) {
+            if (isAdmin && state.workshops.isNotEmpty()) {
                 FilterSection {
                     FilterList(
                         title = Res.string.workshops,

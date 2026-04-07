@@ -14,7 +14,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -68,7 +67,7 @@ class FirebaseAuthRepository(
                         )
                     )
             }
-    }.getOrDefault(emptyFlow())
+    }.getOrDefault(flowOf(listOf()))
 
     override suspend fun getUserIdIfExists(email: String): String = runCatching {
         firestore.getFirestoreCollection<User>(collectionName = COLLECTION_USERS)

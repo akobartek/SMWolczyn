@@ -8,13 +8,9 @@ import androidx.navigation.toRoute
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
@@ -66,25 +62,24 @@ class ParticipantsViewModel(
         viewModelScope.launch {
             authRepository.currentUser.value?.takeIf { it.userType != UserType.MEMBER }
                 ?.let { user ->
-                    meetingsRepository.getMeetingParticipants(args.meetingId, user.userType)
-                        .onEach { participants ->
+                    meetingsRepository.getMeetingParticipants(args.meetingId)
+                        .collect { participants ->
                             allParticipants = participants
                             _state.update {
                                 ParticipantsState(
                                     meetingId = args.meetingId,
-                                    participants = filterParticipants(filterState.value),
-                                    userType = user.userType,
+                                    user = user,
+                                    listVisible = user.isAdmin() || user.permits.isNotEmpty(),
                                 )
                             }
+                            filterParticipants(filterState.value)
                         }
-                        .catch { _events.send(NavigateUp) }
-                    .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
-            } ?: run { _events.send(NavigateUp) }
+                } ?: run { _events.send(NavigateUp) }
         }
 
         viewModelScope.launch {
             runCatching {
-                meetingsRepository.getAllWorkshops().map { it.name }.let { workshops ->
+                meetingsRepository.getAllWorkshops(args.meetingId).map { it.name }.let { workshops ->
                     if (workshops.isEmpty()) return@launch
 
                     _filterState.update { state ->
@@ -105,10 +100,7 @@ class ParticipantsViewModel(
                     else 0L
                 }
                 .collect { currentState ->
-                    if (allParticipants.isNotEmpty())
-                        _state.update {
-                            it?.copy(participants = filterParticipants(currentState))
-                        }
+                    filterParticipants(currentState)
                 }
         }
     }
@@ -125,8 +117,11 @@ class ParticipantsViewModel(
         }
     }
 
-    private fun filterParticipants(filterState: ParticipantsFilterState) =
-        if (
+    private fun filterParticipants(filterState: ParticipantsFilterState) {
+        if (allParticipants.isEmpty()) return
+        val user = state.value?.user ?: return
+
+        val filteredList = if (
             filterState.query.isBlank()
             && filterState.selectedTypes.isEmpty()
             && filterState.selectedWorkshops.isEmpty()
@@ -162,6 +157,18 @@ class ParticipantsViewModel(
 
                 searchResult && signedResult && typeResult && workshopsResult
             }.getSortedList(filterState.sorting)
+
+        val uiVisibleList = when {
+            user.isAdmin() || user.hasSigningsPermit() -> filteredList
+            user.permits.isEmpty() -> emptyList()
+            else -> filteredList.filter { participant ->
+                user.hasAnimatorsPermit() && participant.type == ParticipantType.ANIMATOR
+                        || user.hasVolunteersPermit() && participant.type == ParticipantType.VOLUNTEER
+            }
+        }
+
+        _state.update { it?.copy(participants = uiVisibleList) }
+    }
 
     private fun List<Participant>.getSortedList(sorting: ParticipantsSorting) =
         with(Locale.current) {

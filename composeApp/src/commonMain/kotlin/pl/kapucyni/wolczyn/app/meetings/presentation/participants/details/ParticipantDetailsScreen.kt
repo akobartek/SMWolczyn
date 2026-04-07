@@ -15,7 +15,7 @@ fun ParticipantDetailsScreen(
     navigateUp: () -> Unit,
     viewModel: ParticipantDetailsViewModel = koinViewModel(),
 ) {
-    val participant by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val group by viewModel.group.collectAsStateWithLifecycle()
     val loading by viewModel.loading.collectAsStateWithLifecycle()
 
@@ -28,12 +28,13 @@ fun ParticipantDetailsScreen(
     LoadingDialog(visible = loading)
 
     ScreenLayout(
-        title = participant?.let { "${it.firstName} ${it.lastName}" }.orEmpty(),
+        title = state?.participant?.let { "${it.firstName} ${it.lastName}" }.orEmpty(),
         onBackPressed = navigateUp,
     ) {
-        participant?.let {
+        state?.let {
             ParticipantDetailsScreenContent(
-                participant = it,
+                participant = it.participant,
+                showData = it.showData,
                 confirmUserSigning = viewModel::confirmUserSigning,
                 group = group,
             )

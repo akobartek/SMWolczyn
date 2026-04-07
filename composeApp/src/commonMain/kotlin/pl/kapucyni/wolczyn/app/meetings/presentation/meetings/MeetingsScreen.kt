@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.composables.Meetin
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.empty_meetings_list
+import smwolczyn.composeapp.generated.resources.ic_add
 import smwolczyn.composeapp.generated.resources.ic_add_note
 import smwolczyn.composeapp.generated.resources.ic_cap_archive
 import smwolczyn.composeapp.generated.resources.meetings
@@ -60,7 +62,19 @@ fun MeetingsScreen(
                     )
                 }
             }
-        }
+        },
+        floatingActionButton = {
+            if (userType == UserType.ADMIN) {
+                FloatingActionButton(onClick = {
+                    // todo
+                }) {
+                    Icon(
+                        imageVector = vectorResource(Res.drawable.ic_add),
+                        contentDescription = null,
+                    )
+                }
+            }
+        },
     ) {
         state?.let { meetings ->
             MeetingsScreenContent(

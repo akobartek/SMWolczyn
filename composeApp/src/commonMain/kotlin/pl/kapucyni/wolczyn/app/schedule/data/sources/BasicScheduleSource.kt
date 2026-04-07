@@ -10,7 +10,7 @@ import pl.kapucyni.wolczyn.app.schedule.domain.model.ScheduleDay
 class BasicScheduleSource {
     fun getBasicSchedule() = listOf(
         ScheduleDay(
-            date = LocalDate(dayOfMonth = 14, monthNumber = 7, year = 2025),
+            date = LocalDate(day = 14, month = 7, year = 2025),
             name = "zauwa\nżeni",
             events = mutableListOf(
                 Event(
@@ -81,7 +81,7 @@ class BasicScheduleSource {
             )
         ),
         ScheduleDay(
-            date = LocalDate(dayOfMonth = 15, monthNumber = 7, year = 2025),
+            date = LocalDate(day = 15, month = 7, year = 2025),
             name = "rozbici",
             events = mutableListOf(
                 Event(
@@ -197,7 +197,7 @@ class BasicScheduleSource {
             )
         ),
         ScheduleDay(
-            date = LocalDate(dayOfMonth = 16, monthNumber = 7, year = 2025),
+            date = LocalDate(day = 16, month = 7, year = 2025),
             name = "poskła\ndani",
             events = mutableListOf(
                 Event(
@@ -320,7 +320,7 @@ class BasicScheduleSource {
             )
         ),
         ScheduleDay(
-            date = LocalDate(dayOfMonth = 17, monthNumber = 7, year = 2025),
+            date = LocalDate(day = 17, month = 7, year = 2025),
             name = "dowarto\nścio\nwani",
             events = mutableListOf(
                 Event(
@@ -437,7 +437,7 @@ class BasicScheduleSource {
             )
         ),
         ScheduleDay(
-            date = LocalDate(dayOfMonth = 18, monthNumber = 7, year = 2025),
+            date = LocalDate(day = 18, month = 7, year = 2025),
             name = "warto\nściowi",
             events = mutableListOf(
                 Event(

@@ -27,7 +27,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import smwolczyn.composeapp.generated.resources.Res
-import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_clear_field
 import smwolczyn.composeapp.generated.resources.cd_search_user
 import smwolczyn.composeapp.generated.resources.ic_close
@@ -38,7 +37,6 @@ import smwolczyn.composeapp.generated.resources.search
 fun SearchUserDialog(
     isVisible: Boolean,
     onSearch: (String) -> Unit,
-    onCancel: () -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
 
@@ -85,11 +83,6 @@ fun SearchUserDialog(
             confirmButton = {
                 TextButton(onClick = { onSearch(query) }) {
                     WolczynText(stringResource(Res.string.search))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = onCancel) {
-                    WolczynText(stringResource(Res.string.cancel))
                 }
             },
         )

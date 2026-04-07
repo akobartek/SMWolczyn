@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
-import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 
 class AccountManagerViewModel(
@@ -32,11 +31,14 @@ class AccountManagerViewModel(
         }
     }
 
-    fun updateUserType(user: User, userType: UserType) {
-        if (user.userType == userType) return
+    fun updateUserType(user: User, changedUser: User) {
+        if (
+            user.userType == changedUser.userType
+            && user.permits == changedUser.permits
+        ) return
 
         viewModelScope.launch(Dispatchers.Default) {
-            authRepository.updateUser(user.copy(userType = userType))
+            authRepository.updateUser(changedUser)
         }
     }
 

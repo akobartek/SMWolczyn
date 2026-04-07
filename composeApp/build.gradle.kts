@@ -67,6 +67,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
+            implementation(libs.runtime)
             implementation(libs.viewmodel)
 
             implementation(libs.room.runtime)
@@ -95,6 +96,7 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)

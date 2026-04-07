@@ -39,7 +39,6 @@ fun ProductColorsList(
                         ProductColor.GREEN -> Res.string.shop_color_green
                         ProductColor.BROWN -> Res.string.shop_color_brown
                         ProductColor.WHITE -> Res.string.shop_color_white
-                        else -> Res.string.shop_color_black
                     }
                 ),
                 textStyle = MaterialTheme.typography.bodyLarge.copy(

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -62,6 +64,7 @@ import smwolczyn.composeapp.generated.resources.workshops
 @Composable
 fun ParticipantDetailsScreenContent(
     participant: Participant,
+    showData: Boolean,
     confirmUserSigning: () -> Unit,
     group: Group?,
 ) {
@@ -70,35 +73,40 @@ fun ParticipantDetailsScreenContent(
     var underAgeConsent by rememberSaveable { mutableStateOf(participant.isUnderAge().not()) }
     var paid by rememberSaveable { mutableStateOf(false) }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.verticalScroll(rememberScrollState()),
+    ) {
         Column {
-            ParticipantInfo(
-                imageVector = vectorResource(Res.drawable.ic_fingerprint),
-                text = participant.pesel,
-            )
-
-            ParticipantInfo(
-                imageVector = vectorResource(Res.drawable.ic_cake),
-                text = participant.birthday.getFormattedDate(),
-            )
-
-            ParticipantInfo(
-                imageVector = vectorResource(Res.drawable.ic_city),
-                text = participant.city,
-            )
-
-            ParticipantInfo(
-                imageVector = vectorResource(Res.drawable.ic_email_alt),
-                text = participant.email,
-                onClick = { uriHandler.openUri("mailto:?bcc=${participant.email}") }
-            )
-
-            if (participant.contactNumber.isNotBlank())
+            if (showData) {
                 ParticipantInfo(
-                    imageVector = vectorResource(Res.drawable.ic_call),
-                    text = participant.contactNumber,
-                    onClick = { uriHandler.openUri("tel:${participant.contactNumber}") }
+                    imageVector = vectorResource(Res.drawable.ic_fingerprint),
+                    text = participant.pesel,
                 )
+
+                ParticipantInfo(
+                    imageVector = vectorResource(Res.drawable.ic_cake),
+                    text = participant.birthday.getFormattedDate(),
+                )
+
+                ParticipantInfo(
+                    imageVector = vectorResource(Res.drawable.ic_city),
+                    text = participant.city,
+                )
+
+                ParticipantInfo(
+                    imageVector = vectorResource(Res.drawable.ic_email_alt),
+                    text = participant.email,
+                    onClick = { uriHandler.openUri("mailto:?bcc=${participant.email}") }
+                )
+
+                if (participant.contactNumber.isNotBlank())
+                    ParticipantInfo(
+                        imageVector = vectorResource(Res.drawable.ic_call),
+                        text = participant.contactNumber,
+                        onClick = { uriHandler.openUri("tel:${participant.contactNumber}") }
+                    )
+            }
 
             ParticipantInfo(
                 imageVector = vectorResource(Res.drawable.ic_follow_the_signs),
@@ -276,6 +284,7 @@ private fun ParticipantDetailsScreenContentPreview() {
                 acceptedAt = Timestamp.now(),
                 acceptedBy = "admin@wolczyn.com",
             ),
+            showData = true,
             confirmUserSigning = {},
             group = null,
         )

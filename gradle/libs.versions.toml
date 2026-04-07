@@ -25,6 +25,7 @@ coil = "3.4.0"
 ksoup = "0.2.6"
 webview = "2.0.3"
 
+firebase-bom = "34.11.0"
 firebase-gitlive-sdk = "2.4.0"
 crashlytics = "3.0.6"
 google-services = "4.4.4"
@@ -49,6 +50,7 @@ compose-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:a
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
+runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "viewmodel" }
 viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel" }
 
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
@@ -73,6 +75,7 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "
 ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 webview = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "webview" }
 
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-gitlive-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-gitlive-sdk" }
 firebase-gitlive-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive-sdk" }
 firebase-gitlive-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase-gitlive-sdk" }

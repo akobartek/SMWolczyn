@@ -81,7 +81,7 @@ class SigningsAdminViewModel(
     }
 
     private fun initState() = viewModelScope.launch(Dispatchers.Default) {
-        val workshops = meetingsRepository.getAllWorkshops()
+        val workshops = meetingsRepository.getAllWorkshops(args.meetingId)
         val state = (
                 args.participant?.let { participant ->
                     SigningsAdminState.fromParticipant(participant)
