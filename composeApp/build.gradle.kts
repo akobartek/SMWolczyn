@@ -81,7 +81,6 @@ kotlin {
             implementation(libs.ktor.core)
             implementation(libs.ktor.content.negotiation)
             implementation(libs.ktor.serialization)
-            implementation(libs.ktor.client.cio)
             implementation(libs.ktor.logging)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
@@ -99,8 +98,13 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.cio)
             implementation(libs.koin.android)
             implementation(libs.google.code.scanner)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }

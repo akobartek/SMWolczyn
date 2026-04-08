@@ -64,7 +64,6 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.S
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
-import smwolczyn.composeapp.generated.resources.cancel
 import smwolczyn.composeapp.generated.resources.cd_save_signing
 import smwolczyn.composeapp.generated.resources.cd_scan_signing
 import smwolczyn.composeapp.generated.resources.close
@@ -296,7 +295,7 @@ private fun SigningsScreenContent(
             handleAction(HideSuccessDialog)
             openEssentials()
         },
-        dismissBtnTextId = Res.string.cancel,
+        dismissBtnTextId = Res.string.close,
         onDismissRequest = { handleAction(HideSuccessDialog) },
         dismissible = false,
     )

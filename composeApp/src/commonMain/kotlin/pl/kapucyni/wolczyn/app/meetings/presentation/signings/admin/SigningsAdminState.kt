@@ -5,6 +5,7 @@ import dev.gitlive.firebase.firestore.toMilliseconds
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.PHONE_CODE
 
 @Immutable
 data class SigningsAdminState(
@@ -53,7 +54,7 @@ data class SigningsAdminState(
                 type = type,
                 selectedWorkshop = workshop,
                 workshopsEnabled = type.canSelectWorkshops(),
-                contactNumber = contactNumber,
+                contactNumber = contactNumber.removePrefix(PHONE_CODE),
                 notes = notes,
                 notesEnabled = type.notesAvailable(),
             )

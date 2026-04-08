@@ -36,14 +36,14 @@ fun PhoneNumberTextField(
     OutlinedTextField(
         value = value,
         onValueChange = { input ->
-            var cleanedInput = input.replace(Regex("^(\\+48|0048)"), "")
-            cleanedInput = cleanedInput.filter { it.isDigit() }
-            if (cleanedInput.length <= 9) {
-                onValueChange(cleanedInput)
-            }
+            val cleanedInput = input
+                .replace(Regex("^(\\+48|0048)"), "")
+                .filter { it.isDigit() }
+                .take(9)
+            onValueChange(cleanedInput)
         },
         label = { WolczynText(text = stringResource(Res.string.phone_number)) },
-        prefix = { WolczynText(text = "+48") },
+        prefix = { WolczynText(text = "+48 ") },
         visualTransformation = PhoneVisualTransformation(),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Phone,
@@ -81,28 +81,28 @@ private class PhoneVisualTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         val trimmed = if (text.text.length >= 9) text.text.substring(0..8) else text.text
 
-        var out = ""
+        val out = StringBuilder()
         for (i in trimmed.indices) {
-            out += trimmed[i]
-            if (i == 2 || i == 5) out += " "
+            out.append(trimmed[i])
+            if ((i == 2 || i == 5) && i != trimmed.lastIndex) {
+                out.append(" ")
+            }
         }
 
         val phoneNumberOffsetTranslator = object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {
-                if (offset <= 2) return offset
-                if (offset <= 5) return offset + 1
-                if (offset <= 9) return offset + 2
-                return 11
+                if (offset <= 3) return offset
+                if (offset <= 6) return offset + 1
+                return offset + 2
             }
 
             override fun transformedToOriginal(offset: Int): Int {
                 if (offset <= 3) return offset
                 if (offset <= 7) return offset - 1
-                if (offset <= 11) return offset - 2
-                return 9
+                return offset - 2
             }
         }
 
-        return TransformedText(AnnotatedString(out), phoneNumberOffsetTranslator)
+        return TransformedText(AnnotatedString(out.toString()), phoneNumberOffsetTranslator)
     }
 }

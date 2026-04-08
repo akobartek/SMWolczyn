@@ -55,6 +55,8 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsEvent
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+internal const val PHONE_CODE = "+48"
+
 class SigningsViewModel(
     savedStateHandle: SavedStateHandle,
     authRepository: AuthRepository,
@@ -119,6 +121,7 @@ class SigningsViewModel(
                     group = group,
                 )
             } else {
+                val currentState = state.value as? SigningsState.NotConfirmed
                 val workshops = meetingsRepository.getAvailableWorkshops(args.meetingId)
                 val meeting = meetingsRepository.getMeeting(args.meetingId)
                 val birthday = (participant?.birthday ?: user.birthday)?.toMilliseconds()?.toLong()
@@ -131,7 +134,7 @@ class SigningsViewModel(
                     firstName = participant?.firstName ?: user.firstName,
                     lastName = participant?.lastName ?: user.lastName,
                     city = participant?.city ?: user.city,
-                    contactNumber = participant?.contactNumber.orEmpty(),
+                    contactNumber = participant?.contactNumber.orEmpty().removePrefix(PHONE_CODE),
                     email = participant?.email ?: user.email,
                     pesel = participant?.pesel ?: user.birthday?.getPeselBeginning().orEmpty(),
                     birthdayDate = birthday,
@@ -147,6 +150,9 @@ class SigningsViewModel(
                     notesEnabled = participant?.type?.notesAvailable() == true,
                     statuteChecked = participant != null,
                     animatorInfoChecked = participant?.type == ParticipantType.ANIMATOR,
+                    successDialogVisible = currentState?.successDialogVisible == true,
+                    tooYoungDialogVisible = currentState?.tooYoungDialogVisible == true,
+                    noInternetDialogVisible = currentState?.noInternetDialogVisible == true,
                 )
             }
             _state.update { state }
@@ -304,7 +310,7 @@ class SigningsViewModel(
                     city = state.city.trim(),
                     email = state.email.trim(),
                     pesel = state.pesel.trim(),
-                    contactNumber = "+48${state.contactNumber.trim()}",
+                    contactNumber = "$PHONE_CODE${state.contactNumber.trim()}",
                     workshop = state.selectedWorkshop.orEmpty(),
                     birthday = state.birthdayDate?.let {
                         Timestamp.fromMilliseconds(it.toDouble())
@@ -355,7 +361,7 @@ class SigningsViewModel(
                 },
                 notes = notes.trim(),
                 notesError =
-                    if (notesEnabled) notes.trim().length > 10
+                    if (notesEnabled) notes.trim().length < 10
                     else false,
                 tooYoungDialogVisible = birthdayDate?.isAgeBelow(
                     age = 15,

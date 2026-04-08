@@ -19,6 +19,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import coil3.ImageLoader
+import coil3.compose.setSingletonImageLoaderFactory
+import coil3.network.ktor3.KtorNetworkFetcherFactory
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.viewmodel.koinViewModel
@@ -96,6 +99,14 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
     val appConfiguration by appViewModel.appConfiguration.collectAsStateWithLifecycle()
     val user by appViewModel.user.collectAsStateWithLifecycle()
     val resetPasswordDialogState by appViewModel.resetPasswordDialogState.collectAsStateWithLifecycle()
+
+    setSingletonImageLoaderFactory { context ->
+        ImageLoader.Builder(context)
+            .components {
+                add(KtorNetworkFetcherFactory())
+            }
+            .build()
+    }
 
     AppTheme {
         val navController = rememberNavController()
