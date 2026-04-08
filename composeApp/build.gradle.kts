@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
-private val appVersion = "2025.9"
+private val appVersion = "2026.1"
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -117,7 +117,7 @@ android {
         applicationId = "pl.kapucyni.wolczyn.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 48
+        versionCode = 49
         versionName = appVersion
     }
     packaging {
