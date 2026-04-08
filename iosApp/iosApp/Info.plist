@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2025.9</string>
+	<string>2026.1</string>
 	<key>CFBundleVersion</key>
-	<string>2025.9</string>
+	<string>2026.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
@@ -46,7 +46,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>NSCameraUsageDescription</key>
-    <string>Aplikacja wymaga dostępu do kamery, aby móc skanować kody QR.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikacja wymaga dostępu do kamery, aby móc skanować kody QR.</string>
 </dict>
 </plist>
