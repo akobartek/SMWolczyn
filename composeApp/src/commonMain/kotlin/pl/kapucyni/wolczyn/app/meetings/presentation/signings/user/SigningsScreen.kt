@@ -44,6 +44,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideTooYoungDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.SaveData
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateAnimatorInfoChecked
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
@@ -71,6 +72,9 @@ import smwolczyn.composeapp.generated.resources.ic_celebration
 import smwolczyn.composeapp.generated.resources.ic_error
 import smwolczyn.composeapp.generated.resources.ic_help
 import smwolczyn.composeapp.generated.resources.ic_qr_code
+import smwolczyn.composeapp.generated.resources.meeting_signing_animator_consent
+import smwolczyn.composeapp.generated.resources.meeting_signing_animator_document
+import smwolczyn.composeapp.generated.resources.meeting_signing_animator_info
 import smwolczyn.composeapp.generated.resources.meeting_signing_essentials
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_message
 import smwolczyn.composeapp.generated.resources.meeting_signing_success_dialog_title
@@ -228,7 +232,7 @@ private fun SigningsScreenContent(
             notesEnabled = state.notesEnabled,
             notesError = state.notesError,
             onNotesChanged = { handleAction(UpdateNotes(it)) },
-            saveEnabled = state.consentChecked,
+            saveEnabled = state.statuteChecked && state.animatorInfoChecked(),
             saveButtonRes = when {
                 state.isEditing -> Res.string.signing_edit
                 else -> Res.string.signing_send
@@ -245,6 +249,28 @@ private fun SigningsScreenContent(
                             links = listOf(Triple(STATUTE, state.statuteUrl, Res.string.meeting_statute_value)),
                         ),
                     )
+
+                if (state.type == ParticipantType.ANIMATOR) {
+                    WolczynText(
+                        text = buildLinkableString(
+                            text = Res.string.meeting_signing_animator_info,
+                            links = listOf(
+                                Triple(
+                                    ANIMATOR_DOCUMENT,
+                                    ANIMATOR_DOCUMENT_URL,
+                                    Res.string.meeting_signing_animator_document,
+                                ),
+                            ),
+                        ),
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
+                    )
+
+                    CheckableField(
+                        checked = state.animatorInfoChecked,
+                        onCheckedChange = { handleAction(UpdateAnimatorInfoChecked(it)) },
+                        text = stringResource(Res.string.meeting_signing_animator_consent),
+                    )
+                }
 
                 if (state.isUnderAge)
                     WolczynText(
@@ -295,8 +321,14 @@ private fun SigningsScreenContent(
     )
 }
 
+private fun SigningsState.NotConfirmed.animatorInfoChecked() =
+    if (type == ParticipantType.ANIMATOR) animatorInfoChecked
+    else true
+
 private const val STATUTE = "%statute%"
 private const val UNDER_AGE = "%consent%"
+private const val ANIMATOR_DOCUMENT = "%animator_document%"
+private const val ANIMATOR_DOCUMENT_URL = "https://www.gov.pl/web/gov/uzyskaj-zaswiadczenie-z-krajowego-rejestru-karnego"
 
 @Preview(name = "Light", showBackground = true)
 @Preview(name = "Dark", uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, showBackground = true)
@@ -316,12 +348,13 @@ private fun SigningsScreenContentPreview() {
                 pesel = "1234567890123",
                 birthdayDate = Timestamp.now().seconds,
                 isUnderAge = true,
-                availableTypes = listOf(ParticipantType.MEMBER),
-                type = ParticipantType.MEMBER,
+                availableTypes = listOf(ParticipantType.MEMBER, ParticipantType.ANIMATOR),
+                type = ParticipantType.ANIMATOR,
                 allWorkshops = listOf(Workshop(name = "Piłkarskie")),
                 availableWorkshops = listOf("Piłkarskie"),
                 selectedWorkshop = "Piłkarskie",
                 statuteChecked = false,
+                animatorInfoChecked = false,
             ),
             handleAction = {},
             openEssentials = {},

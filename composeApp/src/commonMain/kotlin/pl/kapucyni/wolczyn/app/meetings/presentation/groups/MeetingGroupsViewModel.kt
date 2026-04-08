@@ -89,6 +89,10 @@ class MeetingGroupsViewModel(
                         )
                 }
                 val savedGroups = groups.await()
+                val selectedAnimators = savedGroups.takeIf { it.isNotEmpty() }?.let { groups ->
+                    val currentAnimatorsEmails = groups.map { it.animatorMail }.toSet()
+                    animators.filter { it.email in currentAnimatorsEmails }
+                } ?: animators.filter { it.type == ANIMATOR }
 
                 _state.update {
                     MeetingGroupsScreenState(
@@ -97,7 +101,7 @@ class MeetingGroupsViewModel(
                         participants = members,
                         membersWithoutGroup = members.membersWithoutGroup(savedGroups),
                         potentialAnimators = animators,
-                        selectedAnimators = animators.filter { it.type == ANIMATOR },
+                        selectedAnimators = selectedAnimators,
                         copyAvailable = savedGroups.isNotEmpty(),
                         loading = false,
                     )

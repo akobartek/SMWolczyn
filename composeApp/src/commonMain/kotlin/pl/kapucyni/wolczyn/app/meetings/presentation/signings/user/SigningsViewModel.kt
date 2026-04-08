@@ -39,6 +39,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideTooYoungDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.SaveData
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateAnimatorInfoChecked
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
@@ -97,6 +98,7 @@ class SigningsViewModel(
             is UpdateWorkshop -> updateWorkshop(action.workshop)
             is UpdateNotes -> updateNotes(action.notes)
             is UpdateStatuteConsent -> updateStatuteConsent(action.checked)
+            is UpdateAnimatorInfoChecked -> updateAnimatorInfoChecked(action.checked)
             is SaveData -> saveData()
             is RemoveSigning -> removeSigning()
             is HideSuccessDialog -> toggleSuccessDialog(visible = false)
@@ -144,6 +146,7 @@ class SigningsViewModel(
                     notes = participant?.notes.orEmpty(),
                     notesEnabled = participant?.type?.notesAvailable() == true,
                     statuteChecked = participant != null,
+                    animatorInfoChecked = participant?.type == ParticipantType.ANIMATOR,
                 )
             }
             _state.update { state }
@@ -235,6 +238,7 @@ class SigningsViewModel(
                     workshopError = it.workshopError && workshopsEnabled,
                     notes = if (type.notesAvailable()) state.notes else "",
                     notesEnabled = type.notesAvailable(),
+                    animatorInfoChecked = false,
                 )
             }
         }
@@ -260,6 +264,10 @@ class SigningsViewModel(
 
     private fun updateStatuteConsent(checked: Boolean) {
         _state.update { (it as? SigningsState.NotConfirmed)?.copy(statuteChecked = checked) }
+    }
+
+    private fun updateAnimatorInfoChecked(checked: Boolean) {
+        _state.update { (it as? SigningsState.NotConfirmed)?.copy(animatorInfoChecked = checked) }
     }
 
     private fun toggleSuccessDialog(visible: Boolean) {
@@ -304,8 +312,8 @@ class SigningsViewModel(
                     notes = state.notes,
                     createdAt = participant?.createdAt ?: Timestamp.now(),
                     paid = participant?.paid == true,
-                    consents = state.consentChecked,
-                    underageConsents = state.underageConsentChecked,
+                    consents = participant?.consents == true,
+                    underageConsents = participant?.underageConsents == true,
                 )
             ).onSuccess {
                 setLoading(false)

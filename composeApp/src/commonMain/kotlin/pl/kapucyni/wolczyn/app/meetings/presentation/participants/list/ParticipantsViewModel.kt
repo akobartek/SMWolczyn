@@ -159,12 +159,10 @@ class ParticipantsViewModel(
             }.getSortedList(filterState.sorting)
 
         val uiVisibleList = when {
-            user.isAdmin() || user.hasSigningsPermit() -> filteredList
+            user.isAdmin() || user.hasAccessToParticipantsData() -> filteredList
             user.permits.isEmpty() -> emptyList()
-            else -> filteredList.filter { participant ->
-                user.hasAnimatorsPermit() && participant.type == ParticipantType.ANIMATOR
-                        || user.hasVolunteersPermit() && participant.type == ParticipantType.VOLUNTEER
-            }
+            user.hasAnimatorsPermit() -> filteredList.filter { it.type.canBeAnimator() }
+            else -> listOf()
         }
 
         _state.update { it?.copy(participants = uiVisibleList) }

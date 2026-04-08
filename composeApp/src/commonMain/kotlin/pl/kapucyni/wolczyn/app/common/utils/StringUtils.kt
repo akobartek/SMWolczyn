@@ -75,7 +75,11 @@ fun buildLinkableString(
                 ) {
                     append(stringResource(textRes))
                 }
-                append(split[index + 1])
+                try {
+                    append(split[index + 1])
+                } catch (_: IndexOutOfBoundsException) {
+                    append("")
+                }
             }
         }
 }
