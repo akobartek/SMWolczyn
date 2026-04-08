@@ -31,24 +31,8 @@ fun ForceUpdateDialog(
     var forceUpdateDialogVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(appConfiguration) {
-        appConfiguration?.platformForceUpdate()?.let { force ->
-            var updateNeeded = false
-            BuildConfig.APP_VERSION
-                .split(".")
-                .zip(force.split("."))
-                .map { (version, forceUpdate) ->
-                    version.toIntOrNull() to forceUpdate.toIntOrNull()
-                }
-                .forEach { (version, forceUpdate) ->
-                    when {
-                        version == null || forceUpdate == null -> return@forEach
-                        version < forceUpdate -> {
-                            updateNeeded = true
-                            return@forEach
-                        }
-                    }
-                }
-            forceUpdateDialogVisible = updateNeeded
+        appConfiguration?.platformForceUpdate()?.let { forceVersion ->
+            forceUpdateDialogVisible = forceVersion > BuildConfig.APP_VERSION
         }
     }
 
