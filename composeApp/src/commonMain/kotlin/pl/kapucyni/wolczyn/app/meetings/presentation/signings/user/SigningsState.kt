@@ -1,16 +1,20 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.signings.user
 
+import androidx.compose.runtime.Immutable
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 
+@Immutable
 sealed class SigningsState(val qrEmail: String?) {
+    @Immutable
     data class Confirmed(
         val firstName: String,
         val email: String,
         val group: Group?,
     ): SigningsState(qrEmail = email)
 
+    @Immutable
     data class NotConfirmed(
         val essentialsUrl: String,
         val statuteUrl: String,

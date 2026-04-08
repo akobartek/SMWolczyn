@@ -1,8 +1,10 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.groups
 
+import androidx.compose.runtime.Immutable
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 
+@Immutable
 data class MeetingGroupsScreenState(
     val loading: Boolean = false,
     val newGroups: List<Group>,

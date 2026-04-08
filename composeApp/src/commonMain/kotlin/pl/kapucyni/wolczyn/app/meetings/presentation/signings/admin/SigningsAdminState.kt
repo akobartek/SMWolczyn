@@ -1,10 +1,12 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin
 
+import androidx.compose.runtime.Immutable
 import dev.gitlive.firebase.firestore.toMilliseconds
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 
+@Immutable
 data class SigningsAdminState(
     val isEditing: Boolean = false,
     val firstName: String = "",
