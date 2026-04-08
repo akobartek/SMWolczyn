@@ -121,7 +121,7 @@ android {
         applicationId = "pl.kapucyni.wolczyn.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 49
+        versionCode = 50
         versionName = appVersion
     }
     packaging {
