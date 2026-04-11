@@ -159,8 +159,7 @@ class ParticipantsViewModel(
             }.getSortedList(filterState.sorting)
 
         val uiVisibleList = when {
-            user.isAdmin() || user.hasAccessToParticipantsData() -> filteredList
-            user.permits.isEmpty() -> emptyList()
+            user.hasAccessToParticipantsData() -> filteredList
             user.hasAnimatorsPermit() -> filteredList.filter { it.type.canBeAnimator() }
             else -> listOf()
         }

@@ -136,13 +136,17 @@
     <string name="filter_empty">Brak</string>
     <string name="add_participant">Dodaj uczestnika</string>
     <string name="signing_confirmed_by">Uczestnik zarejestrowany na Spotkaniu dnia</string>
-    <string name="signing_confirmed_message">Uczestnik został już zarejestrowany na Spotkaniu, jeśli uważasz że jest to błąd, skontaktuj się z adminem!</string>
+    <string name="signing_confirmed_message">Uczestnik został już zarejestrowany na Spotkaniu, jeśli uważasz, że jest to błąd, skontaktuj się z adminem!</string>
     <string name="signing_confirm_consent">Zgoda na przetwarzanie danych</string>
     <string name="signing_confirm_underage_consent">Odebrałem zgodę rodzica/opiekuna</string>
     <string name="signing_confirm_paid">Odebrałem pieniądze za uczestnictwo</string>
     <string name="signing_confirm">Potwierdź przybycie uczestnika</string>
     <string name="signing_confirm_success">Potwierdzono zapis uczestnika!</string>
     <string name="signing_confirm_failure">Nie udało się zapisać, spróbuj ponownie później!</string>
+    <plurals name="participant_meetings_count_message">
+        <item quantity="one">raz na Wołczynie</item>
+        <item quantity="other">razy na Wołczynie</item>
+    </plurals>
     <string name="workshop_new_name">Nazwa warsztatów</string>
     <string name="meeting_groups">Grupki</string>
     <string name="empty_groups_list">Brak wylosowanych wcześniej grupek, jeśli chcesz, możesz je wylosować:</string>
@@ -189,10 +193,12 @@
     <string name="participant_type_organisation">Organizator</string>
     <string name="workshops">Warsztaty</string>
     <string name="workshops_error">Nie wybrano warsztatów!</string>
+    <string name="community">Wspólnota</string>
+    <string name="community_placeholder">Daj nam znać, jeśli należysz do jakiejś wspólnoty! :)</string>
     <string name="notes_general">Notatki</string>
     <string name="notes_general_error">Uzupełnij notatki!</string>
-    <string name="notes_animator">Doświadczenie oraz wspólnota</string>
-    <string name="notes_animator_placeholder">Opisz swoje doświadczenie w prowadzeniu grupek/zajęć oraz z jakiej wspólnoty pochodzisz</string>
+    <string name="notes_animator">Doświadczenie</string>
+    <string name="notes_animator_placeholder">Opisz swoje doświadczenie w prowadzeniu grupek/zajęć oraz byciu animatorem</string>
     <string name="notes_animator_error">Aby zostać animatorem, potrzebujemy poznać Twoje doświadczenie oraz z jakiej jesteś wspólnoty</string>
     <string name="meeting_statute_title">Akceptuję %statute%.</string>
     <string name="meeting_statute_value">Regulamin Spotkania</string>
@@ -202,7 +208,7 @@
     <string name="meeting_signing_success_dialog_message">Twoje zgłoszenie zostało zapisane! Zapraszamy do sprawdzenia niezbędnika, w którym dowiesz się, jak przygotować się do Wołczyna!</string>
     <string name="meeting_signing_essentials">Niezbędnik</string>
     <string name="meeting_signing_too_young_dialog_title">Złe wieści!</string>
-    <string name="meeting_signing_too_young_dialog_message">W Spotkaniu Młodych w Wołczynie mogą wziąć udział osoby, które ukończyły 15 rok życia. Do zobaczenia na przyszłych Spotkaniach!</string>
+    <string name="meeting_signing_too_young_dialog_message">W Spotkaniu Młodych w Wołczynie mogą wziąć udział osoby, które ukończyły 15 lat. Do zobaczenia na przyszłych Spotkaniach!</string>
     <string name="meeting_signing_remove">Wycofaj zgłoszenie</string>
     <string name="meeting_signing_remove_dialog_title">Usuwanie zgłoszenia</string>
     <string name="meeting_signing_remove_dialog_message">Jesteś pewny, że chcesz wycofać swoje zgłoszenie na Wołczyn?</string>

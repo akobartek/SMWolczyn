@@ -4,8 +4,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +26,8 @@ import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -42,6 +46,8 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.cancel
+import smwolczyn.composeapp.generated.resources.community
+import smwolczyn.composeapp.generated.resources.community_placeholder
 import smwolczyn.composeapp.generated.resources.email_error_invalid
 import smwolczyn.composeapp.generated.resources.ic_construction
 import smwolczyn.composeapp.generated.resources.ic_delete
@@ -83,6 +89,8 @@ fun SigningsContent(
     pesel: String,
     peselError: Boolean,
     onPeselChanged : (String) -> Unit,
+    community: String,
+    onCommunityChanged : (String) -> Unit,
     birthdayDate: Long?,
     birthdayError: Boolean,
     onBirthdaySelected : (Long) -> Unit,
@@ -106,7 +114,7 @@ fun SigningsContent(
     onRemoveSigningClicked: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val (emailRef, firstNameRef, lastNameRef, cityRef, phoneNumberRef, birthdayRef, peselRef, typeRef) =
+    val (emailRef, firstNameRef, lastNameRef, cityRef, phoneNumberRef, birthdayRef, peselRef, communityRef, typeRef) =
         remember { FocusRequester.createRefs() }
     var removeSigningDialogVisible by remember { mutableStateOf(false) }
 
@@ -192,6 +200,25 @@ fun SigningsContent(
         ),
         modifier = Modifier
             .focusRequester(peselRef)
+            .focusProperties { next = communityRef },
+    )
+
+    OutlinedTextField(
+        value = community,
+        onValueChange = onCommunityChanged,
+        label = { WolczynText(text = stringResource(Res.string.community)) },
+        placeholder = { WolczynText(text = stringResource(Res.string.community_placeholder)) },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Words,
+            imeAction = ImeAction.Next,
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = { focusManager.moveFocus(FocusDirection.Next) },
+        ),
+        singleLine = true,
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(communityRef)
             .focusProperties { next = typeRef },
     )
 

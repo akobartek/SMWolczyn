@@ -31,6 +31,7 @@ sealed class SigningsState(val qrEmail: String?) {
         val email: String,
         val pesel: String,
         val peselError: Boolean = false,
+        val community: String,
         val birthdayDate: Long?,
         val birthdayError: Boolean = false,
         val isUnderAge: Boolean,

@@ -35,6 +35,7 @@ fun ParticipantDetailsScreen(
             ParticipantDetailsScreenContent(
                 participant = it.participant,
                 showData = it.showData,
+                meetingsCount = it.meetingsCount,
                 confirmUserSigning = viewModel::confirmUserSigning,
                 group = group,
             )

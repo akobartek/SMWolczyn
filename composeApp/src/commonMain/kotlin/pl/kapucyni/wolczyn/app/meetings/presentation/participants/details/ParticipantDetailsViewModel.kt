@@ -73,8 +73,11 @@ class ParticipantDetailsViewModel(
         viewModelScope.launch(Dispatchers.Default) {
             val participant = args.participant
             val group = meetingsRepository.getParticipantGroup(args.meetingId, participant.email)
+            val meetingsCount =
+                if (args.showData.not()) null
+                else meetingsRepository.getParticipantMeetingsCount(participant.pesel)
             _group.update { group }
-            _state.update { ParticipantDetailsState(participant, args.showData) }
+            _state.update { ParticipantDetailsState(participant, args.showData, meetingsCount) }
         }
     }
 }

@@ -31,6 +31,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdmi
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateCity
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateCommunity
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateEmail
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateLastName
@@ -113,6 +114,8 @@ private fun SigningsAdminScreenContent(
                 onContactNumberChanged = { handleAction(UpdateContactNumber(it)) },
                 pesel = state.pesel,
                 peselError = state.peselError,
+                community = state.community,
+                onCommunityChanged = { handleAction(UpdateCommunity(it)) },
                 onPeselChanged = { handleAction(UpdatePesel(it)) },
                 birthdayDate = state.birthdayDate,
                 birthdayError = state.birthdayError,

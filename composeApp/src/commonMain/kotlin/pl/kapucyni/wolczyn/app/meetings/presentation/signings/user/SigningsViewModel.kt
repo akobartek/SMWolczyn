@@ -43,6 +43,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCommunity
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateLastName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateNotes
@@ -96,6 +97,7 @@ class SigningsViewModel(
             is UpdateContactNumber -> updateContactNumber(action.contactNumber)
             is UpdateBirthday -> updateBirthdayDate(action.millis)
             is UpdatePesel -> updatePesel(action.pesel)
+            is UpdateCommunity -> updateCommunity(action.community)
             is UpdateType -> updateType(action.type)
             is UpdateWorkshop -> updateWorkshop(action.workshop)
             is UpdateNotes -> updateNotes(action.notes)
@@ -137,6 +139,7 @@ class SigningsViewModel(
                     contactNumber = participant?.contactNumber.orEmpty().removePrefix(PHONE_CODE),
                     email = participant?.email ?: user.email,
                     pesel = participant?.pesel ?: user.birthday?.getPeselBeginning().orEmpty(),
+                    community = participant?.community.orEmpty(),
                     birthdayDate = birthday,
                     isUnderAge = birthday?.isAgeBelow(age = 18) == true,
                     availableTypes = getAvailableTypes(birthday),
@@ -232,6 +235,10 @@ class SigningsViewModel(
         }
     }
 
+    private fun updateCommunity(community: String) {
+        _state.update { (it as? SigningsState.NotConfirmed)?.copy(community = community) }
+    }
+
     private fun updateType(type: ParticipantType) {
         _state.update {
             (it as? SigningsState.NotConfirmed)?.let { state ->
@@ -310,6 +317,7 @@ class SigningsViewModel(
                     city = state.city.trim(),
                     email = state.email.trim(),
                     pesel = state.pesel.trim(),
+                    community = state.community.trim(),
                     contactNumber = "$PHONE_CODE${state.contactNumber.trim()}",
                     workshop = state.selectedWorkshop.orEmpty(),
                     birthday = state.birthdayDate?.let {

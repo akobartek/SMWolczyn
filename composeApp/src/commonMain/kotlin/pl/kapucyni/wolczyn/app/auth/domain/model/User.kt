@@ -20,7 +20,9 @@ data class User(
     fun isAdmin() = userType == UserType.ADMIN
 
     fun hasAccessToParticipantsData() =
-        permits.contains(UserPermit.SIGNINGS) || permits.contains(UserPermit.VOLUNTEERS)
+        isAdmin() || permits.contains(UserPermit.SIGNINGS) || permits.contains(UserPermit.VOLUNTEERS)
+
+    fun canEditParticipantsData() = isAdmin() || permits.contains(UserPermit.VOLUNTEERS)
 
     fun hasAnimatorsPermit() = permits.contains(UserPermit.ANIMATORS)
 

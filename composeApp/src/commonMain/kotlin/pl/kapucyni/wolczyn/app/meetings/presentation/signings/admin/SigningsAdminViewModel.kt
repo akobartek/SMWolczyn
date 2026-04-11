@@ -33,6 +33,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdmi
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateCity
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateCommunity
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateEmail
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.admin.SigningsAdminAction.UpdateLastName
@@ -71,6 +72,7 @@ class SigningsAdminViewModel(
             is UpdateBirthday -> updateBirthdayDate(action.millis)
             is UpdateEmail -> updateEmail(action.email)
             is UpdatePesel -> updatePesel(action.pesel)
+            is UpdateCommunity -> updateCommunity(action.community)
             is UpdateType -> updateType(action.type)
             is UpdateWorkshop -> updateWorkshop(action.workshop)
             is UpdateNotes -> updateNotes(action.notes)
@@ -143,6 +145,10 @@ class SigningsAdminViewModel(
         }
     }
 
+    private fun updateCommunity(community: String) {
+        _state.update { it?.copy(community = community) }
+    }
+
     private fun updateType(type: ParticipantType) {
         _state.update {
             val workshopsEnabled = workshopsEnabled(type, it?.pesel.orEmpty())
@@ -190,6 +196,7 @@ class SigningsAdminViewModel(
                     city = state.city.trim(),
                     email = state.email.trim(),
                     pesel = state.pesel.trim(),
+                    community = state.community.trim(),
                     contactNumber = "+48${state.contactNumber.trim()}",
                     workshop = state.selectedWorkshop.orEmpty(),
                     birthday = state.birthdayDate?.let {

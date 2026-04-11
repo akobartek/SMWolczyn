@@ -73,7 +73,7 @@ fun ParticipantsScreen(
 
     val openDetails = { participant: Participant, forceDetails: Boolean ->
         state?.let { state ->
-            if (state.user.isAdmin() && forceDetails.not())
+            if (state.user.canEditParticipantsData() && forceDetails.not())
                 navigate(Screen.SigningsAdmin(state.meetingId, participant))
             else
                 navigate(Screen.ParticipantDetails(state.meetingId, participant, state.listVisible))

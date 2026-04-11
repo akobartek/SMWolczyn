@@ -18,6 +18,7 @@ interface MeetingsRepository {
     suspend fun getGroups(meetingId: Int): List<Group>
     suspend fun saveGroups(meetingId: Int, groups: List<Group>): Result<Unit>
     suspend fun getParticipantGroup(meetingId: Int, email: String): Group?
+    suspend fun getParticipantMeetingsCount(pesel: String): Int?
 
     fun getAllMeetings(): Flow<List<Meeting>>
     fun getMeetingParticipants(meetingId: Int): Flow<List<Participant>>

@@ -24,12 +24,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gitlive.firebase.firestore.Timestamp
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import pl.kapucyni.wolczyn.app.common.presentation.composables.CheckableField
@@ -46,6 +48,7 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.by
 import smwolczyn.composeapp.generated.resources.ic_cake
 import smwolczyn.composeapp.generated.resources.ic_call
+import smwolczyn.composeapp.generated.resources.ic_church
 import smwolczyn.composeapp.generated.resources.ic_city
 import smwolczyn.composeapp.generated.resources.ic_construction
 import smwolczyn.composeapp.generated.resources.ic_email_alt
@@ -53,6 +56,7 @@ import smwolczyn.composeapp.generated.resources.ic_fingerprint
 import smwolczyn.composeapp.generated.resources.ic_follow_the_signs
 import smwolczyn.composeapp.generated.resources.ic_task_alt
 import smwolczyn.composeapp.generated.resources.participant_group
+import smwolczyn.composeapp.generated.resources.participant_meetings_count_message
 import smwolczyn.composeapp.generated.resources.signing_confirm
 import smwolczyn.composeapp.generated.resources.signing_confirm_consent
 import smwolczyn.composeapp.generated.resources.signing_confirm_paid
@@ -65,6 +69,7 @@ import smwolczyn.composeapp.generated.resources.workshops
 fun ParticipantDetailsScreenContent(
     participant: Participant,
     showData: Boolean,
+    meetingsCount: Int?,
     confirmUserSigning: () -> Unit,
     group: Group?,
 ) {
@@ -108,6 +113,12 @@ fun ParticipantDetailsScreenContent(
                     )
             }
 
+            if (participant.community.isNotBlank())
+                ParticipantInfo(
+                    imageVector = vectorResource(Res.drawable.ic_church),
+                    text = participant.community,
+                )
+
             ParticipantInfo(
                 imageVector = vectorResource(Res.drawable.ic_follow_the_signs),
                 text = stringResource(participant.type.stringRes),
@@ -122,6 +133,31 @@ fun ParticipantDetailsScreenContent(
             ParticipantInfo(
                 imageVector = vectorResource(Res.drawable.ic_task_alt),
                 text = participant.createdAt.getFormattedDate(),
+            )
+        }
+
+        meetingsCount?.let { count ->
+            WolczynText(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    ) {
+                        append("$count ")
+                    }
+                    append(
+                        pluralStringResource(
+                            Res.plurals.participant_meetings_count_message,
+                            count,
+                        )
+                    )
+                },
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    textAlign = TextAlign.Center,
+                ),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
 
@@ -275,6 +311,7 @@ private fun ParticipantDetailsScreenContentPreview() {
                 city = "Kraków",
                 email = "jankowalski@xd.com",
                 pesel = "1234567890123",
+                community = "MF Tau",
                 contactNumber = "123456789",
                 workshop = "Piłkarskie",
                 notes = "Bardzo długie notatki opisujące doświadczenie w prowadzeniu grupki oraz wspólnotę",
@@ -285,6 +322,7 @@ private fun ParticipantDetailsScreenContentPreview() {
                 acceptedBy = "admin@wolczyn.com",
             ),
             showData = true,
+            meetingsCount = 2137,
             confirmUserSigning = {},
             group = null,
         )

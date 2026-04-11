@@ -15,6 +15,7 @@ data class Participant(
     val city: String = "",
     val email: String = "",
     val pesel: String = "",
+    val community: String = "",
     val contactNumber: String = "",
     val workshop: String = "",
     val birthday: Timestamp = Timestamp.now(),

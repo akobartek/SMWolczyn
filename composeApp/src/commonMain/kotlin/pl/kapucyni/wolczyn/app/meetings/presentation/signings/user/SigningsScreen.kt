@@ -48,6 +48,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCommunity
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateFirstName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateLastName
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateNotes
@@ -215,6 +216,8 @@ private fun SigningsScreenContent(
             pesel = state.pesel,
             peselError = state.peselError,
             onPeselChanged = { handleAction(UpdatePesel(it)) },
+            community = state.community,
+            onCommunityChanged = { handleAction(UpdateCommunity(it)) },
             birthdayDate = state.birthdayDate,
             birthdayError = state.birthdayError,
             onBirthdaySelected = { handleAction(UpdateBirthday(it)) },
@@ -345,6 +348,7 @@ private fun SigningsScreenContentPreview() {
                 city = "Testowo",
                 email = "test@test.com",
                 pesel = "1234567890123",
+                community = "",
                 birthdayDate = Timestamp.now().seconds,
                 isUnderAge = true,
                 availableTypes = listOf(ParticipantType.MEMBER, ParticipantType.ANIMATOR),

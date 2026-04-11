@@ -2,9 +2,10 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.meetings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -27,7 +28,6 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.meetings.composables.Meetin
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.empty_meetings_list
-import smwolczyn.composeapp.generated.resources.ic_add
 import smwolczyn.composeapp.generated.resources.ic_add_note
 import smwolczyn.composeapp.generated.resources.ic_cap_archive
 import smwolczyn.composeapp.generated.resources.meetings
@@ -62,19 +62,18 @@ fun MeetingsScreen(
                     )
                 }
             }
-        },
-        floatingActionButton = {
-            if (userType == UserType.ADMIN) {
-                FloatingActionButton(onClick = {
-                    // todo
-                }) {
-                    Icon(
-                        imageVector = vectorResource(Res.drawable.ic_add),
-                        contentDescription = null,
-                    )
-                }
-            }
-        },
+        }
+//        } ?: userType.takeIf { it == UserType.ADMIN }?.let {
+//            {
+//                IconButton(onClick = { /*TODO*/ }) {
+//                    Icon(
+//                        imageVector = vectorResource(Res.drawable.ic_add),
+//                        tint = wolczynColors.primary,
+//                        contentDescription = null,
+//                    )
+//                }
+//            }
+//        },
     ) {
         state?.let { meetings ->
             MeetingsScreenContent(
@@ -96,9 +95,13 @@ private fun MeetingsScreenContent(
     openWorkshopsScreen: (Int) -> Unit,
     openGroupsScreen: (Int) -> Unit,
 ) {
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(300.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 2.dp),
     ) {
         items(items = meetings, key = { it.id }) { meeting ->
             MeetingCard(

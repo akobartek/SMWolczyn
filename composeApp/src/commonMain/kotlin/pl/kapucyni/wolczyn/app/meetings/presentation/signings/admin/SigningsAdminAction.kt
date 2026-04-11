@@ -11,6 +11,7 @@ sealed interface SigningsAdminAction {
     data class UpdateBirthday(val millis: Long): SigningsAdminAction
     data class UpdateEmail(val email: String) : SigningsAdminAction
     data class UpdatePesel(val pesel: String) : SigningsAdminAction
+    data class UpdateCommunity(val community: String) : SigningsAdminAction
     data class UpdateType(val type: ParticipantType) : SigningsAdminAction
     data class UpdateWorkshop(val workshop: String) : SigningsAdminAction
     data class UpdateNotes(val notes: String) : SigningsAdminAction

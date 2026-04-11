@@ -64,13 +64,6 @@ fun MeetingCard(
                         .weight(1f)
                         .padding(horizontal = 12.dp),
                 )
-                if (userType == UserType.ADMIN)
-                    IconButton(onClick = { openWorkshopsScreen(meeting.id) }) {
-                        Icon(
-                            imageVector = vectorResource(Res.drawable.ic_construction),
-                            contentDescription = stringResource(Res.string.workshops),
-                        )
-                    }
                 if (
                     userType == UserType.ADMIN
                     && meeting.start.seconds <= Clock.System.now().epochSeconds
@@ -79,6 +72,13 @@ fun MeetingCard(
                         Icon(
                             imageVector = vectorResource(Res.drawable.ic_hub),
                             contentDescription = stringResource(Res.string.meeting_groups),
+                        )
+                    }
+                if (userType == UserType.ADMIN)
+                    IconButton(onClick = { openWorkshopsScreen(meeting.id) }) {
+                        Icon(
+                            imageVector = vectorResource(Res.drawable.ic_construction),
+                            contentDescription = stringResource(Res.string.workshops),
                         )
                     }
                 IconButton(onClick = { openParticipantsScreen(meeting.id) }) {

@@ -37,6 +37,7 @@ private data class NavParticipant(
     val city: String = "",
     val email: String = "",
     val pesel: String = "",
+    val community: String = "",
     val contactNumber: String = "",
     val workshop: String = "",
     val birthday: Double,
@@ -50,8 +51,8 @@ private data class NavParticipant(
     val acceptedById: String? = null,
 ) {
     fun toParticipant() = Participant(
-        userId, type, firstName, lastName,
-        city, email, pesel, contactNumber, workshop,
+        userId, type, firstName, lastName, city,
+        email, pesel, community, contactNumber, workshop,
         Timestamp.fromMilliseconds(birthday), notes,
         Timestamp.fromMilliseconds(createdAt), paid, consents,
         underageConsents, acceptedAt?.let { Timestamp.fromMilliseconds(it) },
@@ -61,8 +62,8 @@ private data class NavParticipant(
     companion object {
         fun fromParticipant(participant: Participant) = with(participant) {
             NavParticipant(
-                userId, type, firstName, lastName,
-                city, email, pesel, contactNumber, workshop,
+                userId, type, firstName, lastName, city,
+                email, pesel, community, contactNumber, workshop,
                 birthday.toMilliseconds(), notes,
                 createdAt.toMilliseconds(), paid, consents,
                 underageConsents, acceptedAt?.toMilliseconds(),

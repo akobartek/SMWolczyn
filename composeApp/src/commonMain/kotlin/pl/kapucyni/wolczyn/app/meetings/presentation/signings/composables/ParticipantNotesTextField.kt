@@ -38,6 +38,7 @@ fun ParticipantNotesTextField(
             keyboardActions = keyboardActions ?: KeyboardActions.Default,
             trailingIcon = trailingIcon,
             enabled = enabled,
+            minLines = 3,
             maxLines = 5,
             isError = errorMessage != null,
             supportingText = errorMessage?.let {

@@ -100,6 +100,15 @@ class FirebaseMeetingsRepository(
         getGroups(meetingId).find { it.containsParticipantByEmail(email = email) }
     }.getOrDefault(null)
 
+    override suspend fun getParticipantMeetingsCount(pesel: String) = runCatching {
+        // TODO - Refactor to use .count when it will be available in gitlive firebase
+        firestore.collectionGroup(COLLECTION_SIGNINGS)
+            .where { "pesel" equalTo pesel }
+            .get()
+            .documents
+            .size
+    }.getOrNull()
+
     override fun getAllMeetings(): Flow<List<Meeting>> =
         firestore.getFirestoreCollectionFlow<Meeting>(COLLECTION_MEETINGS)
             .map { meetings -> meetings.sortedByDescending { it.id } }
