@@ -47,7 +47,7 @@ sealed class SigningsState(val qrEmail: String?) {
         val notes: String = "",
         val notesError: Boolean = false,
         val statuteChecked: Boolean,
-        val animatorInfoChecked: Boolean,
+        val additionalInfoChecked: Boolean,
         val successDialogVisible: Boolean = false,
         val tooYoungDialogVisible: Boolean = false,
         val noInternetDialogVisible: Boolean = false,

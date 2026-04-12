@@ -107,3 +107,7 @@ suspend inline fun FirebaseFirestore.checkIfDocumentExists(
             .document(documentId)
             .get()
             .exists
+
+inline fun <reified T> DocumentSnapshot.dataOrNull(): T? {
+    return if (this.exists) this.data<T>() else null
+}

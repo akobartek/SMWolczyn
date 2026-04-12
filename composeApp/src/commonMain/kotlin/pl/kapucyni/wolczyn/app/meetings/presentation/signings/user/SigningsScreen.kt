@@ -44,7 +44,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideTooYoungDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.SaveData
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateAnimatorInfoChecked
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateAdditionalInfoChecked
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
@@ -268,13 +268,13 @@ private fun SigningsScreenContent(
                     )
 
                     CheckableField(
-                        checked = state.animatorInfoChecked,
-                        onCheckedChange = { handleAction(UpdateAnimatorInfoChecked(it)) },
+                        checked = state.additionalInfoChecked,
+                        onCheckedChange = { handleAction(UpdateAdditionalInfoChecked(it)) },
                         text = stringResource(Res.string.meeting_signing_animator_consent),
                     )
                 }
 
-                if (state.isUnderAge)
+                if (state.isUnderAge) {
                     WolczynText(
                         text = buildLinkableString(
                             text = Res.string.meeting_signing_underage_info,
@@ -284,6 +284,13 @@ private fun SigningsScreenContent(
                         ),
                         textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Justify),
                     )
+
+                    CheckableField(
+                        checked = state.additionalInfoChecked,
+                        onCheckedChange = { handleAction(UpdateAdditionalInfoChecked(it)) },
+                        text = stringResource(Res.string.meeting_signing_animator_consent),
+                    )
+                }
             },
         )
     }
@@ -324,7 +331,7 @@ private fun SigningsScreenContent(
 }
 
 private fun SigningsState.NotConfirmed.animatorInfoChecked() =
-    if (type == ParticipantType.ANIMATOR) animatorInfoChecked
+    if (type == ParticipantType.ANIMATOR || isUnderAge) additionalInfoChecked
     else true
 
 private const val STATUTE = "%statute%"
@@ -357,7 +364,7 @@ private fun SigningsScreenContentPreview() {
                 availableWorkshops = listOf("Piłkarskie"),
                 selectedWorkshop = "Piłkarskie",
                 statuteChecked = false,
-                animatorInfoChecked = false,
+                additionalInfoChecked = false,
             ),
             handleAction = {},
             openEssentials = {},

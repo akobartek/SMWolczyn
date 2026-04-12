@@ -6,10 +6,12 @@ import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import pl.kapucyni.wolczyn.app.common.utils.dataOrNull
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
+import pl.kapucyni.wolczyn.app.meetings.domain.model.OldMeetingsCounter
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 import pl.kapucyni.wolczyn.app.meetings.domain.model.containsParticipantByEmail
@@ -102,11 +104,15 @@ class FirebaseMeetingsRepository(
 
     override suspend fun getParticipantMeetingsCount(pesel: String) = runCatching {
         // TODO - Refactor to use .count when it will be available in gitlive firebase
+        val oldMeetings = oldMeetingsCount().document(pesel)
+            .get()
+            .dataOrNull<OldMeetingsCounter>()
+            ?.counter ?: 0
         firestore.collectionGroup(COLLECTION_SIGNINGS)
             .where { "pesel" equalTo pesel }
             .get()
             .documents
-            .size
+            .size + oldMeetings
     }.getOrNull()
 
     override fun getAllMeetings(): Flow<List<Meeting>> =
@@ -142,6 +148,9 @@ class FirebaseMeetingsRepository(
     private fun meetings() =
         firestore.collection(COLLECTION_MEETINGS)
 
+    private fun oldMeetingsCount() =
+        firestore.collection(COLLECTION_OLD_MEETINGS_COUNT)
+
     private fun signings(meetingId: Int) =
         meetings()
             .document(meetingId.toString())
@@ -162,5 +171,6 @@ class FirebaseMeetingsRepository(
         const val COLLECTION_SIGNINGS = "signings"
         const val COLLECTION_GROUPS = "groups"
         const val COLLECTION_WORKSHOPS = "workshops"
+        const val COLLECTION_OLD_MEETINGS_COUNT = "old_meeting_count"
     }
 }

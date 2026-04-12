@@ -14,7 +14,7 @@ sealed interface SigningsAction {
     data class UpdateWorkshop(val workshop: String) : SigningsAction
     data class UpdateNotes(val notes: String) : SigningsAction
     data class UpdateStatuteConsent(val checked: Boolean) : SigningsAction
-    data class UpdateAnimatorInfoChecked(val checked: Boolean) : SigningsAction
+    data class UpdateAdditionalInfoChecked(val checked: Boolean) : SigningsAction
     data object SaveData : SigningsAction
     data object RemoveSigning : SigningsAction
     data object HideSuccessDialog : SigningsAction

@@ -39,7 +39,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideTooYoungDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.RemoveSigning
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.SaveData
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateAnimatorInfoChecked
+import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateAdditionalInfoChecked
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateBirthday
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateContactNumber
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateCity
@@ -102,7 +102,7 @@ class SigningsViewModel(
             is UpdateWorkshop -> updateWorkshop(action.workshop)
             is UpdateNotes -> updateNotes(action.notes)
             is UpdateStatuteConsent -> updateStatuteConsent(action.checked)
-            is UpdateAnimatorInfoChecked -> updateAnimatorInfoChecked(action.checked)
+            is UpdateAdditionalInfoChecked -> updateAdditionalInfoChecked(action.checked)
             is SaveData -> saveData()
             is RemoveSigning -> removeSigning()
             is HideSuccessDialog -> toggleSuccessDialog(visible = false)
@@ -123,10 +123,11 @@ class SigningsViewModel(
                     group = group,
                 )
             } else {
-                val currentState = state.value as? SigningsState.NotConfirmed
                 val workshops = meetingsRepository.getAvailableWorkshops(args.meetingId)
                 val meeting = meetingsRepository.getMeeting(args.meetingId)
                 val birthday = (participant?.birthday ?: user.birthday)?.toMilliseconds()?.toLong()
+                val isUnderAge = birthday?.isAgeBelow(age = 18) == true
+                val currentState = state.value as? SigningsState.NotConfirmed
 
                 SigningsState.NotConfirmed(
                     essentialsUrl = meeting.essentialsUrl,
@@ -152,7 +153,9 @@ class SigningsViewModel(
                     notes = participant?.notes.orEmpty(),
                     notesEnabled = participant?.type?.notesAvailable() == true,
                     statuteChecked = participant != null,
-                    animatorInfoChecked = participant?.type == ParticipantType.ANIMATOR,
+                    additionalInfoChecked = participant?.let {
+                        it.type == ParticipantType.ANIMATOR || isUnderAge
+                    } == true,
                     successDialogVisible = currentState?.successDialogVisible == true,
                     tooYoungDialogVisible = currentState?.tooYoungDialogVisible == true,
                     noInternetDialogVisible = currentState?.noInternetDialogVisible == true,
@@ -199,8 +202,11 @@ class SigningsViewModel(
     }
 
     private fun updateBirthdayDate(value: Long) {
+        val currentState = (state.value as? SigningsState.NotConfirmed) ?: return
+        val availableTypes = getAvailableTypes(value)
+        val needTypeCleanup = currentState.type !in availableTypes
         _state.update {
-            (it as? SigningsState.NotConfirmed)?.copy(
+            currentState.copy(
                 birthdayDate = value,
                 birthdayError = value > Clock.System.now().toEpochMilliseconds(),
                 isUnderAge = value.isAgeBelow(18),
@@ -208,6 +214,8 @@ class SigningsViewModel(
                 availableTypes = getAvailableTypes(value),
             )
         }
+        if (needTypeCleanup)
+            updateType(null)
     }
 
     private fun updatePesel(pesel: String) {
@@ -239,19 +247,20 @@ class SigningsViewModel(
         _state.update { (it as? SigningsState.NotConfirmed)?.copy(community = community) }
     }
 
-    private fun updateType(type: ParticipantType) {
+    private fun updateType(type: ParticipantType?) {
         _state.update {
             (it as? SigningsState.NotConfirmed)?.let { state ->
                 val workshopsEnabled = workshopsEnabled(type, state.pesel)
+                val notesEnabled = type?.notesAvailable() == true
                 state.copy(
                     type = type,
                     typeError = false,
                     selectedWorkshop = if (workshopsEnabled) it.selectedWorkshop else null,
                     workshopsEnabled = workshopsEnabled,
                     workshopError = it.workshopError && workshopsEnabled,
-                    notes = if (type.notesAvailable()) state.notes else "",
-                    notesEnabled = type.notesAvailable(),
-                    animatorInfoChecked = false,
+                    notes = if (notesEnabled) state.notes else "",
+                    notesEnabled = notesEnabled,
+                    additionalInfoChecked = false,
                 )
             }
         }
@@ -279,8 +288,8 @@ class SigningsViewModel(
         _state.update { (it as? SigningsState.NotConfirmed)?.copy(statuteChecked = checked) }
     }
 
-    private fun updateAnimatorInfoChecked(checked: Boolean) {
-        _state.update { (it as? SigningsState.NotConfirmed)?.copy(animatorInfoChecked = checked) }
+    private fun updateAdditionalInfoChecked(checked: Boolean) {
+        _state.update { (it as? SigningsState.NotConfirmed)?.copy(additionalInfoChecked = checked) }
     }
 
     private fun toggleSuccessDialog(visible: Boolean) {
