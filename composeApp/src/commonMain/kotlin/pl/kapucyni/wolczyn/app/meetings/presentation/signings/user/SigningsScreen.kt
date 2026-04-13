@@ -57,7 +57,6 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsEvent.NavigateUp
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsEvent.UserNotAvailable
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.SigningsConfirmedScreen
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.SigningsNoUserDialog
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.composables.SigningsQrCodeDialog
@@ -96,12 +95,11 @@ fun SigningsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val loading by viewModel.loading.collectAsStateWithLifecycle()
-    var noUserDialogVisible by rememberSaveable { mutableStateOf(false) }
+    val noUserDialogVisible by viewModel.noUserDialogVisible.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is NavigateUp -> navigateUp()
-            is UserNotAvailable -> { noUserDialogVisible = true }
         }
     }
 

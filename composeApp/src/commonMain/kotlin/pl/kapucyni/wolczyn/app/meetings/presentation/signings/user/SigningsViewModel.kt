@@ -9,7 +9,9 @@ import dev.gitlive.firebase.firestore.toMilliseconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -52,7 +54,6 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsActio
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.UpdateWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsEvent.NavigateUp
-import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsEvent.UserNotAvailable
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -69,6 +70,9 @@ class SigningsViewModel(
     private val _events = Channel<SigningsEvent>()
     val events = _events.receiveAsFlow()
 
+    private val _noUserDialogVisible = MutableStateFlow(false)
+    val noUserDialogVisible = _noUserDialogVisible.asStateFlow()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val currentUserData = authRepository.currentUser.flatMapLatest { user ->
         user?.let {
@@ -79,13 +83,15 @@ class SigningsViewModel(
                 user to participant
             }
         } ?: run {
-            _events.send(UserNotAvailable)
             flowOf(null)
         }
     }.onEach { data ->
         if (data != null) {
+            _noUserDialogVisible.update { false }
             val (user, participant) = data
             updateState(user, participant)
+        } else {
+            _noUserDialogVisible.update { true }
         }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
 
