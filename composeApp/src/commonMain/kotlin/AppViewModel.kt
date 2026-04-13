@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
@@ -23,10 +24,12 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.Signe
 import pl.kapucyni.wolczyn.app.common.utils.validatePassword
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
 import pl.kapucyni.wolczyn.app.core.domain.repository.CoreRepository
+import pl.kapucyni.wolczyn.app.core.presentation.UserPreferencesRepository
 
 class AppViewModel(
     coreRepository: CoreRepository,
     private val authRepository: AuthRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
 
     val user: StateFlow<User?> = authRepository.currentUser
@@ -38,7 +41,7 @@ class AppViewModel(
 
     init {
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             DeepLinkManager.resetCode.collect { resetCode ->
                 resetCode?.let {
                     authRepository.getEmailFromResetCode(resetCode)
@@ -53,6 +56,8 @@ class AppViewModel(
                 } ?: run { closeResetDialog() }
             }
         }
+
+        checkAndRepairProfile()
     }
 
     fun handleAction(action: AuthAction) {
@@ -68,6 +73,7 @@ class AppViewModel(
     private fun signOut() {
         viewModelScope.launch {
             authRepository.signOut()
+            userPreferencesRepository.setProfileVerified(false)
             SnackbarController.sendEvent(SignedOut)
         }
     }
@@ -81,7 +87,10 @@ class AppViewModel(
     private fun deleteAccount() {
         viewModelScope.launch {
             authRepository.deleteAccount()
-                .onSuccess { SnackbarController.sendEvent(AccountDeleted) }
+                .onSuccess {
+                    SnackbarController.sendEvent(AccountDeleted)
+                    userPreferencesRepository.setProfileVerified(false)
+                }
                 .onFailure {
                     SnackbarController.sendEvent(AccountDeleteFailed)
                     user.value?.let { authRepository.updateUser(it) }
@@ -113,6 +122,18 @@ class AppViewModel(
                     _resetPasswordDialogState.update {
                         resetPasswordState.copy(loading = false, resetFailed = true)
                     }
+                }
+            }
+        }
+    }
+
+    private fun checkAndRepairProfile() {
+        viewModelScope.launch {
+            val isProfileVerified = userPreferencesRepository.isProfileVerified.first()
+            if (isProfileVerified.not()) {
+                val result = authRepository.repairMissingProfileIfNeeded()
+                if (result.getOrDefault(false)) {
+                    userPreferencesRepository.setProfileVerified(true)
                 }
             }
         }

@@ -9,15 +9,21 @@ import pl.kapucyni.wolczyn.app.core.data.sources.FirestoreHomeSource
 import pl.kapucyni.wolczyn.app.core.domain.repository.CoreRepository
 import pl.kapucyni.wolczyn.app.core.domain.usecases.GetHomeNotificationsUseCase
 import AppViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import pl.kapucyni.wolczyn.app.core.presentation.HomeViewModel
+import pl.kapucyni.wolczyn.app.core.presentation.UserPreferencesRepository
 
 val coreModule = module {
     single { Firebase.auth }
     single { Firebase.firestore }
+    single { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
 
+    singleOf(::UserPreferencesRepository)
     singleOf(::FirestoreHomeSource)
     single<CoreRepository> { CoreRepositoryImpl(get()) }
     factoryOf(::GetHomeNotificationsUseCase)

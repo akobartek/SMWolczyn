@@ -1,6 +1,8 @@
 package pl.kapucyni.wolczyn.app.auth.di
 
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import pl.kapucyni.wolczyn.app.auth.data.FirebaseAuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
@@ -12,7 +14,7 @@ import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInViewModel
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpViewModel
 
 val authModule = module {
-    single<AuthRepository> { FirebaseAuthRepository(get(), get()) }
+    singleOf(::FirebaseAuthRepository) bind AuthRepository::class
     factory { SignUpUseCase(get()) }
     factory { UpdateUserUseCase(get()) }
 

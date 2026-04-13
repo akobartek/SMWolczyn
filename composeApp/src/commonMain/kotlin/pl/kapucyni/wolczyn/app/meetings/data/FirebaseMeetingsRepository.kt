@@ -4,6 +4,7 @@ import dev.gitlive.firebase.firestore.DocumentSnapshot
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import pl.kapucyni.wolczyn.app.common.utils.dataOrNull
@@ -119,31 +120,30 @@ class FirebaseMeetingsRepository(
         firestore.getFirestoreCollectionFlow<Meeting>(COLLECTION_MEETINGS)
             .map { meetings -> meetings.sortedByDescending { it.id } }
 
-    override fun getMeetingParticipants(meetingId: Int): Flow<List<Participant>> = runCatching {
+    override fun getMeetingParticipants(meetingId: Int): Flow<List<Participant>> =
         signings(meetingId)
             .snapshots
             .map<QuerySnapshot, List<Participant>> { querySnapshot ->
                 querySnapshot.documents.map { it.data() }
             }
-    }.getOrDefault(flowOf(emptyList()))
+            .catch { emit(listOf()) }
 
-    override fun getWorkshopsFlow(meetingId: Int): Flow<List<Workshop>> = runCatching {
+    override fun getWorkshopsFlow(meetingId: Int): Flow<List<Workshop>> =
         workshops(meetingId)
             .snapshots
             .map<QuerySnapshot, List<Workshop>> { querySnapshot ->
                 querySnapshot.documents.map { it.data() }
             }
-    }.getOrDefault(flowOf(emptyList()))
+            .catch { emit(listOf()) }
 
     override fun getParticipantFlow(meetingId: Int, email: String): Flow<Participant?> =
-        runCatching {
-            email.takeIf { it.isNotBlank() }?.let {
-                signings(meetingId)
-                    .document(email)
-                    .snapshots
-                    .map<DocumentSnapshot, Participant?> { it.data() }
-            } ?: flowOf(null)
-        }.getOrDefault(flowOf(null))
+        if (email.isNotBlank())
+            signings(meetingId)
+                .document(email)
+                .snapshots
+                .map<DocumentSnapshot, Participant?> { it.data() }
+                .catch { emit(null) }
+        else flowOf(null)
 
     private fun meetings() =
         firestore.collection(COLLECTION_MEETINGS)

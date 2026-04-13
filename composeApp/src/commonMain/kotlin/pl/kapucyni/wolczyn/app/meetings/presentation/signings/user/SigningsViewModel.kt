@@ -34,6 +34,7 @@ import pl.kapucyni.wolczyn.app.common.utils.isValidPesel
 import pl.kapucyni.wolczyn.app.common.utils.isValidPhoneNumber
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Gender
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.meetings.presentation.signings.user.SigningsAction.HideNoInternetDialog
@@ -72,6 +73,8 @@ class SigningsViewModel(
 
     private val _noUserDialogVisible = MutableStateFlow(false)
     val noUserDialogVisible = _noUserDialogVisible.asStateFlow()
+
+    private var currentMeeting: Meeting? = null
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val currentUserData = authRepository.currentUser.flatMapLatest { user ->
@@ -130,7 +133,8 @@ class SigningsViewModel(
                 )
             } else {
                 val workshops = meetingsRepository.getAvailableWorkshops(args.meetingId)
-                val meeting = meetingsRepository.getMeeting(args.meetingId)
+                val meeting = currentMeeting ?: meetingsRepository.getMeeting(args.meetingId)
+                currentMeeting = meeting
                 val birthday = (participant?.birthday ?: user.birthday)?.toMilliseconds()?.toLong()
                 val isUnderAge = birthday?.isAgeBelow(age = 18) == true
                 val currentState = state.value as? SigningsState.NotConfirmed
@@ -225,12 +229,11 @@ class SigningsViewModel(
     }
 
     private fun updatePesel(pesel: String) {
-        val birthdayDate = (_state.value as? SigningsState.NotConfirmed)?.birthdayDate
-        if (
-            pesel.startsWith(birthdayDate?.getPeselBeginning().orEmpty()).not()
-            || pesel.length > 11
-        ) return
+        if (pesel.length > 11) return
+
         val state = (_state.value as? SigningsState.NotConfirmed) ?: return
+        val isPeselValidPrefix =
+            pesel.startsWith(state.birthdayDate?.getPeselBeginning().orEmpty())
         val workshops =
             if (pesel.length < 11) listOf()
             else state.allWorkshops
@@ -240,7 +243,7 @@ class SigningsViewModel(
         _state.update {
             state.copy(
                 pesel = pesel,
-                peselError = false,
+                peselError = isPeselValidPrefix.not(),
                 selectedWorkshop = null,
                 availableWorkshops = workshops,
                 workshopsEnabled = workshopsEnabled(state.type, pesel),
@@ -364,7 +367,7 @@ class SigningsViewModel(
     }
 
     private suspend fun validateInput(state: SigningsState.NotConfirmed): Boolean {
-        val meeting = meetingsRepository.getMeeting(args.meetingId)
+        val meeting = currentMeeting ?: meetingsRepository.getMeeting(args.meetingId)
         val newState = with(state) {
             copy(
                 firstName = firstName.trim(),

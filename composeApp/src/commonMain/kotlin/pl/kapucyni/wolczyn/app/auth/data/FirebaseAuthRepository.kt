@@ -7,13 +7,12 @@ import dev.gitlive.firebase.auth.ActionCodeSettings
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -24,14 +23,16 @@ import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.EmailNotVerifiedException
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
+import pl.kapucyni.wolczyn.app.common.utils.checkIfDocumentExists
 import pl.kapucyni.wolczyn.app.common.utils.deleteObject
-import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollection
+import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionByFieldSync
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
 
 class FirebaseAuthRepository(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
+    private val scope: CoroutineScope,
 ) : AuthRepository {
 
 
@@ -42,14 +43,12 @@ class FirebaseAuthRepository(
                 collectionName = COLLECTION_USERS,
                 documentId = firebaseUser.uid,
             ).map { user ->
-                user ?: User(id = firebaseUser.uid, email = firebaseUser.email.orEmpty())
+                (user ?: User(id = firebaseUser.uid, email = firebaseUser.email.orEmpty())) as User?
+            }.catch {
+                emit(null)
             }
         } ?: flowOf(null)
-    }.stateIn(
-        scope = CoroutineScope(Dispatchers.Default + SupervisorJob()),
-        started = SharingStarted.Eagerly,
-        initialValue = null,
-    )
+    }.stateIn(scope = scope, started = SharingStarted.Eagerly, initialValue = null)
 
     override fun getAllUsers(): Flow<List<User>> = runCatching {
         firestore.getFirestoreCollectionFlow<User>(collectionName = COLLECTION_USERS)
@@ -70,10 +69,11 @@ class FirebaseAuthRepository(
     }.getOrDefault(flowOf(listOf()))
 
     override suspend fun getUserIdIfExists(email: String): String = runCatching {
-        firestore.getFirestoreCollection<User>(collectionName = COLLECTION_USERS)
-            .firstOrNull { it.email == email }
-            ?.id
-            .orEmpty()
+        firestore.getFirestoreCollectionByFieldSync<User>(
+            collectionName = COLLECTION_USERS,
+            fieldName = "email",
+            fieldValue = email,
+        )?.id.orEmpty()
     }.getOrDefault("")
 
     override suspend fun signIn(email: String, password: String): Result<Boolean> {
@@ -94,16 +94,24 @@ class FirebaseAuthRepository(
         return try {
             withContext(NonCancellable) {
                 val authResult = auth.createUserWithEmailAndPassword(user.email, password)
-                authResult.user?.let { authUser ->
-                    authUser.sendEmailVerification()
+                val authUser = authResult.user ?: throw Exception("Error while creating account")
+
+                try {
                     firestore.saveObject(
                         collectionName = COLLECTION_USERS,
                         id = authUser.uid,
                         data = user.copy(id = authUser.uid),
                     )
+
+                    authUser.sendEmailVerification()
                     signOut()
                     Result.success(true)
-                } ?: Result.failure(Exception())
+
+                } catch (e: Exception) {
+                    authUser.delete()
+                    signOut()
+                    throw e
+                }
             }
         } catch (exc: Exception) {
             Result.failure(exc)
@@ -161,6 +169,27 @@ class FirebaseAuthRepository(
                 user.delete()
             }
         }
+    }
+
+    override suspend fun repairMissingProfileIfNeeded(): Result<Boolean> = runCatching {
+        val authUser = auth.currentUser ?: return@runCatching false
+
+        if (firestore.checkIfDocumentExists(COLLECTION_USERS, authUser.uid)) {
+            return@runCatching true
+        }
+
+        val recoveredUser = User(
+            id = authUser.uid,
+            email = authUser.email.orEmpty(),
+        )
+
+        firestore.saveObject(
+            collectionName = COLLECTION_USERS,
+            id = authUser.uid,
+            data = recoveredUser,
+        )
+
+        true
     }
 
     private companion object {

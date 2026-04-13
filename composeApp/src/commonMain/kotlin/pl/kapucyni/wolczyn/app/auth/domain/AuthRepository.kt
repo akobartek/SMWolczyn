@@ -17,4 +17,5 @@ interface AuthRepository {
     suspend fun sendVerificationEmail()
     suspend fun signOut()
     suspend fun deleteAccount(): Result<Unit?>
+    suspend fun repairMissingProfileIfNeeded(): Result<Boolean>
 }

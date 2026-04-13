@@ -21,12 +21,6 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionFlow(collectionNa
                 throw exception
         }
 
-suspend inline fun <reified T> FirebaseFirestore.getFirestoreCollection(collectionName: String): List<T> =
-    this.collection(collectionName)
-        .get()
-        .documents
-        .map { it.data() }
-
 inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
     collectionName: String,
     fieldName: String,
@@ -34,6 +28,7 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
 ): Flow<T?> =
     this.collection(collectionName)
         .where { fieldName equalTo fieldValue }
+        .limit(1)
         .snapshots
         .map { querySnapshot ->
             querySnapshot.documents
@@ -46,6 +41,18 @@ inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByField(
             else
                 throw exception
         }
+
+suspend inline fun <reified T> FirebaseFirestore.getFirestoreCollectionByFieldSync(
+    collectionName: String,
+    fieldName: String,
+    fieldValue: Any
+): T? = runCatching {
+    val snapshot = this.collection(collectionName)
+        .where { fieldName equalTo fieldValue }
+        .limit(1)
+        .get()
+    snapshot.documents.firstOrNull()?.dataOrNull<T>()
+}.getOrNull()
 
 inline fun <reified T> FirebaseFirestore.getFirestoreDocument(
     collectionName: String,
