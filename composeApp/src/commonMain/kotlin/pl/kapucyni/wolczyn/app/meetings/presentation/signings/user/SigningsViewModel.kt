@@ -79,7 +79,7 @@ class SigningsViewModel(
                 user to participant
             }
         } ?: run {
-            _events.trySend(UserNotAvailable)
+            _events.send(UserNotAvailable)
             flowOf(null)
         }
     }.onEach { data ->
@@ -295,16 +295,22 @@ class SigningsViewModel(
     private fun toggleSuccessDialog(visible: Boolean) {
         _state.update { (it as? SigningsState.NotConfirmed)?.copy(successDialogVisible = visible) }
         if (visible.not())
-            _events.trySend(NavigateUp)
+            navigateUp()
     }
 
     private fun hideTooYoungDialog() {
         _state.update { (it as? SigningsState.NotConfirmed)?.copy(tooYoungDialogVisible = false) }
-        _events.trySend(NavigateUp)
+        navigateUp()
     }
 
     private fun hideNoInternetDialog() {
         _state.update { (it as? SigningsState.NotConfirmed)?.copy(noInternetDialogVisible = false) }
+    }
+
+    private fun navigateUp() {
+        viewModelScope.launch {
+            _events.trySend(NavigateUp)
+        }
     }
 
     private fun saveData() {
