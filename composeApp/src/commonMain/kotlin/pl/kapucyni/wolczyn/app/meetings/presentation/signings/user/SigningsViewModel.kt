@@ -32,6 +32,7 @@ import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidPesel
 import pl.kapucyni.wolczyn.app.common.utils.isValidPhoneNumber
+import pl.kapucyni.wolczyn.app.core.domain.repository.LogRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Gender
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
@@ -64,6 +65,7 @@ class SigningsViewModel(
     savedStateHandle: SavedStateHandle,
     authRepository: AuthRepository,
     private val meetingsRepository: MeetingsRepository,
+    private val logRepository: LogRepository,
 ) : BasicViewModel<SigningsState>() {
 
     private val args = savedStateHandle.toRoute<Screen.Signings>()
@@ -78,6 +80,7 @@ class SigningsViewModel(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val currentUserData = authRepository.currentUser.flatMapLatest { user ->
+        logRepository.log("Uruchomiono zapisy na spotkanie ${args.meetingId} użytkownika z id: ${user?.id}")
         user?.let {
             meetingsRepository.getParticipantFlow(
                 meetingId = args.meetingId,
@@ -85,9 +88,7 @@ class SigningsViewModel(
             ).map { participant ->
                 user to participant
             }
-        } ?: run {
-            flowOf(null)
-        }
+        } ?: flowOf(null)
     }.onEach { data ->
         if (data != null) {
             _noUserDialogVisible.update { false }
@@ -354,14 +355,16 @@ class SigningsViewModel(
                     underageConsents = participant?.underageConsents == true,
                 )
             ).onSuccess {
+                logRepository.log("Zapisano zgłoszenie użytkownika z id: ${user.id}")
                 setLoading(false)
                 if (state.isEditing)
                     SnackbarController.sendEvent(event = MeetingSigningUpdated)
                 else
                     toggleSuccessDialog(visible = true)
-            }.onFailure {
+            }.onFailure { exc ->
                 setLoading(false)
                 SnackbarController.sendEvent(DataSaveError)
+                logRepository.logException("Błąd zapisu użytkownika z id: ${user.id}", exc)
             }
         }
     }

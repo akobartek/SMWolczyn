@@ -24,12 +24,14 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.Signe
 import pl.kapucyni.wolczyn.app.common.utils.validatePassword
 import pl.kapucyni.wolczyn.app.core.domain.model.AppConfiguration
 import pl.kapucyni.wolczyn.app.core.domain.repository.CoreRepository
+import pl.kapucyni.wolczyn.app.core.domain.repository.LogRepository
 import pl.kapucyni.wolczyn.app.core.presentation.UserPreferencesRepository
 
 class AppViewModel(
     coreRepository: CoreRepository,
     private val authRepository: AuthRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
+    private val logRepository: LogRepository,
 ) : ViewModel() {
 
     val user: StateFlow<User?> = authRepository.currentUser
@@ -46,6 +48,7 @@ class AppViewModel(
                 resetCode?.let {
                     authRepository.getEmailFromResetCode(resetCode)
                         .onSuccess { email ->
+                            logRepository.log(message = "Uruchomiono deeplink resetowania hasła")
                             _resetPasswordDialogState.update {
                                 ResetPasswordDialogState(
                                     resetCode = resetCode,
@@ -130,6 +133,7 @@ class AppViewModel(
     private fun checkAndRepairProfile() {
         viewModelScope.launch {
             val isProfileVerified = userPreferencesRepository.isProfileVerified.first()
+            logRepository.setCustomKey("is_profile_verified", isProfileVerified)
             if (isProfileVerified.not()) {
                 val result = authRepository.repairMissingProfileIfNeeded()
                 if (result.getOrDefault(false)) {

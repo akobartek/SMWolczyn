@@ -28,29 +28,33 @@ import pl.kapucyni.wolczyn.app.common.utils.deleteObject
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionByFieldSync
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
+import pl.kapucyni.wolczyn.app.core.domain.repository.LogRepository
 
 class FirebaseAuthRepository(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
+    private val logRepository: LogRepository,
     private val scope: CoroutineScope,
 ) : AuthRepository {
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override val currentUser: StateFlow<User?> = auth.authStateChanged.flatMapLatest { firebaseUser ->
+        logRepository.setUserId(firebaseUser?.uid.orEmpty())
         firebaseUser?.let {
             firestore.getFirestoreDocument<User?>(
                 collectionName = COLLECTION_USERS,
                 documentId = firebaseUser.uid,
             ).map { user ->
                 (user ?: User(id = firebaseUser.uid, email = firebaseUser.email.orEmpty())) as User?
-            }.catch {
+            }.catch { exc ->
+                logRepository.logException(message = "Błąd pobierania danych użytkownika", exc)
                 emit(null)
             }
         } ?: flowOf(null)
     }.stateIn(scope = scope, started = SharingStarted.Eagerly, initialValue = null)
 
-    override fun getAllUsers(): Flow<List<User>> = runCatching {
+    override fun getAllUsers(): Flow<List<User>> =
         firestore.getFirestoreCollectionFlow<User>(collectionName = COLLECTION_USERS)
             .map { users ->
                 val locale = Locale.current
@@ -65,8 +69,10 @@ class FirebaseAuthRepository(
                             { it.lastName.toLowerCase(locale) },
                         )
                     )
+            }.catch { exc ->
+                logRepository.logException(message = "Błąd pobierania listy użytkowników", exc)
+                emit(listOf())
             }
-    }.getOrDefault(flowOf(listOf()))
 
     override suspend fun getUserIdIfExists(email: String): String = runCatching {
         firestore.getFirestoreCollectionByFieldSync<User>(
@@ -107,18 +113,20 @@ class FirebaseAuthRepository(
                     signOut()
                     Result.success(true)
 
-                } catch (e: Exception) {
+                } catch (exc: Exception) {
+                    logRepository.log(message = "signup: Rollback wykonany dla ${user.email}")
                     authUser.delete()
                     signOut()
-                    throw e
+                    throw exc
                 }
             }
         } catch (exc: Exception) {
+            logRepository.logException(message = "Błąd podczas rejestracji", exc)
             Result.failure(exc)
         }
     }
 
-    override suspend fun updateUser(user: User): Result<Unit> = kotlin.runCatching {
+    override suspend fun updateUser(user: User): Result<Unit> = runCatching {
         firestore.saveObject(
             collectionName = COLLECTION_USERS,
             id = user.id,
@@ -151,7 +159,7 @@ class FirebaseAuthRepository(
         try {
             auth.currentUser?.sendEmailVerification()
         } catch (exc: Exception) {
-            exc.printStackTrace()
+            logRepository.logException(message = "Błąd podczas wysyłania maila weryfikacyjnego", exc)
         }
     }
 
@@ -159,7 +167,7 @@ class FirebaseAuthRepository(
         auth.signOut()
     }
 
-    override suspend fun deleteAccount() = kotlin.runCatching {
+    override suspend fun deleteAccount() = runCatching {
         withContext(NonCancellable) {
             auth.currentUser?.let { user ->
                 firestore.deleteObject(
@@ -188,6 +196,7 @@ class FirebaseAuthRepository(
             id = authUser.uid,
             data = recoveredUser,
         )
+        logRepository.log(message = "Naprawiono dane użytkownika o id: ${authUser.uid}")
 
         true
     }
