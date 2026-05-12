@@ -155,7 +155,11 @@ class FirebaseAuthRepository(
     }
 
     override suspend fun getEmailFromResetCode(code: String): Result<String> = runCatching {
-        auth.checkActionCode<ActionCodeResult.PasswordReset>(code).email
+        try {
+            auth.checkActionCode<ActionCodeResult.PasswordReset>(code).email
+        } catch (_: UnsupportedOperationException) {
+            ""
+        }
     }
 
     override suspend fun confirmPasswordReset(code: String, newPassword: String) = runCatching {

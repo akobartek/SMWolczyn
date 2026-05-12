@@ -13,7 +13,7 @@ struct iOSApp: App {
 		WindowGroup {
 			ContentView()
 				.onOpenURL { url in
-					DeepLinkManager.shared.onUrlReceived(url: url.absoluteString)
+					DeepLinkManager.shared.onLinkReceived(link: url.absoluteString)
 				}
 		}
 	}

@@ -43,6 +43,7 @@ import smwolczyn.composeapp.generated.resources.reset_password_error
 import smwolczyn.composeapp.generated.resources.reset_password_set_dialog_message
 import smwolczyn.composeapp.generated.resources.save
 
+// TODO - wygasniete linki
 @Composable
 fun ResetPasswordDialog(
     state: ResetPasswordDialogState?,
@@ -69,16 +70,18 @@ fun ResetPasswordDialog(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                         )
                     } else {
-                        WolczynText(
-                            text = buildAnnotatedString {
-                                append(stringResource(Res.string.reset_password_set_dialog_message))
-                                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                    append(state.email)
-                                }
-                            },
-                            textStyle = TextStyle(textAlign = TextAlign.Center),
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
+                        if (state.email.isNotBlank()) {
+                            WolczynText(
+                                text = buildAnnotatedString {
+                                    append(stringResource(Res.string.reset_password_set_dialog_message))
+                                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                        append(state.email)
+                                    }
+                                },
+                                textStyle = TextStyle(textAlign = TextAlign.Center),
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
+                        }
                         PasswordTextField(
                             label = Res.string.password_new,
                             value = password,

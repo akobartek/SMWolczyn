@@ -53,6 +53,7 @@ class AppViewModel(
                 resetCode?.let {
                     authRepository.getEmailFromResetCode(resetCode)
                         .onSuccess { email ->
+                            println("CODE success $email\n")
                             logRepository.log(message = "Uruchomiono deeplink resetowania hasła")
                             _resetPasswordDialogState.update {
                                 ResetPasswordDialogState(
@@ -60,6 +61,9 @@ class AppViewModel(
                                     email = email,
                                 )
                             }
+                        }
+                        .onFailure {
+                            println("CODE error $it\n")
                         }
                 } ?: run { closeResetDialog() }
             }
@@ -143,6 +147,7 @@ class AppViewModel(
     }
 
     private fun closeResetDialog() {
+        DeepLinkManager.clearResetCode()
         _resetPasswordDialogState.update { null }
     }
 
