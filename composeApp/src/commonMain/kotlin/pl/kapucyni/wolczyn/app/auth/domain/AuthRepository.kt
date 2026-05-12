@@ -10,6 +10,7 @@ interface AuthRepository {
     suspend fun getUserIdIfExists(email: String): String
     suspend fun signIn(email: String, password: String): Result<Boolean>
     suspend fun signUp(user: User, password: String): Result<Boolean>
+    suspend fun getEmailFromVerificationCode(code: String): Result<Unit>
     suspend fun updateUser(user: User): Result<Unit>
     suspend fun sendRecoveryEmail(email: String): Result<Boolean>
     suspend fun getEmailFromResetCode(code: String): Result<String>

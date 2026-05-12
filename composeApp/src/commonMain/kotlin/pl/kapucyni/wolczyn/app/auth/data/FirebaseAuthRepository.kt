@@ -29,6 +29,7 @@ import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionByFieldSync
 import pl.kapucyni.wolczyn.app.common.utils.getFirestoreCollectionFlow
 import pl.kapucyni.wolczyn.app.common.utils.saveObject
 import pl.kapucyni.wolczyn.app.core.domain.repository.LogRepository
+import kotlin.coroutines.cancellation.CancellationException
 
 class FirebaseAuthRepository(
     private val auth: FirebaseAuth,
@@ -124,6 +125,12 @@ class FirebaseAuthRepository(
             logRepository.logException(message = "Błąd podczas rejestracji", exc)
             Result.failure(exc)
         }
+    }
+
+    override suspend fun getEmailFromVerificationCode(code: String): Result<Unit> = runCatching {
+        auth.applyActionCode(code)
+    }.onFailure { exc ->
+        if (exc is CancellationException) throw exc
     }
 
     override suspend fun updateUser(user: User): Result<Unit> = runCatching {

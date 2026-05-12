@@ -7,14 +7,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.CloseResetDialog
+import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.CloseVerificationDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.DeleteAccount
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.ResetPassword
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.SetNewPassword
 import pl.kapucyni.wolczyn.app.auth.presentation.AuthAction.SignOut
+import pl.kapucyni.wolczyn.app.auth.presentation.emailverification.EmailVerificationDialogState
 import pl.kapucyni.wolczyn.app.auth.presentation.resetpassword.ResetPasswordDialogState
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.AccountDeleteFailed
@@ -41,8 +44,10 @@ class AppViewModel(
     private val _resetPasswordDialogState = MutableStateFlow<ResetPasswordDialogState?>(null)
     val resetPasswordDialogState = _resetPasswordDialogState.asStateFlow()
 
-    init {
+    private val _emailVerificationDialogState = MutableStateFlow<EmailVerificationDialogState?>(null)
+    val emailVerificationDialogState = _emailVerificationDialogState.asStateFlow()
 
+    init {
         viewModelScope.launch {
             DeepLinkManager.resetCode.collect { resetCode ->
                 resetCode?.let {
@@ -60,6 +65,37 @@ class AppViewModel(
             }
         }
 
+        viewModelScope.launch {
+            DeepLinkManager.verificationCode.collect { verificationCode ->
+                verificationCode?.let {
+                    authRepository.getEmailFromVerificationCode(verificationCode)
+                        .onSuccess {
+                            logRepository.log(message = "Uruchomiono deeplink weryfikacji maila")
+                            _emailVerificationDialogState.update {
+                                EmailVerificationDialogState(
+                                    verificationCode = verificationCode,
+                                    success = true,
+                                )
+                            }
+                            DeepLinkManager.clearVerificationCode()
+                        }
+                        .onFailure { exc ->
+                            logRepository.logException(
+                                message = "Uruchomiono zużyty deeplink weryfikacji maila",
+                                exc = exc,
+                            )
+                            _emailVerificationDialogState.update {
+                                EmailVerificationDialogState(
+                                    verificationCode = verificationCode,
+                                    success = false,
+                                )
+                            }
+                            DeepLinkManager.clearVerificationCode()
+                        }
+                } ?: run { closeResetDialog() }
+            }
+        }
+
         checkAndRepairProfile()
     }
 
@@ -68,6 +104,7 @@ class AppViewModel(
             is SignOut -> signOut()
             is ResetPassword -> resetPassword()
             is DeleteAccount -> deleteAccount()
+            is CloseVerificationDialog -> closeVerificationDialog()
             is CloseResetDialog -> closeResetDialog()
             is SetNewPassword -> setNewPassword(action.password)
         }
@@ -101,6 +138,10 @@ class AppViewModel(
         }
     }
 
+    private fun closeVerificationDialog() {
+        _emailVerificationDialogState.update { null }
+    }
+
     private fun closeResetDialog() {
         _resetPasswordDialogState.update { null }
     }
@@ -119,7 +160,7 @@ class AppViewModel(
                     code = resetPasswordState.resetCode,
                     newPassword = password,
                 ).onSuccess {
-                    DeepLinkManager.clearCode()
+                    DeepLinkManager.clearResetCode()
                     SnackbarController.sendEvent(ResetPasswordSuccess)
                 }.onFailure {
                     _resetPasswordDialogState.update {
@@ -132,7 +173,9 @@ class AppViewModel(
 
     private fun checkAndRepairProfile() {
         viewModelScope.launch {
-            val isProfileVerified = userPreferencesRepository.isProfileVerified.first()
+            val isProfileVerified = withTimeoutOrNull(2000) {
+                userPreferencesRepository.isProfileVerified.first()
+            } ?: true
             logRepository.setCustomKey("is_profile_verified", isProfileVerified)
             if (isProfileVerified.not()) {
                 val result = authRepository.repairMissingProfileIfNeeded()

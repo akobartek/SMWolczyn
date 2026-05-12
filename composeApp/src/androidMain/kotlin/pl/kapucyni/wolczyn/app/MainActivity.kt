@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 
     private fun Intent.handleDeepLinks() {
         data?.toString()?.let { url ->
-            DeepLinkManager.onUrlReceived(url)
+            DeepLinkManager.onLinkReceived(url)
         }
     }
 }

@@ -20,7 +20,7 @@ class UpdateUserUseCase(private val authRepository: AuthRepository) {
             lastName = lastName,
             city = city,
             birthday = birthday?.let { Timestamp.fromMilliseconds(it.toDouble()) },
-            userType = userType,
+            userTypeString = userType.name,
         ),
     )
 }

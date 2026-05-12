@@ -1,8 +1,9 @@
 package pl.kapucyni.wolczyn.app.core.presentation
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,12 +12,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -74,9 +72,7 @@ fun HomeScreen(
                 handleAuthAction = handleAuthAction,
             )
         },
-        modifier = Modifier
-            .animateContentSize()
-            .verticalScroll(rememberScrollState()),
+        modifier = Modifier.verticalScroll(rememberScrollState()),
     ) {
         HomeScreenContent(
             appConfiguration = appConfiguration,
@@ -97,38 +93,38 @@ private fun HomeScreenContent(
     onTileClick: (HomeTileType) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
-    var screenWidth by remember { mutableStateOf(0) }
-    val screenWidthDp = with(LocalDensity.current) { screenWidth.toDp() }
-    val columns = (screenWidthDp.value / 360).toInt().coerceIn(1, 3)
     var adminAccessDialogVisible by rememberSaveable { mutableStateOf(false) }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier
-            .onGloballyPositioned { screenWidth = it.size.width }
-            .padding(horizontal = 20.dp)
-    ) {
-        notifications?.forEach { notification ->
-            if (notification.message.isNotBlank())
-                NotificationBar(
-                    name = notification.message,
-                    onClick = notification.url.takeIf { it.isNotBlank() }
-                        ?.let { url -> { uriHandler.openUri(url) } }
-                )
-        }
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        val columns = (maxWidth.value / 360).toInt().coerceIn(1, 3)
 
-        HomeTileList(
-            columns = columns,
-            appConfiguration = appConfiguration,
-            user = user,
-            onTileClick = {
-                when (it) {
-                    HomeTileType.WEATHER -> adminAccessDialogVisible = true
-                    else -> onTileClick(it)
-                }
-            },
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(horizontal = 20.dp),
+        ) {
+            notifications?.forEach { notification ->
+                if (notification.message.isNotBlank())
+                    NotificationBar(
+                        name = notification.message,
+                        onClick = notification.url.takeIf { it.isNotBlank() }
+                            ?.let { url -> { uriHandler.openUri(url) } }
+                    )
+            }
+
+            HomeTileList(
+                columns = columns,
+                appConfiguration = appConfiguration,
+                user = user,
+                onTileClick = {
+                    when (it) {
+                        HomeTileType.WEATHER -> adminAccessDialogVisible = true
+                        else -> onTileClick(it)
+                    }
+                },
+            )
+        }
     }
+
 
     AdminAccessDialog(
         isVisible = adminAccessDialogVisible,

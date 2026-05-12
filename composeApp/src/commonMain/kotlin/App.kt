@@ -1,5 +1,6 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,7 @@ import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveMeetingScreen
 import pl.kapucyni.wolczyn.app.archive.presentation.ArchiveScreen
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.auth.presentation.edit.EditProfileScreen
+import pl.kapucyni.wolczyn.app.auth.presentation.emailverification.EmailVerificationDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.manager.AccountManagerScreen
 import pl.kapucyni.wolczyn.app.auth.presentation.resetpassword.ResetPasswordDialog
 import pl.kapucyni.wolczyn.app.auth.presentation.signin.SignInScreen
@@ -99,6 +101,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
     val appConfiguration by appViewModel.appConfiguration.collectAsStateWithLifecycle()
     val user by appViewModel.user.collectAsStateWithLifecycle()
     val resetPasswordDialogState by appViewModel.resetPasswordDialogState.collectAsStateWithLifecycle()
+    val emailVerificationDialogState by appViewModel.emailVerificationDialogState.collectAsStateWithLifecycle()
 
     setSingletonImageLoaderFactory { context ->
         ImageLoader.Builder(context)
@@ -140,6 +143,11 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
             handleAction = appViewModel::handleAction,
         )
 
+        EmailVerificationDialog(
+            state = emailVerificationDialogState,
+            handleAction = appViewModel::handleAction,
+        )
+
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         ) {
@@ -147,6 +155,7 @@ fun App(appViewModel: AppViewModel = koinViewModel()) {
                 navController = navController,
                 startDestination = Home,
                 modifier = Modifier
+                    .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface)
                     .windowInsetsPadding(WindowInsets.safeDrawing)
             ) {

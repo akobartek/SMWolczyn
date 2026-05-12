@@ -16,6 +16,7 @@ class HomeViewModel(
     val appConfiguration = coreRepository.appConfiguration
 
     init {
+        _state.update { emptyList() }
         viewModelScope.launch {
             try {
                 getHomeNotificationsUseCase().collect { homeInfo ->

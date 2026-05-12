@@ -152,7 +152,7 @@ fun EditUserDialog(
             onDismissRequest = {},
             confirmButton = {
                 TextButton(onClick = {
-                    onSave(user.copy(userType = selectedType, permits = permits))
+                    onSave(user.copy(userTypeString = selectedType.name, permits = permits))
                 }) {
                     WolczynText(stringResource(Res.string.save))
                 }
@@ -177,7 +177,7 @@ private fun EditUserDialogPreview() {
                 id = "id",
                 publicId = 2137,
                 email = "test@test.com",
-                userType = UserType.ORGANISATION,
+                userTypeString = UserType.ORGANISATION.name,
                 firstName = "Test",
                 lastName = "Testowy",
                 city = "Kraków",
