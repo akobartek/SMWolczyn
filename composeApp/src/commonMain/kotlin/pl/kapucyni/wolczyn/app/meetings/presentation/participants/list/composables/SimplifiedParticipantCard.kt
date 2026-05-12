@@ -1,11 +1,9 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,18 +17,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gitlive.firebase.firestore.Timestamp
 import org.jetbrains.compose.resources.stringResource
-import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
-import pl.kapucyni.wolczyn.app.common.utils.getFormattedDate
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.theme.AppTheme
+import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.workshops
 
 @Composable
-fun ParticipantCard(
+fun SimplifiedParticipantCard(
     participant: Participant,
     onClick: () -> Unit,
-    onLongClick: () -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -41,10 +38,7 @@ fun ParticipantCard(
             width = 1.dp,
             color = MaterialTheme.colorScheme.surfaceContainerHighest,
         ),
-        modifier = Modifier.combinedClickable(
-            onClick = onClick,
-            onLongClick = onLongClick,
-        ),
+        modifier = Modifier.clickable(onClick = onClick),
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -52,38 +46,19 @@ fun ParticipantCard(
                 .padding(8.dp)
                 .fillMaxWidth(),
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                WolczynText(
-                    text = stringResource(participant.type.stringRes),
-                    textStyle = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.outline,
-                    ),
-                    modifier = Modifier.weight(1f),
-                )
-                WidthSpacer(12.dp)
-                WolczynText(
-                    text = participant.city,
-                    textStyle = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.outline,
-                    ),
-                )
-            }
+            WolczynText(
+                text = stringResource(participant.type.stringRes),
+                textStyle = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.outline,
+                ),
+            )
             WolczynText(
                 text = "${participant.firstName} ${participant.lastName}",
                 textStyle = MaterialTheme.typography.titleLarge,
             )
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Box(modifier = Modifier.weight(1f)) {
-                    WolczynText(
-                        text = participant.email,
-                        textStyle = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.outline,
-                        ),
-                    )
-                }
-                WidthSpacer(12.dp)
+            participant.workshop.takeIf { it.isNotBlank() }?.let { workshop ->
                 WolczynText(
-                    text = participant.birthday.getFormattedDate(),
+                    text = "${stringResource(Res.string.workshops)} $workshop",
                     textStyle = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.outline,
                     ),
@@ -98,7 +73,7 @@ fun ParticipantCard(
 @Composable
 private fun ParticipantCardPreview() {
     AppTheme {
-        ParticipantCard(
+        SimplifiedParticipantCard(
             participant = Participant(
                 firstName = "Jan",
                 lastName = "Kowalski",
@@ -106,13 +81,13 @@ private fun ParticipantCardPreview() {
                 city = "Warszawa",
                 birthday = Timestamp.now(),
                 email = "test@test.com",
+                workshop = "Piłkarskie",
                 contactNumber = "123456789",
                 paid = false,
                 type = ParticipantType.MEMBER,
                 createdAt = Timestamp.now(),
             ),
             onClick = {},
-            onLongClick = {},
         )
     }
 }

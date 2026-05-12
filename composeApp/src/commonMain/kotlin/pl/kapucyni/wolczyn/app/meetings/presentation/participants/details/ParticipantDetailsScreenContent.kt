@@ -82,7 +82,7 @@ fun ParticipantDetailsScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.verticalScroll(rememberScrollState()),
     ) {
-        Column {
+        Column(modifier = Modifier.widthIn(max = 280.dp)) {
             if (showData) {
                 ParticipantInfo(
                     imageVector = vectorResource(Res.drawable.ic_fingerprint),

@@ -73,19 +73,20 @@ fun ParticipantsFilteringBottomSheet(
                 )
             }
 
-            FilterSection {
-                FilterChip(
-                    label = {
-                        WolczynText(
-                            text = stringResource(Res.string.filter_confirmed),
-                            textStyle = MaterialTheme.typography.bodySmall,
-                        )
-                    },
-                    selected = state.onlyConfirmedParticipants,
-                    onClick = { handleAction(ToggleAllUsers(state.onlyConfirmedParticipants.not())) },
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                )
-            }
+            if (isAdmin)
+                FilterSection {
+                    FilterChip(
+                        label = {
+                            WolczynText(
+                                text = stringResource(Res.string.filter_confirmed),
+                                textStyle = MaterialTheme.typography.bodySmall,
+                            )
+                        },
+                        selected = state.onlyConfirmedParticipants,
+                        onClick = { handleAction(ToggleAllUsers(state.onlyConfirmedParticipants.not())) },
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                    )
+                }
 
             if (isAdmin)
                 FilterSection {
@@ -100,7 +101,7 @@ fun ParticipantsFilteringBottomSheet(
                     )
                 }
 
-            if (isAdmin && state.workshops.isNotEmpty()) {
+            if (state.workshops.isNotEmpty()) {
                 FilterSection {
                     FilterList(
                         title = Res.string.workshops,

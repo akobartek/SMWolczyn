@@ -6,11 +6,13 @@ import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.user_permit_animators
 import smwolczyn.composeapp.generated.resources.user_permit_signings
 import smwolczyn.composeapp.generated.resources.user_permit_volunteers
+import smwolczyn.composeapp.generated.resources.user_permit_workshops
 
 @Serializable
 enum class UserPermit(val stringRes: StringResource) {
     SIGNINGS(Res.string.user_permit_signings),
     VOLUNTEERS(Res.string.user_permit_volunteers),
     ANIMATORS(Res.string.user_permit_animators),
+    WORKSHOPS(Res.string.user_permit_workshops),
     ;
 }

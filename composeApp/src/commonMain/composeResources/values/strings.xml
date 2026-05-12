@@ -111,6 +111,7 @@
     <string name="user_permit_signings">Zapisy</string>
     <string name="user_permit_volunteers">Wolontariusze</string>
     <string name="user_permit_animators">Animatorzy</string>
+    <string name="user_permit_workshops">Warsztaty</string>
     <string name="cd_open_users_management">Otwórz panel zarządzenia użytkownikami</string>
     <string name="cd_search_user">Wyszukaj użytkownika</string>
     <string name="cd_edit_user">Edytuj użytkownika</string>
@@ -120,12 +121,12 @@
     <string name="meeting_name">%1$d. Wołczyn - %2$s</string>
     <string name="empty_meetings_list">Wystąpił błąd podczas ładowania listy spotkań, sprawdź swoje połączenie lub skontaktuj się z administratorem!</string>
     <string name="empty_participants_list">Nie znaleziono żadnych uczestników dla podanych wartości!</string>
+    <string name="empty_participants_list_v2">Nie znaleziono uczestników, do których danych masz dostęp!</string>
     <string name="meeting_participants">Uczestnicy</string>
     <string name="cd_qr_scanner">Otwórz skaner kodów QR</string>
     <string name="qr_scan_success">Otwieram stronę uczestnika...</string>
     <string name="qr_scan_failed">Wystąpił błąd podczas skanowania kodu QR, spróbuj ponownie!</string>
     <string name="qr_scan_user_not_found">Nie znaleziono uczestnika dla podanego kodu, spróbuj ponownie!</string>
-    <string name="qr_scan_list_title">Kliknij tutaj, aby zeskanować kod użytkownika</string>
     <string name="cd_send_email">Wyślij email</string>
     <string name="sorting_label">Sortowanie</string>
     <string name="sorting_alphabetically">Alfabetycznie</string>

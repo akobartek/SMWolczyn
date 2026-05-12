@@ -69,7 +69,7 @@ class ParticipantsViewModel(
                                 ParticipantsState(
                                     meetingId = args.meetingId,
                                     user = user,
-                                    listVisible = user.isAdmin() || user.permits.isNotEmpty(),
+                                    dataVisible = user.isAdmin() || user.hasAccessToParticipantsData(),
                                 )
                             }
                             filterParticipants(filterState.value)
@@ -159,9 +159,12 @@ class ParticipantsViewModel(
             }.getSortedList(filterState.sorting)
 
         val uiVisibleList = when {
-            user.hasAccessToParticipantsData() -> filteredList
-            user.hasAnimatorsPermit() -> filteredList.filter { it.type.canBeAnimator() }
-            else -> listOf()
+            user.hasAccessToAllParticipants() -> filteredList
+            user.permits.isEmpty() -> listOf()
+            else -> filteredList.filter {
+                (user.hasAnimatorsPermit() && it.type.canBeAnimator())
+                        || (user.hasWorkshopsPermit() && it.type.canSelectWorkshops() && it.paid)
+            }
         }
 
         _state.update { it?.copy(participants = uiVisibleList) }

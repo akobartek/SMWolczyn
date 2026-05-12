@@ -29,11 +29,19 @@ data class User(
 
     fun isAdmin() = userType == UserType.ADMIN
 
-    fun hasAccessToParticipantsData() =
-        isAdmin() || permits.contains(UserPermit.SIGNINGS) || permits.contains(UserPermit.VOLUNTEERS)
+    fun hasAccessToParticipantsData() = isAdmin()
+            || permits.contains(UserPermit.SIGNINGS)
+            || permits.contains(UserPermit.VOLUNTEERS)
+            || permits.contains(UserPermit.ANIMATORS)
+
+    fun hasAccessToAllParticipants() = isAdmin()
+            || permits.contains(UserPermit.SIGNINGS)
+            || permits.contains(UserPermit.VOLUNTEERS)
 
     fun canEditParticipantsData() = isAdmin() || permits.contains(UserPermit.VOLUNTEERS)
 
     fun hasAnimatorsPermit() = permits.contains(UserPermit.ANIMATORS)
+
+    fun hasWorkshopsPermit() = permits.contains(UserPermit.WORKSHOPS)
 
 }

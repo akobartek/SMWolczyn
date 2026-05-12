@@ -1,10 +1,8 @@
 package pl.kapucyni.wolczyn.app.meetings.presentation.participants.list
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
@@ -32,6 +30,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.EmptyListInfo
 import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynFabMenu
+import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynFloatingActionButton
 import pl.kapucyni.wolczyn.app.common.presentation.fab.FloatingButtonData
 import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
@@ -41,12 +40,14 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.Participa
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.ScanUserFound
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantCard
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantsFilteringBottomSheet
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.SimplifiedParticipantCard
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.add_participant
 import smwolczyn.composeapp.generated.resources.cd_qr_scanner
 import smwolczyn.composeapp.generated.resources.cd_send_email
 import smwolczyn.composeapp.generated.resources.empty_participants_list
+import smwolczyn.composeapp.generated.resources.empty_participants_list_v2
 import smwolczyn.composeapp.generated.resources.filter_participants
 import smwolczyn.composeapp.generated.resources.ic_add
 import smwolczyn.composeapp.generated.resources.ic_cap_archive
@@ -54,7 +55,6 @@ import smwolczyn.composeapp.generated.resources.ic_email
 import smwolczyn.composeapp.generated.resources.ic_filter
 import smwolczyn.composeapp.generated.resources.ic_qr_scanner
 import smwolczyn.composeapp.generated.resources.meeting_participants
-import smwolczyn.composeapp.generated.resources.qr_scan_list_title
 
 @Composable
 fun ParticipantsScreen(
@@ -76,7 +76,7 @@ fun ParticipantsScreen(
             if (state.user.canEditParticipantsData() && forceDetails.not())
                 navigate(Screen.SigningsAdmin(state.meetingId, participant))
             else
-                navigate(Screen.ParticipantDetails(state.meetingId, participant, state.listVisible))
+                navigate(Screen.ParticipantDetails(state.meetingId, participant, state.dataVisible))
         }
     }
     val startScanning = {
@@ -106,7 +106,7 @@ fun ParticipantsScreen(
                     ?: ""),
         onBackPressed = navigateUp,
         actionIcon =
-            if (codeScanner.available && state?.listVisible == true) {
+            if (codeScanner.available) {
                 {
                     IconButton(onClick = startScanning) {
                         Icon(
@@ -118,95 +118,97 @@ fun ParticipantsScreen(
                 }
             } else null,
         floatingActionButton = {
-            state?.takeIf { it.listVisible }?.let { state ->
-                WolczynFabMenu(
-                    visible = fabVisible,
-                    items = listOf(
-                        FloatingButtonData(
-                            icon = Res.drawable.ic_email,
-                            contentDescription = Res.string.cd_send_email,
-                            onClick = {
-                                state.participants
-                                    .joinToString(",") { it.email }
-                                    .takeIf { it.isNotBlank() }
-                                    ?.let { emails ->
-                                        uriHandler.openUri("mailto:?bcc=$emails")
-                                    }
-                            },
-                            isSmall = true,
-                            enabled = state.participants.isNotEmpty(),
+            state?.let { state ->
+                if (state.dataVisible) {
+                    WolczynFabMenu(
+                        visible = fabVisible,
+                        items = listOf(
+                            FloatingButtonData(
+                                icon = Res.drawable.ic_email,
+                                contentDescription = Res.string.cd_send_email,
+                                onClick = {
+                                    state.participants
+                                        .joinToString(",") { it.email }
+                                        .takeIf { it.isNotBlank() }
+                                        ?.let { emails ->
+                                            uriHandler.openUri("mailto:?bcc=$emails")
+                                        }
+                                },
+                                isSmall = true,
+                                enabled = state.participants.isNotEmpty(),
+                            ),
+                            FloatingButtonData(
+                                icon = Res.drawable.ic_filter,
+                                contentDescription = Res.string.filter_participants,
+                                onClick = { filterSheetVisible = true },
+                                isSmall = true,
+                            ),
+                            FloatingButtonData(
+                                icon = Res.drawable.ic_add,
+                                contentDescription = Res.string.add_participant,
+                                onClick = { navigate(Screen.SigningsAdmin(state.meetingId)) },
+                                isSmall = true,
+                                enabled = state.user.isAdmin(),
+                            ),
                         ),
-                        FloatingButtonData(
+                    )
+                } else {
+                    WolczynFloatingActionButton(
+                        data = FloatingButtonData(
                             icon = Res.drawable.ic_filter,
                             contentDescription = Res.string.filter_participants,
                             onClick = { filterSheetVisible = true },
-                            isSmall = true,
-                            enabled = state.participants.isNotEmpty(),
                         ),
-                        FloatingButtonData(
-                            icon = Res.drawable.ic_add,
-                            contentDescription = Res.string.add_participant,
-                            onClick = { navigate(Screen.SigningsAdmin(state.meetingId)) },
-                            isSmall = true,
-                            enabled = state.user.isAdmin(),
-                        ),
-                    ),
-                )
+                    )
+                }
             }
         }
     ) {
-        when (state?.listVisible) {
-            true -> {
-                state?.let { state ->
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 4.dp)
-                            .nestedScroll(object : NestedScrollConnection {
-                                override fun onPreScroll(
-                                    available: Offset,
-                                    source: NestedScrollSource,
-                                ): Offset {
-                                    when {
-                                        available.y > 1 -> fabVisible = true
-                                        available.y < -1 -> fabVisible = false
-                                    }
-                                    return Offset.Zero
-                                }
-                            }),
-                    ) {
-                        items(items = state.participants, key = { it.email }) { participant ->
-                            ParticipantCard(
-                                participant = participant,
-                                onClick = { openDetails(participant, true) },
-                                onLongClick = { openDetails(participant, false) },
-                            )
-                        }
-
-                        if (state.participants.isEmpty())
-                            item {
-                                EmptyListInfo(
-                                    messageRes = Res.string.empty_participants_list,
-                                    drawableRes = Res.drawable.ic_cap_archive,
-                                )
+        state?.let { state ->
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 4.dp)
+                    .nestedScroll(object : NestedScrollConnection {
+                        override fun onPreScroll(
+                            available: Offset,
+                            source: NestedScrollSource,
+                        ): Offset {
+                            when {
+                                available.y > 1 -> fabVisible = true
+                                available.y < -1 -> fabVisible = false
                             }
+                            return Offset.Zero
+                        }
+                    }),
+            ) {
+                items(items = state.participants, key = { it.email }) { participant ->
+                    if (state.dataVisible) {
+                        ParticipantCard(
+                            participant = participant,
+                            onClick = { openDetails(participant, true) },
+                            onLongClick = { openDetails(participant, false) },
+                        )
+                    } else {
+                        SimplifiedParticipantCard(
+                            participant = participant,
+                            onClick = { openDetails(participant, true) },
+                        )
                     }
                 }
-            }
 
-            false -> {
-                EmptyListInfo(
-                    messageRes = Res.string.qr_scan_list_title,
-                    drawableRes = Res.drawable.ic_qr_scanner,
-                    modifier = Modifier
-                        .widthIn(max = 420.dp)
-                        .clickable(onClick = startScanning),
-                )
+                if (state.participants.isEmpty())
+                    item {
+                        EmptyListInfo(
+                            messageRes =
+                                if (state.dataVisible) Res.string.empty_participants_list
+                                else Res.string.empty_participants_list_v2,
+                            drawableRes = Res.drawable.ic_cap_archive,
+                        )
+                    }
             }
-
-            null -> LoadingBox()
-        }
+        } ?: LoadingBox()
     }
 
     ParticipantsFilteringBottomSheet(

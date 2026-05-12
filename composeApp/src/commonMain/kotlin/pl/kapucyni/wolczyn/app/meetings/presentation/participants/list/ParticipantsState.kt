@@ -9,5 +9,5 @@ data class ParticipantsState(
     val meetingId: Int,
     val participants: List<Participant> = listOf(),
     val user: User,
-    val listVisible: Boolean,
+    val dataVisible: Boolean,
 )
