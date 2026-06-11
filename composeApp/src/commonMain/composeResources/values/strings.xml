@@ -217,7 +217,7 @@
     <string name="meeting_signing_remove_dialog_message">Jesteś pewny, że chcesz wycofać swoje zgłoszenie na Wołczyn?</string>
     <string name="meeting_signing_remove_dialog_btn">Wycofaj</string>
     <string name="meeting_signing_remove_success">Zgłoszenie zostało usunięte z systemu</string>
-    <string name="meeting_signing_animator_info">Przyjeżdżając jako animator, musisz posiadać %animator_document% oraz wyrażasz zgodę na sprawdzenie przez Organizatorów swoich danych w Rejestrze Sprawców Przestępstw na Tle Seksualnym.</string>
+    <string name="meeting_signing_animator_info">Przyjeżdżając w tej roli, musisz posiadać %animator_document% oraz wyrażasz zgodę na sprawdzenie przez Organizatorów swoich danych w Rejestrze Sprawców Przestępstw na Tle Seksualnym.</string>
     <string name="meeting_signing_animator_document">zaświadczenie o niekaralności</string>
     <string name="meeting_signing_animator_consent">Potwierdzam zapoznanie się z powyższą informacją</string>
     <string name="meeting_signing_underage_info">Pamiętaj, że jako osoba niepełnoletnia, na spotkanie musisz zabrać podpisaną %consent% oraz przyjechać na Wołczyn pod opieką opiekuna indywidualnego lub grupowego.</string>

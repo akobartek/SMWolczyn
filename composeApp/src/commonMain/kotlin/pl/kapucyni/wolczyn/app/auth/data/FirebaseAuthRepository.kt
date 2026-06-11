@@ -3,7 +3,6 @@ package pl.kapucyni.wolczyn.app.auth.data
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toLowerCase
 import dev.gitlive.firebase.auth.ActionCodeResult
-import dev.gitlive.firebase.auth.ActionCodeSettings
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -143,11 +142,7 @@ class FirebaseAuthRepository(
 
     override suspend fun sendRecoveryEmail(email: String): Result<Boolean> {
         return try {
-            val settings = ActionCodeSettings(
-                url = "https://wolczyn2k19.firebaseapp.com/reset-password",
-                canHandleCodeInApp = false,
-            )
-            auth.sendPasswordResetEmail(email, settings)
+            auth.sendPasswordResetEmail(email)
             Result.success(true)
         } catch (exc: Exception) {
             Result.failure(exc)
