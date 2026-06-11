@@ -165,7 +165,7 @@ class SigningsViewModel(
                     notesEnabled = participant?.type?.notesAvailable() == true,
                     statuteChecked = participant != null,
                     additionalInfoChecked = participant?.let {
-                        it.type == ParticipantType.ANIMATOR || isUnderAge
+                        it.type.canBeAnimator() || isUnderAge
                     } == true,
                     successDialogVisible = currentState?.successDialogVisible == true,
                     tooYoungDialogVisible = currentState?.tooYoungDialogVisible == true,

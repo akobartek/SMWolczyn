@@ -215,7 +215,7 @@ fun ParticipantsScreen(
         state = filterState,
         handleAction = viewModel::handleAction,
         isVisible = filterSheetVisible,
-        isAdmin = state?.user?.isAdmin() == true,
+        hasDataAccess = state?.user?.hasAccessToParticipantsData() == true,
         onDismiss = { filterSheetVisible = false },
     )
 }

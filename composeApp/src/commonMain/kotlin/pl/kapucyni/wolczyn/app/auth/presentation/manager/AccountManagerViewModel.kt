@@ -6,8 +6,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
+import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 
 class AccountManagerViewModel(
@@ -44,10 +46,12 @@ class AccountManagerViewModel(
 
     fun searchUsers(query: String) {
         this.query = query.trim()
-        filterUsers()
+        viewModelScope.launch {
+            filterUsers()
+        }
     }
 
-    private fun filterUsers() =
+    private suspend fun filterUsers() =
         if (query.isBlank())
             _state.update { allUsers }
         else
@@ -55,5 +59,18 @@ class AccountManagerViewModel(
                 it.firstName.contains(query, ignoreCase = true)
                         || it.lastName.contains(query, ignoreCase = true)
                         || it.email.contains(query, ignoreCase = true)
-            }.let { users -> _state.update { users } }
+                        || it.city.contains(query, ignoreCase = true)
+            }.let { users ->
+                if (users.isNotEmpty())
+                    _state.update { users }
+                else {
+                    val validTypes = UserType.entries.filter { type ->
+                        getString(type.stringRes).contains(query, ignoreCase = true)
+                    }
+                    if (validTypes.isEmpty()) _state.update { emptyList() }
+                    else allUsers.filter { it.userType in validTypes }.let { typeFilteredUsers ->
+                        _state.update { typeFilteredUsers }
+                    }
+                }
+            }
 }

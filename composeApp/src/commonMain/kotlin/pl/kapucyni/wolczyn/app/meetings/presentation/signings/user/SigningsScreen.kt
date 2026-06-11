@@ -232,7 +232,7 @@ private fun SigningsScreenContent(
             notesEnabled = state.notesEnabled,
             notesError = state.notesError,
             onNotesChanged = { handleAction(UpdateNotes(it)) },
-            saveEnabled = state.statuteChecked && state.animatorInfoChecked(),
+            saveEnabled = state.statuteChecked && state.additionalInfoChecked(),
             saveButtonRes = when {
                 state.isEditing -> Res.string.signing_edit
                 else -> Res.string.signing_send
@@ -250,7 +250,7 @@ private fun SigningsScreenContent(
                         ),
                     )
 
-                if (state.type == ParticipantType.ANIMATOR) {
+                if (state.type?.canBeAnimator() == true) {
                     WolczynText(
                         text = buildLinkableString(
                             text = Res.string.meeting_signing_animator_info,
@@ -328,8 +328,8 @@ private fun SigningsScreenContent(
     )
 }
 
-private fun SigningsState.NotConfirmed.animatorInfoChecked() =
-    if (type == ParticipantType.ANIMATOR || isUnderAge) additionalInfoChecked
+private fun SigningsState.NotConfirmed.additionalInfoChecked() =
+    if (type?.canBeAnimator() == true || isUnderAge) additionalInfoChecked
     else true
 
 private const val STATUTE = "%statute%"
@@ -357,7 +357,7 @@ private fun SigningsScreenContentPreview() {
                 birthdayDate = Timestamp.now().seconds,
                 isUnderAge = true,
                 availableTypes = listOf(ParticipantType.MEMBER, ParticipantType.ANIMATOR),
-                type = ParticipantType.ANIMATOR,
+                type = ParticipantType.PRIEST,
                 allWorkshops = listOf(Workshop(name = "Piłkarskie")),
                 availableWorkshops = listOf("Piłkarskie"),
                 selectedWorkshop = "Piłkarskie",

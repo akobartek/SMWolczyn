@@ -18,6 +18,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.DataSaveError
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningRemoved
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningSaved
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningUpdated
 import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidEmail
@@ -206,7 +207,9 @@ class SigningsAdminViewModel(
                 )
             ).onSuccess {
                 setLoading(false)
-                SnackbarController.sendEvent(event = MeetingSigningSaved)
+                SnackbarController.sendEvent(
+                    event = if (participant == null) MeetingSigningSaved else MeetingSigningUpdated,
+                )
                 _events.send(NavigateUp)
             }.onFailure {
                 setLoading(false)

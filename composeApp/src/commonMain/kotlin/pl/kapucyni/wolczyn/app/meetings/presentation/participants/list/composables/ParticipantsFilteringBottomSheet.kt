@@ -48,7 +48,7 @@ fun ParticipantsFilteringBottomSheet(
     state: ParticipantsFilterState,
     handleAction: (ParticipantsScreenAction) -> Unit,
     isVisible: Boolean,
-    isAdmin: Boolean,
+    hasDataAccess: Boolean,
     onDismiss: () -> Unit,
 ) {
     WolczynBottomSheet(
@@ -73,7 +73,7 @@ fun ParticipantsFilteringBottomSheet(
                 )
             }
 
-            if (isAdmin)
+            if (hasDataAccess)
                 FilterSection {
                     FilterChip(
                         label = {
@@ -88,7 +88,7 @@ fun ParticipantsFilteringBottomSheet(
                     )
                 }
 
-            if (isAdmin)
+            if (hasDataAccess)
                 FilterSection {
                     FilterList(
                         title = Res.string.participant_type_title,
