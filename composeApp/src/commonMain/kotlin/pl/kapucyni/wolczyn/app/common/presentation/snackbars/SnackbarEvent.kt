@@ -14,6 +14,8 @@ import smwolczyn.composeapp.generated.resources.qr_scan_failed
 import smwolczyn.composeapp.generated.resources.qr_scan_success
 import smwolczyn.composeapp.generated.resources.qr_scan_user_not_found
 import smwolczyn.composeapp.generated.resources.reset_password_success
+import smwolczyn.composeapp.generated.resources.save_failure
+import smwolczyn.composeapp.generated.resources.save_success
 import smwolczyn.composeapp.generated.resources.sign_in_error
 import smwolczyn.composeapp.generated.resources.sign_up_error
 import smwolczyn.composeapp.generated.resources.signed_in
@@ -26,6 +28,8 @@ sealed class SnackbarEvent(
     val message: StringResource,
     val action: SnackbarAction? = null,
 ) {
+    data object SaveSuccess : SnackbarEvent(message = Res.string.save_success)
+    data object SaveFailure : SnackbarEvent(message = Res.string.save_failure)
     data object DataSaveError : SnackbarEvent(message = Res.string.data_save_error)
 
     data object SignedIn : SnackbarEvent(message = Res.string.signed_in)
@@ -39,7 +43,6 @@ sealed class SnackbarEvent(
     data object EditProfileSuccess : SnackbarEvent(message = Res.string.edit_profile_success)
 
     data object ResetPasswordMessageSent : SnackbarEvent(message = Res.string.message_sent)
-
 
     data object ResetPasswordSuccess : SnackbarEvent(message = Res.string.reset_password_success)
 

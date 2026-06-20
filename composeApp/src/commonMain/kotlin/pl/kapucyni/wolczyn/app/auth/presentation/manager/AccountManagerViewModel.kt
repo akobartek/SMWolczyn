@@ -11,6 +11,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.AuthRepository
 import pl.kapucyni.wolczyn.app.auth.domain.model.User
 import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
+import pl.kapucyni.wolczyn.app.common.utils.normalizeMultiplatform
 
 class AccountManagerViewModel(
     private val authRepository: AuthRepository,
@@ -56,10 +57,9 @@ class AccountManagerViewModel(
             _state.update { allUsers }
         else
             allUsers.filter {
-                it.firstName.contains(query, ignoreCase = true)
-                        || it.lastName.contains(query, ignoreCase = true)
-                        || it.email.contains(query, ignoreCase = true)
-                        || it.city.contains(query, ignoreCase = true)
+                it.searchableUserString()
+                    .normalizeMultiplatform()
+                    .contains(query.normalizeMultiplatform(), ignoreCase = true)
             }.let { users ->
                 if (users.isNotEmpty())
                     _state.update { users }
@@ -73,4 +73,7 @@ class AccountManagerViewModel(
                     }
                 }
             }
+
+    private fun User.searchableUserString() =
+        "$firstName $lastName $email $city"
 }

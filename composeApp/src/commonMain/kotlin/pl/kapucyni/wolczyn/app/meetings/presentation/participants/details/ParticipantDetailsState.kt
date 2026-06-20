@@ -7,5 +7,6 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 data class ParticipantDetailsState(
     val participant: Participant,
     val showData: Boolean,
+    val allowWorkshopChange: Boolean,
     val meetingsCount: Int?,
 )

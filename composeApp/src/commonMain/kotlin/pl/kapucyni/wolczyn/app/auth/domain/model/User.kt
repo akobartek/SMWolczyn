@@ -40,6 +40,8 @@ data class User(
 
     fun canEditParticipantsData() = isAdmin() || permits.contains(UserPermit.VOLUNTEERS)
 
+    fun canEditParticipantsWorkshop() = isAdmin() || permits.contains(UserPermit.SIGNINGS)
+
     fun hasAnimatorsPermit() = permits.contains(UserPermit.ANIMATORS)
 
     fun hasWorkshopsPermit() = permits.contains(UserPermit.WORKSHOPS)

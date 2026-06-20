@@ -16,11 +16,16 @@ import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.navigation.ParticipantParameterType
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SaveFailure
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SaveSuccess
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.SigningConfirmSuccess
+import pl.kapucyni.wolczyn.app.common.utils.genderByPesel
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
+import pl.kapucyni.wolczyn.app.meetings.domain.usecases.GetWorkshopsUseCase
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.details.ParticipantDetailsScreenEvent.NavigateUp
 import kotlin.reflect.typeOf
 
@@ -28,6 +33,7 @@ class ParticipantDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val authRepository: AuthRepository,
     private val meetingsRepository: MeetingsRepository,
+    private val getWorkshopsUseCase: GetWorkshopsUseCase,
 ) : BasicViewModel<ParticipantDetailsState>() {
 
     private val args = savedStateHandle.toRoute<Screen.ParticipantDetails>(
@@ -39,6 +45,9 @@ class ParticipantDetailsViewModel(
 
     private val _group = MutableStateFlow<Group?>(null)
     val group = _group.asStateFlow()
+
+    private val _workshops = MutableStateFlow<List<Pair<Workshop, Int>>>(listOf())
+    val workshops = _workshops.asStateFlow()
 
     init {
         initState()
@@ -69,15 +78,56 @@ class ParticipantDetailsViewModel(
         }
     }
 
+    fun changeUserWorkshop(newWorkshop: String) {
+        val updatedParticipant = _state.value?.participant?.copy(workshop = newWorkshop) ?: return
+        viewModelScope.launch(Dispatchers.Default) {
+            setLoading(true)
+            meetingsRepository.saveParticipant(
+                meetingId = args.meetingId,
+                participant = updatedParticipant,
+            ).onSuccess {
+                setLoading(false)
+                SnackbarController.sendEvent(SaveSuccess)
+                _state.update { it?.copy(participant = updatedParticipant) }
+            }.onFailure {
+                setLoading(false)
+                SnackbarController.sendEvent(SaveFailure)
+            }
+        }
+    }
+
     private fun initState() {
+        val user = authRepository.currentUser.value ?: return
         viewModelScope.launch(Dispatchers.Default) {
             val participant = args.participant
             val group = meetingsRepository.getParticipantGroup(args.meetingId, participant.email)
+            val showData = user.isAdmin() || user.hasAccessToParticipantsData()
             val meetingsCount =
-                if (args.showData.not()) null
+                if (showData.not()) null
                 else meetingsRepository.getParticipantMeetingsCount(participant.pesel)
             _group.update { group }
-            _state.update { ParticipantDetailsState(participant, args.showData, meetingsCount) }
+            _state.update {
+                ParticipantDetailsState(
+                    participant = participant,
+                    showData = showData,
+                    allowWorkshopChange = user.canEditParticipantsWorkshop(),
+                    meetingsCount = meetingsCount,
+                )
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            if (args.participant.workshop.isNotBlank() && user.canEditParticipantsWorkshop()) {
+                val gender = args.participant.pesel.genderByPesel()
+                getWorkshopsUseCase(
+                    meetingId = args.meetingId,
+                    takeOnlyAvailable = true,
+                ).collect { workshops ->
+                    workshops.filter { it.first.allow(gender) }.let { filtered ->
+                        _workshops.update { filtered }
+                    }
+                }
+            }
         }
     }
 }

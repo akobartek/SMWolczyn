@@ -76,7 +76,7 @@ fun ParticipantsScreen(
             if (state.user.canEditParticipantsData() && forceDetails.not())
                 navigate(Screen.SigningsAdmin(state.meetingId, participant))
             else
-                navigate(Screen.ParticipantDetails(state.meetingId, participant, state.dataVisible))
+                navigate(Screen.ParticipantDetails(state.meetingId, participant))
         }
     }
     val startScanning = {

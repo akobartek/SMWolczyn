@@ -6,7 +6,6 @@ import androidx.navigation.toRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
@@ -14,6 +13,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Gender
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
+import pl.kapucyni.wolczyn.app.meetings.domain.usecases.GetWorkshopsUseCase
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.SaveWorkshop
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.UpdateIsAdding
 import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsScreenAction.UpdateAvailability
@@ -21,6 +21,7 @@ import pl.kapucyni.wolczyn.app.meetings.presentation.workshops.MeetingWorkshopsS
 
 class MeetingWorkshopsViewModel(
     savedStateHandle: SavedStateHandle,
+    getWorkshopsUseCase: GetWorkshopsUseCase,
     private val meetingsRepository: MeetingsRepository,
 ) : BasicViewModel<List<Pair<Workshop, Int>>>() {
 
@@ -34,13 +35,7 @@ class MeetingWorkshopsViewModel(
 
     init {
         viewModelScope.launch {
-            meetingsRepository.getMeetingParticipants(meetingId)
-                .combine(meetingsRepository.getWorkshopsFlow(meetingId)) { participants, workshops ->
-                    workshops.map {
-                        it to participants.count { participant -> participant.workshop == it.name }
-                    }
-                }
-                .collect { data -> _state.update { data } }
+            getWorkshopsUseCase(meetingId).collect { data -> _state.update { data } }
         }
     }
 

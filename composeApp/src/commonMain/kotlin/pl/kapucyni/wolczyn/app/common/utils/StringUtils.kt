@@ -9,6 +9,7 @@ import androidx.compose.ui.text.withLink
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.auth.presentation.signup.SignUpPasswordError
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Gender
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 expect fun String.normalizeMultiplatform(): String
@@ -42,6 +43,14 @@ fun CharSequence.isValidPesel(): Boolean {
     val regex = Regex("\\b[0-9]{2}([02468][1-9]|[13579][0-2])(0[1-9]|[1,2][0-9]|3[0-1])\\d{5}")
     return this.matches(regex) && peselControlNumberValidation()
 }
+
+fun CharSequence.genderByPesel() = getOrNull(9)?.let {
+    when {
+        it.isDigit().not() -> Gender.BOTH
+        (it.digitToInt()) % 2 == 0 -> Gender.FEMALE
+        else -> Gender.MALE
+    }
+} ?: Gender.BOTH
 
 private fun CharSequence.peselControlNumberValidation(): Boolean = try {
     map { it.digitToInt() }.let { digits ->

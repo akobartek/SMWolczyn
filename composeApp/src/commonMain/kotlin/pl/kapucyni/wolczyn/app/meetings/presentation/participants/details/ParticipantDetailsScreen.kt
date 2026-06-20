@@ -17,6 +17,7 @@ fun ParticipantDetailsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val group by viewModel.group.collectAsStateWithLifecycle()
+    val workshops by viewModel.workshops.collectAsStateWithLifecycle()
     val loading by viewModel.loading.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events) { event ->
@@ -34,9 +35,12 @@ fun ParticipantDetailsScreen(
         state?.let {
             ParticipantDetailsScreenContent(
                 participant = it.participant,
+                workshops = workshops,
                 showData = it.showData,
+                allowWorkshopChange = it.allowWorkshopChange,
                 meetingsCount = it.meetingsCount,
                 confirmUserSigning = viewModel::confirmUserSigning,
+                changeUserWorkshop = viewModel::changeUserWorkshop,
                 group = group,
             )
         } ?: LoadingBox()

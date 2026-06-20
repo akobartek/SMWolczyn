@@ -28,13 +28,13 @@ import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.DataSaveError
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningRemoved
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.MeetingSigningUpdated
+import pl.kapucyni.wolczyn.app.common.utils.genderByPesel
 import pl.kapucyni.wolczyn.app.common.utils.getPeselBeginning
 import pl.kapucyni.wolczyn.app.common.utils.isAgeBelow
 import pl.kapucyni.wolczyn.app.common.utils.isValidPesel
 import pl.kapucyni.wolczyn.app.common.utils.isValidPhoneNumber
 import pl.kapucyni.wolczyn.app.core.domain.repository.LogRepository
 import pl.kapucyni.wolczyn.app.meetings.domain.MeetingsRepository
-import pl.kapucyni.wolczyn.app.meetings.domain.model.Gender
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Meeting
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
@@ -435,12 +435,4 @@ class SigningsViewModel(
 
     private fun workshopsEnabled(type: ParticipantType?, pesel: String) =
         type?.canSelectWorkshops() == true && pesel.isValidPesel()
-
-    private fun CharSequence.genderByPesel() = getOrNull(9)?.let {
-        when {
-            it.isDigit().not() -> Gender.BOTH
-            (it.digitToInt()) % 2 == 0 -> Gender.FEMALE
-            else -> Gender.MALE
-        }
-    } ?: Gender.BOTH
 }

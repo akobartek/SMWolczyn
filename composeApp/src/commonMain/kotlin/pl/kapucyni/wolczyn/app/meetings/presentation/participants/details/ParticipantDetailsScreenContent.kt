@@ -43,6 +43,7 @@ import pl.kapucyni.wolczyn.app.common.utils.getFormattedDateTimeForAdmin
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Group
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
+import pl.kapucyni.wolczyn.app.meetings.domain.model.Workshop
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.by
@@ -68,15 +69,30 @@ import smwolczyn.composeapp.generated.resources.workshops
 @Composable
 fun ParticipantDetailsScreenContent(
     participant: Participant,
+    workshops: List<Pair<Workshop, Int>>,
     showData: Boolean,
+    allowWorkshopChange: Boolean,
     meetingsCount: Int?,
     confirmUserSigning: () -> Unit,
+    changeUserWorkshop: (String) -> Unit,
     group: Group?,
 ) {
     val uriHandler = LocalUriHandler.current
     var consent by rememberSaveable { mutableStateOf(false) }
     var underAgeConsent by rememberSaveable { mutableStateOf(participant.isUnderAge().not()) }
     var paid by rememberSaveable { mutableStateOf(false) }
+    var workshopsDialogVisible by rememberSaveable { mutableStateOf(false) }
+
+    WorkshopChangeDialog(
+        isVisible = workshopsDialogVisible,
+        currentWorkshop = participant.workshop,
+        workshops = workshops,
+        onSave = { newWorkshop ->
+            workshopsDialogVisible = false
+            changeUserWorkshop(newWorkshop)
+        },
+        onDismiss = { workshopsDialogVisible = false },
+    )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -102,14 +118,14 @@ fun ParticipantDetailsScreenContent(
                 ParticipantInfo(
                     imageVector = vectorResource(Res.drawable.ic_email_alt),
                     text = participant.email,
-                    onClick = { uriHandler.openUri("mailto:?bcc=${participant.email}") }
+                    onClick = { uriHandler.openUri("mailto:?bcc=${participant.email}") },
                 )
 
                 if (participant.contactNumber.isNotBlank())
                     ParticipantInfo(
                         imageVector = vectorResource(Res.drawable.ic_call),
                         text = participant.contactNumber,
-                        onClick = { uriHandler.openUri("tel:${participant.contactNumber}") }
+                        onClick = { uriHandler.openUri("tel:${participant.contactNumber}") },
                     )
             }
 
@@ -128,6 +144,7 @@ fun ParticipantDetailsScreenContent(
                 ParticipantInfo(
                     imageVector = vectorResource(Res.drawable.ic_construction),
                     text = stringResource(Res.string.workshops) + ": " + participant.workshop,
+                    onClick = { if (allowWorkshopChange) workshopsDialogVisible = true },
                 )
 
             ParticipantInfo(
@@ -321,9 +338,12 @@ private fun ParticipantDetailsScreenContentPreview() {
                 acceptedAt = Timestamp.now(),
                 acceptedBy = "admin@wolczyn.com",
             ),
+            workshops = listOf(),
             showData = true,
+            allowWorkshopChange = true,
             meetingsCount = 2137,
             confirmUserSigning = {},
+            changeUserWorkshop = {},
             group = null,
         )
     }
