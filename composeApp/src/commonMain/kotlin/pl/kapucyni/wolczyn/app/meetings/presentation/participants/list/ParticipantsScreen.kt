@@ -36,6 +36,7 @@ import pl.kapucyni.wolczyn.app.common.utils.CodeScanner
 import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScannerNotFound
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.NavigateUp
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenEvent.ScanUserFound
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.composables.ParticipantCard
@@ -87,6 +88,7 @@ fun ParticipantsScreen(
                 },
                 onFailure = { viewModel.handleAction(QrScanFailure(invalidValue = it)) },
                 onCancel = {},
+                onNoScannerFound = { viewModel.handleAction(QrScannerNotFound) },
             )
         } catch (_: Exception) {
             viewModel.handleAction(QrScanFailure(invalidValue = false))

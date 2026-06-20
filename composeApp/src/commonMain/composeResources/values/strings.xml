@@ -128,6 +128,7 @@
     <string name="cd_qr_scanner">Otwórz skaner kodów QR</string>
     <string name="qr_scan_success">Otwieram stronę uczestnika...</string>
     <string name="qr_scan_failed">Wystąpił błąd podczas skanowania kodu QR, spróbuj ponownie!</string>
+    <string name="qr_scanner_not_available">Twoje urządzenie nie obsługuje skanera (brak usług Google Play).</string>
     <string name="qr_scan_user_not_found">Nie znaleziono uczestnika dla podanego kodu, spróbuj ponownie!</string>
     <string name="cd_send_email">Wyślij email</string>
     <string name="sorting_label">Sortowanie</string>

@@ -27,5 +27,5 @@ actual val platformModule: Module = module {
 
     factory<LifecycleManager> { AndroidLifecycleManager(androidApplication()) }
 
-    factory<CodeScanner> { AndroidCodeScanner(androidContext()) }
+    factory<CodeScanner> { AndroidCodeScanner(androidContext(), get()) }
 }

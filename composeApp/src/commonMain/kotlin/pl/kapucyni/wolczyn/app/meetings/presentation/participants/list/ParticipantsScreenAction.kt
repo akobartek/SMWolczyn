@@ -10,4 +10,5 @@ sealed interface ParticipantsScreenAction {
     data class UpdateWorkshopsFilter(val elementSelected: String) : ParticipantsScreenAction
     data class QrScanSuccess(val email: String) : ParticipantsScreenAction
     data class QrScanFailure(val invalidValue: Boolean) : ParticipantsScreenAction
+    data object QrScannerNotFound : ParticipantsScreenAction
 }

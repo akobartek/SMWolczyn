@@ -18,6 +18,7 @@ import pl.kapucyni.wolczyn.app.auth.domain.model.UserType
 import pl.kapucyni.wolczyn.app.common.presentation.BasicViewModel
 import pl.kapucyni.wolczyn.app.common.presentation.Screen
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarController
+import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScannerNotAvailable
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningFailed
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeScanningSuccess
 import pl.kapucyni.wolczyn.app.common.presentation.snackbars.SnackbarEvent.QrCodeUserNotFound
@@ -28,6 +29,7 @@ import pl.kapucyni.wolczyn.app.meetings.domain.model.Participant
 import pl.kapucyni.wolczyn.app.meetings.domain.model.ParticipantType
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanFailure
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScanSuccess
+import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.QrScannerNotFound
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.ToggleAllUsers
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSearchQuery
 import pl.kapucyni.wolczyn.app.meetings.presentation.participants.list.ParticipantsScreenAction.UpdateSorting
@@ -114,6 +116,7 @@ class ParticipantsViewModel(
             is UpdateWorkshopsFilter -> updateWorkshopsFilter(action.elementSelected)
             is QrScanSuccess -> handleQrScanSuccess(action.email)
             is QrScanFailure -> handleQrScanFailure(action.invalidValue)
+            is QrScannerNotFound -> handleQrScannerNotFound()
         }
     }
 
@@ -249,6 +252,12 @@ class ParticipantsViewModel(
                 if (invalidValue) QrCodeUserNotFound
                 else QrCodeScanningFailed
             )
+        }
+    }
+
+    private fun handleQrScannerNotFound() {
+        viewModelScope.launch {
+            SnackbarController.sendEvent(QrCodeScannerNotAvailable)
         }
     }
 }

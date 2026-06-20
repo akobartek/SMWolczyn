@@ -6,5 +6,6 @@ interface CodeScanner {
         onSuccess: (String) -> Unit,
         onFailure: (invalidValue: Boolean) -> Unit,
         onCancel: () -> Unit = {},
+        onNoScannerFound: () -> Unit,
     )
 }

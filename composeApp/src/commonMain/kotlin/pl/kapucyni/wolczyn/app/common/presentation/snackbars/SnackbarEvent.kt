@@ -13,6 +13,7 @@ import smwolczyn.composeapp.generated.resources.message_sent
 import smwolczyn.composeapp.generated.resources.qr_scan_failed
 import smwolczyn.composeapp.generated.resources.qr_scan_success
 import smwolczyn.composeapp.generated.resources.qr_scan_user_not_found
+import smwolczyn.composeapp.generated.resources.qr_scanner_not_available
 import smwolczyn.composeapp.generated.resources.reset_password_success
 import smwolczyn.composeapp.generated.resources.save_failure
 import smwolczyn.composeapp.generated.resources.save_success
@@ -61,6 +62,8 @@ sealed class SnackbarEvent(
     data object QrCodeScanningSuccess : SnackbarEvent(message = Res.string.qr_scan_success)
 
     data object QrCodeScanningFailed : SnackbarEvent(message = Res.string.qr_scan_failed)
+
+    data object QrCodeScannerNotAvailable : SnackbarEvent(message = Res.string.qr_scanner_not_available)
 
     data object QrCodeUserNotFound : SnackbarEvent(message = Res.string.qr_scan_user_not_found)
 

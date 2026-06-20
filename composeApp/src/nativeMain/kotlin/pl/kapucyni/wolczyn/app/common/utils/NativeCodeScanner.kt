@@ -15,9 +15,10 @@ class NativeCodeScanner : CodeScanner {
         onSuccess: (String) -> Unit,
         onFailure: (invalidValue: Boolean) -> Unit,
         onCancel: () -> Unit,
+        onNoScannerFound: () -> Unit,
     ) {
         if (!available) {
-            onFailure(false)
+            onNoScannerFound()
             return
         }
 
