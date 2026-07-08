@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -16,14 +17,20 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.schedule.data.sources.BasicScheduleSource
+import pl.kapucyni.wolczyn.app.theme.AppTheme
 import pl.kapucyni.wolczyn.app.theme.wolczynColors
 
 @Composable
@@ -50,7 +57,7 @@ fun RowScope.ScheduleDaySelector(
             .height(height),
     ) {
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy((-6).dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -72,6 +79,31 @@ fun RowScope.ScheduleDaySelector(
                 ),
                 modifier = Modifier.padding(horizontal = 4.dp),
             )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    val source = BasicScheduleSource()
+    var selectedDay by remember { mutableIntStateOf(0) }
+    AppTheme {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier
+                .height(104.dp)
+                .padding(horizontal = 4.dp),
+        ) {
+            source.getBasicSchedule().forEachIndexed { index, scheduleDay ->
+                ScheduleDaySelector(
+                    day = scheduleDay.date.day,
+                    name = scheduleDay.name,
+                    isSelected = selectedDay == index,
+                    onClick = { selectedDay = index },
+                )
+            }
         }
     }
 }

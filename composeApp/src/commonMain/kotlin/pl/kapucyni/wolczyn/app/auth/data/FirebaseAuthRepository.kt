@@ -121,7 +121,7 @@ class FirebaseAuthRepository(
                 }
             }
         } catch (exc: Exception) {
-            logRepository.logException(message = "Błąd podczas rejestracji", exc)
+            logRepository.logException(message = "Błąd podczas rejestracji z mailem ${user.email}", exc)
             Result.failure(exc)
         }
     }

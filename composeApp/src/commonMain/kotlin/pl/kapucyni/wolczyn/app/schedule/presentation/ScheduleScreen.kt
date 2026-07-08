@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,8 +31,10 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.LoadingBox
 import pl.kapucyni.wolczyn.app.common.presentation.composables.ScreenLayout
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WidthSpacer
 import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
+import pl.kapucyni.wolczyn.app.schedule.data.sources.BasicScheduleSource
 import pl.kapucyni.wolczyn.app.schedule.presentation.composables.EventCard
 import pl.kapucyni.wolczyn.app.schedule.presentation.composables.ScheduleDaySelector
+import pl.kapucyni.wolczyn.app.theme.AppTheme
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.schedule_days
 import smwolczyn.composeapp.generated.resources.schedule_title
@@ -148,6 +151,29 @@ fun ScheduleScreenContent(
                     onNavClick = navigateTo,
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ScheduleScreenContentPreview() {
+    val source = BasicScheduleSource()
+    var selectedDay by remember { mutableIntStateOf(0) }
+    AppTheme {
+        ScreenLayout(
+            title = stringResource(Res.string.schedule_title),
+            onBackPressed = {},
+        ) {
+            ScheduleScreenContent(
+                state = ScheduleScreenState(
+                    schedule = source.getBasicSchedule(),
+                    selectedDay = selectedDay,
+                    currentDay = 0,
+                ),
+                onDaySelected = { selectedDay = it },
+                navigateTo = {},
+            )
         }
     }
 }

@@ -25,6 +25,7 @@ import pl.kapucyni.wolczyn.app.weather.presentation.WeatherViewModel
 import smwolczyn.composeapp.generated.resources.Res
 import smwolczyn.composeapp.generated.resources.ic_cap_weather
 import smwolczyn.composeapp.generated.resources.weather_title
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -60,7 +61,7 @@ fun WeatherHomeTileContent(
                 onClick()
             }
             else -> {
-                delay(500)
+                delay(500.milliseconds)
                 counter = 0
             }
         }
