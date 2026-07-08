@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
-private val appVersion = "2026.8"
+private val appVersion = "2026.9"
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
