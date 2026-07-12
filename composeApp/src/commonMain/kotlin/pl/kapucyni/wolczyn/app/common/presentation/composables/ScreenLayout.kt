@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.currentStateAsState
 
 @Composable
 fun ScreenLayout(
@@ -28,8 +33,23 @@ fun ScreenLayout(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
+    val isTransitioning = !lifecycleState.isAtLeast(Lifecycle.State.RESUMED)
+
     Scaffold(
         floatingActionButton = floatingActionButton,
+        modifier = if (isTransitioning) {
+            Modifier.pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        awaitPointerEvent()
+                    }
+                }
+            }
+        } else {
+            Modifier
+        },
     ) { paddingValues ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

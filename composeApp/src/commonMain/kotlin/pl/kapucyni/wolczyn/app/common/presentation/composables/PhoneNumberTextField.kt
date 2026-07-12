@@ -1,6 +1,7 @@
 package pl.kapucyni.wolczyn.app.common.presentation.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import pl.kapucyni.wolczyn.app.theme.AppTheme
 import smwolczyn.composeapp.generated.resources.Res
@@ -59,7 +61,9 @@ fun PhoneNumberTextField(
                 WolczynText(text = errorMessage)
             }
         },
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .widthIn(max = 420.dp)
+            .fillMaxWidth(),
     )
 }
 

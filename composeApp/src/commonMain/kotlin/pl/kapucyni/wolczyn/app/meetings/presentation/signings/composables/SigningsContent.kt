@@ -3,6 +3,7 @@ package pl.kapucyni.wolczyn.app.meetings.presentation.signings.composables
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -217,6 +218,7 @@ fun SigningsContent(
         ),
         singleLine = true,
         modifier = Modifier
+            .widthIn(max = 420.dp)
             .fillMaxWidth()
             .focusRequester(communityRef)
             .focusProperties { next = typeRef },
