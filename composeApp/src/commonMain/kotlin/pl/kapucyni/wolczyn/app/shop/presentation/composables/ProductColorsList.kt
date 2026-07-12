@@ -18,6 +18,7 @@ import pl.kapucyni.wolczyn.app.common.presentation.composables.WolczynText
 import pl.kapucyni.wolczyn.app.shop.domain.model.ProductColor
 import pl.kapucyni.wolczyn.app.shop.domain.model.ProductColorIndicator
 import smwolczyn.composeapp.generated.resources.Res
+import smwolczyn.composeapp.generated.resources.shop_color_beige
 import smwolczyn.composeapp.generated.resources.shop_color_black
 import smwolczyn.composeapp.generated.resources.shop_color_brown
 import smwolczyn.composeapp.generated.resources.shop_color_green
@@ -38,6 +39,7 @@ fun ProductColorsList(
                         ProductColor.BLACK -> Res.string.shop_color_black
                         ProductColor.GREEN -> Res.string.shop_color_green
                         ProductColor.BROWN -> Res.string.shop_color_brown
+                        ProductColor.BEIGE -> Res.string.shop_color_beige
                         ProductColor.WHITE -> Res.string.shop_color_white
                     }
                 ),
