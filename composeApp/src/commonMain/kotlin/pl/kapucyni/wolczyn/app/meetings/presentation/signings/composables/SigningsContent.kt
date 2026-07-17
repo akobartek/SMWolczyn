@@ -274,6 +274,7 @@ fun SigningsContent(
         enabled = saveEnabled,
         modifier = Modifier
             .padding(top = 8.dp)
+            .widthIn(max = 420.dp)
             .fillMaxWidth(),
     ) {
         WolczynText(text = stringResource(saveButtonRes))
@@ -285,7 +286,9 @@ fun SigningsContent(
                 focusManager.clearFocus(true)
                 onRemoveSigningClicked()
             },
-            modifier = Modifier.fillMaxWidth(0.75f),
+            modifier = Modifier
+                .widthIn(max = 420.dp)
+                .fillMaxWidth(0.75f),
         ) {
             WolczynText(text = stringResource(Res.string.meeting_signing_remove))
         }
